@@ -1,0 +1,29 @@
+# 手算验收例，全部为测试数据。
+P_grid_mw: 120
+k_factor: 1.20
+k_source: 验收例假设。
+period_note: 两个 1 小时时段；仅用于手算核对，不代表全年。
+
+scenarios:
+  - type: grid
+    name: 纯电网
+
+  - type: solar
+    name: 光伏无电池
+    area_km2: 1
+    density_mw_per_km2: 100
+    dt_hours: 1
+    net_output_mw: [20, 0]
+
+  - type: solar
+    name: 光伏+电池
+    area_km2: 1
+    density_mw_per_km2: 100
+    dt_hours: 1
+    net_output_mw: [20, 0]
+    battery:
+      C_max_mw: 10
+      D_max_mw: 10
+      E_usable_mwh: 10
+      charge_efficiency: 1.0
+      discharge_efficiency: 1.0

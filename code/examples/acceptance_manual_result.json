@@ -1,0 +1,157 @@
+{
+  "assumptions": {
+    "P_grid_mw": 120,
+    "k_factor": 1.2,
+    "k_source": "验收例假设。",
+    "period_note": "两个 1 小时时段；仅用于手算核对，不代表全年。"
+  },
+  "scenarios": [
+    {
+      "name": "纯电网",
+      "power_type": "grid_only",
+      "breakdown": {
+        "grid_mw": 120,
+        "self_generation_mw": 0.0,
+        "facility_mw": 120.0,
+        "k": 1.2,
+        "it_mw": 100.0
+      },
+      "method": {
+        "equation": "v2 式(1)(6)",
+        "assumption": "P_self = 0，作为所有候选方案的基准。"
+      }
+    },
+    {
+      "name": "光伏无电池",
+      "power_type": "solar",
+      "breakdown": {
+        "grid_mw": 120,
+        "self_generation_mw": 0.0,
+        "facility_mw": 120.0,
+        "k": 1.2,
+        "it_mw": 100.0
+      },
+      "method": {
+        "equation": "v2 式(5) 无电池退化（周期最小净功率）",
+        "installed_mw": 100,
+        "dt_hours": 1,
+        "input_series": "net_output_mw",
+        "battery": null,
+        "L_mw": 0.0,
+        "charge_mw": [
+          0.0,
+          0.0
+        ],
+        "discharge_mw": [
+          0.0,
+          0.0
+        ],
+        "energy_start_mwh": [
+          0.0,
+          0.0
+        ],
+        "curtailment_mw": [
+          20.0,
+          0.0
+        ],
+        "direction": [
+          0,
+          0
+        ],
+        "status": "no battery"
+      }
+    },
+    {
+      "name": "光伏+电池",
+      "power_type": "solar_storage",
+      "breakdown": {
+        "grid_mw": 120,
+        "self_generation_mw": 10.0,
+        "facility_mw": 130.0,
+        "k": 1.2,
+        "it_mw": 108.33333333333334
+      },
+      "method": {
+        "equation": "v2 式(5)；附录 A",
+        "installed_mw": 100,
+        "dt_hours": 1,
+        "input_series": "net_output_mw",
+        "battery": {
+          "C_max_mw": 10,
+          "D_max_mw": 10,
+          "E_usable_mwh": 10,
+          "charge_efficiency": 1.0,
+          "discharge_efficiency": 1.0
+        },
+        "L_mw": 10.0,
+        "charge_mw": [
+          10.0,
+          0.0
+        ],
+        "discharge_mw": [
+          0.0,
+          10.0
+        ],
+        "energy_start_mwh": [
+          0.0,
+          10.0
+        ],
+        "curtailment_mw": [
+          0.0,
+          0.0
+        ],
+        "direction": [
+          1,
+          0
+        ],
+        "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)"
+      }
+    }
+  ],
+  "optimum": {
+    "name": "光伏+电池",
+    "power_type": "solar_storage",
+    "breakdown": {
+      "grid_mw": 120,
+      "self_generation_mw": 10.0,
+      "facility_mw": 130.0,
+      "k": 1.2,
+      "it_mw": 108.33333333333334
+    },
+    "method": {
+      "equation": "v2 式(5)；附录 A",
+      "installed_mw": 100,
+      "dt_hours": 1,
+      "input_series": "net_output_mw",
+      "battery": {
+        "C_max_mw": 10,
+        "D_max_mw": 10,
+        "E_usable_mwh": 10,
+        "charge_efficiency": 1.0,
+        "discharge_efficiency": 1.0
+      },
+      "L_mw": 10.0,
+      "charge_mw": [
+        10.0,
+        0.0
+      ],
+      "discharge_mw": [
+        0.0,
+        10.0
+      ],
+      "energy_start_mwh": [
+        0.0,
+        10.0
+      ],
+      "curtailment_mw": [
+        0.0,
+        0.0
+      ],
+      "direction": [
+        1,
+        0
+      ],
+      "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)"
+    }
+  }
+}

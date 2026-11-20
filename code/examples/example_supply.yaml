@@ -1,0 +1,163 @@
+# 全部数值均为演示测试数据，不是真实场址资料。
+演示说明: 当前数字仅用于验证程序，替换场址数据后重跑。
+P_grid_mw: 120
+k_factor: 1.20
+k_source: 演示假设：同类液冷数据中心满载口径；若以年度 PUE 代入，仅为近似。
+period_note: 24 小时代表日；结果只解释该代表日，不直接宣称全年可靠。
+
+scenarios:
+  - type: grid
+    name: 纯电网
+
+  - type: coal
+    name: 煤电
+    units: 2
+    unit_net_mw: 80
+
+  - type: gas
+    name: 燃气
+    units: 3
+    unit_net_mw: 50
+    net_efficiency: 0.42
+    gas_supply_adequate: true
+
+  - type: wind
+    name: 风电
+    area_km2: 10
+    density_mw_per_km2: 8
+    net_output_mw:
+      - 38
+      - 41
+      - 43
+      - 40
+      - 35
+      - 30
+      - 28
+      - 31
+      - 37
+      - 44
+      - 50
+      - 55
+      - 58
+      - 57
+      - 54
+      - 49
+      - 45
+      - 42
+      - 39
+      - 36
+      - 33
+      - 31
+      - 29
+      - 34
+
+  - type: hydro
+    name: 水电
+    installed_mw: 80
+    flow_m3_per_s: 100
+    net_head_m: 100
+    efficiency: 0.90
+
+  - type: solar
+    name: 光伏无电池
+    area_km2: 5
+    density_mw_per_km2: 30
+    dt_hours: 1
+    net_output_mw:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 5
+      - 30
+      - 70
+      - 110
+      - 135
+      - 145
+      - 140
+      - 120
+      - 90
+      - 55
+      - 20
+      - 2
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+
+  - type: solar
+    name: 光伏+电池
+    area_km2: 5
+    density_mw_per_km2: 30
+    dt_hours: 1
+    net_output_mw:
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 5
+      - 30
+      - 70
+      - 110
+      - 135
+      - 145
+      - 140
+      - 120
+      - 90
+      - 55
+      - 20
+      - 2
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+    battery:
+      C_max_mw: 50
+      D_max_mw: 50
+      E_usable_mwh: 300
+      charge_efficiency: 0.95
+      discharge_efficiency: 0.95
+
+  - type: combined_battery
+    name: 风光共用电池
+    installed_mw: 230
+    dt_hours: 1
+    supply_series_mw:
+      - 38
+      - 41
+      - 43
+      - 40
+      - 35
+      - 30
+      - 33
+      - 61
+      - 107
+      - 154
+      - 185
+      - 200
+      - 198
+      - 177
+      - 144
+      - 104
+      - 65
+      - 44
+      - 39
+      - 36
+      - 33
+      - 31
+      - 29
+      - 34
+    battery:
+      C_max_mw: 80
+      D_max_mw: 80
+      E_usable_mwh: 400
+      charge_efficiency: 0.95
+      discharge_efficiency: 0.95
