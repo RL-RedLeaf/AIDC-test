@@ -378,5 +378,23 @@
         "HTTP Error 403: Forbidden"
       ]
     ]
+  },
+  {
+    "id": "29",
+    "doi": "10.1145/2451116.2451123",
+    "title": "Parasol and GreenSwitch: Managing Datacenters Powered by Renewable Energy",
+    "attempts": [
+      [
+        "http://www.cs.rutgers.edu/~tdnguyen/pubs/Goiri2013Parasol.pdf",
+        "HTTP Error 404: Not Found"
+      ]
+    ],
+    "file": "29_Goiri-Parasol-GreenSwitch.pdf",
+    "pages": 13,
+    "bytes": 1125811,
+    "sha256": "2988f8d6b6a52b3673a93eb17b144d6c76f031ccca894568a47b1018763ce4a4",
+    "url": "https://web.archive.org/web/20150621095602id_/http://www.cs.rutgers.edu/~tdnguyen/pubs/Goiri2013Parasol.pdf",
+    "version": "作者公开稿（Wayback Machine 存档）",
+    "first_page": "Parasol and GreenSwitch: Managing Datacenters Powered by Renewable Energy. Iñigo Goiri, William Katsak, Kien Le, Thu D. Nguyen, and Ricardo Bianchini. Department of Computer Science, Rutgers University."
   }
 ]
