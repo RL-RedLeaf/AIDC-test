@@ -6,6 +6,7 @@ import io
 import json
 import logging
 import re
+import sys
 import urllib.request
 from pathlib import Path
 
@@ -82,6 +83,7 @@ def main():
     if not arguments.fetch:
         parser.error("pass --fetch to retrieve public sources and save evidence")
     logging.getLogger("pypdf").setLevel(logging.ERROR)
+    sys.stdout.reconfigure(encoding="utf-8")
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
         results = []
         for result in pool.map(fetch, SOURCES):
