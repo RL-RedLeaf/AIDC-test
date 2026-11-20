@@ -1,0 +1,382 @@
+[
+  {
+    "id": "01",
+    "doi": "10.1126/science.aba3758",
+    "title": "Recalibrating global data center energy-use estimates",
+    "attempts": [
+      [
+        "https://www.science.org/doi/pdf/10.1126/science.aba3758",
+        "HTTP Error 403: Forbidden"
+      ],
+      [
+        "https://escholarship.org/content/qt96d7w680/qt96d7w680.pdf",
+        "HTTP Error 403: Forbidden"
+      ],
+      [
+        "https://escholarship.org/content/qt96d7w680/qt96d7w680_noSplash_36a98d5a9fc8a69fe274b12c8c8a8c58.pdf",
+        "HTTP Error 403: Forbidden"
+      ]
+    ],
+    "file": "01_Masanet-Energy.pdf",
+    "version": "作者所在机构开放稿",
+    "url": "https://datacenters.lbl.gov/sites/default/files/Masanet_et_al_Science_2020.full_.pdf",
+    "pages": 4,
+    "bytes": 965927,
+    "sha256": "773940f062e5801b8b053490d4ed1421ce895f5bc8c5dc04642ac2c0bf65b6b2",
+    "first_page": "sciencemag.org SCIENCE PHOTO: GOOGLE By Eric Masanet1,2, Arman Shehabi3, Nuoa Lei1, Sarah Smith3, Jonathan Koomey4 D ata centers represent the informa- tion backbone of an increasingly digitalized world. Demand for their services has been rising rapidly ( 1), and data-intensive technologies such as artificial intelligence, smart and connected energ"
+  },
+  {
+    "id": "02",
+    "doi": "10.1038/s41893-025-01681-y",
+    "title": "Environmental impact and net-zero pathways for sustainable artificial intelligence servers in the USA",
+    "attempts": [],
+    "file": "02_NatureSustainability-AI.pdf",
+    "pages": 16,
+    "bytes": 4464286,
+    "sha256": "c6bb4ab4dcb60ea14fcc0f8a3ba027f3248be72bbc405936e231c76601510779",
+    "url": "https://www.nature.com/articles/s41893-025-01681-y.pdf",
+    "version": "期刊版",
+    "first_page": "Nature Sustainability | Volume 8 | December 2025 | 1541–1553 1541 nature sustainability https://doi.org/10.1038/s41893-025-01681-y Analysis Environmental impact and net-zero pathways for sustainable artificial intelligence servers in the USA Tianqi Xiao 1, Francesco Fuso Nerini 2,3,4,5, H. Damon Matthews 6, Massimo Tavoni 4,5 & Fengqi You 1,7,8,9 The rapidly increasing demand for generative artificial intelligence (AI) models requires extensive server inst"
+  },
+  {
+    "id": "03",
+    "doi": "10.1088/1748-9326/abfba1",
+    "title": "The environmental footprint of data centers in the United States",
+    "attempts": [],
+    "file": "03_Siddik-Spatial.pdf",
+    "pages": 12,
+    "bytes": 1628108,
+    "sha256": "cdf4435d4e528fd0c346f902fa0176e3e73b672d30f41754579d39a0f63d1f0a",
+    "url": "https://iopscience.iop.org/article/10.1088/1748-9326/abfba1/pdf",
+    "version": "期刊版",
+    "first_page": "LETTER • OPEN ACCESS The environmental footprint of data centers in the United States To cite this article: Md Abu Bakar Siddik et al 2021 Environ. Res. Lett. 16 064017 View the article online for updates and enhancements. You may also like Historical values of water and carbon intensity of global electricity production Rebecca A M Peer and Christopher M Chini - A regional assessment of the water embedded in the US electricity system Rebecca A M Peer, Emil"
+  },
+  {
+    "id": "04",
+    "doi": "10.1038/s41545-021-00101-w",
+    "title": "Data centre water consumption",
+    "attempts": [],
+    "file": "04_Mytton-Water.pdf",
+    "pages": 6,
+    "bytes": 658727,
+    "sha256": "cc4a14fdacd0ee3aee4aff19eb654aeffd36dff1b17ae6d0fee349a9cd25bd87",
+    "url": "https://www.nature.com/articles/s41545-021-00101-w.pdf",
+    "version": "期刊版",
+    "first_page": "PERSPECTIVE OPEN Data centre water consumption David Mytton 1 ✉ The information communication technology sector will experience huge growth over the coming years, with 29.3 billion devices expected online by 2030, up from 18.4 billion in 2018. To reliably support the online services used by these billions of users, data centres have been built around the world to provide the millions of servers they contain with access to power, cooling and internet connec"
+  },
+  {
+    "id": "05",
+    "doi": "10.1007/s11367-017-1333-8",
+    "title": "The WULCA consensus characterization model for water scarcity footprints: assessing impacts of water consumption based on available water remaining (AWARE)",
+    "attempts": [
+      [
+        "https://publications.polymtl.ca/4804/1/2017_Boulay_Wulca_consensus_characterization_model_water.pdf",
+        "Remote end closed connection without response"
+      ]
+    ],
+    "file": "05_AWARE.pdf",
+    "pages": 11,
+    "bytes": 801108,
+    "sha256": "8dcf3f5e49fe36284b9ce897bb47852ac98ea04094e7207756c4da64765ddb17",
+    "url": "https://link.springer.com/content/pdf/10.1007/s11367-017-1333-8.pdf",
+    "version": "期刊版",
+    "first_page": "W A TER USE IN LCA The WULCA consensus characterization model for water scarcity footprints: assessing impacts of water consumption based on available water remaining (A W ARE) Anne-Marie Boulay1,2 & Jane Bare3 & Lorenzo Benini4 & Markus Berger5 & Michael J. Lathuillière6 & Alessandro Manzardo7 & Manuele Margni1 & Masaharu Motoshita8 & Montserrat Núñez9 & Amandine Valerie Pastor10,11 & Bradley Ridoutt12,13 & Taikan Oki14 & Sebastien Worbe15 & Stephan Pfist"
+  },
+  {
+    "id": "06",
+    "doi": "10.1088/1748-9326/7/4/045802",
+    "title": "Operational water consumption and withdrawal factors for electricity generating technologies: a review of existing literature",
+    "attempts": [],
+    "file": "06_Macknick-WaterFactors.pdf",
+    "pages": 11,
+    "bytes": 748462,
+    "sha256": "32efeb0570ce380db5abfcf2429b2d892271bdf50755ebdaa9d25417a7efb0a3",
+    "url": "https://iopscience.iop.org/article/10.1088/1748-9326/7/4/045802/pdf",
+    "version": "期刊版",
+    "first_page": "LETTER • OPEN ACCESS Operational water consumption and withdrawal factors for electricity generating technologies: a review of existing literature To cite this article: J Macknick et al 2012 Environ. Res. Lett. 7 045802 View the article online for updates and enhancements. You may also like Life cycle water use for electricity generation: a review and harmonization of literature estimates J Meldrum, S Nettles-Anderson, G Heath et al. - A regional assessmen"
+  },
+  {
+    "id": "07",
+    "doi": "10.1371/journal.pone.0270155",
+    "title": "Land-use intensity of electricity production and tomorrow’s energy landscape",
+    "attempts": [],
+    "file": "07_Lovering-Land.pdf",
+    "pages": 17,
+    "bytes": 1104687,
+    "sha256": "d7d2d988f9a6c7a2845deeab2e8d123308d33220efbdbf27ab64a6a959132b16",
+    "url": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0270155&type=printable",
+    "version": "期刊版",
+    "first_page": "RESEA RCH ARTICL E Land-use intensity of electricity production and tomorrow’s energy landscape Jessica Lovering ID 1 *, Marian Swain ID 2 , Linus Blomqvist 3 , Rebecca R. Hernandez 4,5,6,7 1 Fastest Path to Zero Initiative, University of Michigan, Ann Arbor, MI, United States of America, 2 Breakth rough Institute, Oakland, CA, United States of America, 3 Bren School of Environm ental Science & Managemen t, University of Californi a, Santa Barbara, CA, Uni"
+  },
+  {
+    "id": "08",
+    "doi": "10.2172/1086349",
+    "title": "Land-Use Requirements for Solar Power Plants in the United States",
+    "attempts": [],
+    "file": "08_NREL-SolarLand.pdf",
+    "pages": 47,
+    "bytes": 1608639,
+    "sha256": "a2bef57e12500f0daae841d4e84037f2a23d7811f3b551d4d910294febc00f8a",
+    "url": "https://www.osti.gov/servlets/purl/1086349",
+    "version": "机构报告",
+    "first_page": "NREL is a national laboratory of the U.S. Department of Energy Office of Energy Efficiency & Renewable Energy Operated by the Alliance for Sustainable Energy, LLC. This report is available at no cost from the National Renewable Energy Laboratory (NREL) at www.nrel.gov/publications. Contract No. DE-AC36-08GO28308 Land-Use Requirements for Solar Power Plants in the United States Sean Ong, Clinton Campbell, Paul Denholm, Robert Margolis, and Garvin Heath Tech"
+  },
+  {
+    "id": "09",
+    "doi": "10.2172/964608",
+    "title": "Land Use Requirements of Modern Wind Power Plants in the United States",
+    "attempts": [],
+    "file": "09_NREL-WindLand.pdf",
+    "pages": 46,
+    "bytes": 1093509,
+    "sha256": "4795fa8eccc933a5724d6d98590d42ec38db8455d2ecd3e8ee0ddf9bcc431593",
+    "url": "https://www.osti.gov/servlets/purl/964608",
+    "version": "机构报告",
+    "first_page": "Technical Report NREL/TP-6A2-45834 August 2009 Land-Use Requirements of Modern Wind Power Plants in the United States Paul Denholm, Maureen Hand, Maddalena Jackson, and Sean Ong"
+  },
+  {
+    "id": "10",
+    "doi": "10.1109/tpas.1966.291652",
+    "title": "Effective Load Carrying Capability of Generating Units",
+    "attempts": []
+  },
+  {
+    "id": "11",
+    "doi": "10.1109/tpwrs.2022.3173250",
+    "title": "Carbon-Aware Computing for Datacenters",
+    "attempts": [],
+    "file": "11_Radovanovic-CarbonAware.pdf",
+    "pages": 14,
+    "bytes": 1147438,
+    "sha256": "6905f089bdd6bb015e9a980dd3d722bfac1b97acf3eb2b12d402bd07b53f334a",
+    "url": "https://arxiv.org/pdf/2106.11750",
+    "version": "作者稿",
+    "first_page": "1 Carbon-Aware Computing for Datacenters Ana Radovanovi´c, Ross Koningstein, Ian Schneider, Bokan Chen, Alexandre Duarte, Binz Roy, Diyue Xiao, Maya Haridasan, Patrick Hung, Nick Care, Saurav Talukdar, Eric Mullen, Kendal Smith, MariEllen Cottman, and Walfredo Cirne Abstract—The amount of CO 2 emitted per kilowatt-hour on an electricity grid varies by time of day and substantially varies by location due to the types of generation. Networked collections of "
+  },
+  {
+    "id": "12",
+    "doi": "10.1145/1993744.1993767",
+    "title": "Greening geographical load balancing",
+    "attempts": [
+      [
+        "https://netlab.caltech.edu/assets/pdf/liu2011greening.pdf",
+        "HTTP Error 404: Not Found"
+      ],
+      [
+        "https://dl.acm.org/doi/pdf/10.1145/1993744.1993767",
+        "HTTP Error 403: Forbidden"
+      ]
+    ]
+  },
+  {
+    "id": "13",
+    "doi": "10.1145/3632775.3661938",
+    "title": "Towards Environmentally Equitable AI via Geographical Load Balancing",
+    "attempts": [],
+    "file": "13_Li-EquitableAI.pdf",
+    "pages": 16,
+    "bytes": 1172958,
+    "sha256": "b9a295681d9dfb609bc3792db3ffbbec0ba5592bde5bd265e6d8ad69b5fedeab",
+    "url": "https://arxiv.org/pdf/2307.05494",
+    "version": "作者稿",
+    "first_page": "Towards Environmentally Equitable AI via Geographical Load Balancing Pengfei Li pli081@ucr.edu University of California, Riverside Jianyi Yang jyang239@ucr.edu University of California, Riverside Adam Wierman adamw@caltech.edu California Institute of Technology Shaolei Ren shaolei@ucr.edu University of California, Riverside ABSTRACT Fueled by the soaring popularity of foundation models, the ac- celerated growth of artificial intelligence (AI) models’ enorm"
+  },
+  {
+    "id": "14",
+    "doi": "10.1016/j.suscom.2026.101498",
+    "title": "Spatio-temporal shifting to reduce carbon, water, and land use footprints of cloud workloads",
+    "attempts": [],
+    "file": "14_Cloud-ThreeFootprints.pdf",
+    "pages": 19,
+    "bytes": 3412040,
+    "sha256": "c1380a42d46f5bb27d9b7041845e764e9ee40d138851bc4064ef97032a4a9fb3",
+    "url": "https://eprints.gla.ac.uk/396854/2/396854.pdf",
+    "version": "大学仓储版",
+    "first_page": "Contents lists available at ScienceDirect Sustainable Computing: Informatics and Systems journal homepage: www.elsevier.com/locate/suscom Spatio-temporal shifting to reduce carbon, water, and land use footprints of cloud workloads Giulio Attenni a ,∗, Youssef Moawad b, Novella Bartolini a, Lauritz Thamsen b a \"La Sapienza\" University of Rome, Department of Computer Science, Rome, Italy b University of Glasgow, School of Computing Science, Glasgow, United K"
+  },
+  {
+    "id": "15",
+    "doi": "10.1126/science.ade2420",
+    "title": "The growing influence of industry in AI research",
+    "attempts": [
+      [
+        "https://www.science.org/doi/pdf/10.1126/science.ade2420",
+        "HTTP Error 403: Forbidden"
+      ]
+    ]
+  },
+  {
+    "id": "16",
+    "doi": "10.46830/writn.23.00061",
+    "title": "Aqueduct 4.0: Updated Decision-Relevant Global Water Risk Indicators",
+    "attempts": [],
+    "file": "16_WRI-Aqueduct.pdf",
+    "pages": 52,
+    "bytes": 4746842,
+    "sha256": "bb55ea20f39c4272dea87b1089725900ffbf45673709c18cb0dab8d361a97ae5",
+    "url": "https://files.wri.org/d8/s3fs-public/2023-08/aqueduct-40-technical-note.pdf",
+    "version": "机构技术说明",
+    "first_page": "TECHNICAL NOTE | Version 1.0 | August 2023 | 1 CONTENTS Introduction. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .2 Water risk framework ..................... 2 Hydrological model ....................... 4 Future projections. . . . . . . . . . . . . . . . . . . . . . . . .9 Indicators ................................ 10 Country and state aggregation .......... 33 Grouped and overall water risk .......... 35 Limitations ......................"
+  },
+  {
+    "id": "17",
+    "doi": "10.53328/inr26rma002",
+    "title": "The Environmental Cost of AI's Energy Use: Carbon, Water and Land Footprints",
+    "attempts": [],
+    "file": "17_UNU-EnvironmentalCost.pdf",
+    "pages": 56,
+    "bytes": 27641253,
+    "sha256": "df1a40bc02e13f7b29d1089c3af45e336aaf059f2c17cc8713a3233802ea7e21",
+    "url": "https://unu.edu/sites/default/files/2026-10/UNU-INWEH-Report-The_Env_Cost_of_AI-2026.pdf",
+    "version": "题面指定报告",
+    "first_page": "ENVIRONMENTAL COST OF AI'S ENERGY USE United Nations University Institute for Water, Environment and Health Carbon, Water and Land Footprints"
+  },
+  {
+    "id": "18",
+    "doi": "10.1109/mspec.2026.11476980",
+    "title": "What will it Take to Build the World's Largest Data Center?: Meta's 5-Gigawatt AI Data Center is Forcing Engineers to Throw Out the Rule Book",
+    "attempts": []
+  },
+  {
+    "id": "19",
+    "doi": "10.1787/876367e3-en",
+    "title": "A blueprint for building national compute capacity for artificial intelligence",
+    "attempts": [
+      [
+        "https://www.oecd-ilibrary.org/deliver/876367e3-en.pdf?itemId=%2Fcontent%2Fpaper%2F876367e3-en&mimeType=pdf",
+        "HTTP Error 403: Forbidden"
+      ],
+      [
+        "https://one.oecd.org/document/DSTI/CDEP/AIGO(2022)2/FINAL/en/pdf",
+        "HTTP Error 403: Forbidden"
+      ]
+    ]
+  },
+  {
+    "id": "20",
+    "doi": "10.1016/j.joule.2023.09.004",
+    "title": "The growing energy footprint of artificial intelligence",
+    "attempts": []
+  },
+  {
+    "id": "21",
+    "doi": "10.1145/3710848.3710891",
+    "title": "WaterWise: Co-optimizing Carbon- and Water-Footprint Toward Environmentally Sustainable Cloud Computing",
+    "attempts": [],
+    "file": "21_WaterWise.pdf",
+    "pages": 15,
+    "bytes": 2022493,
+    "sha256": "ef5e5dce9ba5ec3f1413439fbf7bd15ae01c6c2b8b01b806687ed8ce4c404358",
+    "url": "https://arxiv.org/pdf/2501.17944",
+    "version": "作者稿",
+    "first_page": "WaterWise: Co-optimizing Carbon- and Water-Footprint Toward Environmentally Sustainable Cloud Computing Yankai Jiang Northeastern University Rohan Basu Roy University of Utah Raghavendra Kanakagiri IIT Tirupati Devesh Tiwari Northeastern University Abstract The carbon and water footprint of large-scale computing sys- tems poses serious environmental sustainability risks. In this study, we discover that, unfortunately, carbon and water sus- tainability are "
+  },
+  {
+    "id": "22",
+    "doi": "",
+    "title": "Gaia: Geo-Distributed Machine Learning Approaching LAN Speeds",
+    "attempts": [],
+    "file": "22_Gaia.pdf",
+    "pages": 21,
+    "bytes": 1788094,
+    "sha256": "3f706e73ed30ecbccf95b26e0e26c4a9de19b47343896767573a8b55fdffc67f",
+    "url": "https://www.usenix.org/system/files/conference/nsdi17/nsdi17-hsieh.pdf",
+    "version": "会议版",
+    "first_page": "This paper is included in the Proceedings of the 14th USENIX Symposium on Networked Systems Design and Implementation (NSDI ’17). March 27–29, 2017 • Boston, MA, USA ISBN 978-1-931971-37-9 Open access to the Proceedings of the 14th USENIX Symposium on Networked Sy stems Design and Implementation is sponsored by USENIX. Gaia: Geo-Distributed Machine Learning Approaching LAN Speeds Kevin Hsieh, Aaron Harlap, Nandita Vijaykumar, Dimitris Konomis, Gregory R. G"
+  },
+  {
+    "id": "23",
+    "doi": "",
+    "title": "Energy and AI",
+    "attempts": [],
+    "file": "23_IEA-EnergyAndAI.pdf",
+    "pages": 304,
+    "bytes": 8213160,
+    "sha256": "3956b80152d4aac6b659a09d0cd7671a4bd53efeeb067e4d50df4230701b33e4",
+    "url": "https://www.iea.org/files/de9dea13-b07d-42c5-a398-d1b3ae17d866/EnergyandAI.pdf",
+    "version": "机构报告",
+    "first_page": "World Energy Outlook Special Report Energy and AI"
+  },
+  {
+    "id": "24",
+    "doi": "10.71468/P1WC7Q",
+    "title": "2024 United States Data Center Energy Usage Report",
+    "attempts": [
+      [
+        "https://escholarship.org/content/qt32d6m0d1/qt32d6m0d1.pdf",
+        "HTTP Error 403: Forbidden"
+      ],
+      [
+        "https://eta-publications.lbl.gov/sites/default/files/2024-12/lbnl-2024-united-states-data-center-energy-usage-report.pdf",
+        "HTTP Error 403: Forbidden"
+      ],
+      [
+        "https://datacenters.lbl.gov/sites/default/files/2024-12/lbnl-2024-united-states-data-center-energy-usage-report.pdf",
+        "HTTP Error 404: Not Found"
+      ],
+      [
+        "https://eta.lbl.gov/sites/default/files/2024-12/lbnl-2024-united-states-data-center-energy-usage-report.pdf",
+        "HTTP Error 404: Not Found"
+      ]
+    ]
+  },
+  {
+    "id": "25",
+    "doi": "10.1038/s41560-025-01927-1",
+    "title": "AI data centres as grid-interactive assets",
+    "attempts": [
+      [
+        "https://www.nature.com/articles/s41560-025-01927-1.pdf",
+        "non-PDF response or exceeds bound"
+      ]
+    ],
+    "file": "25_Colangelo-Grid-Flex.pdf",
+    "version": "arXiv 作者稿",
+    "url": "https://arxiv.org/pdf/2507.00909",
+    "pages": 10,
+    "bytes": 4827836,
+    "sha256": "b4af575cd4be959384880cf2781381e3bfae98385f2642c47116bf3eaf5cb4bf",
+    "first_page": "arXiv:2507.00909v1 [cs.DC] 1 Jul 2025 Turning AI Data Centers into Grid-Interactive Assets: Results from a Field Demonstration in Phoenix, Arizona Philip Colangelo 1, Ayse K. Coskun 1*, Jack Megrue 1, Ciaran Roberts 1, Shayan Sengupta1, Varun Sivaram 1, Ethan Tiao 1, Aroon Vijaykar 1, Chris Williams 1, Daniel C. Wilson 1, Zack MacFarland 2, Daniel "
+  },
+  {
+    "id": "26",
+    "doi": "10.1145/3630106.3658542",
+    "title": "Power Hungry Processing: Watts Driving the Cost of AI Deployment?",
+    "attempts": [],
+    "file": "26_Luccioni-Inference.pdf",
+    "pages": 21,
+    "bytes": 936671,
+    "sha256": "997025051680fd262e80da571ddb74d2af4e8f023baea9b6d4bd7539d163ab33",
+    "url": "https://arxiv.org/pdf/2311.16863",
+    "version": "作者稿",
+    "first_page": "Power Hungry Processing: Watts Driving the Cost of AI Deployment? ALEXANDRA SASHA LUCCIONI and YACINE JERNITE, Hugging Face, Canada/USA EMMA STRUBELL, Carnegie Mellon University, Allen Institute for AI, USA Fig. 1. The tasks examined in our study and the average quantity of carbon emissions they produced (in g of 𝐶𝑂 2𝑒𝑞) for 1,000 queries. N.B. The y axis is in logarithmic scale. Recent years have seen a surge in the popularity of commercial AI products ba"
+  },
+  {
+    "id": "27",
+    "doi": "",
+    "title": "数据中心绿色低碳发展专项行动计划",
+    "attempts": [],
+    "file": "27_NDRC-Green-Data-Centers.pdf",
+    "pages": 7,
+    "bytes": 277173,
+    "sha256": "30d310ed765d51abce62ecdaea1dc79d26fc3e1e3966432ce2c50e541480f39e",
+    "url": "https://www.ndrc.gov.cn/xwdt/tzgg/202407/P020240723625616053849.pdf",
+    "version": "四部门印发的正式附件",
+    "first_page": "数据中心绿色低碳发展专项行动计划 数据中心是支撑新质生产力发展的重要基础设施，也是当前我 国能源消耗增速较快的领域之一。为推动数据中心绿色低碳发展， 加快节能降碳改造和用能设备更新，支撑完成“十四五”能耗强度 降低约束性指标，制定本行动计划。 一、主要目标 到 2025 年底，全国数据中心布局更加合理，整体上架率不低 于 60%，平均电能利用效率降至 1.5 以下，可再生能源利用率年均 增长 10%，平均单位算力能效和碳效显著提高。 到 2030 年底，全国数据中心平均电能利用效率、单位算力能 效和碳效达到国际先进水平，可再生能源利用率进一步提升，北方 采暖地区新建大型及以上数据中心余热利用率明显提升。 二、重点任务 （一）完善数据中心建设布局。强化“东数西算”规划布局刚 性约束，新建大型和超大型数据中心应优先布局在全国一体化算力 网络国家枢纽节点数据中心集群范围内，梯次有序布局国家枢纽节 点、省内数据中心、边缘数据中心。统筹大型风电光伏基地与国家 枢纽节点建设，支持非实时算力设施向西部"
+  },
+  {
+    "id": "28",
+    "doi": "10.1021/es502979v",
+    "title": "Incorporating Land-Use Requirements and Environmental Constraints in Low-Carbon Electricity Planning for California",
+    "attempts": [
+      [
+        "https://escholarship.org/content/qt0vz7p2gb/qt0vz7p2gb.pdf?t=oa3s9x",
+        "HTTP Error 403: Forbidden"
+      ],
+      [
+        "https://pubs.acs.org/doi/pdf/10.1021/es502979v",
+        "HTTP Error 403: Forbidden"
+      ]
+    ]
+  }
+]

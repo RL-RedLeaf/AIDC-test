@@ -1,0 +1,537 @@
+
+===== PAGE 1 =====
+sciencemag.org  SCIENCE
+PHOTO: GOOGLE
+By Eric Masanet1,2, Arman Shehabi3, 
+Nuoa Lei1, Sarah Smith3, Jonathan Koomey4
+ D
+ata centers represent the informa-
+tion backbone of an increasingly 
+digitalized world. Demand for their 
+services has been rising rapidly ( 1), 
+and data-intensive technologies 
+such as artificial intelligence, smart 
+and connected energy systems, distributed 
+manufacturing systems, and autonomous 
+vehicles promise to increase demand fur-
+ther (2). Given that data centers are energy-
+intensive enterprises, estimated to account 
+for around 1% of worldwide electricity use, 
+these trends have clear implications for 
+global energy demand and must be ana-
+lyzed rigorously. Several oft-cited yet sim-
+plistic analyses claim that the energy used 
+by the world’s data centers has doubled 
+over the past decade and that their energy 
+use will triple or even quadruple within the 
+next decade ( 3–5). Such estimates contrib-
+ute to a conventional wisdom ( 5, 6) that as 
+demand for data center services rises rap-
+idly, so too must their global energy use. But 
+such extrapolations based on recent service 
+demand growth indicators overlook strong 
+countervailing energy efficiency trends that 
+have occurred in parallel (see the first fig-
+ure). Here, we integrate new data from dif-
+ferent sources that have emerged recently 
+and suggest more modest growth in global 
+data center energy use (see the second fig-
+ure). This provides policy-makers and en-
+ergy analysts a recalibrated understanding 
+of global data center energy use, its drivers, 
+and near-term efficiency potential.
+Assessing implications of growing de-
+mand for data centers requires robust 
+understanding of the scale and drivers 
+of global data center energy use that has 
+eluded many policy-makers and energy 
+analysts. The reason for this blind spot is a 
+historical lack of “bottom-up” information 
+on data center types and locations, their in-
+formation technology (IT) equipment, and 
+their energy efficiency trends. This has led 
+to a sporadic and often contradictory litera-
+ture on global data center energy use.
+Understanding where data center energy 
+use is heading requires considering service 
+demand growth factors alongside myriad 
+equipment, energy efficiency, and mar-
+ket structure factors (see the first figure). 
+Bottom-up analyses tend to best reflect this 
+broad range of factors, generating the most 
+credible historical and near-term energy-
+use estimates (7). Despite several recent na-
+tional studies (8), the latest fully replicable 
+bottom-up estimates of global data center 
+energy use appeared nearly a decade ago. 
+These estimates suggested that the world-
+wide energy use of data centers had grown 
+from 153 terawatt-hours (TWh) in 2005 to 
+between 203 and 273 TWh by 2010, totaling 
+1.1 to 1.5% of global electricity use (9).
+Since 2010, however, the data center 
+landscape has changed dramatically (see 
+the first figure). By 2018, global data cen-
+ter workloads and compute instances had 
+increased more than sixfold, whereas data 
+center internet protocol (IP) traffic had in-
+creased by more than 10-fold ( 1). Data cen-
+ter storage capacity has also grown rapidly, 
+increasing by an estimated factor of 25 over 
+the same time period (1, 8 ). There has been 
+a tendency among analysts to use such ser-
+vice demand trends to simply extrapolate 
+earlier bottom-up energy values, leading to 
+unreliable predictions of current and future 
+global data center energy use ( 3–5). They 
+might, for example, scale up previous bot-
+tom-up values (e.g., total data center energy 
+use in 2010) on the basis of the growth rate 
+of a service demand indicator (e.g., growth 
+in global IP traffic from 2010 to 2020) to ar-
+rive at an estimate of future energy use (e.g., 
+total data center energy use in 2020).
+But since 2010, electricity use per compu-
+tation of a typical volume server—the work-
+horse of the data center—has dropped by a 
+factor of four, largely owing to processor-
+efficiency improvements and reductions 
+in idle power ( 10). At the same time, the 
+watts per terabyte of installed storage has 
+dropped by an estimated factor of nine ow-
+ing to storage-drive density and efficiency 
+gains (8). Furthermore, growth in the num-
+ber of servers has slowed considerably ow-
+ing to a fivefold increase in the average 
+number of compute instances hosted per 
+server (owing to virtualization), alongside 
+steady reductions in data center power us-
+age effectiveness (PUE, the total amount 
+of energy used by a data center divided by 
+the energy used by its IT equipment). Both 
+of these trends have been largely driven 
+by shifts in compute instances to energy-
+efficient cloud and “hyperscale” data cen-
+ters, the largest data center type ( 1, 2). In 
+the United States—the world’s largest data 
+center market—industry-vetted bottom-up 
+analyses of these efficiency trends identi-
+fied a plateau in national data center en-
+ENERGY
+Recalibrating global data center 
+energy-use estimates
+Growth in energy use has slowed owing to efficiency gains 
+that smart policies can help maintain in the near term
+1McCormick School of Engineering and Applied Science, 
+Northwestern University, Evanston, IL, USA. 2Bren School 
+of Environmental Science and Management, University of 
+California, Santa Barbara, CA, USA. 3Energy T echnologies 
+Area, Lawrence Berkeley National Laboratory, Berkeley, CA, 
+USA. 4Koomey Analytics, Burlingame, CA, USA. 
+Email: eric.masanet@northwestern.edu
+POLICY FORUM
+As demand for data centers rises, energy efficiency 
+improvements to the IT devices and cooling systems 
+they house can keep energy use in check.
+984    28 FEBRUARY 2020 • VOL 367 ISSUE 6481
+Published by AAAS
+on March 20, 2020 http://science.sciencemag.org/Downloaded from 
+===== PAGE 2 =====
+SCIENCE   sciencemag .org
+GRAPHIC: X.  LIU/SCIENCE
+ergy use since 2010, despite rapid increases 
+in demand for U.S. data center services (11). 
+We now e xpand that analysis to the global 
+level and show tha t s trong continued e ffi-
+ciency progress can maintain an energy use 
+plateau for the next few years through pro-
+active policy initiatives and data center en-
+ergy-management practices. These new bot-
+tom-up es timates form the basis of recent 
+global data center energy values utilized by 
+the International Energy Agency (12).
+The data leveraged here facilitate a more 
+technology-rich and tempor ally consis tent 
+approach than was a vailable pre viously. 
+Since 2011, analysts at Cisco have published 
+data and outlooks for worldwide ser ver 
+stocks, data center workloads, server virtual-
+ization levels, and storage estimates for tradi-
+tional, cloud, and, most recently, hyperscale 
+data centers (1). In a series of repor ts start-
+ing in 2016, Lawrence Berkeley 
+National L aboratory has pub-
+lished energ y trend analyses  
+of ser vers, storage de vices, and 
+network devices commonly used 
+within da ta centers ( 8, 11, 13). 
+Analysts ha ve doc umented the  
+numbers and locations of hyper-
+scale data centers that represent 
+a subs tantial fraction of global  
+data center compute ins tances, 
+and major data center operators 
+are increasingly reporting their 
+PUE (14).
+When integr ated into a 
+bottom-up modeling fr ame-
+work, these da ta sug gest tha t, 
+although global da ta center 
+energy has increased slightly 
+since 20 10, growth in energ y 
+use has been subs tantially de-
+coupled from growth in da ta 
+center compute ins tances over the same 
+time period (see the second f igure, second 
+graph). Moreover, the refined view provided 
+by these new data suggests that global data 
+center energy use in 20 10 was around 194 
+TWh, slightly less than the lower-bound 
+estimate in the 20 10 bottom-up study (203 
+TWh) when fewer data were available (9).
+In 20 18, we es timated tha t global da ta 
+center energ y use rose to 205 T Wh, or 
+around 1% of global elec tricity consump-
+tion. T his represents a 6% increase com-
+pared with 2010, whereas global data center 
+compute instances increased by 550% over 
+the same time period. Expressed as energ y 
+use per compute ins tance, the energ y in-
+tensity of global data centers has decreased 
+by 20% annually since 20 10, a notable im-
+provement compared with recent annual 
+efficiency gains in other major demand sec-
+tors (e.g., aviation and industry), which are 
+an order of magnitude lower (12).
+The new integrated data illuminate some 
+key technological and structural trends that 
+help e xplain these larg e energ y intensit y 
+improvements (see the f irst figure and the 
+second f igure, second gr aph). T he combi-
+nation of increased ser ver e fficiencies and 
+greater server virtualization (which reduces 
+the amount of ser ver power required for 
+each compute ins tance) has enabled a six-
+fold increase in compute ins tances with 
+only a 25% increase in global ser ver energy 
+use, whereas the combina tion of increased 
+storage-drive efficiencies and densities has 
+enabled a 25-fold increase in storage capac-
+ity with only a three fold increase in global 
+storage energy use. Shifts to faster and more 
+energy-efficient port technologies ha ve en-
+abled a 10 -fold increase in da ta center IP 
+traffic with only modes t increases in ne t-
+work de vice energ y use. I n sum, although 
+overall energ y use of IT de vices (ser vers, 
+storage, and ne twork) has increased from 
+around 92 TWh in 2010 to around 130 TWh 
+in 20 18, technological and oper ational e f-
+ficiency gains ha ve enabled subs tantial 
+growth in ser vices with compar atively 
+much smaller growth in energy use.
+Notably, the new data also suggest a large 
+decrease in the energy use of data center in-
+frastructure systems (i.e., cooling and power 
+provisioning), enough to mos tly offset the 
+growth in total IT de vice energ y use. T his 
+decrease is e xplainable by ong oing shif ts 
+in ser vers a way from smaller tr aditional 
+data centers (7 9% of compute ins tances in 
+2010) and toward larg er and more energ y-
+efficient cloud (including h yperscale) da ta 
+centers (89% of compute instances in 2018) 
+(see the second f igure, third gr aph), which 
+have much lower repor ted PUE v alues ow-
+ing to c utting-edge cooling-sys tem and 
+power-supply efficiencies (1, 11).
+Yet given e ver-growing demand for da ta 
+center services, how much longer can these 
+current e fficiency trends las t? P redicting 
+the long-term efficiency limits of IT de vices 
+is notoriously difficult, especially in light of 
+potential game-changing technologies such  
+as quantum computing, for which energy use 
+is unclear (2). Yet over the near term, mar-
+ket analysts predict that even greater levels 
+of server virtualization are feasible ( 1), and 
+technology s tudies indicate remaining po-
+tential for IT device efficiency gains, includ-
+ing more shifts to low-power storage devices 
+(8). On the infr astructure side, world-class  
+hyperscale data centers are already oper at-
+ing with PUEs of 1.1 or lower, which is close 
+to the pr actical minimum value. Additional 
+structural shifts from smaller traditional data 
+centers to h yperscale data centers are pre-
+dicted in the near term (1), indicating that in-
+frastructure energy use may be 
+dampened even further. Should 
+these trends pla y out over the  
+next few years, our approach in-
+dicates that there is a suf ficient 
+energy efficiency resource to ab-
+sorb the ne xt doubling of da ta 
+center compute ins tances tha t 
+would occur in par allel with a  
+negligible increase in global data 
+center energy use (see the sec-
+ond figure, second graph).
+These findings lie in contrast 
+to recent predic tions of r apid 
+and una voidable near-term en-
+ergy demand growth. Yet the IT 
+industry, da ta center oper ators, 
+and policy-makers can’t rest on 
+their laurels; diligent efforts will 
+be required to manag e possibly 
+sharp energ y demand growth  
+once the e xisting e fficiency re-
+source is fully tapped. The next doubling of 
+global data center compute instances may oc-
+cur within the next 3 to 4 years (1).
+For policy-makers, there are three main  
+areas of ac tion. Firs t, polic y suppor t can  
+help data centers seize the remaining e ffi-
+ciency potential of c urrent technology and  
+structural trends. One key strategy includes 
+further strengthening and promotion of e f-
+ficiency s tandards such as Energ y Star for  
+servers, storage, and ne twork devices while 
+requiring such cer tifications in public IT  
+procurement programs. Efficiency standards 
+give data center operators access to more ef-
+ficient IT devices while creating strong mar-
+ket incentives to manufacturers to continue 
+innovating energy-efficient products. To sup-
+port such standards, greater investments are 
+needed to de velop energy e fficiency bench-
+marks for storage and network devices—simi-
+lar to the Standard Performance Evaluation 
+Corporation’s ( SPEC’s) SPEC P ower bench-
+26
+11
+6.5
+0.24 0.19
+0.11
+0.75
+1.3
+Service 
+demands 
+have risen
+Energy 
+efciency 
+has 
+increasedAverage number of servers 
+per workload
+Average storage drive energy 
+use (kilowatt-hour/terabyte)
+Average PUE
+Typical server energy intensity 
+(watt-hour per computation)
+Global installed storage 
+capacity (exabytes)
+Global data center IP
+ trafc (zettabytes/year)
+Data center workloads and
+ compute instances (millions)
+Global installed base of
+ servers (millions)
+Trends in global data center energy-use drivers
+Relative change from 2010 to 2018 (2018/2010)
+0.1
+1
+10
+100
+PUE, power usage efectiveness; IP, internet protocol.
+28 FEBR UAR Y 2020 • V OL 367 ISSUE 6481     98 5
+INSIGHTS
+Published by AAAS
+on March 20, 2020 http://science.sciencemag.org/Downloaded from 
+===== PAGE 3 =====
+INSIGHTS   |  POLICY FORUM
+sciencemag.org  SCIENCE
+GRAPHIC: X. LIU/ SCIENCE
+mark for servers—while policy should require 
+that measured performance of all certified IT 
+devices be made public to spur ongoing com-
+petition. Another strategy is to incentivize 
+shifts to cloud services when economically 
+and institutionally feasible—for example, 
+through procurement standards and utility 
+rebates—ensuring that future compute in-
+stances are delivered by data centers at the 
+cutting edge of energy efficiency. Yet another 
+is to encourage and incentivize continuous 
+reductions in PUE, some of which are at-
+tainable through low-cost measures such as 
+improved airflow management and tempera-
+ture set-point optimization and through vehi-
+cles such as subsidized energy efficiency au-
+dits and tax credits. These and other proven 
+data center efficiency strategies (2, 7, 8) can 
+bring about a near-term plateau in energy 
+use, which provides critical time to prepare 
+for the possibility of future energy demand 
+growth. But this time must be used wisely.
+Second, investment in new technologies 
+is needed to manage future energy demand 
+growth in the cleanest manner possible 
+once current efficiency trends reach their 
+feasible limits. Strong deployment incen-
+tives should be provided to accelerate the 
+pace of renewable energy adoption by data 
+centers, including low-carbon procurement 
+standards and corporate tax credits, so that 
+the carbon intensity of current and future 
+energy demand is reduced substantially (15). 
+And greater public funding should be allo-
+cated to advancements in computing, data 
+storage, communications, and heat removal 
+technologies that may extend the IT indus-
+try’s historical efficiency gains well into 
+the future. Key examples include quantum 
+computing, materials for ultrahigh density 
+storage, increased chip specialization, artifi-
+cial intelligence for computing resource and 
+infrastructure management, and liquid and 
+immersion cooling technologies. However, 
+it is crucial to increase investments im-
+mediately to ensure such technologies are 
+economical and scalable in time to prevent 
+a demand surge later this decade, which 
+would also make required renewable capac-
+ity additions more challenging.
+Third, much greater public data and 
+modeling capacities are required for un-
+derstanding and monitoring data center 
+energy use and its drivers and for designing 
+and evaluating effective policies. National 
+policy-makers should enact robust data col-
+lection and open data repository systems for 
+data center energy use, in much the same 
+way as has been done historically for other 
+demand sectors. Proprietary data concerns 
+can be addressed through data reporting 
+and aggregation protocols, similar to energy 
+data for the industrial sector, which shares 
+many of the same confidentiality concerns 
+(see, for example, the U.S. Manufacturing 
+Energy Consumption Survey). Such efforts 
+are important in all world regions and par-
+ticularly in Asia, where data center energy 
+use is poised to grow (see the second figure, 
+fourth graph), but reliable data are scarce, 
+especially for China, where data centers are 
+multiplying quickly. In parallel, more pub-
+lic reporting by large data center operators 
+should be encouraged and incentivized (e.g., 
+through efficiency rating systems) for greater 
+energy-use transparency and accountability.
+To make full use of these important data, 
+more research funding is needed for devel-
+oping policy-relevant data center energy 
+models and for model sharing and research 
+community building that can disseminate 
+and ensure best analytical practices. With 
+better data, analysts should also quantify 
+uncertainties in future modeling results, 
+leading to more robust policy decisions. 
+ Given the important role data centers will 
+play in future energy systems, the histori-
+cal dearth of knowledge on their energy use 
+and the mixed signals given to policy-mak-
+ers by contradictory findings are unaccept-
+able. Global data center energy use is enter-
+ing a critical transition phase; to ensure a 
+low-carbon and energy-efficient future, we 
+cannot wait another decade for the next re-
+liable bottom-up estimates. j
+REFERENCES AND NOTES
+ 1.  Cisco, “Cisco Global Cloud Index: Forecast and meth-
+odology, 2016–2021 white paper” (Cisco, document 
+1513879861264127 , 2018).
+ 2.  International Energy Agency (IEA), Digitalization & Energy
+(IEA, 2017).
+ 3.  L. Belkhir, A. Elmeligi, J. Clean. Prod.177, 448 (2018). 
+ 4.  A.S.G. Andrae, T. Edler, Challenges6, 117 (2015). 
+ 5.  T . Bawdy, “Global warming: Data centres to consume three 
+times as much energy in next decade, experts warn, ” The 
+Independent, 23 January 2016.
+ 6.  N. Jones, Nature561, 163 (2018).  
+ 7 .  E. Masanet, R. E. Brown, A. Shehabi, J. G. Koomey, 
+B. Nordman, Proc. IEEE99, 1440 (2011). 
+ 8.  A. Shehabi et al., “United States data center energy usage 
+report” (Lawrence Berkeley National Laboratory, LBNL-
+1005775, 2016).
+ 9.  J. G. Koomey, “Growth in data center electricity use 2005 
+to 2010” (Analytics Press for the New Y ork Times, 2011).
+ 10.  B. Wagner, “Intergenerational energy efficiency of Dell 
+EMC PowerEdge servers” (Dell, DellEMC white paper, 
+2018).
+ 11.  A. Shehabi, S. J. Smith, E. Masanet, J. Koomey, Environ. Res. 
+Lett.13, 124030 (2018). 
+ 12.  IEA, “T racking clean energy progress” (IEA, 2019); 
+www.iea.org/tcep/.
+ 13.  H. Fuchs et al., Energy Effic.  10.1007/s12053-019-09809-8  
+(2019). 
+ 14.  M. Avgerinou, P . Bertoldi, L. Castellazzi, Energies10, 1470 
+(2017). 
+ 15.  E. Masanet, A. Shehabi, J. G. Koomey, Nat. Clim. Chang.3, 
+627 (2013). 
+ACKNOWLEDGMENTS
+This material includes work conducted by Lawrence Berkeley 
+National Laboratory (LBNL) with support from the U.S. 
+Department of Energy (DOE) Advanced Manufacturing Office. 
+LBNL is supported by the Office of Science of the DOE and 
+operated under contract grant No. DE-AC02-05CH11231. E.M. 
+and N.L. are grateful for financial support provided by Leslie 
+and Mac McQuown. The global data center analysis modeling 
+file with all data inputs, results, methodological notes, figures, 
+discussion of uncertainties,  and sources is available on 
+GitHub (doi: 10.5281/zenodo.3668743 ).
+10.1126/science.aba3758
+2018
+2010
+Doubled 
+demand
+CEE, LA, and MEA, Central and Eastern Europe, Latin America, and Middle East and Africa; TWh, terrawatt-hour.
+0 200 1000400 600 800
+Global compute instances (millions)
+Global data center 
+compute instances
+Asia Pacifc CEE, LA, and MEA
+North America Western Europe
+Electricity use (TWh/year)
+Data center region
+0 50 250100 150 200
+T raditional Hyperscale
+Cloud (nonhyperscale)
+Electricity use (TWh/year)
+Data center type
+0 50 250100 150 200
+Servers Storage
+Network Infrastructure
+Electricity use (TWh/year)
+Major end-use category
+0 50 250100 150 200
+Historical energy usage and projected energy usage under doubled computing demand
+Doubled demand (relative to 2018) reflects current efficiency trends continuing alongside predicted growth in compute instances. 
+986    28 FEBRUARY 2020 • VOL 367 ISSUE 6481
+Published by AAAS
+on March 20, 2020 http://science.sciencemag.org/Downloaded from 
+===== PAGE 4 =====
+Recalibrating global data center energy-use estimates
+Eric Masanet, Arman Shehabi, Nuoa Lei, Sarah Smith and Jonathan Koomey
+DOI: 10.1126/science.aba3758
+ (6481), 984-986.367Science 
+ARTICLE TOOLS http://science.sciencemag.org/content/367/6481/984
+REFERENCES
+http://science.sciencemag.org/content/367/6481/984#BIBL
+This article cites 7 articles, 0 of which you can access for free
+PERMISSIONS http://www.sciencemag.org/help/reprints-and-permissions
+Terms of ServiceUse of this article is subject to the 
+ is a registered trademark of AAAS.ScienceScience, 1200 New York Avenue NW, Washington, DC 20005. The title 
+(print ISSN 0036-8075; online ISSN 1095-9203) is published by the American Association for the Advancement ofScience 
+Copyright © 2020, American Association for the Advancement of Science
+on March 20, 2020 http://science.sciencemag.org/Downloaded from 

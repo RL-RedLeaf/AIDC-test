@@ -1,0 +1,990 @@
+
+===== PAGE 1 =====
+             
+LETTER • OPEN ACCESS
+Operational water consumption and withdrawal
+factors for electricity generating technologies: a
+review of existing literature
+To cite this article: J Macknick et al 2012 Environ. Res. Lett. 7 045802
+ 
+View the article online for updates and enhancements.
+You may also like
+Life cycle water use for electricity
+generation: a review and harmonization of
+literature estimates
+J Meldrum, S Nettles-Anderson, G Heath
+et al.
+-
+A regional assessment of the water
+embedded in the US electricity system
+Rebecca A M Peer, Emily Grubert and
+Kelly T Sanders
+-
+Characterizing cooling water source and
+usage patterns across US thermoelectric
+power plants: a comprehensive
+assessment of self-reported cooling water
+data
+Rebecca A M Peer and Kelly T Sanders
+-
+This content was downloaded from IP address 59.78.171.162 on 20/11/2026 at 00:05
+===== PAGE 2 =====
+IOP PUBLISHING ENVIRONMENTAL RESEARCH LETTERS
+Environ. Res. Lett. 7 (2012) 045802 (10pp) doi:10.1088/1748-9326/7/4/045802
+Operational water consumption and
+withdrawal factors for electricity
+generating technologies: a review of
+existing literature
+J Macknick, R Newmark, G Heath and K C Hallett
+National Renewable Energy Laboratory, Golden, CO 80401-3305, USA
+E-mail: jordan.macknick@nrel.gov, robin.newmark@nrel.gov, garvin.heath@nrel.gov
+and kathleen.hallett@nrel.gov
+Received 28 August 2012
+Accepted for publication 22 November 2012
+Published 20 December 2012
+Online at stacks.iop.org/ERL/7/045802
+Abstract
+This report provides estimates of operational water withdrawal and water consumption factors
+for electricity generating technologies in the United States. Estimates of water factors were
+collected from published primary literature and were not modiﬁed except for unit conversions.
+The water factors presented may be useful in modeling and policy analyses where reliable
+power plant level data are not available. Major ﬁndings of the report include: water withdrawal
+and consumption factors vary greatly across and within fuel technologies, and water factors
+show greater agreement when organized according to cooling technologies as opposed to fuel
+technologies; a transition to a less carbon-intensive electricity sector could result in either an
+increase or a decrease in water use, depending on the choice of technologies and cooling
+systems employed; concentrating solar power technologies and coal facilities with carbon
+capture and sequestration capabilities have the highest water consumption values when using a
+recirculating cooling system; and non-thermal renewables, such as photovoltaics and wind,
+have the lowest water consumption factors. Improved power plant data and further studies into
+the water requirements of energy technologies in different climatic regions would facilitate
+greater resolution in analyses of water impacts of future energy and economic scenarios. This
+report provides the foundation for conducting water use impact assessments of the power
+sector while also identifying gaps in data that could guide future research.
+Keywords: energy water nexus, electricity, freshwater demands
+1. Introduction
+Thermoelectric power use has a signiﬁcant impact on water
+resources and the power sector is highly dependent on
+these water resources; the United States Geological Survey
+(USGS) estimated on a national level that 41% of all
+Content from this work may be used under the terms
+of the Creative Commons Attribution-NonCommercial-
+ShareAlike 3.0 licence. Any further distribution of this work must maintain
+attribution to the author(s) and the title of the work, journal citation and DOI.
+freshwater withdrawals in the United States in 2005 were
+for thermoelectric power operations, primarily for cooling
+needs (Kenny et al 2009). The power sector is thus highly
+vulnerable to changes in water resources, especially those
+that are already occurring, and are likely to intensify, as
+result of climatic changes (V¨or¨osmarty et al 2000, Bates et al
+2008, Dai 2010, NETL 2010d). Increasingly, state agencies,
+such as those in California and New York, have taken policy
+actions to address the impacts of power plants’ water use and
+the environmental impacts of their cooling systems (CSLC
+1 1748-9326/12/045802+10$33.00 c⃝ 2012 IOP Publishing Ltd Printed in the UK
+===== PAGE 3 =====
+Environ. Res. Lett. 7 (2012) 045802 J Macknick et al
+2006, NYSDEC 2010). Furthermore, the 2007 drought in
+the southeast exposed many thermal generators, including
+Brown’s Ferry nuclear plant, to water-related shut downs and
+curtailments due to unlawfully high discharge temperature
+and shallow or exposed cooling water inlet locations (NETL
+2009c). Effective integrated energy and water policy planning
+will require identifying the individual and cumulative impacts
+that power plant conﬁgurations have on water resources and
+the vulnerabilities of speciﬁc power plants to changes in
+water resources (Wilkinson 2007, Scott and Pasqualetti 2010,
+Stillwell et al 2011, Kenney and Wilkinson 2012). Various
+studies have attempted to consolidate published estimates
+of water use impacts of electricity generating technologies,
+resulting in a wide range of technologies and values based
+on different primary sources of literature (Gleick 1993,
+Inhaber 2004, DOE 2006, NETL 2007b, 2007c, WRA 2008,
+Fthenakis and Kim 2010, Mielke et al 2010, Macknick et al
+2011). The goal of this work is to consolidate the most
+recent and relevant primary literature estimates of water
+use during the generation of electricity by conventional
+and renewable electricity generating technologies in the
+United States to more completely convey the variability and
+uncertainty associated with current water use in electricity
+generating technologies. Individual water use factors, reported
+in terms of the volume of water used per unit of electrical
+output (gal MW−1 h−1), are technology and cooling system
+speciﬁc. These water use factors can be incorporated into
+energy-economic models to estimate generation-related water
+use under different projected electricity portfolio scenarios.
+Although the United States is the focus of this study, results
+are likely to be applicable to other geographic regions (see
+Floerke et al (2011) and Van Vliet et al (2012), for example).
+2. Scope and methods
+We evaluate two aspects of water usage: withdrawal and
+consumption. According to the USGS, ‘withdrawal’ is deﬁned
+as the amount of water removed from the ground or diverted
+from a water source for use, while ‘consumption’ refers to the
+amount of water that is evaporated, transpired, incorporated
+into products or crops, or otherwise removed from the
+immediate water environment (Kenny et al 2009). Both water
+withdrawal and consumption values are important indicators
+for water managers determining power plant impacts and
+vulnerabilities associated with water resources.
+We consider water withdrawals and consumption for the
+operational phase only, thus excluding water usage in the
+fuel cycle or other aspects of the life cycle. Operational
+water use in this study includes cleaning, cooling, and other
+process-related needs that occur during electricity generation,
+such as ﬂue gas desulfurization (FGD) in coal facilities. For
+the vast majority of power generation technologies, most of
+the water used in the life cycle of the plant occurs during
+the operational phase, with the exception of non-thermal
+renewable energy technologies that do not require cooling
+systems (Fthenakis and Kim 2010). In addition, compared
+to the operational phase, data for the water requirements of
+other phases (such as the fuel cycle) are scarce, are subject
+to greater deﬁnitional boundary differences, and have more
+site-speciﬁc differences. Also, although the location of the
+plant is permanent, the locations of the manufacturing or fuel
+sources are not permanent. Given this and the continuous local
+impacts of power plant water use on water resources during
+the operational phase, we limit this study to a detailed review
+of only the operational water requirements of electricity
+generating technologies.
+The energy technologies addressed here consist of
+conﬁgurations of concentrating solar power (CSP), solar
+photovoltaic (PV), wind, biopower, geothermal, hydropower,
+nuclear, natural gas and coal technologies. Cooling system
+technologies considered may utilize fresh or saline water
+resources and include wet recirculating technologies (evap-
+orative cooling towers), once-through cooling systems (open
+loop cooling), air-cooled condensing (dry cooling), hybrid wet
+and dry cooling systems (hybrid cooling), and pond cooling
+systems.
+Electricity generating technologies use water for dif-
+ferent processes, depending on their conﬁguration. Thermal
+electricity technologies (e.g., CSP, biopower, coal, nuclear
+and natural gas technologies) generally require water as the
+working ﬂuid (and as the cooling medium to condense steam)
+as part of the Rankine cycle, the thermodynamic process
+that drives the steam engine (Turchi et al 2010). Some
+technologies have additional operational water needs. Coal
+facilities may also use water for FGD. Fossil technologies
+employing carbon capture and storage capabilities will require
+additional process water requirements (NETL 2007b). CSP
+facilities have additional water demands for cleaning mirrors
+or heliostats. Upstream biopower facilities water needs for
+growing energy crops are not included in this analysis but
+can be minimal or quite substantial (approximately 100
+times greater than operational cooling system needs), varying
+greatly depending on region, crop and production methods
+(Berndes 2002, 2008, Stone et al 2010).
+Geothermal technology conﬁgurations (e.g., dry steam,
+binary and ﬂash) can differ greatly in their use of water due
+to differences in technology conﬁguration, geology, reservoir
+characteristics and local climate (Clark et al 2011). Enhanced
+Geothermal Systems (EGS) operate similar to geothermal
+binary technologies yet also require some additional water
+for hydraulic stimulation; on a life-cycle basis the amount of
+water utilized for hydraulic stimulation is orders of magnitude
+less than the amount of freshwater or other outside water
+source utilized for cooling (Clark et al 2011). A wide variety
+of estimates have been published on geothermal technologies’
+operational water usages, as summarized in Macknick et al
+(2011). Published water consumption values may range
+between 0 and 4000 gal MW−1 h−1 for a recirculating cooling
+tower, with the upper end being an order of magnitude greater
+than natural gas combined cycle water consumption (Layton
+1979, Gleick 1993, EPRI and DOE 1997). Many of these
+studies report water required for cooling system purposes
+but do not explicitly address whether the water utilized is
+freshwater or geothermal ﬂuids. Common industry practice is
+to utilize geothermal ﬂuids as the primary medium for cooling
+(Clark et al 2011). Providing data on the total amount of water
+2
+===== PAGE 4 =====
+Environ. Res. Lett. 7 (2012) 045802 J Macknick et al
+required for cooling may be misleading, as the impacts on
+freshwater or other outside water sources are substantially less
+(Kagel et al 2007). Freshwater may be used in geothermal
+facilities to help manage dissolved solids, reduce scaling,
+meet makeup water losses and replenish the reservoir, as
+over time some geothermal plant efﬁciencies may decline and
+may require outside fresh, brackish or efﬂuent water sources
+(Bradbury 2009, Clark et al 2011). In many cases the outside
+water does not have to be freshwater, as the high salinity of the
+geothermal ﬂuids is often greater than many non-freshwater
+sources. In this report we provide water consumption data
+for geothermal technologies considering the outside water
+resources required for operations. Thus we do not consider the
+use of geothermal ﬂuids as operational water uses, but we do
+consider the use of water for reservoir enhancement or other
+ancillary processes.
+Considering non-thermal renewable technologies, PV
+systems may require water for occasional panel washing.
+Common industry practices indicate that most PV system
+operators do not wash panels (DOE 2012). Wind systems
+require very little water, if any, for cleaning. Hydroelectric
+facilities using reservoirs have evaporative losses resulting
+from the dammed water (Gleick 1992, Torcellini et al 2003).
+Estimates of water consumption and withdrawal are
+displayed irrespective of geographic location, as many
+published data do not specify the location or climatic
+conditions of the plant. The location of a plant, and its
+corresponding climatic conditions, can affect its overall
+efﬁciency and thus its water use rate (Giusti and Meyer
+1977, Miller et al 1992, Dziegielewski and Bik 2006,
+Yang and Dziegielewski 2007, Rutberg et al 2011). Similar
+fossil plants utilizing cooling towers may have annual water
+consumption factors that differ by almost 17%, depending on
+the location in the United States (Huston 1975). Similarly,
+water consumption factors of CSP plants utilizing cooling
+towers may differ by as much as 20% (Turchi et al
+2010). Inter-annual variations in water intensity are also
+not considered for this review. Withdrawal and consumption
+factors are often reported in terms of annual averages, yet
+water intensity of facilities in July may be more than 16%
+higher than annual values as a result of diurnal and seasonal
+variations in temperatures, wind speeds and humidity levels
+(Huston 1975). Other factors that may inﬂuence water use
+intensities of power plants that are not considered here include
+the age of the plant, the thermal efﬁciency of the plant, the age
+of the cooling system and the water source (Dziegielewski and
+Bik 2006, Yang and Dziegielewski 2007).
+Certain aggregations of fuel technology types and cooling
+system types were made to facilitate analyses. Nuclear
+technologies include pressurized water reactors and boiling
+water reactors. Coal technologies make no distinction among
+different types of FGD processes. For recirculating cooling
+technologies, no distinction is made between natural draft
+and mechanical draft cooling tower systems. All pond-cooled
+systems are treated identically. Pond-cooled systems can
+be operated in manners that resemble both recirculating
+systems and once-through systems as well as in hybrids of
+these technologies (EIA 2011b). Different conﬁgurations and
+operating practices of pond-cooled systems can lead to widely
+different reported water withdrawal and consumption values.
+No distinction is made between water types, which may
+include freshwater (surface and groundwater), saline water or
+municipal waste water. In 2005, 71% of thermoelectric water
+withdrawals were from freshwater sources (Kennyet al 2009).
+Saline withdrawals are primarily concentrated in California,
+Florida and the coastal northeast, with the rest of the country
+relying on freshwater.
+The estimates provided here are not intended to be precise
+predictions of speciﬁc facilities’ water usage characteristics.
+They represent a summary of published statistics, which have
+their own limitations.
+3. Data availability and limitations
+Data sources include published academic literature, state and
+federal government agency reports, non-governmental orga-
+nizations’ reports and industry submissions to government
+agencies for permitting procedures. Estimates of national
+average water use intensity for particular technologies,
+estimates of existing plant operational water use and estimates
+derived from laboratory experiments were considered equally.
+Certain sources report ranges of water consumption and
+withdrawal factors in place of speciﬁc values. If traceable
+individual case studies form the basis for the range given, the
+individual values are included as independent estimates within
+the set of estimates that are statistically analyzed. If a range
+is given and the underlying data points are not given, then
+the midpoint of that range is used for calculating a median
+value, and the high and low extremes are used for determining
+extreme ranges. This method of addressing ranges may lead
+to a bias toward data sources reporting explicit cases and
+may also underestimate actual water use at facilities, as in
+many cases the midpoint of the range of extremes is less
+than the median of values reported from individual facilities.
+This review did not alter (except for unit conversion) or audit
+for accuracy the estimates of water use published. Because
+estimates are used as published, considerable methodological
+inconsistency is inherent, limiting comparability. Certain
+estimates, such as those addressing water consumption
+associated with washing PV panels, were omitted due to
+changes in industry practices that have occurred since those
+studies were conducted (Meridian 1989, Gleick 1993). We
+report minimum, maximum and median values for fuel
+technology and cooling system combinations in tables and
+additionally show 25th and 75th percentile data in ﬁgures, if
+sufﬁcient data exist. Due to the wide range of values reported
+from a small number of sources, median values may differ
+signiﬁcantly from mean values. Upon request, raw data are
+available from the authors.
+Although the power sector is responsible for the highest
+withdrawal volumes of water in the nation, national statistics
+on the consumption and withdrawal rates of individual
+power plants are characterized by inconsistencies and scarcity
+(GAO 2009). Power sector water use data on a national
+level are collected by two federal agencies, the USGS
+and the US Department of Energy’s Energy Information
+3
+===== PAGE 5 =====
+Environ. Res. Lett. 7 (2012) 045802 J Macknick et al
+Figure 1. Operational water consumption factors for electricity generating technologies. IGCC: Integrated gasiﬁcation combined cycle.
+CCS: Carbon capture and sequestration. CSP: Concentrating solar power. Hydropower values are excluded due to the wide range of
+estimates.
+Administration (EIA). The USGS reports water withdrawals
+for thermoelectric power production by county and sector
+every ﬁve years; water consumption values for thermoelectric
+power production were last reported for 1995 (Solley et al
+1998). These data are collected by state agencies that do not
+always utilize the same methods or deﬁnitions in determining
+water withdrawals (Kenny et al 2009).
+EIA provides ofﬁcial energy statistics on an annual
+basis, and EIA Form 923 reports, among other data, water
+withdrawal, discharge and consumption rates in Schedule 8D,
+providing similar deﬁnitions of withdrawal and consumption
+as the USGS (EIA 2011b). However, data are not entirely
+comprehensive and in the past have omitted nuclear facilities
+and some natural gas combined cycle technologies (EIA
+2011a). Additionally, the quality of data is also of concern
+with power plants reporting data; many of the power plants
+report water withdrawal and consumption values that are far
+below or above the studies of water use in power plants
+considered in this review. The National Energy Technology
+Laboratory compiled water use data in their 2007 Coal Power
+Plant DataBase (NETL 2007a). However, this database is
+limited by the data availability and quality of EIA datasets.
+No similar public database has been developed for natural gas
+or nuclear generating facilities.
+Detailed engineering studies and more general assess-
+ments of water use at individual thermoelectric power plants
+are uneven in their treatment of fuel technologies and cooling
+systems. For example, water consumption data for coal,
+natural gas, nuclear and parabolic trough CSP facilities using
+a wet recirculating cooling system are relatively abundant.
+Fewer studies are available addressing water withdrawals for
+all technologies or water consumption for once-through, pond
+and dry cooling systems. Very little data exist for dedicated
+biomass, geothermal and power tower CSP facilities.
+Additionally, deﬁnitions of withdrawal and consumption,
+along with operational water use boundary conditions,
+in water use studies are not always clear or consistent;
+some sources only report aggregated operational water
+usage, whereas other reports include water withdrawal
+and consumption values by individual processes. Even the
+particular processes included in disaggregated studies may
+not be equivalent across studies; the inclusion of FGD water
+requirements in coal facilities is one example where its
+explicit or implicit consideration is inconsistent. Estimates
+of evaporation from hydropower reservoirs are complicated
+by the multiple uses of reservoirs (e.g., water supply,
+recreation and ﬂood control) and the different methods
+of allocating evaporation to electricity production (Gleick
+1992, Torcellini et al 2003, Pasqualetti and Kelley 2008).
+Hydropower estimates are reported according to the allocation
+methods utilized in the published reports, which allocate all
+reservoir evaporation to power production. As the range of
+values for hydropower consumption range from 0 to 18 000
+gal MW−1 h−1, we provide tabular data but do not include the
+large range in the ﬁgures, where consumption ranges from 0
+to approximately 1200 gal MW−1 h−1.
+4. Results: water consumption and withdrawal
+factors
+The cooling system employed is often a greater determinant
+of water usage than the particular technology generating
+electricity, both in terms of water consumption (ﬁgure 1,
+tables 1 and 2) and water withdrawal (ﬁgure 2, table 3).
+4
+===== PAGE 6 =====
+Environ. Res. Lett. 7 (2012) 045802 J Macknick et al
+Figure 2. Operational water withdrawals for fuel-based electricity generating technologies. IGCC: integrated gasiﬁcation combined cycle.
+CCS: carbon capture and storage.
+Table 1. Water consumption factors for renewable technologies (gal MW−1 h−1).
+Fuel type Cooling Technology Median Min Max n Sources
+PV N/A Utility scale PV 1 0 5 3 (Aspen 2011a, 2011b, DOE 2012)
+Wind N/A Wind turbine 0 0 0 2 (Inhaber 2004, DOE 2006)
+CSP Tower Trough 906 725 1109 18 (Gleick 1993, Cohen et al 1999, Leitner 2002,
+Sargent and Lundy 2003, Kelly 2006, Kutscher
+and Buys 2006, Stoddard et al 2006, Viebahn
+et al 2008, WorleyParsons 2009b,
+2009a, 2010a, 2010b, Burkhardt et al 2011)
+Power tower 786 751 912 4 (Leitner 2002, Sargent and Lundy 2003,
+Stoddard et al 2006, Viebahn et al 2008)
+Fresnel 1000 1000 1000 1 (DOE 2009)
+Dry Trough 78 43 79 11 (Kelly 2006, WorleyParsons 2009b,
+2009a, 2010a, Burkhardt et al 2011)
+Power tower 26 26 26 1 (Brightsource Energy 2007)
+Hybrid Trough 338 117 397 3 (DOE 2009, WorleyParsons 2009b)
+Power tower 170 102 302 2 (DOE 2009)
+N/A Stirling 5 4 6 2 (Leitner 2002, CEC 2008)
+Biopower Tower Steam 553 480 965 4 (EPRI and DOE 1997, EPRI 2002, CEC 2008)
+Biogas 235 235 235 1 (Mann and Spath 1997)
+Once-through Steam 300 300 300 1 (EPRI 2002)
+Pond Steam 390 300 480 1 (EPRI 2002)
+Dry Biogas 35 35 35 1 (EPRI and DOE 1997)
+Geothermal Tower Flash 15 5 361 4 (Kagel et al 2007, CEC 2008, Adee and Moore
+2010, Clark et al 2011)
+Dry Flash 5 5 5 1 (Clark et al 2011)
+Binary 270 270 270 1 (Clark et al 2011)
+EGS 505 290 720 1 (Clark et al 2011)
+Hybrid Binary 461 221 700 2 (Kutscher and Costenaro 2002, Kozubal and
+Kutscher 2003)
+Hydropower N/A In-stream and
+reservoir
+4491 1425 18 000 3 (Gleick 1992, Torcellini et al 2003)
+5
+===== PAGE 7 =====
+Environ. Res. Lett. 7 (2012) 045802 J Macknick et al
+Table 2. Water consumption factors for non-renewable technologies (gal MW−1 h−1).
+Fuel type Cooling Technology Median Min Max n Sources
+Nuclear Tower Generic 672 581 845 6 (Gleick 1993, EPRI 2002, Dziegielewski and
+Bik 2006, WRA 2008, NETL 2009a)
+Once-through Generic 269 100 400 4 (EPRI 2002, Hoffmann et al 2004,
+Dziegielewski and Bik 2006, NETL 2009a)
+Pond Generic 610 560 720 2 (EPRI 2002, Dziegielewski and Bik 2006)
+Natural Gas Tower Combined cycle 205 130 300 6 (EPRI 2002, Leitner 2002, NETL
+2007c, 2009a, 2010a, 2010c)
+Steam 826 662 1170 4 (Gleick 1993, Feeley et al 2005, CEC 2008,
+WRA 2008)
+Combined cycle
+with CCS
+393 378 407 2 (NETL 2010a, 2010c)
+Once-through Combined cycle 100 20 100 3 (EPRI 2002, Feeley et al 2005, NETL 2009a)
+Steam 240 95 291 2 (Gleick 1993, CEC 2008)
+Pond Combined cycle 240 240 240 1 (NETL 2009a)
+Dry Combined cycle 2 0 4 2 (EPRI 2002, NETL 2009a)
+Coal Tower Generic 687 480 1100 5 (Gleick 1993, EPRI 2002, Hoffmann et al 2004,
+Dziegielewski and Bik 2006, WRA 2008)
+Subcritical 479 394 664 7 (NETL 2007c, 2009a, 2009b, 2010a, 2010b)
+Supercritical 493 445 594 8 (NETL 2007c, 2009a, 2009b, 2010a, 2010c,
+Zhai et al 2011)
+IGCC 380 318 439 8 (NETL 2007c, 2010a, 2010c)
+Subcritical with
+CCS
+921 900 942 2 (NETL 2010a, 2010c)
+Supercritical with
+CCS
+846 815 907 3 (NETL 2010a, 2010c, Zhai et al 2011)
+IGCC with CCS 549 522 604 4 (NETL 2010a, 2010c)
+Once-through Generic 250 100 317 4 (Gleick 1993, EPRI 2002, Hoffmann et al 2004,
+Dziegielewski and Bik 2006)
+Subcritical 113 71 138 3 (NETL 2009a)
+Supercritical 103 64 124 3 (NETL 2009a)
+Pond Generic 545 300 700 2 (EPRI 2002, Dziegielewski and Bik 2006)
+Subcritical 779 737 804 3 (NETL 2009a)
+Supercritical 42 4 64 3 (NETL 2009a)
+Once-through cooling technologies withdraw 10–100 times
+more water per unit of electric generation than cooling tower
+technologies, yet cooling tower technologies can consume
+twice as much water as once-through cooling technologies.
+Water consumption for dry cooling at CSP, biopower and
+natural gas combined cycle plants is an order of magnitude
+less than for recirculating cooling at each of those types of
+plants.
+Water consumption factors for renewable and non-
+renewable electricity generating technologies vary substan-
+tially within and across technology categories. The highest
+water consumption factors for all technologies result from
+the use of evaporative cooling towers. With the excep-
+tion of hydropower, pulverized coal with carbon capture
+and CSP technologies utilizing a cooling tower represent
+the upper bound of water consumption, at approximately
+1000 gal MW−1 h−1 of electricity production. The lowest op-
+erational water consumption factors result from non-thermal
+renewable technologies such as wind energy and PV , along
+with thermal technologies that utilize dry cooling, such as
+CSP Stirling solar technologies and natural gas combined
+cycle facilities. Water withdrawal factors for electricity
+generating technologies show a similar variability within and
+across technology categories (table 3). The highest water
+withdrawal values result from nuclear technologies, whereas
+the smallest withdrawal values are for non-thermal renewable
+technologies. Consistent with literature, withdrawal factors
+for CSP, wind, geothermal, and PV systems are assumed to
+be equivalent to consumption factors.
+5. Discussion
+Despite methodological differences in data, general trends
+can be observed and broad conclusions can be drawn
+from the breadth of data collected. A transition to a less
+carbon-intensive electricity sector could result in either an
+increase or decrease in water consumption per unit of
+electricity generated, depending on the choice of technologies
+and cooling systems employed. Non-thermal renewable
+technologies, such as wind and PV systems, consume minimal
+amounts of water per unit of generation. However, the
+highest water consumption factors considered in this study are
+low-carbon emitting technologies that utilize cooling towers:
+pulverized coal with carbon capture technologies and CSP
+systems. Decisions affecting the power sector’s impact on the
+climate may need to include water considerations to avoid
+negative unintended environmental consequences on water
+6
+===== PAGE 8 =====
+Environ. Res. Lett. 7 (2012) 045802 J Macknick et al
+Table 3. Water withdrawal factors for fuel-based electricity generating technologies (gal MW−1 h−1).
+Fuel type Cooling Technology Median Min Max n Sources
+Nuclear Tower Generic 1101 800 2600 3 (EPRI 2002, Dziegielewski and Bik 2006,
+NETL 2009a)
+Once-through Generic 44 350 25 000 60 000 4 (EPRI 2002, Hoffmann et al 2004,
+Dziegielewski and Bik 2006, NETL 2009a)
+Pond Generic 7050 500 13 000 2 (EPRI 2002, Dziegielewski and Bik 2006)
+Natural gas Tower Combined
+cycle
+255 150 283 7 (EPRI 2002, NETL 2007b,
+2007c, 2009a, 2010a, 2010c)
+Steam 1203 950 1460 2 (Feeley et al 2005, CEC 2008)
+Combined
+cycle with CCS
+506 487 544 3 (NETL 2007b, 2010a, 2010c)
+Once-through Combined
+cycle
+11 380 7500 20 000 2 (EPRI 2002, NETL 2009a)
+Steam 35 000 10 000 60 000 1 (CEC 2008)
+Pond Combined
+cycle
+5950 5950 5950 1 (NETL 2009a)
+Dry Combined
+cycle
+2 0 4 2 (EPRI 2002, CEC 2008, NETL 2009a)
+Coal Tower Generic 1005 500 1200 4 (Meridian 1989, EPRI 2002, Hoffmann et al
+2004, Dziegielewski and Bik 2006)
+Subcritical 587 463 714 8 (NETL 2007b, 2007c, 2009a, 2009b, 2010a,
+2010b)
+Supercritical 634 582 670 9 (NETL 2007b, 2007c, 2009a, 2009b, 2010a,
+2010c, Zhai et al 2011)
+IGCC 393 358 605 12 (Meridian 1989, NETL 2007b, 2007c, 2010a,
+2010c)
+Subcritical
+with CCS
+1329 1224 1449 3 (NETL 2007b, 2010a, 2010b)
+Supercritical
+with CCS
+1147 1098 1157 4 (NETL 2007b, 2010a, 2010c, Zhai et al 2011)
+IGCC with
+CCS
+642 479 742 7 (NETL 2007b, 2010a, 2010c)
+Once-through Generic 36 350 20 000 50 000 4 (EPRI 2002, Hoffmann et al 2004, Inhaber
+2004, Dziegielewski and Bik 2006)
+Subcritical 27 088 27 046 27 113 3 (NETL 2009a)
+Supercritical 22 590 22 551 22 611 3 (NETL 2009a)
+Pond Generic 12 225 300 24 000 2 (EPRI 2002, Dziegielewski and Bik 2006)
+Subcritical 17 914 17 859 17 927 3 (NETL 2009a)
+Supercritical 15 046 14 996 15 057 3 (NETL 2009a)
+Biopower Tower Steam 878 500 1460 2 (CEC 2008)
+Once-through Steam 35 000 20 000 50 000 1 (EPRI 2002)
+Pond Steam 450 300 600 1 (EPRI 2002)
+resources. This can be addressed by integrated energy and
+water policy planning, as the availability of water in certain
+jurisdictions may limit the penetration of these technologies
+and cooling system conﬁgurations.
+Freshwater use impacts can be reduced by utilizing dry
+cooling or by using non-freshwater sources as a cooling
+medium. The reduction in freshwater usage might lead to
+increased costs or decreased efﬁciency. Initial work suggests
+that CSP facilities utilizing dry cooling technologies might
+have an annual reduction in electricity output of 2%–5%
+and an increase in the levelized cost of producing energy of
+3%–8% compared with wet-cooled facilities, depending on
+local climatic conditions (Turchi et al 2010). Using national
+averages, the annual performance penalty for switching from
+wet cooling to dry cooling for nuclear plants is 6.8%,
+combined cycle plants 1.7%, and other fossil plants (including
+coal and natural gas steam plants) 6.9% (EPA 2011). Further
+efforts are needed to evaluate performance and cost penalties
+associated with utilizing dry or hybrid cooling systems
+for fossil fuel facilities using carbon capture technologies.
+Utilizing reclaimed water, such as municipal wastewater, is
+another approach that could partially lessen the impact of
+the power sector on freshwater resources and wastewater
+treatment facilities. The legal and physical availability of
+municipal wastewater, especially when it is treated and
+already utilized downstream, may be a limiting factor to its
+widespread usage, and the cost and performance penalties
+of utilizing such sources must be investigated further (EPRI
+2003).
+The choice of cooling system may play an important
+role in the development of our future electricity mix.
+Differences between cooling systems can have substantial
+environmental impacts on local water resources and on the
+need to acquire water rights for power generation (Carter
+7
+===== PAGE 9 =====
+Environ. Res. Lett. 7 (2012) 045802 J Macknick et al
+et al 1979, Reynolds 1980, Laws 2000, Scott et al 2011).
+Employing wet cooling technologies (i.e., once-through and
+cooling tower technologies) imposes an inherent tradeoff
+between relatively high water consumption and relatively
+high water withdrawals, which has important implications for
+regional cooling system policies and regulations. A reduction
+in withdrawals (but a corresponding increase in consumption)
+may beneﬁt a watershed, but may lead to concerns in an
+area that is already lacking water. A shift away from, for
+example, once-through cooling systems in coastal areas that
+withdraw saline water, to inland recirculating systems such as
+cooling towers that primarily consume freshwater, will impact
+watersheds and water availability differently depending on
+local conditions. The use of alternative cooling technologies
+may serve as an energy security beneﬁt for utilities and
+communities, given uncertainties in future scenarios of water
+availability and expected vulnerabilities for power plants (Dai
+2010, NETL 2010d). Reduced levels in bodies of water, or
+substantial increases in the temperature of these bodies of
+water, may require thermal power plants to run at lower
+capacities or to shut down completely, as was seen in
+France in 2003 (Poumad `ere 2005). Utilizing dry cooling or
+non-freshwater sources avoids some of the risks associated
+with these drought and climate change scenarios.
+Accurate estimates of water use in individual power
+plants, and the effect of this water use on a regional scale,
+may be elusive until more studies are conducted for the
+variety of technologies and cooling systems currently in
+operation along with those expected to be developed and
+deployed. Furthermore, calibration of these values on national
+and regional scales will remain challenging until methods
+for collecting and evaluating data by federal agencies has
+improved. Nonetheless, certain conclusions regarding the
+overall impact power plants have on water resources can be
+drawn on regional levels from existing water use data.
+Further studies with consistent boundary conditions and
+methods are necessary to develop water consumption and
+withdrawal estimates for certain technologies and cooling
+systems to fully understand reasons for variations in data that
+are not attributable to climatic factors or technology vintages.
+To better understand how cooling system and technology
+system decisions will be made in the future, analyses using
+energy-economic models will require improved data on water
+availability and regional water use factors. In 2009, the US
+Government Accountability Ofﬁce released a report calling
+for improvements in federal agency water data collection in
+power plants; EIA is currently working with the USGS and
+other federal agencies to improve the scope and quality of its
+data collection (GAO 2009). Such efforts should improve the
+availability of national and power plant speciﬁc data and the
+ability to calibrate model estimates.
+6. Summary
+We reviewed primary literature for data on water withdrawal
+and consumption factors for electricity generation in the
+United States and have consolidated them in this study.
+These detailed water consumption and withdrawal factors can
+be utilized in energy-economic and transmission planning
+models to better understand the regional and national impacts
+on water resources for various electricity future scenarios
+and can inform policy analysis at a national and local level.
+Improved power plant data gathered on a regional level
+and further studies into the water requirements of existing
+and emerging technologies are necessary to assess the water
+impacts of a developing decarbonizing economy in more
+detail.
+Acknowledgments
+We gratefully acknowledge the research oversight provided
+by the EW3 Scientiﬁc Advisory Committee—Peter Frumhoff
+(Union of Concerned Scientists), George Hornberger (Vander-
+bilt University), Robert Jackson (Duke University), Jonathan
+Overpeck (University of Arizona), Brad Udall (University of
+Colorado Boulder, NOAA Western Water Assessment) and
+Michael Webber (University of Texas at Austin). Parts of
+this work were funded by the US Department of Energy’s
+(DOE’s) Ofﬁce of Energy Efﬁciency and Renewable Energy
+(EERE) and Ofﬁce of Policy and International Affairs (PI).
+The authors wish to thank Allan Hoffman and Diana Bauer
+for their support of this work. We are also indebted to the
+following individuals for their thoughtful comments, input
+and review of the document in its various stages: Kristen
+Averyt, Western Water Assessment (WW A) and the Uni-
+versity of Colorado; Stacy Tellinghuisen, Western Resource
+Advocates; Timothy Diehl, US Geological Survey; Lynn
+Billman, Elaine Hale, Margaret Mann, James Meldrum, Syndi
+Nettles-Anderson, Walter Short and Daniel Steinberg, NREL;
+and Michelle Schmoker, Union of Concerned Scientists. In
+addition, we would like to thank the participants in the
+Water for Energy Workshop who provided valuable input,
+particularly Christina Alvord and Brad Udall, WW A and
+University of Colorado; Mike Hightower and Vince Tidwell,
+Sandia National Laboratories; Curt Brown, US Bureau of
+Reclamation; Margot Gerritsen, Stanford University; Eric
+Fournier, UC Santa Barbara; Alex Schroeder, Western
+Governors’ Association; Ashlynn Stillwell, University of
+Texas Austin; Steve Clemmer and John Rogers, Union
+of Concerned Scientists; Andrew Wolfsberg, Los Alamos
+National Laboratory; and Larry Flowers, NREL. We also wish
+to thank Mary Lukkonen of NREL for her editorial support.
+Contribution of National Renewable Energy Laboratory;
+not subject to copyright in the United States.
+References
+Adee S and Moore S 2010 In the American Southwest, the energy
+problem is water IEEE Spectrum
+Aspen Environmental Group 2011a California Valley Solar Ranch
+Conditional Use Permit, and Twisselman Reclamation Plan
+and Conditional Use Permit: Final Environmental Impact
+Report (DRC2008-00097, DRC2009-00004) (San Francisco,
+CA: Aspen Environmental Group)
+Aspen Environmental Group 2011b Topaz Solar Farm Conditional
+Use Permit: Final Environmental Impact Report
+(DRC2008-00009) (San Francisco, CA: Aspen Environmental
+Group)
+8
+===== PAGE 10 =====
+Environ. Res. Lett. 7 (2012) 045802 J Macknick et al
+Bates B C, Kundzewicz Z W, Wu S and Palutikof J P 2008 Climate
+Change and Water. Technical Paper of the Intergovernmental
+Panel on Climate Change (Geneva: IPCC)
+Berndes G 2002 Bioenergy and water—the implications of
+large-scale bioenergy production for water use and supply
+Global Environ. Change 12 253–71
+Berndes G 2008 Future biomass energy supply: the consumptive
+water use perspective Int. J. Water Resources Dev.24 235–45
+Bradbury D 2009 Californian groups clash over geothermal water
+use Business Green 13 March 2009
+Brightsource Energy 2007 Application for Certiﬁcation, Volumes I
+and II, for the Ivanpah Solar Electric Generating System
+California Energy Commission Docket Unit. Application For
+Certiﬁcation (07-AFC-5) 31 August
+Burkhardt J J, Heath G A and Turchi C S 2011 Life cycle
+assessment of a parabolic trough concentrating solar powerr
+plant and the impacts of key design alternatives Environ. Sci.
+Technol. 45 2457–64
+California Energy Commission (CEC) 2008 2007 Environmental
+Performance Report of California’s Electrical Generation
+System (California Energy Commission Final Staff Report)
+(Sacramento, CA: California Energy Commission)
+California State Lands Commission 2006 Resolution by the
+California State Lands Commission Regarding Once-Through
+Cooling in California Power Plants Proposed 13 April
+Carter H, Schubel J and Wilson R 1979 Thermally induced
+biological effects caused by once-through cooling systems: a
+rationale for evaluation Environ. Manag. 3 353–68
+Clark C, Harto C, Sullivan J and Wang M 2011Water Use in the
+Development and Operation of Geothermal Power Plants
+(Argonne, IL: Argonne National Laboratory)
+Cohen G, Kearney D, Drive C, Mar D and Kolb G 1999 Final
+Report on the Operation and Maintenance Improvement
+Program for Concentrating Solar Plants (Albuquerque, NM:
+Sandia National Laboratories)
+Dai A 2010 Drought under global warming: a review Wiley
+Interdiscip. Rev.: Clim. Change 2 45–65
+Department of Energy (DOE) 2006 Energy Demands on Water
+Resources: Report to Congress on the Interdependency of
+Energy and Water(Report to Congress) (Washington, DC: US
+Department of Energy)
+Department of Energy (DOE) 2009 Concentrating Solar Power
+Commercial Application Study: Reducing Water Consumption
+of Concentrating Solar Power Electricity Generation (Report
+to Congress) (Washington, DC: US Department of Energy)
+Department of Energy (DOE) 2012 SunShot Vision Study Energy
+(Washington, DC: US Department of Energy)
+Dziegielewski B and Bik T 2006 Water Use Benchmarks for
+Thermoelectric Power Generation (Research Report of the
+Department of Geography and Environmental Resources)
+(Carbondale, IL: Southern Illinois University)
+Electric Power Research Institute (EPRI) 2002 Water and
+Sustainability (Volume 2): An Assessment of Water Demand,
+Supply, and Quality in the US—The Next Half Century (Palo
+Alto, CA: Electric Power Research Institute)
+Electric Power Research Institute (EPRI) 2003 Use of Degraded
+Water Sources as Cooling Water in Power Plants (Technical
+Report 1005359) (Palo Alto, CA: Electric Power Research
+Institute)
+Electric Power Research Institute (EPRI) and Department of Energy
+(DOE) 1997 Renewable Energy Technology Characterizations
+(Palo Alto, CA: EPRI)
+Energy Information Administration (EIA) 2011a Form 860: Annual
+Electric Generator Report (Washington, DC: US EIA)
+Energy Information Administration (EIA) 2011b Form EIA-923
+Power Plant Operations Report Instructions, OMB No.
+1905-0129 (Washington, DC: US Department of Energy)
+Environmental Protection Agency (EPA) 2011Cooling Water Intake
+Structures—CWA 316(b), Basic Information (Washington, DC:
+US EPA)
+Feeley T J, Green L, Murphy J T, Hoffmann J and Carney B A 2005
+Department of Energy/Ofﬁce of Fossil Energy’s Power Plant
+Water Management R&D Program(Pittsburgh, PA: National
+Energy Technology Laboratory) pp 1–18
+Floerke M, Teichert E and Baerlund I 2011 Future changes of
+freshwater needs in European power plants Manag. Environ.
+Qual. 22 89–104
+Fthenakis V and Kim H C 2010 Life-cycle uses of water in US
+electricity generation Renew. Sustain. Energy Rev.14 2039–48
+Giusti E and Meyer E 1977 Water Consumption by Nuclear Power
+Plants and Some Hydrological Implications (US Geological
+Survey Circular vol 745) (Reston, V A: USGS)
+Gleick P 1992 Environmental consequences of hydroelectric
+development: the role of facility size and type Energy
+17 735–47
+Gleick P 1993 Water in Crisis: A Guide to the World’s Fresh Water
+Resources (New York: Oxford University Press)
+Hoffmann J, Forbes S and Feeley T 2004 Estimating Freshwater
+Needs to Meet 2025 Electricity Generating Capacity Forecasts
+(Pittsburgh, PA: National Energy Technology Laboratory)
+pp 1–12
+Huston R 1975 An overview of water requirements for electric
+power generation Water Management by the Electric Power
+Industry ed E Gloyna, H Woodson and H Drew (Austin, TX:
+University of Texas Center for Research in Water Resources)
+Inhaber H 2004 Water use in renewable and conventional electricity
+production Energy Sources A 26 309–22
+Kagel A, Bates D and Gawell K 2007 A Guide to Geothermal
+Energy and the Environment (Washington, DC: Geothermal
+Energy Association)
+Kelly B 2006 Nexant Parabolic Trough Solar Power Plant Systems
+Analysis—Task 2: Comparison of Wet and Dry Rankine Cycle
+Heat Rejection (Golden, CO: National Renewable Energy
+Laboratory)
+Kenney D S and Wilkinson R C 2012 The Water-Energy Nexus in
+the American West (Northampton, MA: Edward Elgar
+Publishing Limited)
+Kenny J F, Barber N L, Hutson S S, Linsey K S, Lovelace J K and
+Maupin M A 2009 Estimated Use of Water in the United States
+in 2005 (US Geological Survey Circular vol 1344) (Reston,
+V A: USGS)
+Kozubal E and Kutscher C 2003 Analysis of a Water-Cooled
+Condenser in Series with an Air-Cooled Condenser for a
+Proposed 1-MW Geothermal Power Plant Vol. 27(Davis, CA:
+Geothermal Resources Council)
+Kutscher C and Buys A 2006 Analysis of Wet/Dry Hybrid Cooling
+for a Parabolic Trough Power Plant(Golden, CO: National
+Renewable Energy Laboratory)
+Kutscher C and Costenaro D 2002 Assessment of Evaporative
+Cooling Enhancement Methods for Air-Cooled Geothermal
+Power Plants (Golden, CO: National Renewable Energy
+Laboratory)
+Laws E 2000 Aquatic Pollution 3rd edn (Hoboken, NJ: Wiley)
+Layton D 1979 Water-related impacts of geothermal energy
+production in California’s Imperial Valley1979 Annual
+Meeting of the Geothermal Resources Council (Livermore,
+CA: Lawrence Livermore Laboratory)
+Leitner A 2002 Fuel from the Sky: Solar Power’s Potential for
+Western Energy Supply(Golden, CO: National Renewable
+Energy Laboratory)
+Macknick J, Newmark R, Heath G and Hallett K C 2011 A Review
+of Operational Water Consumption and Withdrawal Factors
+for Electricity Generating Technologies(Golden, CO: National
+Renewable Energy Laboratory)
+Mann M and Spath P 1997 Life Cycle Assessment of a Biomass
+Gasiﬁcation Combined-Cycle System (Golden, CO: National
+Renewable Energy Laboratory)
+Meridian 1989 Energy System Emissions and Materiel Requirement
+(Report to US Department of Energy) (Alexandria, V A:
+Meridian Corporation)
+9
+===== PAGE 11 =====
+Environ. Res. Lett. 7 (2012) 045802 J Macknick et al
+Mielke E, Diaz Anadon L and Narayanamurti V 2010 Water
+Consumption of Energy Resource Extraction, Processing, and
+Conversion (Energy Technology Innovation Policy Research
+Group) (Cambridge, MA, Harvard University Kennedy School:
+Belfer Center for Science and International Affairs)
+Miller B A, Alavian V, Bender M D, Benton D J, Ostrowski P Jr,
+Parsly J A and Shiao M C 1992 Integrated assessment of
+temperature change impacts on the TV A reservoir and power
+supply systems Hydraulic Engineering: Saving a Threatened
+Resource—In Search of Solutions: Proc. of the Hydraulic
+Engineering Sessions at Water Forum’92(Baltimore, MD:
+American Society of Civil Engineers) pp 563–8
+National Energy Technology Laboratory (NETL) 2007a 2007 Coal
+Plant Database (Pittsburgh, PA: National Energy Technology
+Laboratory)
+National Energy Technology Laboratory (NETL) 2007b Cost and
+Performance Baseline for Fossil Energy Plants-Volume 1:
+Bituminous Coal and Natural Gas to Electricity Final Report
+(Pittsburgh, PA: National Energy Technology Laboratory)
+National Energy Technology Laboratory (NETL) 2007c Power
+Plant Water Usage and Loss Study. 2007 Update(Pittsburgh,
+PA: National Energy Technology Laboratory)
+National Energy Technology Laboratory (NETL) 2009a Estimating
+Freshwater Needs to Meet Future Thermoelectric Generation
+Requirements (Pittsburgh, PA: National Energy Technology
+Laboratory)
+National Energy Technology Laboratory (NETL) 2009b Existing
+Plants, Emissions and Capture-Setting Water-Energy R&D
+Program Goals (Pittsburgh, PA: National Energy Technology
+Laboratory)
+National Energy Technology Laboratory (NETL) 2009c Impact of
+Drought on US Steam Electric Power Plant Cooling Water
+Intakes and Related Water Resource Management Issues
+(Pittsburgh, PA: National Energy Technology Laboratory)
+National Energy Technology Laboratory (NETL) 2010a Cost and
+Performance Baseline for Fossil Energy Plants—Volume 1:
+Bituminous Coal and Natural Gas to Electricity—Revision 2
+(Pittsburgh, PA: National Energy Technology Laboratory)
+National Energy Technology Laboratory (NETL) 2010b Life Cycle
+Analysis: Existing Pulverized Coal (EXPC) Power Plant
+(Pittsburgh, PA: National Energy Technology Laboratory)
+National Energy Technology Laboratory (NETL) 2010c Life Cycle
+Analysis: Supercritical Pulverized Coal (SCPC) Power Plant
+(Pittsburgh, PA: National Energy Technology Laboratory)
+National Energy Technology Laboratory (NETL) 2010d Water
+Vulnerabilities for Existing Coal-Fired Power Plants
+(Pittsburgh, PA: National Energy Technology Laboratory)
+New York State Department of Environmental Conservation 2010
+Best Technology Available (BTA) for Cooling Water Intake
+Structures Proposed March 4
+Pasqualetti M J and Kelley S 2008 The Water Costs of Electricity in
+Arizona (Phoenix, AZ: Arizona Department of Water
+Resources)
+Poumad`ere M 2005 The 2003 heat wave in France: dangerous
+climate change here and now Risk Anal.: An Off. Publi. Soc.
+Risk Anal. 25 1483–94
+Reynolds J Z 1980 Power plant cooling systems: policy alternatives
+Science 207 367–72
+Rutberg M, Delgado A, Herzog H and Ghoniem A 2011 A
+system-level generic model of water use at power plants and its
+application to regional water use estimation Proc. ASME 2011
+Int. Mechanical Engineering Congr. and Exposition
+Sargent and Lundy 2003 Assessment of Parabolic Trough and
+Power Tower Solar Technology Cost and Performance
+Forecasts(Golden, CO: National Renewable Energy
+Laboratory)
+Scott C A and Pasqualetti M J 2010 Energy and water resources
+scarcity: critical infrastructure for growth and economic
+development in Arizona and Sonora Nature Resources J.
+50 645–82
+Scott C A, Pierce S A, Pasqualetti M J, Jones A L, Montz B E and
+Hoover J H 2011 Policy and institutional dimensions of the
+water-energy nexus Energy Policy 39 6622–30
+Solley W B, Pierce R R and Perlman H A 1998 Estimated Use of
+Water in the United States in 1995 (US Geological Survey
+Circular vol 1200) (Reston, V A: USGS)
+Stillwell A S, King C W, Webber M E, Duncan I J and
+Hardberger A 2011 The energy-water nexus in texas Ecol. Soc.
+16 2
+Stoddard L, Abiecunas J and Connell R O 2006 Economic, Energy,
+and Environmental Beneﬁts of Concentrating Solar Power in
+California (Golden, CO: National Renewable Energy
+Laboratory)
+Stone K C, Hunt P G, Cantrell K B and Ro K S 2010 The potential
+impacts of biomass feedstock production on water resource
+availability Bioresour. Technol.101 2014–25
+Torcellini P, Long N and Judkoff R 2003 Consumptive Water Use
+for US Power Production(Golden, CO: National Renewable
+Energy Laboratory)
+Turchi C, Wagner M and Kutscher C 2010Water Use in Parabolic
+Trough Power Plants: Summary Results from WorleyParsons’
+Analyses (Golden, CO: National Renewable Energy
+Laboratory)
+US Government Accountability Ofﬁce (GAO) 2009 Improvements
+to Federal Water Use Data would Increase Understanding of
+Trends in Power Plant Water Use(Washington, DC: US
+Government Accountability Ofﬁce)
+Van Vliet M T H, Yearsley J R, Ludwig F, V¨ogele S,
+Lettenmaier D P and Kabat P 2012 Vulnerability of US and
+European electricity supply to climate change Nature Clim.
+Change 2 676–81
+Viebahn P, Kronshage S, Trieb F and Lechon Y 2008 Final Report
+on Technical Data, Costs, and Life Cycle Inventories of Solar
+Thermal Power Plants (Rome: New Energy Externalities
+Developments for Sustainability Project)
+V¨or¨osmarty C, Green P, Salisbury J and Lammers R 2000 Global
+water resources: vulnerability from climate change and
+population growth Science 289 5477
+Western Resource Advocates (WRA) 2008 A Sustainable Path:
+Meeting Nevada’s Water and Energy Demands(Boulder, CO:
+Western Resource Advocates)
+Wilkinson B 2007 Integrating water and energy resource
+management: progress and opportunities World Environmental
+and Water Resources Congress (May 2007)
+WorleyParsons 2009a Beacon Solar Energy Project Dry Cooling
+Evaluation (North Sydney: WorleyParsons)
+WorleyParsons 2009b Analysis of Wet and Dry Condensing 125 MW
+Parabolic Trough Power Plants(North Sydney:
+WorleyParsons)
+WorleyParsons 2010aMaterial Input for Life Cycle Assessment Task
+5 Subtask 2: O&M Schedules (North Sydney: WorleyParsons)
+WorleyParsons 2010b Parabolic Trough Reference Plant for Cost
+Modeling with the Solar Advisor Model (North Sydney:
+WorleyParsons)
+Yang X and Dziegielewski B 2007 Water use by thermoelectric
+power plants in the United States J. Am. Water Resources
+Assoc. 43 160–9
+Zhai H, Rubin E S and Versteeg P L 2011 Water use at pulverized
+coal power plants with postcombustion carbon capture and
+storage Environ. Sci. Technol.45 2479–85
+10

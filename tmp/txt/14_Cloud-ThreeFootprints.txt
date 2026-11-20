@@ -1,0 +1,1828 @@
+
+===== PAGE 1 =====
+ 
+Contents lists available at ScienceDirect
+Sustainable Computing: Informatics and Systems
+journal homepage: www.elsevier.com/locate/suscom  
+Spatio-temporal shifting to reduce carbon, water, and land use footprints of 
+cloud workloads
+Giulio Attenni a
+ ,∗, Youssef Moawad b, Novella Bartolini a, Lauritz Thamsen b
+a "La Sapienza" University of Rome, Department of Computer Science, Rome, Italy
+b University of Glasgow, School of Computing Science, Glasgow, United  Kingdom
+A R T I C L E  I N F O
+Keywords:
+Carbon-aware computing
+Sustainable computing
+Cloud computing
+Big data
+Serverless computing
+ A B S T R A C T
+In this paper, we investigate the potential of spatial and temporal cloud workload shifting to reduce carbon, 
+water, and land use footprints. Specifically, we perform a simulation study leveraging publicly available data 
+on the cloud infrastructure of major providers (AWS and Azure) as well as real-world workload traces (big 
+data analytics and FaaS) and grid mix data to consider two different scenarios. Our simulation results indicate 
+that spatial shifting can substantially lower carbon, water, and land use footprints. In the FaaS applications, 
+shifting the spatiotemporal workload achieves carbon savings of up to 85%, water savings of around 50%, 
+and reductions in land use of up to 45%, all while optimizing for the respective factors. Mixed optimization 
+yields results comparable to those of land use alone. For big data workloads, spatiotemporal shifting delivers 
+reductions of up to 45% in carbon emissions, 40% in water consumption, and nearly 40% in land use when 
+optimized for the respective factors. Temporal shifting also decreases the footprint, though to a lesser extent. 
+When applied together, the two strategies yield the greatest overall reduction, driven mainly by spatial shifting 
+with temporal adjustments providing an additional, incremental benefit. Sensitivity analysis demonstrates that 
+such shifting is robust to prediction errors in grid mix data and to variations across different seasons.
+1. Introduction
+The Information and Communication Technology (ICT) sector is 
+estimated to be responsible for 1.8%–2.8% of global GHG emissions [1] 
+and this share is expected to rise in the future [2]. In particular, 
+data centers have become one of the most energy-intensive infrastruc-
+tures, with their electricity consumption projected to reach around 945 
+TWh globally by 2030 [3]. This growth is driven by data-intensive 
+applications and services, including artificial intelligence and big data 
+analytics.
+The sustainability of cloud computing has been studied, with a 
+primary focus on reducing carbon emissions. A wide body of work 
+investigates carbon-aware scheduling and orchestration, exploiting spa-
+tial [4–8], temporal [9–11], and spatio-temporal [12–16] shifting of 
+workloads to align demand with low-carbon electricity availability.
+Recently, studies have started to address the significant environ-
+mental impacts of cloud computing beyond carbon emissions. In par-
+ticular, the impacts of water consumption have seen attention [17,18]. 
+Additionally, large-scale land use, as associated with data center con-
+struction, can lead to habitat disruption and biodiversity loss [19]. 
+These factors underscore the need for a multi-dimensional approach 
+to evaluating and optimizing the environmental footprint of cloud 
+∗ Corresponding author.
+E-mail address: attenni@di.uniroma1.it (G. Attenni).
+computing. To the best of our knowledge, land use has not been 
+systematically integrated into sustainability-aware scheduling of cloud 
+workloads before. Therefore, this gap is addressed by introducing Land 
+Usage Effectiveness (LUE) as a metric and incorporating it into the 
+multi-dimensional optimization of workload placement.
+In this paper, it is investigated the spatial and temporal shifting of 
+cloud workloads as strategies to reduce carbon, water, and land use 
+footprints. An extensive simulation study is conducted using real-world 
+data from major public cloud providers (Azure and AWS) and represen-
+tative cloud workloads (FaaS and big data analytics), demonstrating the 
+potential of multi-dimensional sustainability-aware scheduling.
+In summary, our main contributions are:
+• A holistic formulation for workload scheduling that optimizes 
+carbon, water, and land use impacts, leveraging temporal and 
+spatial cloud workload shifting is proposed
+• A systematic evaluation based on real-world workload traces and 
+grid mix data, quantifying trade-offs under spatial, temporal, and 
+spatio-temporal shifting scenarios is provided. A comparison with 
+state-of-the-art solutions is presented and a Pareto Analysis of 
+spatial shifting is included to further analyze trade-offs. Moreover, 
+https://doi.org/10.1016/j.suscom.2026.101498
+Received 4 March 2026; Received in revised form 5 October 2026; Accepted 9 October 2026
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+Available online 22 October 2026 
+2210-5379/© 2026 The Authors. Published by Elsevier Inc. This is an open access article under the CC BY-NC-ND license ( http://creativecommons.org/licenses/by- 
+nc-nd/4.0/ ). 
+===== PAGE 2 =====
+G. Attenni et al.
+sensitivity studies on workload flexibility, grid mix prediction 
+errors, and seasonal variations were conducted.
+• All code and data from this study is released to support trans-
+parency, reproducibility, and further research.1
+The rest of the paper is organized as follows. Section 2 provides 
+background on data center environmental impacts and reviews related 
+work. Section 3 presents the methodology, including the proposed 
+system model, problem formulation and optimization algorithms. More-
+over, it presents our simulation setup, including a detailed description 
+of the scenario characteristics such as workload types, data center 
+specifications, and grid datasets. Section 4 presents the results of our 
+empirical evaluation and discusses our findings as well as threats to 
+validity. Finally, Section 6 concludes the paper and outlines directions 
+for future research.
+2. Background & related work
+This section presents the background necessary to understand the 
+environmental impacts of data centers (Section 2.1), followed by a 
+comprehensive review of the state-of-the-art in sustainability-aware 
+cloud computing (Section 2.2).
+2.1. Background - Data center impacts
+Data centers rank among the world’s most energy intensive facil-
+ities, consuming vast quantities of electricity to run servers, cooling 
+infrastructure, and backup power systems. This substantial energy de-
+mand translates into considerable greenhouse gas (GHG) emissions, 
+particularly in regions that rely heavily on fossil fuels for electricity 
+generation. As a result, the environmental footprint of any given data 
+center is closely linked to the composition of its local power grid.
+The energy mix influences the Carbon Intensity (CI), which measures 
+the greenhouse gas emissions per unit of electricity consumed (typically 
+expressed in gCO2e/kWh); the Energy Water Intensity Factor (EWIF), 
+which captures the amount of water withdrawn or consumed during 
+electricity generation (measured in liters/kWh), which varies with the 
+cooling technologies; and the Energy Land Intensity Factor (ELIF), which 
+quantifies the land use required for producing electricity (expressed in 
+m2/kWh). Example estimates of these intensities are reported in [20–
+22]. These are also the main sources used in our experiments (see Table 
+6), and in the discussion section, we will analyze how these coefficients 
+relate to each other.
+The efficiency of data center operations also depends on the infras-
+tructure and technologies used. The Power Usage Effectiveness (PUE) is 
+defined as the ratio of the total energy consumed by a data center 
+facility to the energy consumed by its IT equipment [23]. A PUE of 
+1.0 indicates ideal efficiency, where all energy is used exclusively for 
+computation.
+Moreover, the efficiency of cooling systems, which are essential to 
+prevent overheating of servers, can significantly affect water usage. 
+The choice of cooling technology (e.g., air cooling vs. liquid cooling) 
+can lead to different water consumption. The Water Usage Effectiveness 
+(WUE) measures the water consumption of a data center relative to its 
+IT energy usage, typically expressed in liters of water per kilowatt-hour 
+(l/kWh) [24].
+Finally, since these infrastructures occupy a significant amount of 
+land, the Land Usage Effectiveness (LUE) [25] should also be considered. 
+To the best of our knowledge, this metric has not been standardized, 
+and it has not been used previously. Similar to PUE and WUE, the 
+LUE metric aims to quantify the physical land footprint of data centers 
+in relation to IT energy consumption, capturing the spatial resource 
+requirements of large-scale compute infrastructure. Thus, for the scope 
+1 https://github.com/GlasgowC3lab/CaWaLand.
+of our work, LUE is defined as the ratio of the total land occupied 
+by the data center property and the IT energy consumption, and it 
+is, therefore, expressed in square meters per kilowatt-hour (m2/kWh). 
+ADD here more on LUE?
+The carbon associated with the extraction, processing, and trans-
+portation of construction materials, as well as with the production of 
+IT equipment (known as embodied carbon) accounts for a share of the 
+total carbon footprint of a data center. However, in this work, only the 
+share of operational carbon emissions of the workloads is considered.
+2.2. Related work
+Research into cloud orchestration has generated a substantial body 
+of work aimed at improving resource management and operational 
+efficiency [26]. A related area of research focuses on data center 
+sustainability from the perspective of power supply, as opposed to 
+workload placement. This field encompasses the analysis of methods for 
+optimizing the cost and environmental impact of brown and green en-
+ergy sources, as well as power infrastructure management [27]. Within 
+the workload-shifting space, two areas have attracted considerable 
+attention: optimizing energy consumption and incorporating carbon 
+awareness into system design [4–6,9–13,15,16] [28–32].
+Recently, the impact on water resources of computation has also 
+raised concerns, but few studies have focused on this issue [17,18]. 
+Different from previous works, land use is included in an approach that 
+simultaneously assesses and optimizes the overall impact in terms of 
+carbon, water, and land use footprint.
+2.2.1. Carbon-aware computing
+In cloud computing, carbon-aware optimization focuses on aligning 
+workload execution with variations in the carbon intensity of the 
+electricity supply over time and/or across different geographical areas.
+Temporal shifting. In [10], the temporal shifting benefits considering 
+different regions is analyzed, demonstrating the carbon savings poten-
+tial of delay-tolerant workloads in Germany, Great Britain, France, and 
+California.
+Hanafy et al. [9] propose CarbonScaler, where cloud batch jobs 
+dynamically adjust server allocations based on grid carbon intensity, 
+and demonstrate the performance of this approach in a Kubernetes 
+prototype.
+Piontek et al. [11] introduce a carbon-aware Kubernetes scheduler 
+that leverages a prediction algorithm to defer non-critical workloads in 
+time, thereby reducing overall carbon emissions.
+Schweisgut et al. [28] study carbon-aware temporal shifting for 
+workflows with a fixed task mapping and ordering, subject to a dead-
+line constraint, and show that the problem is solvable in polynomial 
+time for a single processor but becomes NP-hard for two or more 
+processors, motivating heuristic solutions for the general case.
+Spatial shifting. Gao et al. [4] present a scheduler that manages traffic 
+distribution across data centers, balancing a three-way trade-off among 
+access latency, electricity cost, and carbon footprint.
+Building on the idea of geo-distributed scheduling, Maji et al. [5] 
+propose a load balancing solution for VMware’s Avi Global Server 
+Load Balancer, employing a linear scoring function to select the most 
+suitable data center based on marginal carbon intensity and client-to-
+data-center distance.
+Similarly, Chadha et al. [6] introduce GreenCourier, a Kubernetes 
+scheduler aimed at curbing the carbon emissions of serverless func-
+tions deployed across geographically distributed regions. In the server-
+less domain specifically, Serenari et al. [29] propose GreenWhisk, a 
+carbon-aware extension of Apache OpenWhisk that balances function-
+placement locality against real-time marginal carbon intensity via a 
+weighted consistent-hashing load balancer.
+Lindberg et al. [7] propose a metric, named locational marginal 
+carbon emission, to guide spatial shifting.
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+2 
+===== PAGE 3 =====
+G. Attenni et al.
+Zheng et al. [8] evaluate the idea of migrating workloads between 
+data centers to reduce curtailment. It has been shown that migrating 
+workloads from fossil-fuel-powered grids to renewable-energy-powered 
+grids during curtailment hours simultaneously reduces emissions and 
+absorbs excess renewable generation.
+Spatio-temporal shifting. Zhou et al. [12] apply Lyapunov optimization 
+to jointly perform load balancing across geo-distributed data centers, 
+capacity right-sizing through powering down idle servers, and server 
+speed scaling via CPU frequency adjustment, with the goal of balancing 
+a three-way trade-off among electricity cost, SLA requirements, and 
+emission reduction targets.
+Souza et al. [13] propose a provisioner that simultaneously mini-
+mizes the number of active servers and their associated carbon emis-
+sions.
+Sukprasert et al. [14] examine the benefits and limitations of 
+carbon-aware spatiotemporal shifting for cloud workloads, offering 
+insight into its practical applicability.
+Cordingly et al. [15] introduce a prototype for computing resource 
+aggregation that reduces the carbon footprint of serverless applications 
+through carbon-aware load distribution.
+Lin et al. [16] propose a coordinated scheduling framework that 
+aligns data center capacity planning with grid dynamics in both spatial 
+and temporal dimensions to avoid increasing carbon emissions, energy 
+costs, and reducing grid reliability. More recently, Asadov et al. [30] 
+propose a Kubernetes pod-level scheduler that jointly minimizes opera-
+tional and embodied carbon across nodes and time slots, structurally 
+similar to our cost formulation but restricted to a single (carbon) 
+objective and without accounting for migration cost. 
+Hall et al. [31] propose a distributionally-robust optimization fram-
+ework for joint spatial and temporal load shifting across a data center 
+fleet, extending Google’s production carbon-aware system [32] with 
+formal probabilistic performance guarantees via Conditional Value-at-
+Risk constraints. Their approach targets carbon footprint and infrastruc-
+ture cost jointly.
+2.2.2. Beyond carbon-aware computing
+Recent research has begun broadening the scope of environmental 
+impact assessment for cloud and AI workloads beyond carbon emissions 
+alone.
+Li et al. [17] shed light on the often-overlooked water footprint of 
+AI models, revealing the substantial freshwater consumption associated 
+with both cooling systems and electricity generation, and estimating 
+that training large AI models can result in hundreds of thousands of 
+liters of direct water use.
+Jiang et al. [18] propose WaterWise, a job scheduling framework 
+that co-optimizes carbon and water sustainability across geographically 
+distributed data centers. Their approach relies on a Mixed Integer 
+Linear Programming (MILP)-based scheduler that dynamically routes 
+workloads to regions with favorable carbon and water conditions, while 
+respecting delay tolerance constraints. This line of work resonates with 
+our own, which similarly advocates for multi-dimensional sustainability 
+metrics in cloud workload allocation and underscores the need for 
+comprehensive, sustainability-aware orchestration strategies.
+Within prior literature, [18] is the closest to our work. While Wa-
+terWise represents an important step toward integrating water sustain-
+ability, its methodology suffers from two major limitations: it simplifies 
+regional operational characteristics by assuming constant data center 
+efficiency (PUE set to 1.2 for all regions), and it relies on a linear 
+regression based on the wet-bulb temperature for estimating WUE 
+values. As shown in our previous work [33], this method can lead 
+to estimations that differ substantially from the values declared by 
+the providers, probably because it derives from a study conducted 
+on a specific cooling technology [34]. Instead, our focus is more on 
+regional differences beyond grid intensities using both region-specific 
+PUE and WUE values declared by providers. Furthermore, to the best of 
+our knowledge, land use has not previously been considered alongside 
+carbon and water footprints in cloud workload allocation.
+2.2.3. Comparison with own previous work
+Our idea of holistic sustainable cloud workload allocation was 
+presented at the 1st International Workshop on Low Carbon Comput-
+ing [33]. Unlike our workshop paper, this paper focuses specifically 
+on carbon, water and land use as highly relevant yet increasingly as-
+sessable impact factors. Furthermore, temporal shifting is also included, 
+and the assumption that workloads can be migrated live and without 
+costs is dropped, but instead the focus moves to spatial shifting of 
+workloads prior to their execution in our simulations. Moreover, to 
+ensure the relevance of our simulations, real-world workload traces 
+instead of synthetic data to simulate jobs are used in this paper.
+Previous works focused also on carbon-aware temporal load shift-
+ing [10], as well as admission control policies [35] and client selec-
+tion strategies [36] to leverage renewable excess energy for machine 
+learning workloads. Similarly, results on carbon-aware scheduling and 
+scaling of scientific workflows [37] have been published. However, 
+these works aim exclusively at reducing carbon emissions and do not 
+consider water or land use efficiencies.
+3. Methodology
+This section presents the methodology adopted in this study. It 
+begins by introducing the system model and formalizing the problem 
+statement (Section 3.1). A methodology for evaluating the carbon, 
+water, and land use footprints associated with a job request is then 
+defined (Section 3.2), followed by the scheduling methods considered 
+in the evaluation (Section 3.3). The experiment design, including the 
+workload scenarios and their configuration, is presented in Section 3.4. 
+Finally, the experimental setup, covering the hardware and software 
+environment, data sources, and simulation parameters, is described in 
+Section 3.5.
+3.1. System model and problem statement
+Before presenting the methodology of our study, a formalization of 
+the problem is presented in this section. 
+3.1.1. System model
+First of all, let us consider the temporal horizon 𝐻, and let us 
+discretize the time. Thus, let us define  = [ 𝑡0, 𝑡0 + 𝛿𝑡, 𝑡0 + 2𝛿𝑡, … , 𝐻], 
+as the set of time steps. Let us also define  as the set of regions/data 
+centers, and consider a data center 𝑑 and a time 𝑡. To evaluate its impact 
+accounting for multiple factors (i.e., carbon, water, and land use), its 
+sustainability profile is defined as follows: 
+∀𝑡 ∈  , 𝑑 ∈  𝐩𝑑 (𝑡) =
+⎛
+⎜
+⎜⎝
+𝑑 (𝑡)
+𝑑 (𝑡)
+𝑑 (𝑡)
+⎞
+⎟
+⎟⎠
+(1)
+where:
+• 𝑑 (𝑡) is the predicted carbon intensity of data center 𝑑 from time 
+𝑡 to time 𝑡 + 𝛿𝑡 and it is defined as 
+𝐶𝐼 𝑒
+𝐺𝑑
+(𝑡) × 𝑃 𝑈 𝐸𝑑 (2)
+It is measured in gCO2
+kWh  and represents the carbon emitted per kWh 
+consumed. The carbon intensity prediction of the regional grid 
+of data center 𝑑 at time 𝑡 is considered. Namely, 𝐶𝐼 𝑒
+𝐺𝑑
+(𝑡), where 
+𝑒 is the predictive model and 𝐺𝑑 is the grid. This intensity is 
+multiplied by the Power Usage Effectiveness of the data center, 
+𝑃 𝑈 𝐸𝑑 , to account for the overall energy usage of a data center 
+for each kWh of computation.
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+3 
+===== PAGE 4 =====
+G. Attenni et al.
+Table 1
+Notations.
+ Symbol Description  
+ 𝑡0, 𝐻, 𝛿𝑡,  Period start, end, step duration and set of steps  
+ 𝑑,  Region/data center and set of regions/data centers  
+ 𝑃 𝑈 𝐸𝑑 Region PUE  
+ 𝑊 𝑈 𝐸𝑑 Region WUE  
+ 𝐿𝑈 𝐸𝑑 Region LUE  
+ 𝐴𝑑 Region land occupation area  
+ 𝐼𝑇 𝑑 Region IT energy usage  
+ 𝑑 (𝑡) Region carbon footprint  
+ 𝑑 (𝑡) Region water footprint  
+ 𝑑 (𝑡) Region land footprint  
+ 𝐶𝐼 𝑒
+𝐺𝑑
+(𝑡) Region Energy Carbon Intensity prediction  
+ 𝐸𝑊 𝐼𝐹 𝑒
+𝐺𝑑
+(𝑡) Region Energy Water Intensity Factor prediction  
+ 𝐸𝐿𝐼𝐹 𝑒
+𝐺𝑑
+(𝑡) Region Energy Land Intensity Factor prediction  
+ 𝑝𝑑 (𝑡) Data center footprint profile at time t  
+ 𝑝𝑛𝑜𝑟𝑚
+𝑑 (𝑡) Normalized data center footprint profile at time t  
+ 𝑝𝑛𝑜𝑟𝑚
+𝑔𝑙𝑜𝑏𝑎𝑙 (𝑡) global footprint profile  
+ 𝑣,  VM instance and set of VM instances  
+ 𝑃𝑣,𝑗 VM 𝑣 power draw for job 𝑗  
+ 𝐵𝑣 VM’s network bandwidth  
+ 𝑗,  Job and set of jobs  
+ 𝑜𝑗 , 𝑎𝑗 , 𝑡𝑗 Job’s arrival location and arrival and deadline time 
+ 𝑠𝑗 , [𝑗] Job’s data size and region availability  
+ 𝑣𝑗 , 𝑛𝑗 Job’s configuration (VM instance and nr. of nodes)  
+ 𝑟𝑗 Job’s expected runtime  
+ 𝐶(𝑗, 𝑑, 𝑡) Scheduling footprints  
+ 𝑀(𝑗, 𝑑, 𝑡) Migration/data transfer footprints  
+ 𝑁𝐸𝐼 Network Energy Intensity  
+ 𝐿(𝑗, 𝑑) Migration/data transfer latency  
+ 𝐸(𝑗, 𝑑, 𝑡) Execution footprint  
+• 𝑑 (𝑡) is the predicted water intensity and it is defined as 
+𝑊 𝑈 𝐸𝑑 + 𝐸𝑊 𝐼𝐹 𝑒
+𝐺𝑑
+(𝑡) × 𝑃 𝑈 𝐸𝑑 (3)
+The water intensity considering both the on-site and grid contri-
+butions is computed. It is measured in l
+kWh and represents the 
+water consumed per kWh, considering the average Energy Water 
+Intensity Factor prediction of the regional grid, 𝐸𝑊 𝐼𝐹 𝑒
+𝐺𝑑
+(𝑡), and 
+the Water Usage Effectiveness of the data center, 𝑊 𝑈 𝐸𝑑 .
+• 𝑑 (𝑡) is the predicted land use intensity and it is defined as 
+𝐿𝑈 𝐸𝑑 + 𝐸𝐿𝐼𝐹 𝑒
+𝐺𝑑
+(𝑡) × 𝑃 𝑈 𝐸𝑑 (4)
+Similarly to the water intensity, both on-site and grid contribu-
+tions are considered. It is measured in m2
+kWh , and it is the amount 
+of land used per kWh considering the Energy Land Intensity 
+Factor prediction of the regional grid at time 𝑡, 𝐸𝐿𝐼𝐹 𝑒
+𝐺𝑑
+(𝑡), and 
+the Land Usage Effectiveness, defined as 𝐿𝑈 𝐸𝑑 = 𝐴𝑑
+𝑃 𝐼𝑇
+𝑑
+. In this 
+formula, 𝐴𝑑 is the total area of land occupied by the data center 
+property and 𝑃 𝐼𝑇
+𝑑  is the energy used to power the IT equipment. 
+Like PUE and WUE, LUE is defined as a simple efficiency ratio 
+relating physical resources to IT energy consumption rather than 
+as an ecologically weighted impact indicator. This ensures that 
+LUE remains consistent with the established family of data center 
+efficiency metrics: all three metrics quantify a resource footprint 
+per unit of energy consumed rather than the ecological value 
+of that resource. However, extending LUE to weight land by its 
+biodiversity or ecosystem value would be beyond the scope of this 
+work. 
+The aforementioned energy intensity factors of the electric grid in-
+tensity depends on the energy mix, which is both time and space-
+dependent. Thus, let us define 𝑆 as the list of sources in the energy mix, 
+namely {𝑆𝑜𝑙𝑎𝑟, 𝑊 𝑖𝑛𝑑, 𝐻𝑦𝑑𝑟𝑜 , 𝐺𝑒𝑜𝑡ℎ𝑒𝑟𝑚𝑎𝑙, 𝐵𝑖𝑜𝑚𝑎𝑠𝑠, 𝑁𝑢𝑐𝑙𝑒𝑎𝑟 , 𝐶𝑜𝑎𝑙, 
+𝐺𝑎𝑠, 𝑂𝑖𝑙, 𝑈 𝑛𝑘𝑛𝑜𝑤𝑛}, and let 𝑀𝐼𝑋 𝑒
+𝐺𝑑 ,𝑠(𝑡) be the share of source 𝑠 ∈ 𝑆
+in the mix prediction of 𝐺𝑑 . Thus, the energy intensity factors can be 
+defined as:
+• 𝐶𝐼 𝑒
+𝐺𝑑
+(𝑡) = ∑
+𝑠∈𝑆 𝑀𝐼𝑋 𝑒
+𝐺𝑑 ,𝑠(𝑡) × 𝐶𝐼 𝑠
+• 𝐸𝑊 𝐼𝐹 𝑒
+𝐺𝑑
+(𝑡) = ∑
+𝑠∈𝑆 𝑀𝐼𝑋 𝑒
+𝐺𝑑 ,𝑠(𝑡) × 𝐸𝑊 𝐼𝐹 𝑠
+• 𝐸𝐿𝐼𝐹 𝑒
+𝐺𝑑
+(𝑡) = ∑
+𝑠∈𝑆 𝑀𝐼𝑋 𝑒
+𝐺𝑑 ,𝑠(𝑡) × 𝐸𝐿𝐼𝐹 𝑠
+where 𝐶𝐼 𝑠, 𝐸𝑊 𝐼𝐹 𝑠 and 𝐸𝐿𝐼𝐹 𝑠 are specified in Table  6.
+Note that this formulation captures only operational impacts; em-
+bodied impacts from the construction, manufacturing, and eventual 
+decommissioning of data center infrastructure are outside the scope of 
+this model (see Section 2.1).
+Moreover, let us define  as the set of virtual machine instances, for 
+each 𝑣 ∈  it is known the power draw in relation to a certain job 𝑗 ∈  , 
+𝑃𝑣 defined according to the Cloud Carbon Footprint methodology.2
+Finally, let us also define the set of job requests 𝐽 . For each request 
+𝑗 ∈ 𝐽 it is known: the arrival/origin region/location 𝑜𝑗 ∈ 𝐷, the regions 
+in which data is available [𝑗] ⊆ , data size 𝑠𝑗 ∈ N, number of nodes 
+𝑛𝑗 ∈ N, the expected utilization 𝑢𝑗 ∈ N, the VM instance 𝑣𝑗 ∈ , the 
+expected runtime 𝑟𝑗 ∈ Z, the arrival time 𝑎𝑗 ∈  , and the deadline 
+𝑡𝑗 ∈  .
+The aim is to optimize footprints associated with the job requests 
+scheduling, considering both data migration and execution, by lever-
+aging spatio-temporal shifting approaches.
+Fig.  1 depicts the architecture of the proposed scheduler. The dia-
+gram shows how job requests (arrival time, origin region, data size and 
+availability, VM configuration, runtime, and deadline) enter the system 
+alongside data center efficiency parameters. The centralized scheduling 
+engine processes these inputs through the cost function calculation, 
+which applies normalization and weighting of the three environmental 
+factors, before generating the final scheduling decisions, applying one 
+of the shifting strategies (spatial, temporal, or spatio-temporal).
+3.2. Evaluating environmental footprints
+Firstly, a methodology is needed to evaluate the footprints of ex-
+ecuting a request in a certain region at a certain time. To do so, it is 
+necessary to predict the associated footprint of computing a job request 
+𝑗 in region/data center 𝑑 at time 𝑡. If the data related to the request is 
+not available in 𝑑, data migration is required, and it is necessary to 
+account for its environmental impact.
+To account for migration footprint overhead, data transmission 
+energy is estimated as follows: 
+𝑀(𝑗, 𝑑, 𝑡) =
+{
+𝑠𝑗 × 𝑁𝐸𝐼 if 𝑑 ∉ [𝑗]
+0 otherwise
+(5)
+where 𝑁𝐸𝐼  kWh/GB is the Network Energy Intensity, as proposed 
+in [38].
+To calculate the execution footprint, executions start times are 
+needed. Since the scheduling execution time is negligible, it is assumed 
+that if data is not migrated, the execution start would be at the arrival 
+time. If the data needs to be migrated, data migration latency is 
+computed as follows: 
+𝐿(𝑗, 𝑑) =
+⎧
+⎪
+⎨
+⎪⎩
+𝑠𝑗
+𝐵𝑣𝑗
+if 𝑑 ∉ [𝑗]
+0 otherwise
+(6)
+The execution footprint is defined as follows: 
+𝐸(𝑗, 𝑑, 𝑡) = ∫
+𝑡+𝐿(𝑗,𝑑 )+𝑟𝑗
+𝑡+𝐿(𝑗,𝑑 )
+𝑃𝑣,𝑗 ⋅ 𝐩 𝑛𝑜𝑟𝑚
+𝑑 (𝜏) 𝑑𝜏 (7)
+where 𝐩 𝑛𝑜𝑟𝑚
+𝑑 (𝑡) ∈ R3 is the normalized profile vector of region 𝑑 for 
+carbon, water, and land use. Furthermore, the normalization operator 
+applied component-wise is defined as follows:
+ (𝐩𝑑 (𝑡)) =
+𝐱 − min𝑑,𝑡 𝐩𝑑 (𝑡)
+max𝑑,𝑡 𝐩𝑑 (𝑡) − min𝑑,𝑡 𝐩𝑑 (𝑡)
+2 https://www.cloudcarbonfootprint.org/docs/methodology.
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+4 
+===== PAGE 5 =====
+G. Attenni et al.
+Fig. 1. Architecture.
+Thus, the regional normalized profile is 𝐩 𝑛𝑜𝑟𝑚
+𝑑 (𝑡) =  (𝐩𝑑 (𝑡))
+To account for migration footprint, global intensities are considered 
+and defined as the normalized (over time) average intensities, namely: 
+𝐩 𝑛𝑜𝑟𝑚
+𝑔𝑙𝑜𝑏𝑎𝑙 (𝑡) =  ( avg𝑑 𝐩𝑑 (𝑡) ) . Finally, the overall environmental cost of 
+scheduling the job is computed as follows:. 
+𝐶(𝑗, 𝑑, 𝑡) = ( 𝐸(𝑗, 𝑑, 𝑡) + 𝑀(𝑗, 𝑑, 𝑡) × 𝐩𝑛𝑜𝑟𝑚
+𝑔𝑙𝑜𝑏𝑎𝑙 (𝑡)) × 𝜽 (8)
+where 𝜃 is the weight vector to linearly combine the three impact 
+factors, namely: 𝜽 = (
+𝑤 𝑤 𝑤
+).
+3.3. Scheduling methods
+The following shifting methods are considered:
+• Spatial Shifting : jobs should be executed where their overall 
+impact is minimized (considering data migration when required).
+𝑑∗, 𝑡∗ = 𝑎𝑟𝑔𝑚𝑖𝑛𝑑∈𝐶(𝑗, 𝑑, 𝑎𝑗 ), 𝑎 𝑗 (9)
+• Temporal Shifting : jobs should be executed when their overall 
+impact is minimized. 
+𝑑∗, 𝑡∗ = 𝑜𝑗 , 𝑎𝑟𝑔𝑚𝑖𝑛 𝑡∈[𝑎𝑗 ,𝑡𝑗 −𝑟𝑗 ]𝐶(𝑗, 𝑜𝑗 , 𝑡) (10)
+• Spatio-Temporal Shifting : optimize both when and where the jobs’ 
+overall impact is minimized. 
+𝑑∗, 𝑡∗ = 𝑎𝑟𝑔𝑚𝑖𝑛𝑑∈, 𝑡 ∈[𝑎𝑗 ,𝑡𝑗 −(𝑟𝑗 +𝐿(𝑗,𝑑 ))]𝐶(𝑗, 𝑑, 𝑡) (11)
+For methods including spatial shifting, it is assumed that once data 
+is transferred to another region, the origin location persistently stores 
+the data. This assumption is for periodic jobs, data will be available in 
+multiple regions without transferring it multiple times. As a baseline, 
+a method in which jobs are executed where the request originates is 
+considered. Namely, the Local baseline: 
+𝑑∗, 𝑡∗ = 𝑜𝑗 , 𝑎 𝑗 (12)
+3.4. Experiment design
+In this work, the focus is on two types of workloads. Namely: a user-
+facing, latency-sensitive workload (FaaS) and a delay-tolerant batch 
+processing workload (big data). For each workload type, real traces 
+are considered and a real-world scenario is derived to simulate their 
+scheduling and execution.
+Aim. The aim of our experiments is to investigate environmentally 
+conscious cloud workload shifting through realistic simulations, not to 
+compare real-world providers. Our results may not accurately reflect 
+the impact of real-world workloads on AWS or Azure data centers, 
+because, although our scenarios are inspired by published data where 
+possible, assumptions and approximations are made where exact data 
+was not available. This simulation-based methodology was chosen 
+because it allows us to explore a wide range of scheduling strategies, 
+weight configurations, seasons and prediction-error levels across large, 
+geographically distributed infrastructures. It would be impractical and 
+environmentally counterproductive to replicate this scale and breadth 
+through the real-world deployment of every configuration studied. 
+State-of-the-art comparison. Our carbon-only temporal-shifting configu-
+ration follows the same underlying principle as Let’s Wait Awhile [10]: 
+both defer job execution within a bounded delay-tolerance window to 
+align with periods of lower carbon intensity, thus solving the same one-
+dimensional temporal optimization problem. While the two studies use 
+different delay-tolerance values, but this does not affect the compara-
+bility of the underlying mechanism. This strategy will be referred to as 
+‘‘T (dt*) - carbon-only (WaitAwhile)’’.
+Similar to our carbon-only spatial-shifting strategy, GreenCourier 
+[6] allocates workloads to the region with the lowest carbon impact. 
+However, GreenCourier makes decisions based on real-time marginal 
+carbon intensity, whereas forecasted average carbon intensity is used 
+in this study. Furthermore, GreenCourier does not consider for the 
+environmental cost of migrating job data, or the energy required to 
+run a job, nor how this energy translates into a carbon footprint over 
+time. To enable a fair comparison, a heuristic inspired by GreenCourier 
+that decides where to execute a job based on the current average 
+carbon intensity was implemented. This strategy will be referred as ‘‘S 
+- carbon-only (∼GreenCourier)’’
+WaterWise [18] jointly minimizes the carbon and water footprints 
+of geographically distributed job scheduling. Their experimental setup 
+is comparable to our equally weighted carbon-and-water configuration 
+(𝑤𝐶 = 0 .5, 𝑤𝑊 = 0 .5, 𝑤𝐿 = 0 ). However, there are several differences: 
+WaterWise normalizes each footprint by the maximum value achievable 
+for a given job. In contrast, in this work the normalization is computed 
+across the full observed range of regions and time steps. Addition-
+ally, WaterWise incorporates a Water Scarcity Factor that scales the 
+water footprint by regional water stress, as well as a history-learner 
+term that accounts for recent footprint trends. Neither of these factors 
+are modeled in our formulation. Finally, WaterWise solves its objec-
+tive via Mixed Integer Linear Programming with explicit capacity and 
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+5 
+===== PAGE 6 =====
+G. Attenni et al.
+delay-tolerance constraints. In contrast, a direct arg min search over dis-
+cretized regions is performed in this work. These differences mean that 
+our results should not be interpreted as a reproduction of WaterWise’s 
+reported savings. The shared normalized-weighted-sum structure and 
+matching default weights justify the correspondence that can be drawn 
+between the two configurations. For this reason, it is suggested that 
+the strategy corresponding to the equally weighted carbon-and-water 
+configuration is inspired by WaterWise and this strategy will be referred 
+as ‘‘S - carbon–water (∼WaterWise)’’. 
+Simulation overview. The discrete event simulation detailed in Algo-
+rithm 1 has been implemented. At each time step, we update the 
+sustainability profiles of data centers and new job requests ready to be 
+scheduled. Then each job can be scheduled according to the shifting 
+approach previously defined. Finally, since it is assumed that once 
+data is transmitted to a region, it is persistently stored there, the data 
+availability set of the job is updated for future scheduling.
+Algorithm 1 Simulation Procedure
+1: Input:  data centers, scheduling_method() ∈
+{𝑒𝑞. (9), 𝑒𝑞. (10), 𝑒𝑞. (11), 𝑒𝑞. (12)}
+2: for 𝑡 ∈   do 
+3: Get sustainability profiles 𝑝𝑑 (𝑡) for each 𝑑 ∈ 
+4: Get jobs ready to be scheduled at time 𝑡, 𝐽 (𝑡). 
+5: for 𝑗 in 𝐽 (𝑡) parallel do 
+6: 𝑑∗, 𝑡∗ = scheduling_method()
+7: if scheduling_method() ∈ {𝑒𝑞. (9), 𝑒𝑞. (11)} then 
+8: [𝑗] = [𝑗] ∪ {𝑑∗}
+9: end if
+10: end for
+11: end for
+12: Output: Final schedule over horizon 𝐻
+Scenario 1 - Azure and FaaS. The first scenario is based on Azure 
+regions and a FaaS workload. The regions selected for this scenario are 
+‘‘swedencentral’’, ‘‘southcentralus’’, ‘‘centralus ’’, and ‘‘eastus2’’. Table 
+2 reports regions’ characteristics. PUE and WUE values were taken from 
+Azure issued sustainability reports. The land occupation data stems 
+from online reports. As for the workload, the 2019 Azure Functions 
+dataset was chosen. For the data sources see Appendix. The source 
+data is composed of two sets of daily CSV files: one detailing per-
+minute invocation counts for each function, and another providing 
+daily summary statistics of function execution times, including averages 
+and key percentiles (0th, 1st, 25th, 50th, 75th, 99th, and 100th). The 
+first seven days of this dataset was utilized to synthesize 100,000 
+requests of function execution a day. The selection of a function for 
+each request was probabilistic and weighted by the function’s total 
+daily invocation count, such that more frequently invoked functions 
+appeared more often in the trace, mirroring real-world usage patterns.
+Upon selecting a function, a synthetic runtime was sampled by 
+performing linear interpolation on its known daily execution time 
+percentiles. The arrival time for the request, resolved to the minute-
+of-day, was similarly sampled from the function’s empirical per-minute 
+invocation distribution. Finally, each request was assigned a data center 
+location from a predefined set. A single virtual machine configuration 
+(2 vCPU and 4 GB of RAM) is considered for this scenario, as specified 
+in the paper [39].
+For this scenario, only the Local baseline (L) and the Spatial Shifting
+(SP) approach are compared. That is, it is assumed that the functions 
+are tolerant to the latency required to change regions but not to be 
+delayed in time. For this reason, Temporal Shifting (T) and Spatio-
+temporal Shifting (STP) scheduling methods are excluded. Thus, there 
+are no deadlines for this scenario.
+Table 2
+Azure data by region for Scenario 1.
+ Region Location PUE WUE Land Occup. (m2) 
+ swedencentral Sweden 1.172 0.16 1 300 000  
+ southcentralus Texas 1.307 1.82 43 664  
+ centralus Iowa 1.16 0.19 37 904  
+ eastus2 Virginia 1.144 0.17 102 193  
+Table 3
+AWS data by region for Scenario 2. 
+ Region Location PUE WUE Land Occup. (m2) 
+ us-east-1 Virginia 1.15 0.12 233 101  
+ us-west-1 California 1.17 0.51 116 550  
+ eu-central-1 Frankfurt 1.35 0.01 116 550  
+ eu-west-2 London 1.11 0.04 116 550  
+ eu-north-1 Stockholm 1.10 0.02 116 550  
+Scenario 2 - AWS and big data. The second scenario is based on AWS 
+and Big Data workloads. The regions selected for this scenario are: 
+‘‘us-east-1’’, ‘‘us-west-1’’, ‘‘eu-central-1’’, ’’eu-west-2 ’’, and ‘‘eu-north-
+1’’. Table  3 reports regions’ characteristics. PUE and WUE values were 
+taken from AWS website (see Appendix)
+The land occupation data is estimated based on the 10-k form 
+released by AWS in 2024 (see Appendix), in which it is stated that more 
+than 450,000 𝑚2 were owned/rented by AWS for data centers. The 
+estimation is also based on declared availability zones for each region. 
+Namely, the estimated land occupation for a given region is calculated 
+by taking the number of availability zones (AZs) in that region, dividing 
+it by the total number of AZs (117), and then multiplying by the total 
+land occupation of all data centers.
+As for the workload, requests from available experimental Spark 
+traces (see Appendix) were synthetically generated. 50k requests over 
+a week were randomly generated. For the arrival pattern, 50% of re-
+quests are generated as periodic (in line with literature analysis: about 
+43% [40], about 60% [41]) and the rest as ad-hoc jobs. The arrival 
+of ad-hoc jobs follows a Poisson distribution with 𝜆 = 𝑡𝑎𝑟𝑔𝑒𝑡𝑛𝑝∕𝑛𝑑𝑎𝑦𝑠 ∗
+𝑚𝑖𝑛𝑢𝑡𝑒𝑠𝑝𝑒𝑟𝑑𝑎𝑦 ≈ 2 .5. The periodic jobs’ first instance arrival time is 
+randomly picked within the first 12 h, and their periodicity is set uni-
+formly at random among {2, 4, 8, 12} hours. For each request, the origin 
+location is picked uniformly at random from the regions considered for 
+this scenario. The number of nodes, the VM instance, and the expected 
+runtime are the ones reported in the traces. Table  4 summarizes the 
+VM instances considered in our experiments, and their specifications 
+are set accordingly (memory, cpu, and bandwidth , see Appendix).
+Note that the synthetically generated aspects of the trace (arrival 
+timing and origin location) do not alter the core, empirically-derived 
+workload characteristics: the number of nodes, VM instance type, and 
+expected runtime for each job are drawn directly from the original 
+Spark execution traces [42]. Arrival timing and origin location were 
+necessarily synthesized because, to the best of our knowledge, no 
+publicly available workload trace records the execution of a large-scale 
+big data workload across multiple, geographically distributed cloud 
+sites.
+For this scenario, all of the scheduling methods defined above are 
+considered. A variation of Spatial Shifting is also introduced, in which 
+data transferred when migrating is not persistently stored (S). For
+Temporal Shifting (T) and Spatio-Temporal Shifting (SPT), the deadline 
+is either its periodicity or, for ad hoc jobs, a tunable delay tolerance 
+parameter.
+3.5. Experimental setup
+Hardware and software environment. The experiments were conducted 
+on the following system:
+• CPU: Intel(R) Core(TM) i9-10920X CPU @ 3.50 GHz
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+6 
+===== PAGE 7 =====
+G. Attenni et al.
+Table 4
+AWS VM instance types and specifications.
+ Type vCPU Mem (GB) Bandwidth (Mbps) 
+ c. l, xl, xxl 2, 4, 8 4, 8, 16 500, 750, 1000  
+ m4. l, xl, xxl 2, 4, 8 8, 18, 34 450, 750, 1000  
+ r4. l, xl, xxl 2, 4, 8 16, 32, 65 450, 850, 1700  
+Table 5
+Data sources for grid mixes.
+ EU sw uk de  
+ eu-north-1
+swedencentral
+eu-west-2 eu-central-1  
+ USA ercot miso pjm caiso  
+ southcentralus centralus us-east-1
+eastus2
+us-west-1 
+• RAM: 260 GB
+• Operating System: Ubuntu 24.04.3 LTS
+Grid data and intensities. Since multiple regions are considered, pub-
+licly available data from different grid operators (see Appendix) was 
+collected. The historical mix data is used to compute the actual environ-
+mental impact of the workload execution. Meanwhile, noised mix data 
+is used to simulate the prediction of the grids’ mix that the schedulers 
+optimize their decisions on. The data sources are not standardized, thus 
+data was harmonized to a common format considering a granularity of 
+1 h. Thus, finer-grained time series were reshaped considering the mean 
+value for each hour. Table  5 depicts the relationship between grids and 
+cloud providers’ regions.
+To incorporate uncertainties into the grid mix data, synthetic noise 
+is introduced. Specifically, for each time step and region, the renewable 
+share is perturbed by an error term 𝜖𝑟 sampled from a normal distribu-
+tion  (0, 𝜎𝑟), where 𝜎𝑟 = 𝑚𝑎𝑒⋅ 1√
+2∕𝜋 and 𝑚𝑎𝑒 is the target mean absolute 
+error. The error 𝜖𝑟 is then distributed among the renewable sources 
+(solar, wind, geothermal, hydro, biomass) according to a probability 
+distribution designed to reflect their prediction difficulty: solar gets 
+45% of error, since it is the hardest source to estimate [43]; wind gets 
+30% [44]; both hydro [45] and geothermal [46] get 10%; and biomass 
+get 5% of the error, being the most controllable among the renewable 
+sources. Each renewable source 𝑖 receives a noise 𝜖𝑖 = 𝜖𝑟⋅𝑤𝑖, where 𝑤𝑖 is 
+the weight for source 𝑖. This approach is an attempt to simulate realistic 
+prediction errors and reflects the varying uncertainty associated with 
+each energy source. For non-renewable sources, a uniform noise is 
+applied to each share to maintain the total mix balance.
+Finally, in our simulations, to compute the average intensities of 
+the mixes, we consider the intensity coefficients reported in Table 
+6. Carbon intensity values correspond to the median of the lifecycle 
+emissions reported in IPCC Annex III, Table IPCC A.III.2 table (page 
+1335) [20]. For the oil carbon intensity, which is missing in this source, 
+another coefficient [47] is considered. Water intensity values were 
+obtained from the Water Consumption Factors presented in Tables  1
+and 2 (pages 12–13) of the NREL technical report on energy-related 
+water consumption [21]. Land use intensity values were extracted from 
+a comprehensive survey [22]. The survey does not provide a value for 
+oil, but the authors assume it to be comparable to gas, so the same holds 
+for this work. For all the factors, when multiple options were presented 
+for the same energy source, the average of median intensity values was 
+taken. Note that it was not possible to find any source for the oil EWIF; 
+thus, it is assumed the mean of the other sources’ intensity values. As 
+well as for the unknown share.
+Other parameters. For both scenarios the mid-season one-week horizon 
+was considered, from the midnight of the 15th to the midnight of 
+the 22nd, considering the UTC time zone, and varied the week in 
+Table 6
+Impact coefficients for various electricity generation technologies. Sources:
+Carbon: IPCC [20], Our World in Data [47] (oil). Water: NREL [21]. Land 
+use [22]. 
+ Energy source CI EWIF ELIF  
+ gCO2e∕kWh l∕kWh ha∕TWh  
+ Nuclear 12 1.957 7.1  
+ Geothermal 38 5.827 45  
+ Biomass 485 1.145 29 065  
+ Coal 820 1.8 1000  
+ Wind 11.5 0 6065  
+ Solar 38.67 1.385 1650  
+ Hydro 24 17 650  
+ Gas 490 1.099 1155  
+ Oil 720 n/a (3.776) 1155  
+ Unknown n/a (293.24) n/a (3.776) n/a (4532) 
+different seasons, namely: winter (January), spring (April), summer 
+(July), autumn (October). And the step 𝛿𝑡 is set to one minute.
+To account for the uncertainty in the prediction of the workload, 
+different values of MAE were considered, namely: 0.05, 0.1, 0.15, and 
+0.2. For statistical significance, each simulation is repeated 6 times with 
+different random seeds, namely: 0, 1, 2, 3, 4, 5.
+The factors’ weights are set to: [1.0, 0.0, 0.0], only carbon footprint 
+is optimized, [0.0, 1.0, 0.0], only water footprint is optimized, [0.0, 
+0.0, 1.0], only land footprint is optimized, [0.333, 0.333, 0.334], all 
+footprints are optimized equally.
+Moreover, to account for the energy consumption of the network, 
+the network energy intensity was set to 0.06 kWh/GB [38]. Finally, 𝑃 𝐼𝑇
+𝑑
+was set to the estimate provided by EIA. Assuming the IT power draw 
+to be 100 MW, IT power consumption is assumed to be 8760 × 100 × 103
+kWh over one year.
+4. Results
+In this section, the results of our experiments are presented.
+4.1. Scenario 1: Azure and FaaS
+For this first scenario, the results of the spatial shifting approach 
+optimizing for all factor weight combinations are provided.
+Spatial shifting. Fig.  2 shows the footprint improvement with respect 
+to the local baseline of spatial shifting. This experiment considered the 
+winter week and an error of 10% on the renewable share prediction. 
+All factor weights’ combinations defined above are compared.
+The results demonstrate that regional shifting of FaaS workloads 
+across Azure regions leads to noticeable improvements in carbon ef-
+ficiency. The plots show that when optimizing for a particular metric 
+(carbon, water, or land use footprint), a 45%−85% improvement in that 
+metric can be achieved. When considering the metric for which the 
+optimization was performed, the carbon footprint benefits the most, 
+with up to an 85% reduction in emissions compared to the local 
+baseline. This significant reduction reflects the negligible migration 
+cost of FaaS workloads. For both S - carbon-only and S - carbon-only 
+(∼GreenCourier), a reduction of about 85% in carbon footprint leads to 
+an increase of about 40% in water footprint. The land use footprint also 
+increases, but to a lesser extent, having observed about a 25% increase.
+S - carbon-only (∼GreenCourier) achieves the same results as the S - 
+carbon-only strategy due to the short runtime nature of FaaS.
+Similarly, optimizing for water footprint (about 50% reduction) 
+leads to a significant increase in carbon footprint (about 125% in-
+crease), but the land use footprint decreases proportionally to the 
+water footprint reduction (about 50% reduction). On the other hand 
+optimizing for land use footprint (about 45% reduction) leads to a 
+moderate increase in carbon footprint (about 15% increase) and a small 
+reduction in water footprint (less than 10% reduction).
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+7 
+===== PAGE 8 =====
+G. Attenni et al.
+Fig. 2. Spatial shifting for Scenario 1; showing a 45%−85% improvement over local baseline during a winter week, with an MAE of 10%.
+Fig. 3. Request distribution across different regions for different criteria for Scenario 1 during a Winter week, with an MAE of 10%.
+Fig. 4. Grid intensities for each factor, and each region for Scenario 1 over a winter week, with an MAE of 10%.
+Fig.  3 shows the request distribution across the regions.
+To understand this distribution, consider Fig.  4, which simultane-
+ously reports intensity values over the winter week and the efficiency 
+metrics for each factor for each region.
+When optimizing for carbon, all the requests are scheduled to 
+‘‘centralus’’ which is not the most energy-efficient region (PUE 1.172), 
+and it has the grid with the lowest carbon intensity. When optimizing 
+for water, a small percentage of requests go to ‘‘eastus2’’ and most of 
+the requests are scheduled to ‘‘centralus’’, which is not the most water-
+efficient region (WUE 0.19) nor is it the one with the smallest grid 
+water intensity. However, it is the region with the lowest impact on 
+water when considering both data center efficiency and grid intensity. 
+Finally, when optimizing for land use, nearly all the requests are 
+scheduled to ‘‘eastus2’’, which, even if it is not the region with the least 
+land occupation, its grid has a lower land use intensity.
+Fig.  5 shows the sustainability profiles. For each region, all the 
+components are plotted: green for carbon, blue for water and red for 
+land use. The linearly scaled profile by the mix configuration 𝜃 =
+(0.333, 0.333, 0.334) is plotted in orange. The average distance between 
+the mix configuration signal and the components of the sustainability 
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+8 
+===== PAGE 9 =====
+G. Attenni et al.
+Fig. 5. Sustainability Profile components for Scenario 1 over a winter week, with an MAE of 10%. (For interpretation of the references to color in this figure 
+legend, the reader is referred to the web version of this article.)
+Fig. 6. 2D - Pareto Analysis for Scenario 1 over a winter week, with an MAE of 10%. (For interpretation of the references to color in this figure legend, the 
+reader is referred to the web version of this article.)
+profile are 0.36, 0.30 and 0.14 respectively for carbon, water and 
+land use. This explains why the mix strategy seems to be particularly 
+influenced by the land use component.
+Pareto analysis. To characterize the trade-offs among carbon, water, 
+and land-use footprints beyond the four representative weight config-
+urations discussed above, we performed a Pareto analysis for Scenario 
+1. The season is fixed to Winter and the grid error to 0.1. The frontier 
+is approximated by evaluating 66 configurations of weight vectors 𝜃 =
+(𝑤𝐶 , 𝑤𝑊 , 𝑤𝐿). Fig.  6 shows the resulting points projected onto the three 
+pairwise objective planes: carbon vs. water, carbon vs. land, and water 
+vs. land. Note that the color of the data points reflects the configuration 
+of the theta (red to 𝑤, green to 𝑤 and blue to 𝑤 ), and that non-
+dominated data points are represented as diamonds, while dominated 
+data points are represented as dots. Each single-objective configuration 
+(carbon-only, water-only, land-only) sits at an extreme of the frontier, 
+reflecting the cost of optimizing for one footprint in isolation. The 
+frontier shows a clear three-way trade-off, in which reducing the carbon 
+footprint tends to increase both the water and land-use footprints, and 
+vice versa. Moreover, it is clear that no single configuration minimizes 
+all three objectives simultaneously. The carbon–water configuration 
+(∼WaterWise) belongs to the frontier, and never sits at the extreme of 
+any axis. The carbon-only configuration (∼GreenCourier) is dominated 
+but by such a tiny amount that it is not really visible from the plot.
+Sensitivity analysis. To understand how seasonality affects the effec-
+tiveness of the scheduling methods, a sensitivity analysis is performed 
+considering weeks in the four seasons: winter, spring, summer, and 
+autumn. For this analysis, a fixed error for the grid’s renewable share 
+prediction is selected (mae = 0.1). On the other hand, to understand 
+how the prediction error affects the effectiveness of the scheduling 
+methods, a sensitivity analysis considering different values of predic-
+tion error is performed (mae = {0.05, 0.1, 0.15, 0.2}). A fixed week in 
+winter is used for this analysis.
+From Tables  8 and 9, it is possible to notice that the prediction error 
+leads to very small differences, almost flat. Indeed, the results indicate 
+that the improvement in reduction in all three metrics remains robust 
+even for higher error levels.
+On the other hand, it seems that the effectiveness of spatial shifting 
+varies with seasonal changes in grid intensities, but the overall trend 
+of improvement remains consistent. Land use factors, in particular, 
+demonstrate varying impacts across different seasons (37%–57%).
+4.2. Scenario 2: AWS and big data
+For this second scenario, not only is the spatial shifting method 
+investigated, but also temporal shifting and spatio-temporal shifting. 
+The same week in winter and the same factor weights’ combinations 
+as in Scenario 1 were considered. The prediction error (mae) was set 
+to  0.1. For temporal shifting, different values of delay tolerance were 
+considered, namely (dt) = {4, 12, 24, 48} h.
+Baseline footprints. The baseline algorithm (Local) has about 17.500 kg 
+of carbon footprint, 200.000 l of water footprint, and just above 2000 
+sm of land use footprint. In these graphs, is shown the improvement in 
+percentage of the other algorithms with respect to the baseline. Figs. 
+7 and 8 show the results of our experiments.
+Temporal shifting. Firstly, as shown in Fig.  7, the temporal shifting 
+approach achieves relatively modest improvements compared to spatial 
+shifting, with reductions ranging from 6% to 12% even at the highest 
+delay tolerance of 48 h.
+Spatial shifting. The spatial shifting approach (SP) achieves a signifi-
+cant improvement in each metric when optimizing for it (Fig.  8). In 
+this case, the improvements range from 20%−45% footprint reductions 
+over the baseline. Our approach outperforms S - carbon-only (∼Green-
+Courier), since ignoring migration footprints and the implications of 
+long-running jobs results in even worse results with respect to the local 
+baseline. S - carbon-only (∼Water Wise) exhibits behavior similar to S - 
+water-only, except it does not worsen the carbon footprint.
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+9 
+===== PAGE 10 =====
+G. Attenni et al.
+Fig. 7. Temporal shifting for Scenario 2 improvement over local baseline results, with an MAE of 10%. Temporal shifting shows 6%−12% improvement; spatial 
+shifting comes in at 20%−45%; while combining both gives the best result of 40%−55% improvement over the baseline.
+Fig.  9 shows the request distribution across the regions. To help us 
+understand this distribution, let us consider Fig.  10, which simultane-
+ously reports intensity values over the winter week and the efficiency 
+metrics for each factor for each region.
+When optimizing for carbon, about 50% of requests are scheduled to 
+‘‘eu-north-1’’, which is the most energy-efficient region (PUE 1.1) and 
+also the region with the grid with the lowest carbon intensity. When 
+optimizing for water, about 40% of requests are scheduled to ‘‘eu-west-
+2’’, which is not the most water efficient region (WUE 0.04), but it has 
+the grid with the lowest impact on water. Finally, when optimizing for 
+land use, about 45% of requests are scheduled to ‘‘us-east-1’’, which, 
+even if it is the region with the most land occupation, it is the one 
+where the grid has the lowest impact on land use.
+Fig.  11 shows the sustainability profiles over time. As in Scenario 
+1, the land use component of the sustainability profiles appears to 
+dominate the others, albeit to a lesser extent. In fact, the average 
+distance between the mix configuration signal and the components 
+of the sustainability profile are 0.24, 0.25 and 0.20, respectively, for 
+carbon, water and land use. Also for this scenario, this explains the 
+similarity between the results of the land-only configuration and the 
+mixed configuration.
+Pareto analysis. The same Pareto analysis was repeated for Scenario 
+2. Fig.  12 shows the resulting points projected onto the three pairwise 
+objective planes: carbon vs. water, carbon vs. land, and water vs. land. 
+Four of the five representative configurations lie on the Pareto front 
+and are therefore non-dominated. The exception is the carbon-only 
+configuration (∼GreenCourier), which is dominated, as expected from 
+the results shown in Fig.  8. This analysis also confirms a genuine three-
+way trade-off in this scenario. The Pareto analysis of this scenario seems 
+to confirm the correlation of water and land, as well as the fact that 
+land is pretty much uncorrelated.
+Migration overheads of spatial shifting. For this scenario, also an alter-
+native approach to spatial shifting (S) is considered. In this approach, 
+the data associated with each request must be transferred each time 
+a migration occurs, even if the data was transferred to that region 
+previously. Results show that this approach still achieves significant 
+improvements over the baseline, but SP achieves about 5%−6% better 
+results in the optimized metric.
+Table  7 provides a summary of the migration overhead for the three 
+factors; it shows the percentage of footprints caused by migration. The 
+migration overhead varies based on the scheduling algorithm and the 
+weights used, ranging from 0.85% to 12.67% for carbon, 0.89% to 
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+10 
+===== PAGE 11 =====
+G. Attenni et al.
+Fig. 8. Spatial, and spatio-temporal shifting for Scenario 2 improvement over local baseline results, with an MAE of 10%. Temporal shifting shows 6%−12%
+improvement; spatial shifting comes in at 20%−45%; while combining both gives the best result of 40%−55% improvement over the baseline.
+Fig. 9. Request distribution across different regions for different criteria for Scenario 2 during a Winter week, with an MAE of 10%.
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+11 
+===== PAGE 12 =====
+G. Attenni et al.
+Fig. 10. Grid intensities for each factor, and each region for Scenario 2 over a winter week, with an MAE of 10%.
+Fig. 11. Sustainability Profile components for Scenario 2 over a winter week, with an MAE of 10%.
+Fig. 12. 2D - Pareto Analysis for Scenario 2 over a winter week, with an MAE of 10%.
+Table 7
+Spatial shifting (persistent storage vs. non-persistent storage) average percent-
+age of migration footprints for Scenario 2 during Winter week, with an MAE 
+of 10%.
+ Carbon (%) Water (%) Land use (%)
+ S SP S SP S SP  
+ carbon-only 12.67 6.96 3.45 1.80 7.68 4.13 
+ water-only 3.50 1.85 5.47 2.94 3.07 1.58 
+ land-use-only 3.51 1.80 4.55 2.60 6.62 3.65 
+ mix 1.69 0.85 1.67 0.89 1.89 1.01 
+5.47% for water, and 1.01% to 7.68% for land use. The overhead of 
+SP is about half compared to S.
+In addition to the environmental impact of migration itself, Fig. 
+13 presents an analysis of the monetary costs of data transfer (see 
+Appendix).
+Results show that monetary migration cost varies substantially de-
+pending on the weighting used, from a median of approximately $320 
+under the mix configuration to approximately $1450 under the carbon-
+only configuration, roughly a 4–5× difference. These results are shown 
+alongside the percentage of cross-continental migrations. The land-
+use-only configuration, despite its relatively low monetary cost, pro-
+duces the highest rate of violations (median ∼0.86%), while water-only 
+achieves the lowest (∼0.39%). The results show that the monetary costs 
+are significant and that cross-continental migrations raise concerns, 
+as they can expose workload data to different privacy regimes and 
+weaken guarantees of data sovereignty. Moreover, no single weighting 
+configuration is jointly optimal across environmental, economic, and 
+regulatory dimensions. However, modeling these risks and costs in 
+depth is beyond the scope of this study and will be the subject of future 
+research.
+Spatio-temporal shifting. Finally, as shown in Fig.  8, the best outcome is 
+achieved by the spatio-temporal shifting approach (STP) with a delay 
+tolerance of 4 h, which results in 55% improvement in carbon foot-
+print when optimizing for carbon, about 40% improvement in water 
+footprint when optimizing for water, and about 48% improvement in 
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+12 
+===== PAGE 13 =====
+G. Attenni et al.
+Fig. 13. Monetary cost (left) and cross-continental percentage (right) of migrations under the S strategy for Scenario 2 during the Winter week, broken down by 
+scheduling weight configuration.
+Table 8
+Scenario 1 - Season sensitivity analysis.
+ Algorithm Period Carbon improvement Water improvement Land use improvement
+ Mean std Mean std Mean std  
+ 
+S - carbon-only
+Autumn 91.28 0.03 −118.26 0.75 −8.10 0.46 
+ Spring 86.56 0.04 −139.90 1.17 18.29 0.32 
+ Summer 91.87 0.02 −123.28 1.15 −13.85 0.29 
+ Winter 90.55 0.03 −129.41 1.12 −15.46 0.26 
+ 
+S - water-only
+Autumn −48.74 0.55 55.33 0.22 6.57 0.35 
+ Spring −29.97 0.39 59.40 0.19 −11.63 0.41 
+ Summer −24.66 0.39 50.82 0.21 32.46 0.13 
+ Winter −42.75 0.52 56.42 0.23 5.99 0.32 
+ 
+S - land-only
+Autumn −25.17 0.50 40.90 0.30 57.00 0.17 
+ Spring −15.63 0.35 34.32 0.37 42.24 0.22 
+ Summer −13.88 0.41 39.31 0.36 37.54 0.12 
+ Winter −23.12 0.42 46.16 0.27 45.40 0.19 
+ 
+S - mix
+Autumn −25.86 0.49 42.35 0.27 57.16 0.17 
+ Spring −23.35 0.35 49.22 0.24 42.73 0.22 
+ Summer −17.64 0.40 49.55 0.23 38.33 0.12 
+ Winter −23.34 0.43 47.10 0.28 45.74 0.18 
+Table 9
+Scenario 1 - Mix renewable share prediction error sensitivity analysis.
+ Algorithm mae Carbon improvement Water improvement Land use improvement
+ Mean std Mean std Mean std  
+ 
+S - carbon-only
+0.05 90.55 0.03 −129.41 1.12 −15.46 0.26 
+ 0.1 90.55 0.03 −129.41 1.12 −15.46 0.26 
+ 0.15 90.55 0.03 −129.41 1.12 −15.46 0.26 
+ 0.2 90.55 0.03 −129.41 1.12 −15.46 0.26 
+ 
+S - water-only
+0.05 −43.64 0.52 56.60 0.23 4.95 0.32 
+ 0.1 −42.75 0.52 56.42 0.23 5.99 0.32 
+ 0.15 −42.81 0.51 56.25 0.23 6.79 0.32 
+ 0.2 −41.36 0.51 55.84 0.23 8.59 0.30 
+ 
+S - land-only
+0.05 −23.40 0.43 47.12 0.28 45.71 0.18 
+ 0.1 −23.12 0.42 46.16 0.27 45.40 0.19 
+ 0.15 −22.33 0.42 44.14 0.29 44.85 0.18 
+ 0.2 −22.03 0.42 42.84 0.30 44.15 0.19 
+ 
+S - mix
+0.05 −23.34 0.43 47.10 0.28 45.74 0.18 
+ 0.1 −23.34 0.43 47.10 0.28 45.74 0.18 
+ 0.15 −23.34 0.43 47.10 0.28 45.74 0.18 
+ 0.2 −23.32 0.43 47.08 0.28 45.57 0.18 
+land use footprint when optimizing for land use. However, these im-
+provements with respect to only spatial shifting are small. This can be 
+further explained by looking at Fig.  11. It can be seen that fluctuations 
+over time within a single region are limited for each component or 
+linear combination of components. This limits what can be achieved 
+by exploiting only temporal shifting. Meanwhile, the signal differences 
+between regions are more evident, allowing greater footprint savings. 
+Combining the two strategies enables both the more evident differences 
+between regions and the intra-day fluctuation of the profile components 
+to be exploited.
+Sensitivity analysis. Following the same approach used for Scenario 1, 
+sensitivity analysis for this scenario was conducted as well. Tables  10
+and 11 respectively show the footprint improvements over the local 
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+13 
+===== PAGE 14 =====
+G. Attenni et al.
+Table 10
+Scenario 2 - Season sensitivity analysis.
+ Algorithm Period Carbon improvement Water improvement Land use improvement
+ Mean std Mean std Mean std  
+ 
+SP carbon-only
+Autumn 52.00 1.33 −65.81 2.96 21.26 0.86 
+ Spring 45.96 1.11 −68.89 2.95 30.19 0.89 
+ Summer 51.05 1.34 −70.26 3.13 29.75 0.90 
+ Winter 51.60 1.32 −88.18 3.86 20.05 1.00 
+ 
+SP water-only
+Autumn −3.02 0.88 32.83 1.16 −18.67 1.57 
+ Spring −0.53 0.81 32.77 1.32 −20.88 1.64 
+ Summer −27.04 2.13 29.59 1.20 9.16 1.38 
+ Winter −3.81 0.96 34.42 1.46 −19.40 1.72 
+ 
+SP land-only
+Autumn −25.84 2.05 11.83 1.63 41.04 1.02 
+ Spring −21.40 1.81 −3.26 1.57 38.43 0.98 
+ Summer −23.65 1.46 2.72 1.45 39.74 1.00 
+ Winter −27.72 1.81 11.42 1.76 37.49 1.00 
+ 
+SP mix
+Autumn 1.99 0.90 7.43 1.13 24.13 0.78 
+ Spring 2.78 1.24 15.98 1.67 16.26 1.20 
+ Summer 6.49 0.92 −0.22 1.33 20.48 1.08 
+ Winter −0.59 0.64 3.33 1.13 17.39 0.99 
+ 
+T (dt4) carbon-only
+Autumn 5.09 0.26 3.51 0.10 0.59 0.09 
+ Spring 4.28 0.28 2.63 0.16 1.37 0.11 
+ Summer 4.60 0.23 2.00 0.12 1.46 0.17 
+ Winter 2.02 0.14 1.90 0.08 −0.79 0.03 
+ 
+T (dt4) water-only
+Autumn 4.93 0.24 6.81 0.09 0.32 0.11 
+ Spring 4.62 0.27 6.24 0.16 0.51 0.10 
+ Summer 4.35 0.24 7.26 0.16 0.99 0.13 
+ Winter 1.91 0.11 4.49 0.11 −1.33 0.05 
+ 
+T (dt4) land-only
+Autumn 1.97 0.23 −0.15 0.13 3.71 0.12 
+ Spring 2.67 0.24 0.48 0.17 3.75 0.14 
+ Summer 2.11 0.20 −0.21 0.09 4.80 0.20 
+ Winter −0.65 0.04 −1.41 0.05 1.62 0.05 
+ 
+T (dt4) mix
+Autumn 5.54 0.25 5.49 0.09 1.71 0.13 
+ Spring 5.67 0.29 4.87 0.18 2.74 0.12 
+ Summer 5.24 0.26 5.77 0.15 3.12 0.17 
+ Winter 2.22 0.13 3.19 0.11 −0.10 0.03 
+ 
+SPT (dt4) carbon-only
+Autumn 54.46 1.30 −63.54 3.00 21.24 0.87 
+ Spring 48.67 1.13 −72.15 3.29 31.87 0.91 
+ Summer 53.37 1.34 −71.52 3.22 30.97 0.93 
+ Winter 52.59 1.31 −86.23 3.87 19.37 1.02 
+ 
+SPT (dt4) water-only
+Autumn 1.66 0.83 37.05 1.13 −19.98 1.42 
+ Spring 3.93 0.73 36.43 1.31 −23.77 1.63 
+ Summer −22.21 1.75 33.30 1.18 6.84 1.07 
+ Winter −1.79 0.93 37.66 1.38 −21.60 1.72 
+ 
+SPT (dt4) land-only
+Autumn −23.46 2.02 10.23 1.51 42.53 0.99 
+ Spring −22.95 2.00 0.64 1.34 40.20 0.96 
+ Summer −22.05 1.57 2.83 1.15 41.86 1.00 
+ Winter −28.16 1.93 11.35 2.01 38.11 1.01 
+ 
+SPT (dt4) mix
+Autumn 9.21 1.09 10.30 1.35 24.10 0.82 
+ Spring 12.29 0.55 18.50 1.66 17.32 1.09 
+ Summer 12.86 0.78 3.76 1.42 20.38 0.87 
+ Winter 3.27 0.49 5.09 0.88 16.91 1.17 
+baseline for different seasons and for different prediction errors for 
+the grid renewable share (mae). The results fluctuate slightly with the 
+prediction error (2%–3%), but the improvements remain significant 
+even with a high prediction error of 0.2. Also, the season does not affect 
+the results significantly, with variations of 4% at most, considering the 
+optimized factor.
+5. Discussion
+In this section, the results obtained are discussed.
+5.1. Scenario 1: Azure and FaaS
+The results demonstrate that regional shifting of FaaS workloads 
+across Azure regions leads to noticeable improvements in carbon ef-
+ficiency.
+Overall, these results highlight the potential of spatial shifting to sig-
+nificantly enhance the sustainability of FaaS workloads by leveraging 
+regional variations in grid intensities and regional efficiency differ-
+ences. This suggests that lightweight workloads such as FaaS functions 
+could serve as a first mover for sustainability-aware orchestration, as 
+they can be shifted freely without incurring significant migration penal-
+ties. Our results show that accounting for provider-declared PUE/WUE 
+improves allocation decisions, especially when grid mixes are similar. 
+This highlights that relying solely on grid intensity overlooks potential 
+sustainability gains and the importance of region-specific data center 
+disclosures for enabling sustainability-aware workload management.
+5.2. Scenario 2: AWS and big data
+The results highlight the potential of spatial shifting to significantly 
+enhance the sustainability of cloud workloads by leveraging, for the 
+most part, regional variations in grid intensities. However, the migra-
+tion overhead is relevant, especially when data is not persistently stored 
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+14 
+===== PAGE 15 =====
+G. Attenni et al.
+Table 11
+Scenario 2 - Mix renewable share prediction error sensitivity analysis.
+ Algorithm mae Carbon improvement Water improvement Land use improvement
+ Mean std Mean std Mean std  
+ 
+SP carbon-only
+0.05 51.72 1.32 −88.67 3.86 20.31 0.97 
+ 0.1 51.60 1.32 −88.18 3.86 20.05 1.00 
+ 0.15 51.27 1.34 −86.49 3.91 19.29 0.99 
+ 0.2 49.97 1.25 −81.37 3.67 16.97 0.95 
+ 
+SP water-only
+0.05 −3.61 0.95 34.71 1.46 −20.22 1.65 
+ 0.1 −3.81 0.96 34.42 1.46 −19.40 1.72 
+ 0.15 −4.27 1.00 34.16 1.44 −19.20 1.71 
+ 0.2 −4.04 1.04 34.17 1.44 −18.63 1.71 
+ 
+SP land-only
+0.05 −28.87 1.87 12.51 1.87 37.73 1.01 
+ 0.1 −27.72 1.81 11.42 1.76 37.49 1.00 
+ 0.15 −27.32 1.71 10.60 1.63 37.32 1.01 
+ 0.2 −25.64 1.57 8.49 1.71 36.78 0.95 
+ 
+SP mix
+0.05 0.17 0.56 1.58 1.03 17.69 1.20 
+ 0.1 −0.59 0.64 3.33 1.13 17.39 0.99 
+ 0.15 0.48 0.81 2.75 1.09 16.43 1.40 
+ 0.2 −6.59 1.11 8.37 1.43 19.93 1.29 
+ 
+T (dt4) carbon-only
+0.05 2.67 0.15 1.55 0.07 −0.89 0.04 
+ 0.1 2.02 0.14 1.90 0.08 −0.79 0.03 
+ 0.15 1.92 0.13 1.39 0.09 −0.62 0.03 
+ 0.2 1.72 0.11 1.04 0.06 −0.47 0.04 
+ 
+T (dt4) water-only
+0.05 2.15 0.12 4.85 0.11 −1.60 0.06 
+ 0.1 1.91 0.11 4.49 0.11 −1.33 0.05 
+ 0.15 1.76 0.11 4.34 0.11 −1.29 0.06 
+ 0.2 1.84 0.11 4.11 0.11 −1.19 0.05 
+ 
+T (dt4) land-only
+0.05 −0.48 0.04 −1.05 0.06 2.10 0.05 
+ 0.1 −0.65 0.04 −1.41 0.05 1.62 0.05 
+ 0.15 −0.53 0.05 −0.68 0.05 1.40 0.05 
+ 0.2 −0.08 0.07 −0.51 0.05 1.22 0.05 
+ 
+T (dt4) mix
+0.05 2.50 0.13 3.49 0.11 −0.07 0.05 
+ 0.1 2.22 0.13 3.19 0.11 −0.10 0.03 
+ 0.15 2.18 0.13 2.47 0.11 −0.14 0.04 
+ 0.2 1.95 0.12 2.43 0.10 0.00 0.04 
+ 
+SPT (dt4) carbon-only
+0.05 52.86 1.31 −86.21 3.86 19.38 1.02 
+ 0.1 52.59 1.31 −86.23 3.87 19.37 1.02 
+ 0.15 52.52 1.32 −86.48 3.87 19.46 1.03 
+ 0.2 52.24 1.32 −86.26 3.87 19.30 1.02 
+ 
+SPT (dt4) water-only
+0.05 −1.09 0.87 38.27 1.41 −23.27 1.74 
+ 0.1 −1.79 0.93 37.66 1.38 −21.60 1.72 
+ 0.15 −2.58 0.89 37.30 1.42 −21.25 1.69 
+ 0.2 −2.06 0.93 37.11 1.45 −20.60 1.79 
+ 
+SPT (dt4) land-only
+0.05 −28.82 1.84 12.47 1.87 38.60 0.97 
+ 0.1 −28.16 1.93 11.35 2.01 38.11 1.01 
+ 0.15 −28.63 1.93 12.43 1.94 38.17 1.01 
+ 0.2 −27.82 1.85 11.59 1.84 38.08 1.02 
+ 
+SPT (dt4) mix
+0.05 2.88 0.46 4.36 0.76 18.20 1.13 
+ 0.1 3.27 0.49 5.09 0.88 16.91 1.17 
+ 0.15 5.33 0.59 3.57 0.85 15.25 1.09 
+ 0.2 0.60 0.56 7.95 1.31 16.76 1.20 
+after migration. Nevertheless, the benefits of spatial shifting in reducing 
+the overall footprint outweigh the footprints associated with migration, 
+obtaining a substantial footprint improvement. Combined spatial and 
+temporal shifting can lead to even more significant improvements, 
+although the additional benefits are relatively modest compared to 
+spatial shifting alone. This suggests that while temporal shifting can 
+contribute to sustainability goals, its impact is limited by the inherent 
+variability of renewable energy availability within a single region. 
+Though it is worth noting that even if temporal shifting has less savings, 
+it does not require to move data between regions, which sometimes will 
+not be possible due to security/privacy concerns.
+These findings reveal a trade-off: although spatial shifting yields 
+the greatest reductions, it may be limited in practice by sovereignty, 
+privacy, and cost constraints. Therefore, temporal shifting is an impor-
+tant alternative, despite its standalone benefits being smaller; it can be 
+applied even when workloads cannot be transferred to another region. 
+This suggests prioritizing spatial shifting for portable workloads and 
+using temporal shifting as a fallback for constrained ones.
+5.3. Comparison of the two scenarios
+With diverse providers and workloads, the results are different, but 
+the improvements are relevant in both. In particular, for the Azure-
+based scenario the greatest improvements were obtained, since there 
+is no footprint overhead when migrating, while for the AWS-based 
+scenario, there can be relevant overhead, e.g., 12% carbon footprint 
+related to data transfer. However, this overhead is such that the im-
+provements are still significant. Moreover, it allows us to obtain a more 
+balanced distribution of requests among the regions.
+5.4. Trade-off analysis
+As expected, in both scenarios, optimizing for one metric can lead 
+to trade-offs in the other metrics. For instance, optimizing for carbon 
+footprint leads to a significant increase in water footprint, as already 
+observed in previous studies [18].
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+15 
+===== PAGE 16 =====
+G. Attenni et al.
+Fig. 14. Normalized energy intensity factors for each energy source, showing a negative correlation between carbon and water, and seemingly no correlation 
+between land and the other factors.
+This is particularly evident when optimizing for carbon, which 
+results in a significant increase in water footprint. Optimizing for 
+water results in an increase in both carbon and land use footprints, 
+but to a lesser extent compared to the increase in water footprint 
+when optimizing only for carbon. Optimizing for the mix of the three 
+factors results in a balanced reduction of all three footprints, but the 
+improvements are lower compared to optimizing for only one factor.
+To understand these trade-offs, consider the energy intensity factors 
+for each energy source. Fig.  14 shows the energy intensity factors nor-
+malized between 0 and 1 (by dividing by the sum of each factor across 
+all sources). It seems that carbon and water are negatively correlated 
+(e.g., hydro, coal), but not all low-carbon-intensity sources have high 
+water intensity (e.g., wind and nuclear). On the other hand, land use 
+seems to not be correlated with the other factors, although there are 
+sources with high land use and low water intensity (e.g. biomass), and 
+sources with low land use and high carbon and water intensity (e.g. oil).
+5.5. Threats to validity
+This study presents some threats to validity that should be consid-
+ered when interpreting the results.
+Simulation-based methodology. This study relies on simulation rather 
+than deployment on production infrastructure. It is assumed that there 
+are always resources available, which might not be true in reality. 
+However, considering the promise of elastic scalability of public cloud 
+providers and general availability of surplus ‘‘spot’’ resources, specifi-
+cally for the large-scale, elastic, hyperscale infrastructures operated by 
+major providers such as AWS and Azure, this appears to be a sensible 
+assumption. This is supported by empirical measurement studies of spot 
+instance markets, such as SpotLake [48], which continuously track spot 
+instance availability, interruption rates, and pricing across major cloud 
+vendors and show that surplus capacity is persistently made available 
+across regions. More broadly, the simulations are grounded in real-
+world infrastructure characteristics and workload traces to the extent 
+allowed by public data availability.
+The choice of a simulation-based approach is also supported by the 
+fact that it allows to study a large number of geographically distributed 
+scenarios and scheduling weight configurations without incurring the 
+substantial computational cost of actually executing every evaluated 
+workload and configuration in production.
+Generality. The scenarios considered may not fully represent the di-
+versity of real-world cloud environments, as this work is focused on 
+specific providers (Azure and AWS) and workload types (FaaS and big 
+data). Moreover, the workload traces used for the AWS-based scenario 
+may not be representative of production cloud workloads since arrival 
+patterns are synthetically randomized. However, selected two diverse 
+cases were selected: lightweight, latency-sensitive workloads (FaaS) 
+and scalable data-intensive batch processing (big data). The fact that we 
+observe similar trade-offs across such different cases increases the con-
+fidence that the results generalize, even though more workload classes 
+should be studied in future work. Our conclusions may be questioned 
+on the basis that they are valid only for the specific regions and grid 
+mixes considered, and not for other regions or grid mixes. However, as 
+it is the grid mix that dominates the shifting decisions, it can be argued 
+that the observed trade-offs follow from the physical characteristics of 
+electricity generation technologies. These characteristics are intrinsic to 
+the technologies themselves, rather than being specific to any particular 
+region. Therefore, the qualitative trade-off patterns (e.g. the carbon–
+water trade-off) are expected to be observed also in other regions and 
+providers with a similar generation technology mix, although the exact 
+scale of the trade-off will vary according to the local mix. Validating 
+this transferability across additional regions, providers, and datasets is 
+an important area for future research.
+Input data quality. The accuracy of our results is contingent upon the 
+quality of the input data, including grid mix predictions. In our case, 
+these predictions were mimicked using historical data and applying 
+an arbitrary noise distribution. This approach is consistent with other 
+carbon-aware scheduling practices, in which noise is applied to carbon 
+intensity signals [10,49]. Moreover, this technique made it possible to 
+test our approach at different magnitudes of error, as demonstrated 
+by the sensitivity analysis. However, we recognize that repeating the 
+experiments using an actual operational forecasting model would be 
+an important step for future research.  Moreover, to estimate the LUE 
+parameter, estimations for the region’s IT power consumption and the 
+land occupation were used, since precise data is not available. Note 
+that, unlike PUE and WUE, LUE has no established reporting conven-
+tion. Cloud providers do not disclose site-specific IT power consumption 
+alongside facility land area. Consequently, our computed LUE values 
+cannot be directly validated against figures disclosed by providers. This 
+is mitigated by grounding our land occupation estimates in publicly 
+reported real-estate and regulatory sources (e.g., news reporting on 
+data center land acquisitions, and AWS’s Form 10-K filings) rather than 
+assumed or synthetic values. Further note that data center operators 
+would have access to precise, site-specific land occupation and IT power 
+consumption figures. Thus, our reliance on estimation reflects the limits 
+of publicly available data and not the inherent unavailability of such 
+measurements. These approximations could affect the validity of our 
+findings, yet this data is unfortunately not freely and openly available. 
+Finally, it is assumed that the application runtimes are available to the 
+schedulers. While it is not necessarily realistic to know these runtimes 
+exactly prior to executions, low-error estimates could be available from 
+previous runs or profiling [50–53].
+Embodied impacts. As discussed in Section 2.1, this study only considers 
+the operational share of carbon, water and land footprints. Embodied 
+impacts arising from the manufacture of IT equipment and the con-
+struction of data center facilities are excluded. However, it would be 
+valuable to extend our multi-objective formulation to incorporate these 
+impacts in future work.
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+16 
+===== PAGE 17 =====
+G. Attenni et al.
+Regional resource equivalence. Both our land use metrics (𝐿𝑈 𝐸𝑑 ,
+𝐸𝐿𝐼𝐹 ) and our water footprint metrics (𝑊 𝑈 𝐸𝑑 , 𝐸𝑊 𝐼𝐹 ) treat a unit of 
+the respective resource as equivalent, regardless of region. One square 
+meter of land and one liter of water are given the same weight, whether 
+they are consumed in an area with an abundance or shortage of 
+water, or on ecologically valuable or already degraded land. However, 
+the environmental significance of a given quantity of water or land 
+consumption depends heavily on regional context. Incorporating such 
+regional weighting for water and land use would be valuable for future 
+studies.
+Spatial shifting constraints. Our models assume that workloads can be 
+shifted across regions and time without considering potential con-
+straints such as latency requirements, data sovereignty issues, or pri-
+vacy concerns. Our results show that the current optimization setting 
+can lead to a high percentage of cross-continental migrations, which 
+would need to be reconciled with such constraints if they were to be 
+enforced. A more thorough treatment of these constraints, including 
+their integration into the scheduling objective itself, is left for future 
+work. While these issues are significant, they primarily affect spatial 
+shifting. Temporal shifting, in contrast, only delays the execution, and 
+all data can remain in the same location.
+Economic costs. Our simulations do not explicitly optimize for the 
+economic costs associated with shifting workloads geographically. In 
+practice, migrating data between data center locations can introduce 
+significant costs, and our results show that these costs vary substantially 
+across scheduling configurations, which would need to be consid-
+ered when selecting a deployment configuration in practice, alongside 
+the associated jurisdiction and data-sovereignty implications discussed 
+above. Meanwhile, it is assumed that the cost of storing data for longer 
+for delaying executions has a negligible monetary cost.
+6. Conclusion
+In this paper, has been demonstrated that spatial and temporal shift-
+ing can significantly reduce the environmental footprint of cloud work-
+loads in terms of carbon emissions, water consumption, and land use. 
+Spatial shifting, in particular, has yielded substantial improvements 
+across all three environmental factors considered, with reductions rang-
+ing from 20% to 85% depending on the scenario and optimization 
+criteria. Temporal shifting also contributes to footprint reduction, al-
+beit to a lesser extent, with improvements of up to 12%. However, 
+since temporal shifting does not require workloads to be migrated 
+between regions, it may be more relevant in practice, when migration 
+is restricted for data privacy or cost reasons. The combination of both 
+methods yields the highest reductions, although the incremental benefit 
+over spatial shifting alone is relatively small.
+Our sensitivity analyzes indicate that both shifting methods are 
+robust to prediction errors in grid mix data and maintain their effec-
+tiveness across different seasons. Finally, has been demonstrated that 
+it is possible to reduce the environmental footprint and mitigate trade-
+off implications by optimizing multiple impact factors simultaneously 
+using a mixed strategy. Overall, our findings highlight the potential 
+of a more sustainable workload scheduling as a practical approach 
+considering diverse cloud providers and workloads.
+In the future, the impact of cross-region availability, load balancing, 
+and low-latency requirements should be studied. In addition, beyond 
+shifting, the role of resource configurations and dynamic scaling when 
+carbon, water, and land use are jointly optimized for cloud workloads 
+should be further explored. Finally, it would be interesting to incor-
+porate the concept of ‘‘water stress’’ to reflect the varying impact that 
+water consumption can have on areas with different hydrogeological 
+characteristics to provide a more equitable representation of the en-
+vironmental trade-off across regions. Similarly, a concept of ‘‘land-use 
+stress’’ could be introduced to better reflect the environmental impact 
+of data center developments in different geographical areas.
+CRediT authorship contribution statement
+Giulio Attenni: Writing – review & editing, Writing – original draft, 
+Visualization, Software, Methodology, Investigation, Formal analysis, 
+Data curation, Conceptualization. Youssef Moawad: Writing – review 
+& editing, Writing – original draft, Software, Investigation, Formal 
+analysis, Data curation, Conceptualization. Novella Bartolini: Writing 
+– review & editing, Supervision, Conceptualization. Lauritz Tham-
+sen: Writing – review & editing, Supervision, Project administration, 
+Methodology, Investigation, Funding acquisition, Conceptualization.
+Rights retention
+For the purpose of open access, we have applied a Creative Com-
+mons Attribution (CC BY) licence to any Author Accepted Manuscript 
+version arising from this submission.
+Declaration of competing interest
+The authors declare that they have no known competing finan-
+cial interests or personal relationships that could have appeared to 
+influence the work reported in this paper.
+Acknowledgments
+This work was supported by the Engineering and Physical Sciences 
+Research Council under grant number UKRI154 (‘‘Casper: Carbon-
+Aware Scalable Processing in Elastic Clusters’’).
+Appendix. Research materials — Full source documentation
+A.1. Workload traces
+• Azure Functions (FaaS): 2019 Azure Functions trace, provid-
+ing per-minute invocation counts and daily execution-time per-
+centiles (0th, 1st, 25th, 50th, 75th, 99th, 100th) for each function. 
+Traces can be found in the Azure official GitHub profile. The 
+specific dataset is available at https://github.com/Azure/AzureP
+ublicDataset/blob/master/AzureFunctionsDataset2019.md
+• AWS Big Data (Spark): job configuration and runtime traces from 
+the scout tool for cloud configuration optimization. Available at 
+the GitHub repository ‘‘scout: A Tool for Cloud Configuration 
+Optimization’’ - https://github.com/oxhead/scout
+A.2. Data center efficiency and land occupation
+Table  A.12 reports the data sources of Data Center Efficiency metrics 
+such as PUE and WUE, and sources of Land Occupation data.
+A.3. VM instance specifications (AWS)
+Instances memory and cpu can be found at https://aws.amazon.
+com/ec2/instance-types, and bandwidth values at https://docs.aws.
+amazon.com/ec2/latest/instancetypes/pg.html.
+A.4. Migration monetary costs (AWS)
+AWS charges for data transfer out from an Amazon EC2 based on the 
+destination region. A table summarizing the costs is available at: https:
+//aws.amazon.com/ec2/pricing/on-demand/#Data_Transfer. Charging 
+rates used in our evaluation are also reported in Table  A.13
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+17 
+===== PAGE 18 =====
+G. Attenni et al.
+Table A.12
+Data center efficiency (PUE/WUE) and land occupation sources, by region.
+ Provider Region Sources PUE/WUE Sources Land  
+ Azure swedencentral https://datacenters.microsoft.com/wp-content/uploads/2024/
+08/Sweden%20%28Sweden%20Central%29.pdf
+Article: ‘‘Two municipalities in the Stockholm 
+region sell land to Microsoft’’, published by Invest 
+Stockholm 
+https://www.mynewsdesk.com/investstockholm/
+pressreleases/two-municipalities-in-the-stockholm-
+region-sell-land-to-microsoft-2813124
+ 
+ Azure southcentralus Microsoft Sustainability Factsheets 
+https://datacenters.microsoft.com/wp-content/uploads/2024/
+08/Texas%20%28South%20Central%20US%29.pdf
+Datacenters.com, ‘‘Microsoft Azure: South Central 
+US-Texas’’ https://www.datacenters.com/microsoft-
+azure-south-central-us-texas
+ 
+ Azure centralus Microsoft Sustainability Factsheets 
+https://datacenters.microsoft.com/wp-content/uploads/2024/
+08/Iowa%20%28Central%20US%29.pdf
+Datacenters.com, ‘‘Microsoft Azure: Central 
+US-Iowa’’ https://www.datacenters.com/microsoft-
+azure-des-moines
+ 
+ Azure eastus2 Microsoft Sustainability Factsheets from Internet Archive’s 
+Wayback Machine Snapshots https:
+//web.archive.org/web/20251113020848/https://datacenters.
+microsoft.com/globe/pdfs/sustainability/factsheets/Virginia%
+20(East%20US%20&%20East%20US%202).pdf
+Datacenters.com, ‘‘Microsoft Azure: East 
+US-Virginia’’ 
+https://www.datacenters.com/microsoft-azure-east-
+us-virginia
+ 
+ AWS All 5 regions Microsoft Sustainability Factsheets 
+https://sustainability.aboutamazon.com/products-
+services/aws-cloud
+FORM 10-K, land estimated via AZ-count share of 
+total https://s2.q4cdn.com/299287126/files/doc_
+financials/2025/ar/Amazon-2024-Annual-
+Report.pdf
+ 
+Table A.13
+AWS charges for data transferring.
+ Destination region USD/GB Transferred 
+ eu-central-1 0.05  
+ eu-west-2 0.02  
+ eu-north-1 0.02  
+ us-east-1 0.01  
+ us-west-1 0.02  
+Table A.14
+US electric grid regions’ URLs.
+ Region URL  
+ ERCOT https://www.eia.gov/electricity/wholesalemarkets/data.php?rto=ercot 
+ MISO https://www.eia.gov/electricity/wholesalemarkets/data.php?rto=miso 
+ PJM https://www.eia.gov/electricity/wholesalemarkets/data.php?rto=pjm  
+ CAISO https://www.eia.gov/electricity/wholesalemarkets/data.php?rto=caiso 
+A.5. Electricity grid mix data
+Timeseries of power grid mix.
+• Sweden: ENTSOE Transparency Platform https://transparency.
+entsoe.eu/.
+• United Kingdom: National Electricity System Operator API https:
+//carbon-intensity.github.io/api-definitions/.
+• Germany: SMARD - Download market data https://www.smard.
+de/en/downloadcenter/download-market-data/.
+• US: EIA - Wholesale Electricity Market Data. Table  A.14 shows 
+the URLs of the regions that we used in our work.
+A.6. Impact coefficients (Carbon, water, land)
+Source-level documentation for Table  6:
+• Carbon intensity: IPCC AR5 Annex III, Table A.III.2 (median 
+lifecycle emissions) [20]; oil coefficient from Our World in Data, 
+https://ourworldindata.org/safest-sources-of-energy.
+• Water intensity (EWIF): NREL technical report on energy-related 
+water consumption, Tables 1–2 [21].
+• Land intensity (ELIF): PLOS land-use survey (oil assumed com-
+parable to gas, per survey authors) [22].
+Data availability
+All data used in the paper is either replicated in the git repository 
+(footnote 1) or provided as a reference in our appendix "Research 
+Materials  Full Source Documentation".
+References
+[1] C. Freitag, M. Berners-Lee, K. Widdicks, B. Knowles, G.S. Blair, A. Friday, The 
+real climate and transformative impact of ICT: A critique of estimates, trends, 
+and regulations, Patterns 2 (9) (2021).
+[2] L. Belkhir, A. Elmeligi, Assessing ICT global emissions footprint: Trends to 2040 
+& recommendations, J. Clean. Prod. 177 (2018).
+[3] Energy and AI, Tech. Rep., IEA, 2025, URL https://www.iea.org/reports/energy-
+and-ai. (Accessed 20 February 2026).
+[4] P.X. Gao, A.R. Curtis, B. Wong, S. Keshav, It’s not easy being green, in: Pro-
+ceedings of the ACM SIGCOMM 2012 Conference on Applications, Technologies, 
+Architectures, and Protocols for Computer Communication, SIGCOMM ’12, ACM, 
+2012.
+[5] D. Maji, B. Pfaff, V. P R, R. Sreenivasan, V. Firoiu, S. Iyer, C. Josephson, 
+Z. Pan, R.K. Sitaraman, Bringing carbon awareness to multi-cloud application 
+delivery, in: Proceedings of the 2nd Workshop on Sustainable Computer Systems, 
+HotCarbon’23, ACM, 2023.
+[6] M. Chadha, T. Subramanian, E. Arima, M. Gerndt, M. Schulz, O. Abboud, 
+GreenCourier: Carbon-aware scheduling for serverless functions, in: Proceedings 
+of the 9th International Workshop on Serverless Computing, WoSC’23, ACM, 
+2023.
+[7] J. Lindberg, Y. Abdennadher, J. Chen, B.C. Lesieutre, L. Roald, A guide to 
+reducing carbon emissions through data center geographical load shifting, in: 
+Proceedings of the Twelfth ACM International Conference on Future Energy 
+Systems, in: e-Energy’21, ACM, 2021.
+[8] J. Zheng, A.A. Chien, S. Suh, Mitigating curtailment and carbon emissions 
+through load migration between data centers, Joule 4 (10) (2020).
+[9] W.A. Hanafy, Q. Liang, N. Bashir, D. Irwin, P. Shenoy, CarbonScaler: Leveraging 
+cloud workload elasticity for optimizing carbon-efficiency, Proc. ACM Meas. 
+Anal. Comput. Syst. 7 (3) (2023).
+[10] P. Wiesner, I. Behnke, D. Scheinert, K. Gontarska, L. Thamsen, Let’s wait awhile: 
+how temporal workload shifting can reduce carbon emissions in the cloud, in: 
+Proceedings of the 22nd International Middleware Conference, Middleware’21, 
+ACM, 2021.
+[11] T. Piontek, K. Haghshenas, M. Aiello, Carbon emission-aware job scheduling for 
+Kubernetes deployments, J. Supercomput. 80 (2023).
+[12] Z. Zhou, F. Liu, R. Zou, J. Liu, H. Xu, H. Jin, Carbon-aware online control of 
+geo-distributed cloud services, IEEE Trans. Parallel Distrib. Syst. 27 (9) (2016).
+[13] A. Souza, S. Jasoria, B. Chakrabarty, A. Bridgwater, A. Lundberg, F. Skogh, A. Ali-
+Eldin, D. Irwin, P. Shenoy, CASPER: Carbon-aware scheduling and provisioning 
+for distributed web services, in: Proceedings of the 14th International Green and 
+Sustainable Computing Conference, IGSC’23, ACM, 2024.
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+18 
+===== PAGE 19 =====
+G. Attenni et al.
+[14] T. Sukprasert, A. Souza, N. Bashir, D. Irwin, P. Shenoy, On the limitations of 
+carbon-aware temporal and spatial workload shifting in the cloud, in: Proceed-
+ings of the Nineteenth European Conference on Computer Systems, EuroSys’24, 
+ACM, 2024.
+[15] R. Cordingly, J. Kaur, D. Dwivedi, W. Lloyd, Towards serverless sky computing: 
+An investigation on global workload distribution to mitigate carbon intensity, 
+network latency, and cost, in: 2023 IEEE International Conference on Cloud 
+Engineering, IC2E, 2023.
+[16] L. Lin, A.A. Chien, Adapting datacenter capacity for greener datacenters and 
+grid, in: Proceedings of the 14th ACM International Conference on Future Energy 
+Systems, in: e-Energy’23, ACM, 2023.
+[17] P. Li, J. Yang, M.A. Islam, S. Ren, Making AI less ‘thirsty’, Commun. ACM 68 
+(7) (2025).
+[18] Y. Jiang, R.B. Roy, R. Kanakagiri, D. Tiwari, WaterWise: Co-optimizing carbon- 
+and water-footprint toward environmentally sustainable cloud computing, in: 
+Proceedings of the 30th ACM SIGPLAN Annual Symposium on Principles and 
+Practice of Parallel Programming, PPoPP’25, ACM, 2025.
+[19] T. Newbold, L.N. Hudson, S.L. Hill, S. Contu, I. Lysenko, R.A. Senior, L. Börger, 
+D.J. Bennett, A. Choimes, B. Collen, et al., Global effects of land use on local 
+terrestrial biodiversity, Nature 520 (7545) (2015).
+[20] IPCC, Climate change 2014: Mitigation of climate change. Annex III: 
+Technology-specific cost and performance parameters, 2014.
+[21] J. Macknick, R. Newmark, G. Heath, K. Hallett, Consumptive water use for U.S. 
+power production, 2011.
+[22] J. Lovering, M. Swain, L. Blomqvist, R.R. Hernandez, Land-use intensity of 
+electricity production and tomorrow’s energy landscape, PLoS One 17 (7) (2022).
+[23] V. Avelar, D. Azevedo, A. French, E.N. Power, PUE: a comprehensive 
+examination of the metric, White Pap. 49 (2012) 52, URL https:
+//www.thegreengrid.org/en/resources/library-and-tools/20-PUE%3A-A-
+Comprehensive-Examination-of-the-Metric. (Accessed 20 February 2026).
+[24] D. Azevedo, S.C. Belady, J. Pouchet, Water usage effectiveness (WUE): A 
+green grid datacenter sustainability metric, Green Grid 32 (2011) 16, URL 
+https://airatwork.com/wp-content/uploads/The-Green-Grid-White-Paper-35-
+WUE-Usage-Guidelines.pdf. (Accessed 20 February 2026).
+[25] K. Sumrani, Decarbonization: Towards Sustainable Data Centers, Tech. Rep., 
+Dell Technologies, 2023, URL https://learning.dell.com/content/dam/dell-
+emc/documents/en-us/2023KS_Sumrani-Decarbonization_To_Sustainable_Data_
+Centers.pdf. (Accessed 20 February 2026).
+[26] D. Weerasiri, M.C. Barukh, B. Benatallah, Q.Z. Sheng, R. Ranjan, A taxonomy 
+and survey of cloud resource orchestration techniques, ACM Comput. Surv. 50 
+(2) (2017).
+[27] H. Huang, W. Lin, J. Lin, K. Li, Power management optimization for data 
+centers: A power supply perspective, IEEE Trans. Sustain. Comput. 10 (4) (2025) 
+784–803, http://dx.doi.org/10.1109/TSUSC.2025.3542779.
+[28] D. Schweisgut, A. Benoit, Y. Robert, H. Meyerhenke, Carbon-aware workflow 
+scheduling with fixed mapping and deadline constraint, in: Proceedings of the 
+54th International Conference on Parallel Processing, ICPP’25, Association for 
+Computing Machinery, New York, NY, USA, 2025, pp. 627–637, http://dx.doi.
+org/10.1145/3754598.3754673.
+[29] J. Serenari, S. Sreekumar, K. Zhao, S. Sarkar, S. Lee, GreenWhisk: Emission-
+aware computing for serverless platform, in: 2024 IEEE International Conference 
+on Cloud Engineering, IC2E, 2024, pp. 44–54, http://dx.doi.org/10.1109/
+IC2E61754.2024.00012.
+[30] N. Asadov, V.C. Coroamă, M. Franzil, S. Galantino, M. Finkbeiner, Carbon-aware 
+spatio-temporal workload shifting in edge–cloud environments: A review and 
+novel algorithm, Sustainability 17 (14) (2025).
+[31] S. Hall, F. Micheli, G. Belgioioso, A. Radovanović, F. Dörfler, Carbon-aware com-
+puting for data centers with probabilistic performance guarantees, IEEE Trans. 
+Power Syst. (2025) 1–14, http://dx.doi.org/10.1109/TPWRS.2025.3630499.
+[32] A. Radovanović, R. Koningstein, I. Schneider, B. Chen, A. Duarte, B. Roy, D. Xiao, 
+M. Haridasan, P. Hung, N. Care, S. Talukdar, E. Mullen, K. Smith, M. Cottman, 
+W. Cirne, Carbon-aware computing for datacenters, IEEE Trans. Power Syst. 38 
+(2) (2023).
+[33] G. Attenni, N. Bartolini, Environmentally-conscious cloud orchestration consid-
+ering geo-distributed data centers, in: Post-Proceedings of the 1st International 
+Workshop on Low Carbon Computing, LOCO’24, 2025.
+[34] M.A. Islam, S. Ren, G. Quan, M.Z. Shakir, A.V. Vasilakos, Water-constrained 
+geographic load balancing in data centers, IEEE Trans. Cloud Comput. 5 (2) 
+(2015).
+[35] P. Wiesner, R. Khalili, D. Grinwald, P. Agrawal, L. Thamsen, O. Kao, FedZero: 
+Leveraging renewable excess energy in federated learning, in: Proceedings of the 
+15th ACM International Conference on Future and Sustainable Energy Systems, 
+in: e-Energy’24, ACM, 2024, pp. 373–385.
+[36] P. Wiesner, D. Scheinert, T. Wittkopp, L. Thamsen, O. Kao, Cucumber: 
+Renewable-aware admission control for delay-tolerant cloud and edge workloads, 
+in: Euro-Par 2022: Parallel Processing: 28th International Conference on Parallel 
+and Distributed Computing, Springer, 2022, pp. 218–232.
+[37] K. West, F. Lehmann, V. Bountris, U. Leser, Y. Elkhatib, L. Thamsen, Exploring 
+the potential of carbon-aware execution for scientific workflows, in: 2025 
+IEEE 25th International Symposium on Cluster, Cloud and Internet Computing, 
+CCGrid’25, IEEE, 2025, pp. 325–328.
+[38] J. Aslan, K. Mayers, J.G. Koomey, C. France, Electricity intensity of internet data 
+transmission: Untangling the estimates, J. Ind. Ecol. 22 (4) (2018).
+[39] M. Shahrad, R. Fonseca, I. Goiri, G. Chaudhry, P. Batum, J. Cooke, E. Laureano, 
+C. Tresness, M. Russinovich, R. Bianchini, Serverless in the wild: Characterizing 
+and optimizing the serverless workload at a large cloud provider, in: 2020 
+USENIX Annual Technical Conference, USENIX ATC 20, 2020.
+[40] J. Panneerselvam, L. Liu, N. Antonopoulos, Characterisation of hidden periodic-
+ity in large-scale cloud datacentre environments, in: 2017 IEEE International 
+Conference on Internet of Things (IThings) and IEEE Green Computing and 
+Communications (GreenCom) and IEEE Cyber, Physical and Social Computing 
+(CPSCom) and IEEE Smart Data, SmartData, 2017.
+[41] S.A. Jyothi, C. Curino, I. Menache, S.M. Narayanamurthy, A. Tumanov, J. Yaniv, 
+R. Mavlyutov, Í.n. Goiri, S. Krishnan, J. Kulkarni, S. Rao, Morpheus: towards 
+automated SLOs for enterprise clusters, in: Proceedings of the 12th USENIX 
+Conference on Operating Systems Design and Implementation, OSDI’16, USENIX 
+Association, USA, 2016.
+[42] C.-J. Hsu, V. Nair, T. Menzies, V.W. Freeh, Scout: An experienced guide to find 
+the best cloud configuration, 2018, arXiv preprint arXiv:1803.01296.
+[43] A. Alfadda, R. Adhikari, M. Kuzlu, S. Rahman, Hour-ahead solar PV power 
+forecasting using SVR based approach, in: 2017 IEEE Power & Energy Society 
+Innovative Smart Grid Technologies Conference, ISGT, IEEE, 2017.
+[44] I. Okumus, A. Dinler, Current status of wind energy forecasting and a hybrid 
+method for hourly predictions, Energy Convers. Manage. 123 (2016).
+[45] F. Zayas-Gato, A. Díaz-Longueira, P. Arcano-Bea, Á. Michelena, J.L. Calvo-Rolle, 
+E. Jove, A new deep learning-based approach for predicting the geothermal heat 
+pump’s thermal power of a real bioclimatic house, Appl. Intell. 55 (6) (2025).
+[46] M. Bilgili, S. Keiyinci, F. Ekinci, One-day ahead forecasting of energy production 
+from run-of-river hydroelectric power plants with a deep learning approach, Sci. 
+Iran. 29 (4) (2022).
+[47] Our World in Data, What are the safest and cleanest sources of energy? 2020, 
+URL https://ourworldindata.org/safest-sources-of-energy. (Accessed 20 February 
+2026).
+[48] S. Lee, J. Hwang, K. Lee, SpotLake: Diverse spot instance dataset archive service, 
+in: 2022 IEEE International Symposium on Workload Characterization, IISWC, 
+2022, pp. 242–255, http://dx.doi.org/10.1109/IISWC55918.2022.00029.
+[49] E. Rodrigues, J. Goldverg, T. Kosar, Carbon-aware temporal data transfer 
+scheduling across cloud datacenters, in: 2025 IEEE 18th International Conference 
+on Cloud Computing, CLOUD, IEEE Computer Society, Los Alamitos, CA, USA, 
+2025, pp. 255–264, http://dx.doi.org/10.1109/CLOUD67622.2025.00034, URL 
+https://doi.ieeecomputersociety.org/10.1109/CLOUD67622.2025.00034.
+[50] A.D. Popescu, A. Balmin, V. Ercegovac, A. Ailamaki, PREDIcT: towards predicting 
+the runtime of large scale iterative analytics, Proc. VLDB Endow. 6 (14) (2013).
+[51] J. Will, L. Thamsen, D. Scheinert, J. Bader, O. Kao, C3O: Collaborative cluster 
+configuration optimization for distributed data processing in public clouds, in: 
+2021 IEEE International Conference on Cloud Engineering, IC2E, 2021.
+[52] H. Al-Sayeh, B. Memishi, M.A. Jibril, M. Paradies, K.-U. Sattler, Juggler: Au-
+tonomous cost optimization and performance prediction of big data applications, 
+in: Proceedings of the 2022 International Conference on Management of Data, 
+SIGMOD’22, Association for Computing Machinery, 2022.
+[53] S. Venkataraman, Z. Yang, M. Franklin, B. Recht, I. Stoica, Ernest: Efficient 
+performance prediction for Large-Scale advanced analytics, in: 13th USENIX 
+Symposium on Networked Systems Design and Implementation, NSDI 16, USENIX 
+Association, 2016.
+Sustainable Computing: Informatics and Systems 52 (2026) 101498 
+19 

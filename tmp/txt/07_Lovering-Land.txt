@@ -1,0 +1,882 @@
+
+===== PAGE 1 =====
+RESEA RCH ARTICL E
+Land-use intensity of electricity production
+and tomorrow’s energy landscape
+Jessica Lovering
+ID
+1
+*, Marian Swain
+ID
+2
+, Linus Blomqvist
+3
+, Rebecca R. Hernandez
+4,5,6,7
+1 Fastest Path to Zero Initiative, University of Michigan, Ann Arbor, MI, United States of America,
+2 Breakth rough Institute, Oakland, CA, United States of America, 3 Bren School of Environm ental Science &
+Managemen t, University of Californi a, Santa Barbara, CA, United States of America, 4 Energy and
+Resourc es Group, University of Californi a, Berkeley , California, United States of America, 5 Earth Sciences
+Division, Climate and Carbon Sciences Program , Lawrence Berkeley National Laboratory, Berkel ey,
+Californi a, United States of America, 6 Department of Land, Air, & Water Resources , University of California,
+Davis, Davis, CA, United States of America, 7 Wild Energy Initiative, John Muir Institute of the Environm ent,
+University of California , Davis, Davis, CA, United States of America
+* loverin g@umich.edu
+Abstract
+The global energy system has a relatively small land footprint at present, comprising just
+0.4% of ice-free land. This pales in comparison to agricultural land use– 30–38% of ice-free
+land–yet future low-carbon energy systems that shift to more extensive technologies could
+dramatically alter landscapes around the globe. The challenge is more acute given the pro-
+jected doubling of global energy consumption by 2050 and widespread electrification of
+transportation and industry. Yet unlike greenhouse gas emissions, land use intensity of
+energy has been rarely studied in a rigorous way. Here we calculate land-use intensity of
+energy (LUIE) for real-world sites across all major sources of electricity, integrating data
+from published literature, databases, and original data collection. We find a range of LUIE
+that span four orders of magnitude, from nuclear with 7.1 ha/TWh/y to dedicated biomass at
+58,000 ha/TWh/y. By applying these LUIE results to the future electricity portfolios of ten
+energy scenarios, we conclude that land use could become a significant constraint on deep
+decarbonization of the power system, yet low-carbon, land-efficient options are available.
+1. Introduction
+Providing energy for a population of a projected 10 billion by mid-century has many impacts
+on public health and the environment beyond just carbon emissions. These impacts include
+water use, materials consumption, local particulate pollution, and land use. The land footprint
+of energy systems can displace natural ecosystems, lead to land degradation, and create trade-
+offs for food production, urban development, and conservation. For example, a recent analysis
+showed that energy sprawl is now the largest driver of land-use change in the United States
+[1]. Furthermore, land-intensive energy sources may face growing opposition during the siting
+process, potentially slowing down the rate of the clean energy transition. Giordono et al.
+(2018) analyzed proposed wind farms in the western United States and found that over 35% of
+projects faced some form of opposition [2]. The land footprint of energy may become an even
+PLOS ONE
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 1 / 17
+a1111111111
+a1111111111
+a1111111111
+a1111111111
+a1111111111
+OPEN ACCESS
+Citation: Lovering J, Swain M, Blomqv ist L,
+Hernandez RR (2022) Land-use intensity of
+electricity production and tomorrow ’s energy
+landscape. PLoS ONE 17(7): e0270155. https://do i.
+org/10.1371 /journal.pone. 0270155
+Editor: Lalit Chandra Saikia, National Institute of
+Technology Silchar, India, INDIA
+Received: March 9, 2022
+Accepted: June 6, 2022
+Published: July 6, 2022
+Peer Review History: PLOS recognize s the
+benefits of transpar ency in the peer review
+process; therefore, we enable the publication of
+all of the content of peer review and author
+response s alongside final, published articles. The
+editorial history of this article is available here:
+https://doi.o rg/10.1371/jo urnal.pone.0 270155
+Copyright: © 2022 Lovering et al. This is an open
+access article distributed under the terms of the
+Creative Commons Attribution License, which
+permits unrestricte d use, distribu tion, and
+reproduction in any medium, provided the original
+author and source are credited.
+Data Availabilit y Statement: All relevant data are
+within the paper and its Support ing Information
+files.
+Funding: R.R.H. received funding for this project
+from the USDA National Institute of Food and
+===== PAGE 2 =====
+larger driver of environmental impacts in the coming decades, if energy consumption rises
+rapidly in emerging economies and countries shift their mix of energy sources to meet decar-
+bonization targets [3], potentially towards more land-intensive energy sources.
+The land footprint of energy is seldom considered in regional and global assessments of
+decarbonization pathways, land-use change, and biodiversity threats, with the occasional
+exception of particularly land-intensive sources like bioenergy [4–10]. There is a need to con-
+sider land use as a key factor in energy systems planning, along with other environmental
+impacts, public health, greenhouse gas emissions, affordability, and energy security.
+There are only a limited set of existing studies that assess land-use intensity of energy (LUIE)
+across all major electricity sources and all have methodological weaknesses. Previous studies cal-
+culated LUIE based on a single installation [11], a small number of non-randomly selected facili-
+ties [12–14], or use modeled electricity generation data. LUIE figures drawing only on a single or
+handful of sample units may by chance represent unusually small or large facilities, and thus mis-
+represent the full distribution of intensities, which are better characterized by the mean or median
+of a larger sample. Furthermore, modeled electricity generation data may not reflect actual perfor-
+mance. As such, LUIE figures drawing on larger, real-world samples are needed.
+In this study, we collected and calculated the land-use intensity (measured as hectares occupied
+per terawatt-hour of electricity generated in a given year [ha/TWh/y]) for real-world electricity gen-
+eration–not hypothetical or modeled electricity generation–across all major sources of electricity
+and a broad geographic distribution. We focus on the land footprint of electricity only, as most
+future energy scenarios predict disproportionate growth in electricity consumption as transporta-
+tion and industry electrify to reduce emissions, and electricity production has the broadest range of
+technologies with diverse land-use impacts [15, 16]. Our data set covers 73 countries and 45 US
+states. Data are collected from published studies as well as public records, datasets, and original
+geospatial analysis (see Supporting information for full details). We cover coal, natural gas, nuclear,
+wind, solar photovoltaic (PV), concentrated solar power (CSP), geothermal, hydroelectric, and bio-
+mass (including electricity from dedicated biomass feedstock production, hereafter called “dedi-
+cated biomass”; and electricity from waste and residue biomass, hereafter called “residue biomass”).
+We apply our LUIE results to ten prominent scenarios for future energy supply. These sce-
+narios vary greatly in their mix of renewables, fossil fuels, and nuclear energy, but all had large
+increases in global electricity generation. Our study is the first to reflect the diversity of land-
+use intensity both within and across energy technologies as they operate in the real world. This
+new dataset will aid policy-makers in a quantitative and comparative understanding of the bal-
+ance between energy, land, and climate change mitigation and the implications of a build-out
+of low-carbon electricity sources on global land use.
+2. Methods
+Our LUIE dataset is compiled from ten peer-reviewed studies, eight published reports from
+government agencies and national labs, nine databases, and two original geospatial analyses.
+To provide LUIE results representative of the current state of each energy technology, we
+required that data sources represent existing, operational energy facilities and real world,
+rather than modeled, electricity generation data. The one exception is for concentrating solar
+power (CSP), as we could only find real generating data for a handful sites; here, we also
+included a dataset with a range of expected generation from existing CSP sites [17]. As we only
+focused on electricity generation, we excluded liquid biofuels used in transportation and tradi-
+tional biomass used directly for heating and lighting.
+We drew on peer-reviewed literature to aggregate data for coal, natural gas, and biomass
+LUIE. For geothermal, hydroelectric, and solar, we combined data from past studies and
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 2 / 17
+Agriculture Hatch Project 1010512, the Departmen t
+of Land, Air and Water Resources at UC Davis, and
+the UC President’s Postdocto ral Fellowship. https://
+nifa.usda. gov/grants https://www.la wr.ucdavis.
+edu/ https://ppfp .ucop.edu/info/ The funders had
+no role in study design, data collection and
+analysis, decision to publish, or prepara tion of the
+manuscript.
+Competing interests : The authors have declared
+that no competing interests exist.
+===== PAGE 3 =====
+publicly available datasets. For wind and nuclear, we calculated area requirements using original
+measurements in Google Earth Pro and electricity generation data from the US Energy Informa-
+tion Administration (EIA) databases. Where possible, we obtained globally representative samples
+of energy facilities, but due to limitations on electricity generation data for individual power
+plants, data for the following energy sources include only facilities in the United States: nuclear,
+wind, and ground-mounted PV. For solar PV and wind, we expect LUIE to be similar across
+countries as the technology is produced by a small number of international suppliers and depends
+mostly on solar insolation. For nuclear power, we expect the LUIE based on US plants to be an
+upper bound, as most other countries with large nuclear fleets have higher numbers of reactors at
+each site, leading to economies of scale in terms of occupied land.
+Our LUIE calculations do not include land that is occupied by the upstream manufacturing
+of electricity generating facilities (e.g., the land required to mine materials for solar panel or
+wind turbine production, or the materials that go into nuclear or coal power plants). We also
+exclude land required for electricity transmission infrastructure (e.g., high voltage transmis-
+sion corridors), offshore area impacts (for wind farms and natural gas drilling), and under-
+ground impacts for geothermal, natural gas, and coal mining).
+The formula to measure direct LUIE (Eq 1), involves dividing the land occupied by an elec-
+tricity-producing facility by the energy it produces over a year [13, 18–22]. For most combus-
+tion-based generation—except nuclear—the power plant is only a small proportion of the land
+occupied to produce energy, with fuel production taking up a much larger amount of land. We
+call the area for fuel production indirect land use (Eq 2). This indirect land use applies to coal,
+natural gas, dedicated biomass, and nuclear, which require externally-sourced fuel. Total LUIE
+(Eq 3) is the sum of direct and indirect LUIE. Where data for a single facility was incomplete,
+for example only direct LUIE was provided, it was combined with the average indirect LUIE
+result from other sources to calculate total LUIE.
+LUI E
+dir ect
+¼
+A
+dire ct
+Ener gy
+ha � y
+TWh
+� �
+Eq 1: Direct land use intensity
+LUI E
+indi rec t
+¼
+A
+indi rect
+Ener gy
+ha � y
+TWh
+� �
+Eq 2: Indirect land use intensity (applicable energy systems: coal, natural gas, biomass,
+nuclear)
+LUIE
+to tal
+¼
+A
+dir ect
+þ A
+indi rect
+Ener gy
+ha � y
+TWh
+� �
+Eq 3: Total land use intensity
+A
+foa tpr int
+¼ Foo tpr int ½ha�
+OR
+A
+spa cing
+¼ Foot pri nt ½ha� þ Spac ing ½ha�
+Eq 4: Direct area definitions (applicable energy systems: natural gas, wind)
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 3 / 17
+===== PAGE 4 =====
+For two electricity sources (natural gas and wind), we offer two definitions of occupied land
+for our calculation of land use intensity: “footprint” and “spacing” area (Eq 4). Footprint area
+represents land directly covered by infrastructure, while spacing area is the entire area within
+the perimeter of a production site (further details in S1 Text). For each electricity source, we
+included all individual LUIE values and calculated the median, average, standard deviation,
+and interquartile range. To determine if our calculated LUIEs were statistically distinguishable,
+we performed an ANOVA with Tukey’s pairwise comparison. We anticipate large variability
+in LUIE within and across energy technologies, as has been demonstrated and discussed by
+previous studies [23–26].
+Details on our data sourcing for each technology are provided below. A table summarizing
+the characteristics of the data in each source is provided in the S1 Table.
+Coal: Total LUIE for coal (n = 30) includes direct land impacts from power plant infra-
+structure and indirect impacts from coal mining, processing, and transportation for the US
+and Canada. Several studies performed case studies or lifecycle analysis -both direct and indi-
+rect land use—on a small number of coal power plants with varying technologies, including
+mining and transportation of fuel and waste disposal; these included Fthenakis & Kim (2009),
+Hertwich et al. (2015), Spitzley & Keoleian (2005), Smil (2010), and Gates (1985) [12, 27–31].
+Indirect land use, specifically from mining, is the dominant contributor to coal’s land-use
+intensity, and thus a broader survey that focuses on land occupation for regional coal mining
+can give a more comprehensive estimate. Jordaan (2010) and McDonald et al. (2009) perform
+surveys of the land used for coal mining in Canada and the US, respectively [13, 32]. These
+two studies of indirect land-use were given in units of embodied energy for the mined coal, so
+we applied a 35% conversion efficiency to convert to electricity units, based on Ftheankis &
+Kim (2009) [12]. This gives an estimate of hectares per TWh for just the indirect, mining com-
+ponent of coal’s land use intensity.
+Natural Gas: Total LUIE for natural gas (n = 17) includes direct impacts from power plant
+infrastructure and indirect impacts from natural gas drilling and transportation infrastructure.
+Footprint LUIE represents the area covered by gas well pads, access roads, and pipelines. Five
+sources provided data on footprint LUIE [28, 32–35]. Spacing LUIE refers to the entire pro-
+duction field, including all the area in between well pads, even if that land does not have any
+structures or roads covering it. The US National Energy Technology Laboratory (2014) and
+US Department of Energy (1983) complete detailed life-cycle assessments for both direct and
+indirect land-use, including extraction, purification, pipeline transmission, and power plant
+[33, 34]. Spitzley & Keoleian (2005) and Smil (2010) assess direct land-use through case studies
+of various natural gas power plants technologies [28, 30]. Jordaan (2010) and Bryce (2011) pro-
+vided figures only for indirect impacts from natural gas drilling for Canada and the US [32,
+35]. Jordaan et al. (2017) calculates lifecycle land use intensity for natural gas, from wells, to
+pipelines, to power plants [24]. McDonald et al. (2009) and Copeland et al. (2011) provided
+calculations for indirect spacing LUIE, assessing the area fragmented by natural gas drilling
+and pipelines [13, 36].
+Nuclear: Land use for nuclear includes direct impacts (n = 59) from the power plant and
+indirect impacts from the uranium fuel cycle, including mining, milling, conversion, enrich-
+ment, and fabrication. We collected original data for direct land-use for all operating nuclear
+power plants in the United States, by drawing polygons around each power plant using Google
+Earth Pro. EIA provides data on each plant’s electricity output [37]. Finch (1997), Eliasson &
+Lee (2003), Harries et al. (1997), and Schneider (2013) survey land area for uranium mining
+and processing [38–42], mostly in Australia, which averages 0.08 ha/TWh/y when we con-
+verted these per ton measurements into electricity units. Fthenakis & Kim (2009) was the only
+study that provides an estimate for the other aspects of the nuclear fuel cycle: conversion,
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 4 / 17
+===== PAGE 5 =====
+enrichment, and fabrication [12]. This is a constraint on data availability, as Fthenakis & Kim
+(2009) looked only at uranium mining in the US, where almost no uranium mining occurs
+today. In the US, spent fuel is stored on-site and is therefore included in our direct LUIE calcu-
+lation. Although the back-end of the nuclear fuel cycle is undetermined in the U.S., we did
+find two studies that estimated land use for the now-cancelled Yucca Mountain waste reposi-
+tory, which would add an additional 0.012–2.9 ha/TWh to the total LUIE for nuclear[12, 43].
+Countries that recycle or reprocess their spent fuel will likely have less land occupation.
+We also estimated the additional land-use occupied by exclusion zones around the two
+major nuclear power accidents at Chernobyl in Ukraine (260,000 ha) [44], and Fukushima in
+Japan (63,000 ha) [45]. We calculated the LUIE of nuclear accidents by combining these two
+exclusion zones and dividing that area by total historical nuclear power generation (~82,000
+TWh) [46], which resulted in an additional LUIE of 3.9 ha/TWh/y. However, in both cases,
+the exclusion zones are at least partially inhabited and, in the case of Chernobyl, the zone is
+occupied by abundant wildlife [47].
+Hydroelectric: The direct area of hydroelectric dams is the area flooded by the reservoir.
+Our dataset (n = 962) is compiled from International Commission on Large Dam’s (ICOLD)
+World Register of Dams database and represents single-use hydroelectric dams in eighty coun-
+tries [48]. The World Register of Dams provided data on mean annual electricity and reservoir
+area. We exclude run-of-the-river hydroelectric projects since they represent a small portion
+(roughly 4%) of worldwide hydroelectric capacity and reliable generation data could not be
+found [49]. However, results from Fthenakis & Kim (2009) suggest LUIE for run-of-the-river
+projects are much smaller than for traditional hydroelectric (about 10 ha/TWh/y) [12].
+Biomass: Like other combustibles, the land impacts from biomass include the direct area of
+the power plant as well as the area needed to supply the feedstock for the plant (indirect
+LUIE). Our dataset for dedicated biomass (n = 14) represents woody biomass production from
+willow, poplar, and spruce trees. Data are drawn from six sources [12–14, 28, 50, 51]. For resi-
+due biomass, we assume no land requirement for feedstock production. Spitzley & Keoleian
+(2005), Fthenakis & Kim (2009), Kumar et al. (2003), and Smil (2010) provide generation and
+direct area information for various biomass plants [12, 28, 36, 51]. Coal power plants can also
+be used as a proxy since it is common to retrofit a coal plant to burn biomass, but we would
+expect a biomass plant to have a larger LUIE since the plant runs at lower efficiency. Dijkman
+& Benders (2010), Kumar et al. (2003), and McDonald et al. (2009) calculate indirect land-use
+for biomass feedstock production looking at different crops [13, 50, 51].
+Wind: While there are several studies of power density for wind farms (m
+2
+/MW), we cre-
+ated an original dataset to calculate the land use intensity of existing wind farms using historic
+electricity generation data. Land impacts from wind come from the area covered by wind tur-
+bines and access roads. We calculate both footprint and spacing LUIE results for wind
+(n = 57). Footprint area represents only the area physically covered by the turbine pad and
+access roads; spacing area includes all the area in between turbines. Our dataset is generated
+from a randomized sample of operating US wind farms over 20 MW from EIA. We used EIA
+Form 860 and Form 923 to gather data on installed capacity and annual electricity output for
+each wind farm for 2013 [52, 53]. We combined this with measurements of the footprint and
+spacing area of each wind farm calculated using Google Earth Pro. For footprint area, we
+traced perimeters around each turbine pad and the access roads connecting them. For spacing
+area, we traced the perimeter of the entire wind farm, including all the space in between
+turbines.
+Solar PV: Our datasets for ground-mounted PV are based on existing, operational plants
+over 20 MW in 18 US states with capacity factors over 5%. For all sites, annual electricity gen-
+eration data came from EIA Form 923 [53]. Area measurements came from Hernandez et al.
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 5 / 17
+===== PAGE 6 =====
+(n = 17) [54]; Ong et al. (n = 61) [21]; and the Solar Energy Industries Association (n = 13)
+[55]. For ground-mounted PV, we define direct area as the area of panels or heliostats, roads
+established during development, and all ancillary facilities. Ancillary facilities may include new
+service roads, power collection systems, communication cables, overhead and underground
+transmission lines, electrical sites, switchyards, project substations, meteorological towers,
+thermal storage units, and operations and maintenance facilities. Integrated Solar PV, i.e. roof-
+top solar, is assigned an LUIE of zero in this study.
+Solar CSP: There are very few operating solar CSP plants globally for which we could find
+real electricity generation data. Ong et al. (2013) and Lilliestam et al. (2021) provide data on
+land area for solar CSP plants, but both provide only estimated or anticipated electricity gener-
+ation. Ong uses two different capacity factors to provide a range of generation for each plant.
+We found real electricity generation data for ten plants, primarily in the US with one in Italy
+and two in Spain. Because solar CSP could play a large role in future energy systems, we
+decided to include LUIE from datasets that use estimates of electricity generation. This
+resulted in n = 101 data points for unique power plants across 13 countries. However, for
+plants where there was overlap across the datasets, and we had real electricity generation, we
+found that the larger estimated dataset over-estimated electricity generation by ~30%, which
+would bias the LUIE figure downward.
+Geothermal: Geothermal land impacts include the area covered by power plant infrastruc-
+ture and injection wells. Bertani (2005) provided a detailed list of worldwide geothermal
+power plants; however, their measured areas represented the entire expanse of the under-
+ground geothermal reservoir, only a fraction of which had aboveground land disturbance
+from the power plant and production wells [56]. We cross-referenced Bertani’s generation
+data with land use data from geospatial measurements from the Global Energy Observatory
+(GEO) online database [57]. Bertani’s land area measurements were ~60 times larger than
+those measured from satellite imagery in the GEO database. Our resulting dataset included 26
+plants in 18 countries.
+2.1 Application to scenarios
+The ten scenarios we assess are all global decarbonization pathways that make normative
+choices about electricity demand, electrification rates, and generating technologies (see S1
+Text). The exception is IEA’s 6 degree scenario, which is a “business-as-usual” forecast.
+These scenarios vary in their assumptions about total electricity demand and the technol-
+ogy mix (see S1 Fig in S1 Text), as well as the end year of their projections (the JD scenario
+is for the year 2030 [58], Brook is for 2060 [59], and all others are for 2050). They were not
+selected based on economic or technical feasibility, but rather to represent a diverse range
+of future electricity scenarios, illustrating the possible land use implications of different
+decarbonization pathways. To determine the total land area required for electricity gener-
+ation in the current (2017) and future scenarios, we multiplied the average LUIE result for
+each energy technology (in ha/TWh/y) by the amount of generation from that technology
+(in TWh/y) and summed totals over all electricity sources. Using the average LUIE pro-
+vides a more accurate land use estimate when summing up over many sources, as using
+the median tends to underestimate total land use when multiplied by all electricity
+consumption.
+A thorough study of the land use implication for fossil- or biomass-fueled power plants
+with Carbon Capture and Storage (CCS) has yet to be performed, although data from Hert-
+wich et al. suggest it would increase footprint by 40% compared to a plant without CCS. If a
+scenario included fossil or biomass generation with CCS, we multiplied our natural gas, coal,
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 6 / 17
+===== PAGE 7 =====
+and biomass LUIEs by 1.4 [27]. Electricity generation from oil combustion was included in
+some scenarios in very small quantities; we used the footprint LUIE from a natural gas plant
+for this figure, as estimates in the literature are not available.
+To understand the significance of the differences across all future scenarios, we also propa-
+gated the errors (standard error of each electricity source) through the total land use calcula-
+tion to provide an uncertainty range for each scenario’s total land use. In all scenarios, the
+uncertainty is dominated by the standard deviation in the LUIE of hydroelectric, which is
+large due to the regional variability of hydroelectric resources.
+3. Results
+Our LUIE calculations include land occupied by the electricity-producing facility (called
+“direct area”) and, if applicable, the land needed to source power plant fuel (called “indirect
+area”). For wind and natural gas, we offer two definitions of occupied land: “footprint” and
+“spacing” area. Footprint land is physically occupied by components of the power plant or fuel
+extraction equipment, while spacing is the land in between physical components in an electric-
+ity generation or fuel extraction site. For wind, footprint area measures only the area covered
+by turbine pads and access roads, while spacing area measures the entire area within the
+boundaries of the wind farm. For natural gas, footprint area for the indirect land use measures
+only the area covered by well pads, access roads, and pipelines, while spacing area includes the
+entire area inside the perimeter of a natural gas production field.
+We find that median LUIE varies by four orders of magnitude across the electricity sources
+considered in this study (Fig 1, Table 1). Nuclear had the lowest median LUIE at 7.1 ha/TWh/
+y, and dedicated biomass the highest at 58,000 ha/TWh/y.
+Fig 1. Land use intensity of electricity (LUIE: ha/TWh/y) , shown on log scale. Boxes represent the inter-quartil e
+range with the median as the middle bar. Whiskers extend to the highest or lowest data point that is within 1.5 times
+the inter-quart ile range; points outside this range represent outliers. Electricity sources: nuclear energy (Nuclear),
+geothermal energy (Geo), wind energy with footprint only, (Wind-), natural gas footpr int only (NG-) and including
+spacing (NG+), hydroel ectric power for single purpose dams (Hydro), coal (Coal), concentratin g solar power (CSP),
+ground-m ounted photovolt aic solar energy (PV), wind energy with footprint (Wind-) and spacing (Wind+), and
+residual biomass (BioRes) and dedicated biomass (BioDed).
+https://d oi.org/10.1371/j ournal.pon e.0270155.g0 01
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 7 / 17
+===== PAGE 8 =====
+Indirect land use for combustion-based electricity–land used for fuel sourcing for coal, nat-
+ural gas, and biomass—is a larger share of LUIE than direct land use. Indirect land use com-
+prises over 90% of total land use for natural gas generation, approximately 55% for coal
+generation, and over 99% for dedicated biomass (see S1 Text for more details on data sources).
+The opposite is true for nuclear power, where indirect land use for uranium mining is only
+10% of total LUIE and the majority of land impacts come from the power plant itself. When
+including accident exclusion zones in the total LUIE for nuclear, indirect land use drops to 6%
+of total. Although our calculations do not include upstream land impacts from manufacturing
+of materials, other studies of renewable energy technologies find upstream (indirect) land
+demands to be negligible, less than 1% of total land use [12].
+To test for statistical differences in LUIE across different sources, we conducted an
+ANOVA analysis with Tukey’s pairwise comparisons on the natural logarithm of the means of
+the different sources (Table 1). The ANOVA model uses pooled variance and has an R
+2
+of
+90.46%. Hydroelectric was excluded due to its large variance, which would compromise all the
+pairwise comparisons since it increases the pooled variance.
+According to this analysis, dedicated biomass, wind (footprint and spacing), geothermal,
+and nuclear were significantly different from every other source. Ground-mounted PV, solar
+CSP, and natural gas (spacing) were not significantly different from each other; the same was
+true for solar CSP, natural gas (spacing), and coal. Natural gas (spacing) was not significantly
+different from natural gas (footprint). Hydroelectric has a large variance, even after we nar-
+rowed our analysis to dams that are only used for power generation, excluding dams with sec-
+ondary purposes for irrigation, flood control, and drinking water supply.
+3.1 Comparing LUIE and life-cycle GHG emissions
+Land-use intensity and GHG emissions are both important metrics for assessing the environ-
+mental impacts of electricity production. We identify several electricity-generating technolo-
+gies that minimize both land use (from our LUIE results) and GHG emissions (median results
+for the entire electricity life-cycle from IPCC) [60], including rooftop PV, nuclear, wind (foot-
+print only), and geothermal (Fig 2). The large variance of hydroelectric, biomass, and geother-
+mal reflect the dependence of these sources on local conditions. A dam in a steep mountain
+Table 1. Land use intensity of electricity (LUIE) showing total direct and indirect land use (ha/TWh/y ). We show median, mean, and interqua rtile range (IQR) for
+the LUIE, along with the number (n) of observa tions for each power source. We performed an ANOVA analysis with Tukey’s pairwise comparison s on the log
+10
+of LUIE
+for differe nt sources, which is represente d by different letters. Sources that share a letter have mean LUIE that are not statistically different. Hydroele ctric was excluded
+from the ANOVA analysis because its variance was too large.
+ANOVA Tukey’s Pairwise LUIE Median LUIE IQR LUIE Mean LUIE Standard Error LUIE n
+Nuclear A 7.1 4.8 15 4.4 59
+Geothermal B 45 150 140 46 26
+Wind (footprint) C 130 120 170 18 57
+Residue biomass C D 130 71 150 31 4
+Natural gas (footprin t) C D 410 210 410 58 17
+Hydroelect ric (single purpose dams) — 650 2,300 15,000 4,300 952
+Coal D 1,000 1,200 1,100 170 30
+Solar CSP D E 1,300 650 2,000 220 101
+Natural gas (spacin g) D E 1,900 2,800 1,900 890 4
+Ground-m ounted PV E 2,000 860 2,100 120 94
+Wind (spacing) F 12,000 12,000 15,000 1,700 57
+Dedicated biomass G 58,000 59,000 160,000 77,000 14
+https://do i.org/10.1371/j ournal.pone .0270155.t001
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 8 / 17
+===== PAGE 9 =====
+valley generates large amounts of electricity on very little land, compared with a dam in a shal-
+low basin. Similarly, the type of land flooded to create the reservoir, or the type of biomass
+feedstock used can lead the large difference in lifecycle GHG emissions.
+3.2 Future energy scenarios
+We applied our mean LUIE results to the electricity mix of future scenarios for the global
+power sector, as well as to today’s global electricity mix [61], to determine the current and pro-
+jected land requirements for future global electricity roadmaps (Fig 3). Our LUIE results sug-
+gest that current total global land use for electricity production is approximately 72 (±1.7)
+Mha, with 80% of that land used for hydroelectric dams.
+We assessed ten global decarbonization pathways from six different organizations and stud-
+ies: the 2, 4, and 6 degree Celsius scenarios from the International Energy Agency’s Energy
+Technology Perspectives (hereafter “IEA”) [62], Greenpeace’s Energy [R]evolution (“GP”) [63],
+World Wildlife Fund’s Energy Report (“WWF”) [64], three scenarios from the Global Energy
+Assessment (“GEA”) [10], Jacobson & Delucchi (“JD”) [58], and Barry Brook (“Brook”) [59].
+Real-world land requirements vary by region and the dynamics of land-use change are highly
+context-dependent. These projections are not intended as forecasts, but rather as estimates of
+the scale of land use that would be needed for electricity production in hypothetical decarbon-
+ized electricity portfolios.
+Our analysis suggests the possibility of a significant expansion of the land footprint for elec-
+tricity in the coming decades, ranging from an additional 30–80 Mha for physical footprint to
+and additional 80–800 Mha when spacing is included. The scenario with the lowest total land-
+use was the IEA 6 Degree scenario, which is a business-as-usual scenario that includes a large
+share of fossil fuels. The WWF and Greenpeace scenarios also had low total land use, but this
+was in part due to their lower overall projected electricity consumption, as well as their limited
+Fig 2. Relationshi p between the land use intensity of electric ity (ha/TWh/ y) and lifecycle GHG emissions (metric
+tons CO
+2
+-eq/TWh) on a log scale. Error bars represent interqua rtile range. GHG emissions source data: IPCC Fifth
+Assessmen t, Working Group III [60].
+https://d oi.org/10.1371/j ournal.pon e.0270155.g0 02
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 9 / 17
+===== PAGE 10 =====
+reliance on large hydroelectric. Brook had lower land-use despite higher overall electricity con-
+sumption, primarily due to their reliance on nuclear power, which has the lowest LUIE. The
+Jacobson scenarios had the highest land use both because they were converting all global
+energy use to electricity, and they also rely extensively on wind and solar.
+The projected expansion of land-use across these scenarios is a similar order of magnitude
+to the value projected for global urban expansion (60–241 Mha) [65], and when spacing is
+included this may exceed forecasted cropland expansion (average 160–320 Mha of various
+projections) [6]. If biomass was to come from dedicated feedstocks, the additional land
+required would be between 80 and 700 Mha across these scenarios. For comparison, Jacobson
+et al. (2017) estimated that the land required for a 100% renewable system would be lower than
+our calculation (35 Mha or 177 Mha with spacing), but their land-use figures represent hypo-
+thetical electricity generation, which tends to be lower than realized generation from our sur-
+veys [16]. Trainor et al. (2016) calculated additional land use from EIA scenarios in the US and
+found land use could grow by 18–24 Mha by 2040, but this is for all energy supplied in the US
+(not just electricity) [1].
+3.3 Sourcing of biomass carries great uncertainty
+Future biomass demand will likely be met by a mixture of waste or residues and dedicated
+feedstocks. However, the average land-use intensity of residue and dedicated biomass differs
+by four orders of magnitude. To represent an upper boundary on our results, we could assume
+all biomass comes from dedicated feedstock production. This upper bound estimate results in
+Fig 3. Land area (Mha) for future electricity generation scenarios, broken down by source of land use:
+Hydroelec tric, fossil fuels, non-hydro renewables , and spacin g from wind and natural gas. Land use for biomass
+electricity is included in non-hydro renewables , but we assume all biomass comes from residue or waste for these
+calculati ons, thus representi ng a lower bound. JD1 refers to the Jacobson & Delucchi scenario assuming all wind is
+onshore, and JD2 assumes 50% of wind is onshore and 50% is offshore. Total land required to generate electricity in
+each future decarboniz ation scenario is shown with standard errors. GEA_Su p, GEA_ Eff, and GEA_Mix are the GEA
+Supply, Efficiency, and Mixed scenarios respective ly. Electricity genera tion data for the current mix (2017) comes from
+the BP Statistic al Review.
+https://d oi.org/10.1371/j ournal.pon e.0270155.g0 03
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 10 / 17
+===== PAGE 11 =====
+biomass comprising over 99% of the total land use in future energy scenarios (unless the sce-
+nario excludes biomass). The GP, WWF, and GEA energy scenarios reviewed here specify that
+the biomass in their scenarios should come only from forestry and agricultural wastes and resi-
+dues, rather than dedicated production. The level of biomass required in those scenarios is
+within the range of global technical potential [66], see Fig 4 but estimates of global technical
+potential do not reflect economic or geographic constraints on biomass residue recovery (see
+S1 Text). There is also evidence at the regional level that residues alone are unlikely to meet
+bioenergy demand, which could result in increased logging and displacement of other wood
+products [67]. To take a lower bound on biomass, we could assume all feedstock comes from
+waste or residue. Then biomass constitutes only about 1% of total land use in future energy
+scenarios.
+When median LUIE results are applied to global decarbonization scenarios, land use for the
+power sector could grow by a doubling to an order of magnitude if spacing is included. See S1
+Text for full details on how we applied our LUIE to a range of future energy scenarios. How-
+ever, if the entire energy system is decarbonized, including transportation and industry, global
+electricity demand could grow by 3–5 times, thus implying an even larger impact on total land
+use.
+4. Discussion
+Renewable energy sources like ground-mounted PV, CSP, and wind feature prominently in
+many decarbonization scenarios, but since they can have higher land use intensity than fossil
+fuels, large-scale deployment of these technologies could considerably increase energy sprawl
+and loss of natural habitat. The types of landscapes impacted will vary by energy source, and
+Fig 4. Amount of electric ity sourced from biomass in each of the scenarios we evaluated. Most scenarios do not
+specify whether the biomass will be sourced from dedicat ed crops or managed forests, or sourced from waste and
+residue. However, several scenario s include more biomass combusti on than could be reasonably sourced from waste
+and residue s, assuming all waste and residue produced globally could be economica lly collected.
+�
+Global technical
+potential for biomass production comes from Searchi nger and Heimlich (2015).
+https://d oi.org/10.1371/j ournal.pon e.0270155.g0 04
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 11 / 17
+===== PAGE 12 =====
+while there are several opportunities for mitigating the land requirement of low-carbon elec-
+tricity systems, there is also evidence that renewable energy development to date has often
+occurred on previously undeveloped land [54, 68].
+Some power technologies can produce electricity without requiring additional land. Solar
+PV can be placed on rooftops, over parking lots, or on top of inland water body surfaces,
+known as floatovoltaics [69, 70]; PV and wind turbines can be built on degraded, contami-
+nated, or on top of agricultural land—the latter with PV, known as an agrivoltaic systems [71,
+72]; biomass feedstock can be sourced from residues and waste materials [66]; and nuclear
+power plants (as well as wind and PV) can be built offshore [73–75]. Dams that were originally
+constructed for water supply, irrigation, or flood control can be retrofitted with hydroelectric
+capabilities [76]. However, there are limitations on scaling these non-additional sources. Inte-
+grated PV faces barriers owing to economic, policy, and technological constraints. A recent
+estimate put the technical potential of rooftop-mounted solar PV in the United States at 1,400
+TWh/y–about 38% of current US electricity demand [77]. As a technical potential, this esti-
+mate is higher than the economic or market potential for the technology. Currently, only
+about one-third of US solar capacity is in distributed rooftop installations, while the rest is
+from ground-mounted, utility-scale power plants [78], of which, in the case of California, the
+plurality are sited in natural habitats like scrublands and shrublands [54]. Technological
+advances that improve efficiency and/or electricity generation could arguably reduce LUIE but
+evidence of a causal relationship is lacking. For example, the manufacturing and construction
+of bifacial PV (light collected from both sides of the panel surface) is driven by estimates of
+20–40% electricity gains over monofacial panels, which could ostensibly drive smaller power
+plant footprints to meet finite electricity needs. However, the exponential increases in electric-
+ity demand globally and the nascent state of the technology’s economic and reliability out-
+comes mean that impacts on real-world LUIE are yet to be determined [79].
+Denholm et al. (2009) estimate that half of US wind is co-sited with cropland or pasture
+[68]. Additionally, areas with good wind resources and proximity to end users do not always
+overlap with existing agricultural area, sometimes requiring wind energy development on pre-
+viously undeveloped land, as was recently found to be the case in California [80]. Finally,
+energy infrastructure can create habitat fragmentation and disturbance that adversely affects
+wildlife behavior within and beyond the boundary of the physical footprint [7, 37, 81–83].
+Studies seeking to map existing and future energy infrastructure (e.g., Jenkins et al., 2021)
+may, in part, inform decisions regarding impacts on wildlife; however, projections including
+spatially-explicit footprints require robust, accurate, and representative model parameters[84].
+In contrast to previously published studies which base their LUIE figures on either a single
+power plant or engineering calculations with hypothetical parameters, our LUIE estimates
+draw on large samples of real-world electricity generation. Other published figures are often
+far from our estimated means or medians. For example, Fthenakis and Kim’s figure for hydro,
+drawing on a single reservoir from Colorado, is equivalent to about 400 ha/TWh/y, and the
+central estimate provided by McDonald et al. (2009) is equivalent to 5,400 ha/TWh/y. This can
+be compared with our sample of 952 hydroelectric installations, which has a median of 650
+and a mean of 15000. The land-use intensities for nuclear power are 13 ha/TWh/y in Fthenakis
+and Kim, and 240 ha/TWh/y in McDonald et al.; our sample of 59 plants across the US had a
+mean of 15. Note that the central estimate in McDonald et al. (2009) is the midpoint between
+“reasonable” minimum and maximum values for land-use intensity. For hydroelectric, their
+min is 1,600 ha/TWh/y and their max is 9,200 ha/TWh/y, which far from captures the full
+range found in our sample, going from less than 1 ha/TWh/y to over 1 million ha/TWh/y.
+Smil (2010) offers examples of land-use intensities for a handful of energy sources. For natural
+gas, he provides a range of about 6–60 ha/TWh/y; our estimated median for natural gas
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 12 / 17
+===== PAGE 13 =====
+(footprint) is 410 and for natural gas (spacing), 1900. This large discrepancy could be the result
+of Smil (2010) basing his estimates on particularly land-efficient natural gas operations, rather
+than the actual range of existing installations.
+For policymakers interested in the land-use effects of expanding a given power source,
+using our calculated mean LUIE is preferrable to using estimates from single cases, since real-
+world scale-up will include the full distribution of land-use intensities of different installations.
+Scaling up an energy source means building more of some low-footprint installations and
+more of some high-footprint installations, so it is the average land-use intensity that will deter-
+mine the expected overall impacts. Using LUIE estimates from a single installation, which may
+by chance represent a particularly small or particularly large footprint, may severely bias pro-
+jected land-use impacts.
+Our results suggest that production of electricity to meet decarbonization goals could
+become a significant new driver of land-use and land-cover change with implications for habi-
+tat and biodiversity loss, food security, and other environmental and social priorities. An
+expanding footprint is not inevitable: the LUIE for integrated PV, nuclear, the footprint of
+wind, and geothermal are each less than coal or natural gas, which together, currently generate
+more than 60% of the world’s electricity [62].
+Impacts of energy development can be mitigated through strategic local-scale approaches
+that consider proximate impacts within and near development boundaries and landscape-level
+approaches that target more systemic, cumulative impacts of entire energy systems [85, 86].
+Decision-support tools can integrate multiple criteria, leading to reductions in various types of
+environmental and social impacts while optimizing generation with respect to the cultural and
+economic interests of stakeholders [87]. Examples of such approaches already exist for several
+regions and sources, including hydroelectricity and solar energy [69, 80, 88, 89]. However,
+even with better siting, the larger the aggregate footprint of energy, the more likely environ-
+mental impacts are to grow [13]. This underscores the long-term environmental benefits of
+electricity sources that have both low land and carbon footprints, and the importance of using
+LUIE as a metric alongside other factors like GHG emissions, cost, and reliability in planning
+and governance of energy development.
+Supporting information
+S1 Text. Supplementary information.
+(DOCX)
+S1 Table. Details of data sourcing by electricity generation technology.
+(DOCX)
+S1 File. Full dataset of land-use intensity data by fuel source.
+(XLSX)
+Acknowledgmen ts
+We thank Crystal Yeh, Matthew MacCaughey, and Madison K. Hoffacker for assistance with
+data collection, and Laura Small for assistance with data analysis. We also thank Ben Phalan,
+Patrick Meyfroidt, Ken Caldeira, David Simpson, and Harry Saunders for their helpful
+comments.
+Author Contributions
+Conceptualization: Jessica Lovering, Linus Blomqvist.
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 13 / 17
+===== PAGE 14 =====
+Data curation: Jessica Lovering, Marian Swain, Rebecca R. Hernandez.
+Formal analysis: Marian Swain.
+Funding acquisition: Rebecca R. Hernandez.
+Investigation: Marian Swain.
+Methodology: Jessica Lovering, Linus Blomqvist, Rebecca R. Hernandez.
+Project administration: Jessica Lovering.
+Supervision: Jessica Lovering.
+Validation: Linus Blomqvist.
+Writing – original draft: Jessica Lovering, Marian Swain, Linus Blomqvist, Rebecca R.
+Hernandez.
+Writing – review & editing: Jessica Lovering, Linus Blomqvist, Rebecca R. Hernandez.
+References
+1. Trainor AM, McDona ld RI, Fargione J. Energy Sprawl is the Largest Driver of Land Use Change in
+United States. PLoS One 2016; 11: 1–16. https://doi.or g/10.137 1/journal.po ne.0162 269 PMID:
+27607423
+2. Giordono LS, Boudet HS, Karmazina A, et al. Opposition “overblow n”? Community response to wind
+energy siting in the Western United States. Energy Res Soc Sci 2018; 43: 119–13 1.
+3. International Energy Agency. World Energy Outlook 2015. (2015). https:// doi.org/10.17 87/weo-2 014-en
+4. Lambin EF, Meyfroidt P. Global land use change, economic globalization, and the looming land scarcity .
+Proc Natl Acad Sci U S A 2011; 108: 3465–72. https://doi.or g/10.1073/ pnas.1100480 108 PMID:
+21321211
+5. Millennium Ecosystem Assessme nt. Ecosyste ms and Human Well-being: Synthesis . Washingto n, DC:
+Island Press, 2005.
+6. Smith P, Gregory PJ, van Vuuren D, et al. Competit ion for land. Philos Trans R Soc Lond B Biol Sci
+2010; 365: 2941–5 7. https://doi.or g/10.109 8/rstb.201 0.0127 PMID: 20713395
+7. Northrup JM, Wittem yer G. Character ising the impacts of emerging energy develop ment on wildlife,
+with an eye towards mitigation . Ecol Lett 2013; 16: 112–125. https:/ /doi.org/10.11 11/ele.1 2009 PMID:
+23013218
+8. Oakleaf JR, Kenne dy CM, Baruch-M ordo S, et al. A World at Risk: Aggregat ing Development Trends to
+Forecast Global Habitat Conversion. PLoS One 2015; 10: e01383 34. https://doi.or g/10.137 1/journal.
+pone.01383 34 PMID: 26445282
+9. Gasparatos A, Doll CNH, Esteban M, et al. Renewable energy and biodiver sity: Implicat ions for transi-
+tioning to a Green Economy. Renew Sustain Energy Rev 2017; 70: 161–184.
+10. International Institute for Applied System s Analysis. Global Energy Assessme nt: Toward a Sustaina ble
+Future. Camb ridge Univers ity Press. (2012). https://doi.or g/10.1017/ CBO9780511 793677
+11. Pimentel D, Herz M, Glickstein M, et al. Renew able Energy: Current and Potential Issues. Bioscience
+2002; 52: 1111–1 120.
+12. Fthenakis V, Kim HC. Land use and electricity generation: A life-cycle analysis. Renew Sustain Energy
+Rev 2009; 13: 1465–1 474.
+13. McDona ld RI, Fargio ne J, Kiesecker J, et al. Energy sprawl or energy efficiency: climate policy impacts
+on natural habitat for the United States of America. PLoS One 2009; 4: e6802. https:// doi.org/10.13 71/
+journal.pon e.00068 02 PMID: 19707570
+14. Smil V. Power Density. Cambridge , MA: MIT Press, 2015.
+15. Arent D, Pless J, Mai T, et al. Implications of high renewab le electricity penetration in the U.S. for water
+use, greenhouse gas emissi ons, land-use , and materials supply. Appl Energy . Epub ahead of print Jan-
+uary 2014. https://doi.or g/10.1016/j. apenergy.2013 .12.022
+16. Jacobson MZ, Delucch i MA, Bauer ZAF, et al. 100% Clean and Renewable Wind, Water, and Sunlight
+All-Sector Energy Roadmaps for 139 Countries of the World. Joule 2017; 1: 108–12 1.
+17. Lilliestam J, Thonig R, Zang C, et al. CSP.guru, http://doi.o rg/10.5 281/zenodo. 4613099 (2021).
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 14 / 17
+===== PAGE 15 =====
+18. Keoleian G a., Volk T a. Renewable Energy from Willow Biomass Crops: Life Cycle Energy, Environ -
+mental and Economic Performanc e. CRC Crit Rev Plant Sci 2005; 24: 385–406.
+19. Horner RM, Murphy DJ, Clark CE. Life Cycle Land Use Energy Intensity (LUEI) for Utility-Scale Solar
+Electricit y Generatio n Technolo gies. 2013.
+20. Boyce M, Naugle D. Energy Developme nt and Wildlife Conservat ion in Western North America, http://
+books.goog le.com/book s?hl=en&lr =&id=sTFQ vUPQMMk C&oi=fnd&p g=PR7&dq= Energy
++Develop ment+and+ Wildlife+Co nservation+in +Western+ North+Am erica&ots =T2WaM5hu kU&sig=
+Sw6K1l6 KoOx8PPX InWZ3Ikid5H A (2011, accessed 12 June 2014).
+21. Ong S, Campbell C, Denholm P, et al. Land-Use Require ments for Solar Power Plants in the United
+States. 2013.
+22. Denholm P, Margolis RM. Land-use requirem ents and the per-capita solar footprint for photovolta ic
+generation in the United States. Energy Policy 2008; 36: 3531–3543.
+23. Mackay DJC. Solar energy in the contex t of energy use, energy transporta tion and energy storage
+Solar energy in the context of energy use, energy transportation and energy storage. Philos Trans R
+Soc A; 371. https://doi.or g/10.1098/rs ta.2011.0431 PMID: 23816908
+24. Jordaan SM, Heath GA, Mackni ck J, et al. Understand ing the life cycle surface land requirem ents of nat-
+ural gas-fired electricity. Nat Energy 2017; 2: 804–812.
+25. Hernand ez RR, Cagle AE, Grodsky SM, et al. Commen ts on: Land use for United States power genera-
+tion: A critical review of existing metrics with suggestion s for going forward. Renew Sustain Energy Rev.
+26. Capella ´ n-Pe ´ rez I, De Castro C, Arto I. Assessi ng vulnerabilitie s and limits in the transitio n to renewab le
+energies: Land requirements under 100% solar energy scenarios. Renew Sustain Energy Rev 2017;
+77: 760–782.
+27. Hertwich EG, Gibon T, Bouman E a., et al. Integrated life-cycle assessmen t of electricity- supply scenar-
+ios confirms global environ mental benefit of low-carbo n technologies . Proc Natl Acad Sci 2015; 112:
+6277–6282. https:/ /doi.org/10.10 73/pnas.1 31275311 1 PMID: 25288741
+28. Spitzley D V, Keoleian GA. Life Cycle Environmenta l and Economic Assessme nt of Willow Biomass
+Electricit y: A Comparison with Other Renewable and Non-Ren ewable Sources. 2005.
+29. Jacobson MZ. Review of solutions to global warming, air pollution, and energy security . Energy Environ
+Sci 2009; 2: 148.
+30. Smil V. Power Density Primer: Understand ing the Spatial Dimension of the Unfolding Transitio n to
+Renewable Electri city Generatio n (Part I–Definition s). http://w ww.vaclavs mil.com/wp -content/u ploads/
+docs/smil -article-power -density- primer.pdf (2010).
+31. Gates DM. Energy and Ecology. Sunderlan d, MA: Sinauer Associates Inc, 1985.
+32. Jordaan SM. The land use footprint of energy extraction in Alberta. Universit y of Calgary, 2010.
+33. DOE. Energy technology characteriz ations handbo ok: environm ental pollution and control factors,
+http://hdl.h andle.net /2027/uc1.b 4236598 (1983).
+34. Skone TJ, Littlefie ld J, Marriott J, et al. Life Cycle Analysis of Natural Gas Extraction and Power Genera-
+tion. 2014.
+35. Bryce R. Power Hungry: The Myths of ‘Green’ Energy and the Real Fuels of the Future. New York:
+PublicAffa irs, 2011.
+36. Copeland HE, Pocewic z A, Kiesecker JM. Geograph y of energy developme nt in Western North Amer-
+ica: potentia l impacts on terrestrial ecosystem s. 2011.
+37. OECD/N EA. Uranium 2014: Resources , Production and Demand, http://www.oec d-nea.org/n dd/pubs/
+2012/7059-u ranium- 2011.pdf (2014).
+38. Finch WI. Uranium, Its Impact on the National and Global Energy Mix. USGS.
+39. Eliasson B, Lee Y. Integrated Assessme nt of Sustaina ble Energy Systems in China. Dordrech t, Nether-
+lands: Kluwer Academic Publishers , 2003.
+40. Harries J, Levins D, Ring B, et al. Managem ent of waste from uranium mining and milling in Australia.
+Nucl Eng Des 1997; 176: 15–21.
+41. Mudd GM. Compilation of Uranium Produc tion History and Uranium Deposit Data Across Australia.
+2011; 41.
+42. Schneider E, Carlsen B, Tavrides E, et al. A Top Down Assessme nt of Energy, Water and Land use in
+Uranium Mining, Milling, and Refining. Energy Econ 2013; 40: 911–926.
+43. American S, Energy S, Jacobson MZ, et al. Scientifi c American ‘ s “A Path to Sustainab le Energy by
+What about just the United States? 2009; 1–13.
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 15 / 17
+===== PAGE 16 =====
+44. Bondarkov MD, Oskolkov BY, Gaschak SP, et al. Environm ental Radiation Monitoring in the Chernobyl
+Exclusion Zone—Histo ry and Results 25 Years After. Health Phys 2011; 101: 442–485. https://doi.or g/
+10.1097/ HP.0b013e3 18229df28 PMID: 218787 69
+45. World Nuclear Association . Fukushim a Accident, http://www. world-nuclear .org/info rmation-libr ary/
+safety-and- security/sa fety-of-plants /fukushima-a ccident.as px (2016, accessed 7 July 2016).
+46. BP. BP statistical review of world energy, http://www .bp.com/en/gl obal/cor porate/ener gy-econo mics/
+statistical-r eview-of-wo rld-energy.h tml (2016, accessed 31 July 2014).
+47. Deryabina TG, Kuchmel S V., Nagorskay a LL, et al. Long-term census data reveal abundan t wildlife
+populations at Chernobyl . Curr Biol 2015; 25: R811–R 826.
+48. International Commiss ion on Large Dams. World Regist er of Dams, www.icold- cigb.net/G B/World_
+register/wo rld_register .asp (2015, accessed 27 August 2015).
+49. International Energy Agency (IEA). Technolo gy Roadma p: Hydropower. Epub ahead of print 2012.
+https://doi.or g/10.100 7/Springer Reference_ 7300
+50. Dijkman TJ, Benders RMJ. Comparison of renewab le fuels based on their land use using energy densi-
+ties. Renew Sustain Energy Rev 2010; 14: 3148–3155.
+51. Kumar A, Cameron JB, Flynn PC. Biomass power cost and optimum plant size in western Canada. Bio-
+mass and Bioenergy 2003; 24: 445–464.
+52. U.S. Energy Informatio n Administr ation. EIA 860, https://www .eia.gov/el ectricity/data /eia860/.
+53. U.S. Energy Informatio n Administr ation. EIA 923, https://www .eia.gov/el ectricity/data /eia923/.
+54. Hernand ez RR, Hoffacker MK, Murphy-Ma riscal ML, et al. Solar energy developme nt impacts on land-
+cover change. Proc Natl Acad Sci 2015; 112: 13579–135 84. https://doi.or g/10.107 3/pnas.1517 656112
+PMID: 264834 67
+55. Solar Energy Industrie s Association . Major Solar Projects in the United States Operating , Under Con-
+struction, or Under Developm ent, www.se ia.org/resear ch-resourc es/major-so lar-projects- list (2015,
+accessed 5 October 2015).
+56. Bertani R. World geothermal power generation in the period 2001–2005. Geothermics 2005; 34: 651–
+690.
+57. Global Energy Observat ory. Power Plant Online Database , http://glob alenergyobser vatory.org (2015,
+accessed 24 November 2015).
+58. Jacobson MZ, Delucch i MA. Providing all global energy with wind, water, and solar power, Part I: Tech-
+nologies, energy resources , quantities and areas of infrastru cture, and material s. Energy Policy 2011;
+39: 1154–116 9.
+59. Brook BW. Could nuclear fission energy, etc., solve the greenho use problem? The affirmative case.
+Energy Policy 2012; 42: 4–8.
+60. Schlo ¨ mer S, Bruckner T, Fulton L, et al. Annex III: Technolo gy-specific cost and perform ance parame -
+ters. In: Climate Change 2014: Mitigation of Climate Change. Contributi on of Working Group III to the
+Fifth Asses sment Report of the Intergovernm ental Panel on Climate Change. 2014, pp. 1329–1 356.
+61. BP. BP statistical review of world energy, https://www .bp.com/en/ global/corpor ate/energy -economics/
+statistical-r eview-of-wo rld-energy.h tml (2018).
+62. International Energy Agency. Energy Technolog y Perspecti ves 2015. 2015.
+63. Greenpea ce, Global Wind Energy Council, European Renewable Energy Council. Energy [R]evolution:
+A Sustainable World Energy Outlook, http://w ww.greenpea ce.org/in ternational/e n/publica tions/
+Campaign- reports/Cli mate-Repor ts/Energ y-Revolution -2012/ (2012).
+64. World Wildlife Fund. The Energy Report: 100% Renewable Energy by 2050. 2011.
+65. Angel S, Parent J, Civco DL, et al. The dimension s of global urban expansion : Estimat es and projec-
+tions for all countrie s, 2000–2 050. Prog Plann 2011; 75: 53–107.
+66. Searchinger T, Heimlic h R. Avoidin g Bioenergy Competition for Food Crops and Land. 2015.
+67. Abt RC, Abt KL, Cubbage FW, et al. Effect of policy-ba sed bioenergy demand on southern timber mar-
+kets: A case study of North Carolina . Biomass and Bioenergy 2010; 34: 1679–1686.
+68. Denholm P, Hand M, Jackson M, et al. Land-Use Requireme nts of Modern Wind Power Plants in the
+United States.
+69. Hernand ez RR, Hoffacker MK, Field CB. Efficient use of land to meet sustainabl e energy needs. Nat
+Clim Chang 2015; 5: 353–358.
+70. Cagle AE, Armstrong A, Exley G, et al. The land sparing , water surface use efficiency, and water sur-
+face transforma tion of floating photovolta ic solar energy installations . Sustainability ; 12.
+71. Smith J, Forsyth T, Sinclai r K, et al. Built-Enviro nment Wind Turbine Roadmap.
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 16 / 17
+===== PAGE 17 =====
+72. Hernand ez RR, Armstron g A, Burney J, et al. Techno–e cological synergies of solar energy for global
+sustainabi lity. Nat Sustain 2019; 2: 560–568.
+73. Lee K, Lee KH, Lee JI, et al. A new design concept for offshore nuclear power plants with enhance d
+safety features. Nucl Eng Des 2013; 254: 129–141.
+74. Vo TTE, Ko H, Huh J, et al. Overvie w of Possibilities of Solar Floating Photovolt aic Systems in the Off-
+Shore Industry. Energies; 14.
+75. Guo Y, Wang H, Lian J. Review of integrate d installation technolog ies for offshore wind turbines : Cur-
+rent progress and future developme nt trends. Energy Convers Manag; 255.
+76. Hadjerioua B, Wei Y, Kao S-C. An assessmen t of energy potential at non-po wered dams in the United
+States. Epub ahead of print 2012. https:// doi.org/10.21 72/1039 957
+77. Gagnon P, Margolis R, Melius J, et al. Rooftop Solar Photovoltaic Technical Potential in the United
+States: A Detailed Asses sment, http://www.n rel.gov/doc s/fy16osti/6529 8.pdf (2016).
+78. U.S. Energy Informatio n Administr ation. Today In Energy: EIA electricity data now include estimat ed
+small-scale solar PV capacity and generation, www.eia.go v/todayinen ergy/deta il.cfm?id= 23972 (2015,
+accessed 7 July 2016).
+79. Khan MR, Patel MT, Asadpo ur R, et al. A review of next generation bifacial solar farms: predicti ve
+modelin g of energy yield, economic s, and reliability. Appl Phys; 54.
+80. Wu GC, Torn MS, Williams JH. Incorporating land-use requirem ents and environ mental constraints in
+low-carbo n electricity planning for California. Enviro n Sci Technol 2015; 49: 2013–2021. https:/ /doi.org/
+10.1021/ es502979v PMID: 25541644
+81. Jones IL, Bull JW, Milner-Gu lland EJ, et al. Quantify ing habitat impacts of natural gas infrastru cture to
+facilitate biodiversity offsetting. Ecol Evol 2014; 4: 79–90. https://doi.or g/10.100 2/ece3.88 4 PMID:
+24455163
+82. Grodsky SM, Campb ell JW, Hernand ez RR. Solar energy developme nt impacts flower-visiti ng beetles
+and flies in the Mojave Desert . Biol Conse rv; 263.
+83. Conkling TJ, Vander Zanden HB, Allison TD, et al. Vulnerabi lity of avian populations to renewable
+energy producti on. R Soc Open Sci; 9. https://doi. org/10.1098/r sos.211558 PMID: 353603 56
+84. Jenkins JD, Mayfield EN, Larson ED, et al. Mission net-zero America: The nation- building path to a
+prosperous , net-zero emissions economy. Joule 2021; 5: 2755–2761.
+85. Kiesecker JM, Copeland H, Pocewic z A, et al. Developm ent by design: blending landscape -level plan-
+ning with the mitigation hierarchy. Front Ecol Environ 2010; 8: 261–26 6.
+86. Margules CR, Pressey RL. Systematic conserv ation planning. Nature 2000; 405: 243–53. https:/ /doi.
+org/10.1038/ 35012251 PMID: 10821285
+87. Kareiva P. Dam choices: Analyses for multiple needs. Proc Natl Acad Sci U S A 2012; 109: 5553–
+5554. https://d oi.org/10.107 3/pnas.12 03263109 PMID: 22460796
+88. Ziv G, Baran E, Nam S, et al. Trading-off fish biodiver sity, food security, and hydropo wer in the Mekong
+River Basin. Proc Natl Acad Sci U S A 2012; 109: 5609–5 614. https://doi.or g/10.107 3/pnas.
+1201423109 PMID: 22393001
+89. Hurford AP, Huskova I, Harou JJ. Using many-obj ective trade-of f analysis to help dams promote eco-
+nomic developme nt, protect the poor and enhance ecological health. Environ Sci Policy 2013; 38: 1–
+15.
+PLOS ONE
+Land-use intensity of electricity production and tomorro w’s energy landscape
+PLOS ONE | https://doi.or g/10.137 1/journal.po ne.02701 55 July 6, 2022 17 / 17

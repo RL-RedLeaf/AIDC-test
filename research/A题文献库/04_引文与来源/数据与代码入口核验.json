@@ -1,0 +1,101 @@
+[
+  {
+    "name": "Epoch AI",
+    "url": "https://epoch.ai/data/ai-data-centers",
+    "status": 200,
+    "content_type": "text/html",
+    "prefix_pdf": false
+  },
+  {
+    "name": "EIA-860",
+    "url": "https://www.eia.gov/electricity/data/eia860/",
+    "status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "prefix_pdf": false
+  },
+  {
+    "name": "EIA-923",
+    "url": "https://www.eia.gov/electricity/data/eia923/",
+    "status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "prefix_pdf": false
+  },
+  {
+    "name": "Aqueduct 4.0",
+    "url": "https://www.wri.org/data/aqueduct-global-maps-40-data",
+    "status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "prefix_pdf": false
+  },
+  {
+    "name": "USGS water",
+    "url": "https://api.waterdata.usgs.gov/ogcapi/v0/collections?f=json",
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "prefix_pdf": false
+  },
+  {
+    "name": "WorldCover",
+    "url": "https://esa-worldcover.org/en/data-access",
+    "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>"
+  },
+  {
+    "name": "Carbon and land scheduling code",
+    "url": "https://api.github.com/repos/GlasgowC3lab/CaWaLand",
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "prefix_pdf": false
+  },
+  {
+    "name": "World Bank connectivity",
+    "url": "https://api.worldbank.org/v2/indicator/IT.NET.USER.ZS?format=json",
+    "status": 200,
+    "content_type": "application/json;charset=utf-8",
+    "prefix_pdf": false
+  },
+  {
+    "name": "MLCommons",
+    "url": "https://api.github.com/repos/mlcommons/training_results_v5.0",
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "prefix_pdf": false
+  },
+  {
+    "name": "Alibaba cluster trace",
+    "url": "https://api.github.com/repos/alibaba/clusterdata",
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "prefix_pdf": false
+  },
+  {
+    "name": "GPU access OECD",
+    "url": "https://oecd.ai/en/compute",
+    "status": 200,
+    "content_type": "text/html;charset=UTF-8",
+    "prefix_pdf": false
+  },
+  {
+    "name": "U.S. building footprint",
+    "url": "https://www.microsoft.com/en-us/maps/building-footprints",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "name": "Hyperion engineering",
+    "url": "https://spectrum.ieee.org/5gw-data-center",
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "prefix_pdf": false
+  },
+  {
+    "name": "UC report landing",
+    "url": "https://eta-publications.lbl.gov/publications/2024-lbnl-data-center-energy-usage-report",
+    "status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "prefix_pdf": false
+  },
+  {
+    "name": "OECD object",
+    "url": "https://one.oecd.org/document/DSTI/CDEP/AIGO(2022)2/FINAL/en/pdf",
+    "error": "HTTP Error 403: Forbidden"
+  }
+]

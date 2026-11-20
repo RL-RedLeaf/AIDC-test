@@ -1,0 +1,684 @@
+[
+  {
+    "id": "21",
+    "doi": "10.1145/3710848.3710891",
+    "manual": {
+      "title": "WaterWise: Co-optimizing Carbon- and Water-Footprint Toward Environmentally Sustainable Cloud Computing",
+      "venue": "PPoPP",
+      "year": "2025",
+      "url": "https://arxiv.org/abs/2501.17944"
+    },
+    "crossref": {
+      "title": [
+        "WaterWise: Co-optimizing Carbon- and Water-Footprint Toward Environmentally Sustainable Cloud Computing"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0009-0006-9968-7560",
+          "authenticated-orcid": false,
+          "given": "Yankai",
+          "family": "Jiang",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Northeastern University"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-1082-9846",
+          "authenticated-orcid": false,
+          "given": "Rohan Basu",
+          "family": "Roy",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Utah"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-5561-2421",
+          "authenticated-orcid": false,
+          "given": "Raghavendra",
+          "family": "Kanakagiri",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "IIT Tirupati"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-7253-2458",
+          "authenticated-orcid": false,
+          "given": "Devesh",
+          "family": "Tiwari",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Northeastern University"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Proceedings of the 30th ACM SIGPLAN Annual Symposium on Principles and Practice of Parallel Programming"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2025,
+            2,
+            28
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2025,
+            2,
+            28
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2025,
+            2,
+            28
+          ]
+        ]
+      },
+      "volume": null,
+      "issue": null,
+      "page": "297-311",
+      "article-number": null,
+      "type": "proceedings-article",
+      "publisher": "ACM",
+      "abstract": null,
+      "URL": "https://doi.org/10.1145/3710848.3710891",
+      "license": [
+        {
+          "start": {
+            "date-parts": [
+              [
+                2025,
+                2,
+                28
+              ]
+            ],
+            "date-time": "2025-02-28T00:00:00Z",
+            "timestamp": 1740700800000
+          },
+          "content-version": "vor",
+          "delay-in-days": 0,
+          "URL": "https://www.acm.org/publications/policies/copyright_policy#Background"
+        }
+      ]
+    }
+  },
+  {
+    "id": "22",
+    "doi": "",
+    "manual": {
+      "title": "Gaia: Geo-Distributed Machine Learning Approaching LAN Speeds",
+      "venue": "USENIX NSDI",
+      "year": "2017",
+      "url": "https://www.usenix.org/conference/nsdi17/technical-sessions/presentation/hsieh"
+    }
+  },
+  {
+    "id": "23",
+    "doi": "",
+    "manual": {
+      "title": "Energy and AI",
+      "venue": "International Energy Agency",
+      "year": "2025",
+      "url": "https://www.iea.org/reports/energy-and-ai"
+    }
+  },
+  {
+    "id": "24",
+    "doi": "10.71468/P1WC7Q",
+    "manual": {
+      "title": "2024 United States Data Center Energy Usage Report",
+      "venue": "Lawrence Berkeley National Laboratory",
+      "year": "2024",
+      "url": "https://eta-publications.lbl.gov/publications/2024-lbnl-data-center-energy-usage-report"
+    }
+  },
+  {
+    "id": "25",
+    "doi": "10.1038/s41560-025-01927-1",
+    "manual": {
+      "title": "AI data centres as grid-interactive assets",
+      "venue": "Nature Energy",
+      "year": "2025",
+      "url": "https://www.nature.com/articles/s41560-025-01927-1"
+    },
+    "crossref": {
+      "title": [
+        "AI data centres as grid-interactive assets"
+      ],
+      "author": [
+        {
+          "given": "Philip",
+          "family": "Colangelo",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-6554-088X",
+          "authenticated-orcid": false,
+          "given": "Ayse K.",
+          "family": "Coskun",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Jack",
+          "family": "Megrue",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ciaran",
+          "family": "Roberts",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Shayan",
+          "family": "Sengupta",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Varun",
+          "family": "Sivaram",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ethan",
+          "family": "Tiao",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Aroon",
+          "family": "Vijaykar",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0009-0007-7171-8174",
+          "authenticated-orcid": false,
+          "given": "Chris",
+          "family": "Williams",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0001-5101-9471",
+          "authenticated-orcid": false,
+          "given": "Daniel C.",
+          "family": "Wilson",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Brandon",
+          "family": "Records",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Zack",
+          "family": "MacFarland",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Daniel",
+          "family": "Dreiling",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Nathan",
+          "family": "Morey",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Anuja",
+          "family": "Ratnayake",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Baskar",
+          "family": "Vairamohan",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Nature Energy"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2025,
+            12,
+            5
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2025,
+            12,
+            5
+          ]
+        ]
+      },
+      "published-print": null,
+      "volume": "11",
+      "issue": "2",
+      "page": "254-261",
+      "article-number": null,
+      "type": "journal-article",
+      "publisher": "Springer Science and Business Media LLC",
+      "abstract": null,
+      "URL": "https://doi.org/10.1038/s41560-025-01927-1",
+      "license": [
+        {
+          "start": {
+            "date-parts": [
+              [
+                2025,
+                12,
+                5
+              ]
+            ],
+            "date-time": "2025-12-05T00:00:00Z",
+            "timestamp": 1764892800000
+          },
+          "content-version": "tdm",
+          "delay-in-days": 0,
+          "URL": "https://www.springernature.com/gp/researchers/text-and-data-mining"
+        },
+        {
+          "start": {
+            "date-parts": [
+              [
+                2025,
+                12,
+                5
+              ]
+            ],
+            "date-time": "2025-12-05T00:00:00Z",
+            "timestamp": 1764892800000
+          },
+          "content-version": "vor",
+          "delay-in-days": 0,
+          "URL": "https://www.springernature.com/gp/researchers/text-and-data-mining"
+        }
+      ]
+    }
+  },
+  {
+    "id": "26",
+    "doi": "10.1145/3630106.3658542",
+    "manual": {
+      "title": "Power Hungry Processing: Watts Driving the Cost of AI Deployment?",
+      "venue": "ACM FAccT",
+      "year": "2024",
+      "url": "https://arxiv.org/abs/2311.16863"
+    },
+    "crossref": {
+      "title": [
+        "Power Hungry Processing: Watts Driving the Cost of AI Deployment?"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0001-6238-7050",
+          "authenticated-orcid": false,
+          "given": "Sasha",
+          "family": "Luccioni",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Hugging Face, Canada"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-8053-6862",
+          "authenticated-orcid": false,
+          "given": "Yacine",
+          "family": "Jernite",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Hugging Face, United States"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0003-2798-0726",
+          "authenticated-orcid": false,
+          "given": "Emma",
+          "family": "Strubell",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Carnegie Mellon, Allen AI Institute, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "The 2024 ACM Conference on Fairness Accountability and Transparency"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2024,
+            6,
+            3
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2024,
+            6,
+            5
+          ]
+        ]
+      },
+      "published-print": {
+        "date-parts": [
+          [
+            2024,
+            6,
+            3
+          ]
+        ]
+      },
+      "volume": null,
+      "issue": null,
+      "page": "85-99",
+      "article-number": null,
+      "type": "proceedings-article",
+      "publisher": "ACM",
+      "abstract": null,
+      "URL": "https://doi.org/10.1145/3630106.3658542",
+      "license": [
+        {
+          "start": {
+            "date-parts": [
+              [
+                2024,
+                6,
+                3
+              ]
+            ],
+            "date-time": "2024-06-03T00:00:00Z",
+            "timestamp": 1717372800000
+          },
+          "content-version": "vor",
+          "delay-in-days": 0,
+          "URL": "https://creativecommons.org/licenses/by-sa/4.0/"
+        }
+      ]
+    }
+  },
+  {
+    "id": "27",
+    "doi": "",
+    "manual": {
+      "title": "数据中心绿色低碳发展专项行动计划",
+      "venue": "国家发展改革委、工业和信息化部、国家能源局、国家数据局",
+      "year": "2024",
+      "url": "https://www.ndrc.gov.cn/xwdt/tzgg/202407/t20240723_1391895.html"
+    }
+  },
+  {
+    "id": "28",
+    "doi": "10.1021/es502979v",
+    "crossref": {
+      "title": [
+        "Incorporating Land-Use Requirements and Environmental Constraints in Low-Carbon Electricity Planning for California"
+      ],
+      "author": [
+        {
+          "given": "Grace C.",
+          "family": "Wu",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Energy\rand Resources Group, University of California at Berkeley, Berkeley, California 94720, United States"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Margaret S.",
+          "family": "Torn",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Energy\rand Resources Group, University of California at Berkeley, Berkeley, California 94720, United States"
+            },
+            {
+              "name": "Earth\rSciences Division, Lawrence Berkeley National Laboratory, Berkeley, California 94720, United States"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "James H.",
+          "family": "Williams",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Energy and Environmental Economics, 101 Montgomery Street, Suite 1600, San Francisco, California 94104, United States"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Environmental Science &amp; Technology"
+      ],
+      "published": {
+        "date-parts": [
+          [
+            2015,
+            1,
+            28
+          ]
+        ]
+      },
+      "published-online": {
+        "date-parts": [
+          [
+            2015,
+            1,
+            28
+          ]
+        ]
+      },
+      "type": "journal-article",
+      "volume": "49",
+      "issue": "4",
+      "page": "2013-2021",
+      "publisher": "American Chemical Society (ACS)",
+      "abstract": null,
+      "URL": "https://doi.org/10.1021/es502979v",
+      "license": null
+    }
+  }
+]

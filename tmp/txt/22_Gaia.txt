@@ -1,0 +1,2737 @@
+
+===== PAGE 1 =====
+This paper is included in the Proceedings of the 
+14th USENIX Symposium on Networked Systems  
+Design and Implementation (NSDI ’17).
+March 27–29, 2017 • Boston, MA, USA
+ISBN 978-1-931971-37-9
+Open access to the Proceedings of the 
+14th USENIX Symposium on Networked 
+ Sy
+stems Design and Implementation 
+is sponsored by USENIX.
+Gaia: Geo-Distributed Machine Learning  
+Approaching LAN Speeds
+Kevin Hsieh, Aaron Harlap, Nandita Vijaykumar, Dimitris Konomis,  
+Gregory R. Ganger, and Phillip B. Gibbons, Carnegie Mellon University;  
+Onur Mutlu, ETH Zurich and Carnegie Mellon University
+https://www.usenix.org/conference/nsdi17/technical-sessions/presentation/hsieh
+===== PAGE 2 =====
+Gaia: Geo-Distributed Machine Learning Approaching LAN Speeds
+Kevin Hsieh† Aaron Harlap† Nandita Vijaykumar† Dimitris Konomis†
+Gregory R. Ganger† Phillip B. Gibbons† Onur Mutlu§†
+†Carnegie Mellon University §ETH Zürich
+Abstract
+Machine learning (ML) is widely used to derive useful
+information from large-scale data (such as user activities,
+pictures, and videos) generated at increasingly rapid rates,
+all over the world. Unfortunately, it is infeasible to move
+all this globally-generated data to a centralized data center
+before running an ML algorithm over it—moving large
+amounts of raw data over wide-area networks (W ANs) can
+be extremely slow, and is also subject to the constraints
+of privacy and data sovereignty laws. This motivates the
+need for a geo-distributed ML system spanning multiple
+data centers. Unfortunately, communicating over W ANs
+can signiﬁcantly degrade ML system performance (by as
+much as 53.7× in our study) because the communication
+overwhelms the limited W AN bandwidth.
+Our goal in this work is to develop a geo-distributed
+ML system that (1) employs an intelligent communication
+mechanism over WANs to efﬁciently utilize the scarce
+WAN bandwidth, while retaining the accuracy and cor-
+rectness guarantees of an ML algorithm; and (2) is generic
+and ﬂexible enough to run a wide range of ML algorithms,
+without requiring any changes to the algorithms.
+To this end, we introduce a new, general geo-distributed
+ML system, Gaia, that decouples the communication
+within a data center from the communication between
+data centers, enabling different communication and con-
+sistency models for each. We present a new ML syn-
+chronization model, Approximate Synchronous Parallel
+(ASP), whose key idea is to dynamically eliminate in-
+signiﬁcant communication between data centers while
+still guaranteeing the correctness of ML algorithms. Our
+experiments on our prototypes of Gaia running across
+11 Amazon EC2 global regions and on a cluster that
+emulates EC2 W AN bandwidth show that Gaia provides
+1.8–53.5× speedup over two state-of-the-art distributed
+ML systems, and is within 0.94–1.40× of the speed of
+running the same ML algorithm on machines on a local
+area network (LAN).
+1. Introduction
+Machine learning (ML) is very widely used across a
+variety of domains to extract useful information from
+large-scale data. It has many classes of applications such
+as image or video classiﬁcation (e.g., [24,39,65]), speech
+recognition (e.g., [4]), and topic modeling (e.g., [10]).
+These applications analyze massive amounts of data from
+user activities, pictures, videos, etc., which are generated
+at very rapid rates, all over the world . Many large
+organizations, such as Google [28], Microsoft [51], and
+Amazon [7], operate tens of data centers globally to
+minimize their service latency to end-users, and store
+massive quantities of data all over the globe [31, 33, 36,
+41, 57, 58, 71–73, 76].
+A commonly-used approach to run an ML application
+over such rapidly generated data is to centralize all data
+into one data center over wide-area networks (WANs)
+before running the ML application [9,12,44,68]. However,
+this approach can be prohibitively difﬁcult because: (1)
+W AN bandwidth is a scarce resource, and hence moving all
+data can be extremely slow [12,57]. Furthermore, the fast
+growing rate of image and video generation will eventually
+saturate the total WAN bandwidth, whose growth has
+been decelerating for many years [67, 73]. (2) Privacy
+and data sovereignty laws in some countries prohibit
+transmission of raw data across national or continental
+borders [12, 72, 73].
+This motivates the need to distribute an ML system
+across multiple data centers, globally. In such a system,
+large amounts of raw data are stored locally in different
+data centers, and the ML algorithms running over the
+distributed data communicate between data centers using
+W ANs. Unfortunately, existing large-scale distributed ML
+systems [5, 13, 45, 47, 50, 77] are suitable only for data
+residing within a single data center. Our experiments using
+three state-of-the-art distributed ML systems (Bösen [74],
+IterStore [17], and GeePS [18]) show that operating these
+systems across as few as two data centers (over W ANs)
+can cause a slowdown of 1.8–53.7× (see Section 2.3 and
+Section 6) relative to their performance within a data
+center (over LANs). Existing systems that do address
+challenges in geo-distributed data analytics [12, 33, 36,
+41, 57, 58, 71–73] do not consider the broad class of
+important, sophisticated ML algorithms commonly run
+on ML systems — they focus instead on other types of
+computation, e.g., map-reduce or SQL.
+Our goal in this work is to develop a geo-distributed
+ML system that (1) minimizes communication over W ANs,
+so that the system is not bottlenecked by the scarce W AN
+bandwidth; and (2) is general enough to be applicable to
+a wide variety of ML algorithms, without requiring any
+changes to the algorithms themselves.
+To achieve these goals, such a system needs to address
+two key challenges. First, to efﬁciently utilize the limited
+(and heterogeneous) WAN bandwidth, we need to ﬁnd
+an effective communication model that minimizes com-
+munication over WANs but still retains the correctness
+guarantee for an ML algorithm. This is difﬁcult because
+ML algorithms typically require extensive communication
+to exchange updates that keep the global ML model sufﬁ-
+ciently consistent across data centers. These updates are
+USENIX Association 14th USENIX Symposium on Networked Systems Design and Implementation    629
+===== PAGE 3 =====
+required to be timely, irrespective of the available network
+bandwidth, to ensure algorithm correctness. Second, we
+need to design a general system that effectively handles
+W AN communication for ML algorithms without requir-
+ing any algorithm changes. This is challenging because
+the communication patterns vary signiﬁcantly across dif-
+ferent ML algorithms [37, 54, 60, 64, 66, 69]. Altering
+the communication across systems can lead to different
+tradeoffs and consequences for different algorithms [83].
+In this work, we introduce Gaia, a new general,
+geo-distributed ML system that is designed to efﬁ-
+ciently operate over a collection of data centers. Gaia
+builds on the widely used parameter server architecture
+(e.g., [5, 6, 13, 16, 17, 20, 34, 45, 74, 77]) that provides ML
+worker machines with a distributed global shared memory
+abstraction for the ML model parameters they collectively
+train until convergence to ﬁt the input data. The key idea
+of Gaia is to maintain an approximately-correct copy of
+the global ML model within each data center, and dynam-
+ically eliminate any unnecessary communication between
+data centers. Gaia enables this by decoupling the synchro-
+nization (i.e., communication/consistency) model within
+a data center from the synchronization model between
+different data centers. This differentiation allows Gaia
+to run a conventional synchronization model [19, 34, 74]
+that maximizes utilization of the more-freely-available
+LAN bandwidth within a data center. At the same time,
+across different data centers, Gaia employs a new synchro-
+nization model, called Approximate Synchronous Parallel
+(ASP), which makes more efﬁcient use of the scarce and
+heterogeneous W AN bandwidth. By ensuring that each
+ML model copy in different data centers is approximately
+correct based on a precise notion deﬁned by ASP, we
+guarantee ML algorithm convergence.
+ASP is based on a key ﬁnding that the vast majority of
+updates to the global ML model parameters from each ML
+worker machine are insigniﬁcant. For example, our study
+of three classes of ML algorithms shows that more than
+95% of the updates produce less than a 1% change to the
+parameter value. With ASP, these insigniﬁcant updates
+to the same parameter within a data center are aggregated
+(and thus not communicated to other data centers) until the
+aggregated updates are signiﬁcant enough. ASP allows the
+ML programmer to specify the function and the threshold
+to determine the signiﬁcance of updates for each ML
+algorithm, while providing default conﬁgurations for
+unmodiﬁed ML programs. For example, the programmer
+can specify that all updates that produce more than a
+1% change are signiﬁcant. ASP ensures all signiﬁcant
+updates are synchronized across all model copies in a
+timely manner. It dynamically adapts communication
+to the available WAN bandwidth between pairs of data
+centers and uses special selective barrier and mirror clock
+control messages to ensure algorithm convergence even
+during a period of sudden fall (negative spike) in available
+W AN bandwidth.
+In contrast to a state-of-the-art communication-efﬁcient
+synchronization model, Stale Synchronous Parallel
+(SSP) [34], which bounds how stale (i.e., old) a parameter
+can be, ASP bounds how inaccurate a parameter can be,
+in comparison to the most up-to-date value. Hence, it
+provides high ﬂexibility in performing (or not performing)
+updates, as the server can delay synchronization indeﬁ-
+nitely as long as the aggregated update is insigniﬁcant.
+We build two prototypes of Gaia on top of two state-
+of-the-art parameter server systems, one specialized for
+CPUs [17] and another specialized for GPUs [18]. We
+deploy Gaia across 11 regions on Amazon EC2, and on
+a local cluster that emulates the W AN bandwidth across
+different Amazon EC2 regions. Our evaluation with three
+popular classes of ML algorithms shows that, compared
+to two state-of-the-art parameter server systems [17, 18]
+deployed on WANs, Gaia: (1) signiﬁcantly improves
+performance, by 1.8–53.5×, (2) has performance within
+0.94–1.40× of running the same ML algorithm on a LAN
+in a single data center, and (3) signiﬁcantly reduces the
+monetary cost of running the same ML algorithm on
+W ANs, by 2.6–59.0×.
+We make three major contributions:
+• To our knowledge, this is the ﬁrst work to propose
+a general geo-distributed ML system that (1) differ-
+entiates the communication over a LAN from the
+communication over W ANs to make efﬁcient use of
+the scarce and heterogeneous W AN bandwidth, and
+(2) is general and ﬂexible enough to deploy a wide
+range of ML algorithms while requiring no change
+to the ML algorithms themselves.
+• We propose a new, efﬁcient ML synchronization
+model, Approximate Synchronous Parallel (ASP), for
+communication between parameter servers across data
+centers over WANs. ASP guarantees that each data
+center’s view of the ML model parameters is approx-
+imately the same as the “fully-consistent” view and
+ensures that all signiﬁcant updates are synchronized
+in time. We prove that ASP provides a theoretical
+guarantee on algorithm convergence for a widely used
+ML algorithm, stochastic gradient descent.
+• We build two prototypes of our proposed system on
+CPU-based and GPU-based ML systems, and we
+demonstrate their effectiveness over 11 globally dis-
+tributed regions with three popular ML algorithms.
+We show that our system provides signiﬁcant perfor-
+mance improvements over two state-of-the-art dis-
+tributed ML systems [17,18], and signiﬁcantly reduces
+the communication overhead over W ANs.
+2. Background and Motivation
+We ﬁrst introduce the architectures of widely-used dis-
+tributed ML systems. We then discuss W AN bandwidth
+constraints and study the performance implications of
+running two state-of-the-art ML systems over W ANs.
+2.1. Distributed Machine Learning Systems
+While ML algorithms have different types across different
+domains, almost all have the same goal—searching for
+630    14th USENIX Symposium on Networked Systems Design and Implementation USENIX Association
+===== PAGE 4 =====
+the best model (usually a set of parameters) to describe
+or explain the input data [77]. For example, the goal of
+an image classiﬁcation neural network is to ﬁnd the pa-
+rameters (of the neural network) that can most accurately
+classify the input images. Most ML algorithms iteratively
+reﬁne the ML model until it converges to ﬁt the data. The
+correctness of an ML algorithm is thus determined by
+whether or not the algorithm can accurately converge to
+the best model for its input data.
+As the input data to an ML algorithm is usually enor-
+mous, processing all input data on a single machine can
+take an unacceptably long time. Hence, the most common
+strategy to run a large-scale ML algorithm is to distribute
+the input data among multiple worker machines, and
+have each machine work on a shard of the input data
+in parallel with other machines. The worker machines
+communicate with each other periodically to synchronize
+the updates from other machines. This strategy, called
+data parallelism [14], is widely used in many popular
+ML systems (e.g., [1, 2, 5, 13, 45, 47, 50, 77]).
+There are many large-scale distributed ML systems,
+such as ones using the MapReduce [14] abstraction (e.g.,
+MLlib [2] and Mahout [1]), ones using the graph abstrac-
+tion (e.g., GraphLab [47] and PowerGraph [26]), and ones
+using the parameter server abstraction (e.g., Petuum [77]
+and TensorFlow [5]). Among them, the parameter server
+architecture provides a performance advantage1 over other
+systems for many ML applications and has been widely
+adopted in many ML systems.
+Figure 1a illustrates the high-level overview of the
+parameter server (PS) architecture. In such an architecture,
+each parameter server keeps a shard of the global model
+parameters as a key-value store, and each worker machine
+communicates with the parameter servers to READ and
+UPDATE the corresponding parameters. The major beneﬁt
+of this architecture is that it allows ML programmers to
+view all model parameters as a global shared memory, and
+leave the parameter servers to handle the synchronization.
+……Worker 
+Machine 1
+Data 1
+Worker 
+Machine N
+Data N
+Parameter
+Server
+Parameter
+Server
+Global Model
+(a) Basic PS architecture
+……Worker Machine 1Data	1Worker Machine NData	N
+ParameterServerParameterServerGlobal Model
+Data Center 1 Data Center 2 
+LANLANWAN (b) Simple PS on WANs
+Figure 1: Overview of the parameter server architecture
+Synchronization among workers in a distributed ML
+system is a critical operation. Each worker needs to see
+other workers’ updates to the global model to compute
+more accurate updates using fresh information. However,
+synchronization is a high-cost operation that can signif-
+1For example, a state-of-the-art parameter server, IterStore [17], is
+shown to outperform PowerGraph [26] by 10× for Matrix Factorization.
+In turn, PowerGraph is shown to match the performance of GraphX [27],
+a Spark [79] based system.
+icantly slow down the workers and reduce the beneﬁts
+of parallelism. The trade-off between fresher updates
+and communication overhead leads to three major syn-
+chronization models: (1) Bulk Synchronous Parallel
+(BSP) [70], which synchronizes all updates after each
+worker goes through its shard of data; all workers need to
+see the most up-to-date model before proceeding to the
+next iteration, (2)Stale Synchronous Parallel (SSP)[34],
+which allows the fastest worker to be ahead of the slowest
+worker by up to a bounded number of iterations, so the
+fast workers may proceed with a bounded stale (i.e., old)
+model, and (3)Total Asynchronous Parallel (TAP)[59],
+which removes the synchronization between workers com-
+pletely; all workers keep running based on the results of
+best-effort communication (i.e., each sends/receives as
+many updates as possible). Both BSP and SSP guarantee
+algorithm convergence [19, 34], while there is no such
+guarantee for TAP. Most state-of-the-art parameter servers
+implement both BSP and SSP (e.g., [5,16 –18,34,45,77]).
+As discussed in Section 1, many ML applications
+need to analyze geo-distributed data. For instance, an
+image classiﬁcation system would use pictures located at
+different data centers as its input data to keep improving
+its classiﬁcation using the pictures generated continuously
+all over the world. Figure 1b depicts the straightforward
+approach to achieve this goal. In this approach, the worker
+machines in each data center (i.e., within a LAN) handle
+the input data stored in the corresponding data center. The
+parameter servers are evenly distributed across multiple
+data centers. Whenever the communication between
+a worker machine and a parameter server crosses data
+centers, it does so on W ANs.
+2.2. W AN Network Bandwidth and Cost
+WAN bandwidth is a very scarce resource [42, 58, 73]
+relative to LAN bandwidth. Moreover, the high cost of
+adding network bandwidth has resulted in a deceleration
+of W AN bandwidth growth. The Internet capacity growth
+has fallen steadily for many years, and the annual growth
+rates have lately settled into the low-30 percent range [67].
+To quantify the scarcity of W AN bandwidth between
+data centers, we measure the network bandwidth between
+all pairs of Amazon EC2 sites in 11 different regions
+(Virginia, California, Oregon, Ireland, Frankfurt, Tokyo,
+Seoul, Singapore, Sydney, Mumbai, and São Paulo). We
+use iperf3 [23] to measure the network bandwidth of
+each pair of different regions for ﬁve rounds, and then
+calculate the average bandwidth. Figure 2 shows the
+average network bandwidth between each pair of different
+regions. We make two observations.
+First, the W AN bandwidth between data centers is 15×
+smaller than the LAN bandwidth within a data center on
+average, and up to 60× smaller in the worst case (for
+Singapore £ São Paulo). Second, the W AN bandwidth
+varies signiﬁcantly between different regions. The W AN
+bandwidth between geographically-close regions (e.g.,
+Oregon £ California or Tokyo £ Seoul) is up to 12× of
+the bandwidth between distant regions (e.g., Singapore
+USENIX Association 14th USENIX Symposium on Networked Systems Design and Implementation    631
+===== PAGE 5 =====
+VirginiaCaliforniaOregonIrelandFrankfurtTokyoSeoulSingaporeSydneyMumbaiSão Paulo
+0
+100
+200
+300
+400
+500
+600
+700
+800
+900
+1000Network Bandwidth (Mb/s)
+Figure 2: Measured network bandwidth between Amazon
+EC2 sites in 11 different regions
+£ São Paulo). As Section 2.3 shows, the scarcity and
+variation of the W AN bandwidth can signiﬁcantly degrade
+the performance of state-of-the-art ML systems.
+Another important challenge imposed by WANs is
+the monetary cost of communication. In data centers,
+the cost of WANs far exceeds the cost of a LAN and
+makes up a signiﬁcant fraction of the overall cost [29].
+Cloud service providers, such as Amazon EC2, charge
+an extra fee for WAN communication while providing
+LAN communication free of charge. The cost of WAN
+communication can be much higher than the cost of
+the machines themselves. For example, the cost of two
+machines in Amazon EC2 communicating at the rate of
+the average W AN bandwidth between data centers is up to
+38× of the cost of renting these two machines [8]. These
+costs make running ML algorithms on W ANs much more
+expensive than running them on a LAN.
+2.3. ML System Performance on W ANs
+We study the performance implications of deploying dis-
+tributed ML systems on W ANs using two state-of-the-art
+parameter server systems, IterStore [17] and Bösen [74].
+Our experiments are conducted on our local 22-node
+cluster that emulates the W AN bandwidth between Ama-
+zon EC2 data centers, the accuracy of which is validated
+against a real Amazon EC2 deployment (see Section 5.1
+for details). We run the same ML application, Matrix
+Factorization [25] (Section 5.2), on both systems.
+For each system, we evaluate both BSP and SSP as the
+synchronization model (Section 2.1), with four deploy-
+ment settings: (1) LAN, deployment within a single data
+center, (2) EC2-ALL, deployment across 11 aforemen-
+tioned EC2 regions, (3) V/C WAN, deployment across two
+data centers that have the same W AN bandwidth as that
+between Virginia and California (Figure 2), representing
+a distributed ML setting within a continent, and (4) S/S
+WAN, deployment across two data centers that have the
+same W AN bandwidth as that between Singapore and São
+Paulo, representing the lowest W AN bandwidth between
+any two Amazon EC2 regions.
+Figure 3 shows the normalized execution time until al-
+gorithm convergence across the four deployment settings.
+All results are normalized to IterStore using BSP on a
+LAN. The data label on each bar represents how much
+slower the W AN setting is than itsrespective LAN setting
+3.7X 3.5X
+23.8X
+2.7X 2.3X
+13.7X
+5.9X 4.4X
+24.2X
+4.9X 4.3X
+26.8X
+0
+5
+10
+15
+20
+25
+LANEC2-ALLV/C W ANS/S W ANLANEC2-ALLV/C W ANS/S W AN
+BSP SSP
+Normalized Execution 
+Time until Convergence
+IterStore Bӧsen
+Figure 3: Normalized execution time until ML algo-
+rithm convergence when deploying two state-of-the-art dis-
+tributed ML systems on a LAN and W ANs
+for the given system, e.g., Bösen-BSP on EC2-ALL is
+5.9× slower than Bösen-BSP on LAN.
+As we see, both systems suffer signiﬁcant performance
+degradation when deployed across multiple data centers.
+When using BSP, IterStore is 3.5× to 23.8× slower on
+W ANs than it is on a LAN, and Bösen is 4.4× to 24.2×
+slower. While using SSP can reduce overall execution
+times of both systems, both systems still show signiﬁcant
+slowdown when run on WANs (2.3× to 13.7× for Iter-
+Store, and 4.3× to 26.8× for Bösen). We conclude that
+simply running state-of-the-art distributed ML systems
+on W ANs can seriously slow down ML applications, and
+thus we need a new distributed ML system that can be
+effectively deployed on W ANs.
+3. Our Approach: Gaia
+We introduce Gaia, a general ML system that can be effec-
+tively deployed on W ANs to address the increasing need
+to run ML applications directly on geo-distributed data.
+We identify two key challenges in designing such a system
+(Section 3.1). We then introduce the system architecture
+of Gaia, which differentiates the communication within
+a data center from the communication between different
+centers (Section 3.2). Our approach is based on the key
+empirical ﬁnding that the vast majority of communication
+within an ML system results in insigniﬁcant changes to
+the state of the global model (Section 3.3). In light of
+this ﬁnding, we design a new ML synchronization model,
+called Approximate Synchronous Parallel (ASP), which
+can eliminate the insigniﬁcant communication while en-
+suring the convergence and accuracy of ML algorithms.
+We describe ASP in detail in Section 3.4. Finally, Sec-
+tion 3.5 summarizes our theoretical analysis of how ASP
+guarantees algorithm convergence for a widely-used ML
+algorithm, stochastic gradient descent (SGD) (the full
+proof is in Appendix A).
+3.1. Key Challenges
+There are two key challenges in designing a general and
+effective ML system on W ANs.
+Challenge 1. How to effectively communicate over
+WANs while retaining algorithm convergence and ac-
+curacy? As we see above, state-of-the-art distributed
+ML systems can overwhelm the scarce W AN bandwidth,
+causing signiﬁcant slowdowns. We need a mechanism
+that signiﬁcantly reduces the communication between
+data centers so that the system can provide competitive
+performance. However, reducing communication can
+affect the accuracy of an ML algorithm. A poor choice
+632    14th USENIX Symposium on Networked Systems Design and Implementation USENIX Association
+===== PAGE 6 =====
+of synchronization model in a distributed ML system can
+prevent the ML algorithm from converging to the optimal
+point (i.e., the best model to explain or ﬁt the input data)
+that one can achieve when using a proper synchronization
+model [11, 59]. Thus, we need a mechanism that can
+reduce communication intensity while ensuring that the
+communication occurs in a timely manner, even when the
+network bandwidth is extremely stringent. This mecha-
+nism should provably guarantee algorithm convergence
+irrespective of the network conditions.
+Challenge 2. How to make the system generic and work
+for ML algorithms without requiring modiﬁcation?Devel-
+oping an effective ML algorithm takes signiﬁcant effort
+and experience, making it a large burden for the ML algo-
+rithm developers to change the algorithm when deploying
+it on W ANs. Our system should work across a wide variety
+of ML algorithms, preferably without any change to the
+algorithms themselves. This is challenging because differ-
+ent ML algorithms have different communication patterns,
+and the implication of reducing communication can vary
+signiﬁcantly among them [37, 54, 60, 64, 66, 69, 83].
+3.2. Gaia System Overview
+We propose a new ML system, Gaia, that addresses the
+two key challenges in designing a general and effec-
+tive ML system on WANs. Gaia is built on top the
+popular parameter server architecture, which is proven
+to be effective on a wide variety of ML algorithms
+(e.g., [5, 6, 13, 16, 17, 20, 34, 45, 74, 77]). As discussed
+in Section 2.1, in the parameter server architecture, all
+worker machines synchronize with each other through
+parameter servers to ensure that the global model state is
+up-to-date. While this architecture guarantees algorithm
+convergence, it also requires substantial communication
+between worker machines and parameter servers. To
+make Gaia effective on WANs while fully utilizing the
+abundant LAN bandwidth, we design a new system ar-
+chitecture to decouple the synchronization within a data
+center (LANs) from the synchronization across different
+data centers (W ANs).
+Figure 4 shows an overview of Gaia. In Gaia, each data
+center has some worker machines and parameter servers.
+Each worker machine processes a shard of the input
+data stored in its data center to achieve data parallelism
+(Section 2.1). The parameter servers in each data center
+collectively maintain a version of the global model copy
+(), and each parameter server handles a shard of this
+global model copy. A worker machine only READs and
+UPDATEs the global model copy in its data center.
+To reduce the communication overhead over WANs,
+the global model copy in each data center is only ap-
+proximately correct. This design enables us to eliminate
+the insigniﬁcant, and thus unnecessary, communication
+across different data centers. We design a new synchro-
+nization model, called Approximate Synchronous Parallel
+(ASP ), between parameter servers across different data
+centers to ensure that each global model copy is approx-
+imately correct even with very low WAN bandwidth.
+Parameter
+Server
+Data Center 1 
+❸
+Parameter
+Server
+Worker 
+Machine
+Data 
+Shard
+BSP/SSP
+Global Model Copy❶
+Parameter
+Server
+Parameter
+Server
+…
+ASP❷
+Data Center 2 
+Worker 
+Machine
+Data 
+Shard
+Worker 
+Machine
+Data 
+Shard
+…
+Global Model Copy
+Figure 4: Gaia system overview
+Section 3.4 describes the details of ASP. On the other
+hand, worker machines and parameter servers within a
+data center synchronize with each other using the con-
+ventional BSP (Bulk Synchronous Parallel) or SSP (Stale
+Synchronous Parallel) models ( ). These models allow
+worker machines to quickly observe fresh updates that
+happen within a data center. Furthermore, worker ma-
+chines and parameter servers within a data center can
+employ more aggressive communication schemes such
+as sending updates early and often [19,74] to fully utilize
+the abundant (and free) network bandwidth on a LAN.
+3.3. Study of Update Signiﬁcance
+As discussed above, Gaia reduces the communication
+overhead over WANs by eliminating insigniﬁcant com-
+munication. To understand the beneﬁt of our approach,
+we study the signiﬁcance of the updates sent from worker
+machines to parameter servers. We study three classes of
+popular ML algorithms: Matrix Factorization (MF) [25],
+Topic Modeling (TM) [10], and Image Classiﬁcation
+(IC) [43] (see Section 5.2 for descriptions). We run all
+the algorithms until convergence, analyze all the updates
+sent from worker machines to parameter servers, and
+compare the change they cause on the parameter value
+when the servers receive them. We deﬁne an update to be
+signiﬁcant if it causes S% change on the parameter value,
+and we vary S, the signiﬁcance threshold, between 0.01
+and 10. Figure 5 shows the percentage of insigniﬁcant
+updates among all updates, for different values of S.
+0%
+20%
+40%
+60%
+80%
+100%
+10% 5% 1% 0.5%0.1%0.05%0.01%
+Percentage of 
+Insignificant Updates
+Threshold of Significant Updates (S)
+Matrix FactorizationTopic ModelingImage Classification
+Figure 5: Percentage of insigniﬁcant updates
+As we see, the vast majority of updates in these al-
+gorithms are insigniﬁcant. Assuming the signiﬁcance
+threshold is 1%, 95.2% / 95.6% / 97.0% of all updates
+are insigniﬁcant for MF / TM / IC. When we relax the
+signiﬁcance threshold to 5%, 98.8% / 96.1% / 99.3% of
+all updates are insigniﬁcant. Thus, most of the communi-
+cation changes the ML model state only very slightly.
+It is worth noting that our ﬁnding is consistent with
+the ﬁndings of prior work [21, 22, 40, 47, 80] on other
+USENIX Association 14th USENIX Symposium on Networked Systems Design and Implementation    633
+===== PAGE 7 =====
+ML algorithms, such as PageRank and Lasso. These
+works observe that in these ML algorithms, not all model
+parameters converge to their optimal value within the
+same number iterations — a property called non-uniform
+convergence [78]. Instead of examining the convergence
+rate, we quantify the signiﬁcance of updates with var-
+ious signiﬁcance thresholds, which provides a unique
+opportunity to reduce the communication over W ANs.
+3.4. Approximate Synchronous Parallel
+The goal of our new synchronization model, Approxi-
+mate Synchronous Parallel (ASP), is to ensure that the
+global model copy in each data center is approximately
+correct. In this model, a parameter server shares only
+the signiﬁcant updates with other data centers, and ASP
+ensures that these updates can be seen by all data centers
+in a timely fashion. ASP achieves this goal by using three
+techniques: (1) the signiﬁcance ﬁlter, (2) ASP selective
+barrier, and (3) ASP mirror clock. We describe them in
+order.
+The signiﬁcance ﬁlter. ASP takes two inputs from an
+ML programmer to determine whether or not an update
+is signiﬁcant. They are: (1) a signiﬁcance function and
+(2) an initial signiﬁcance threshold . The signiﬁcance
+function returns the signiﬁcance of each update. We
+deﬁne an update as signiﬁcant if its signiﬁcance is larger
+than the threshold. For example, an ML programmer can
+deﬁne the signiﬁcance function as the update’s magnitude
+relative to the current value (|U pdate
+Value|), and set the initial
+signiﬁcance threshold to 1%. The signiﬁcance function
+can be more sophisticated if the impact of parameter
+changes to the model is not linear, or the importance of
+parameters is non-uniform (see Section 4.3). A parameter
+server aggregates updates from the local worker machines
+and shares the aggregated updates with other data centers
+when the aggregated updates become signiﬁcant. To
+ensure that the algorithm can converge to the optimal point,
+ASP automatically reduces the signiﬁcance threshold over
+time (speciﬁcally, if the original threshold is v, then the
+threshold at iteration t of the ML algorithm is v/√t).
+ASP selective barrier. While we can greatly reduce
+the communication overhead over W ANs by sending only
+the signiﬁcant updates, the WAN bandwidth might still
+be insufﬁcient for such updates. In such a case, the
+signiﬁcant updates can arrive too late, and we might
+not be able to bound the deviation between different
+global model copies. ASP handles this case with the
+ASP selective barrier (Figure 6a) control message. When
+a parameter server receives the signiﬁcant updates ( )
+at a rate that is higher than the WAN bandwidth can
+support, the parameter server ﬁrst sends the indexes of
+these signiﬁcant updates (as opposed to sending both
+the indexes and the update values together) via an ASP
+selective barrier () to the other data centers. The receiver
+of an ASP selective barrier blocks its local worker from
+reading the speciﬁed parameters until it receives the
+signiﬁcant updates from the sender of the barrier. This
+technique ensures that all worker machines in each data
+center are aware of the signiﬁcant updates after a bounded
+network latency, and they wait only for these updates.
+The worker machines can make progress as long as they
+do not depend on any of these parameters.
+Data Center 1 
+Parameter 
+Server
+Data Center 2
+Barrier❶ ❷
+Parameter 
+Server
+Significant 
+Updates
+(a) ASP selective barrier
+Data Center 1 Data Center 2
+Clock N❸ Clock N + DS❹
+Parameter 
+Server
+Parameter 
+Server (b) Mirror clock
+Figure 6: The synchronization mechanisms of ASP
+Mirror clock. The ASP select barrier ensures that
+the latency of the signiﬁcant updates is no more than
+the network latency. However, it assumes that 1) the
+underlying WAN bandwidth and latency are ﬁxed so
+that the network latency can be bounded, and 2) such
+latency is short enough so that other data centers can
+be aware of them in time. In practice, W AN bandwidth
+can ﬂuctuate over time [35], and the WAN latency can
+be intolerably high for some ML algorithms. We need
+a mechanism to guarantee that the worker machines are
+aware of the signiﬁcant updates in time, irrespective of
+the W AN bandwidth or latency.
+We use the mirror clock (Figure 6b) to provide this
+guarantee. When each parameter server receives all the
+updates from its local worker machines at the end of a
+clock (e.g., an iteration), it reports its clock to the servers
+that are in charge of the same parameters in the other
+data centers. When a server detects its clock is ahead
+of the slowest server that shares the same parameters
+by a predeﬁned threshold DS (data center staleness), the
+server blocks its local worker machines from reading
+its parameters until the slowest mirror server catches up.
+In the example of Figure 6b, the server clock in Data
+Center 1 is N, while the server clock in Data Center 2
+is (N + DS). As their difference reaches the predeﬁned
+limit, the server in Data Center 2 blocks its local worker
+from reading its parameters. This mechanism is similar
+to the concept of SSP [34], but we use it only as the last
+resort to guarantee algorithm convergence.
+3.5. Summary of Convergence Proof
+In this section, we summarize our proof showing that a
+popular, broad class of ML algorithms are guaranteed to
+converge under our new ASP synchronization model. The
+class we consider are ML algorithms expressed as convex
+optimization problems that are solved using distributed
+stochastic gradient descent.
+The proof follows the outline of prior work on SSP [34],
+with a new challenge, i.e., our new ASP synchronization
+model allows the synchronization of insigniﬁcant updates
+to be delayed indeﬁnitely. To prove algorithm conver-
+gence, our goal is to show that the distributed execution
+of an ML algorithm results in a set of parameter values
+that are very close (practically identical) to the values
+that would be obtained under a serialized execution.
+634    14th USENIX Symposium on Networked Systems Design and Implementation USENIX Association
+===== PAGE 8 =====
+Let f denote the objective function of an optimization
+problem, whose goal is to minimize f . Let ˜xxxt denote the
+sequence of noisy (i.e., inaccurate)views of the parameters,
+where t = 1,2, ...,T is the index of each view over time.
+Let xxx∗ denote the value that minimizes f . Intuitively, we
+would like ft ( ˜xxxt ) to approach f (xxx∗) as t→ ∞. We call
+the difference between ft ( ˜xxxt ) and f (xxx∗) regret. We can
+prove ft ( ˜xxxt ) approaches f (xxx∗) as t→ ∞ by proving that
+the average regret, R[X]
+T → 0 as T→ ∞.
+Mathematically, the above intuition is formulated with
+Theorem 1. The details of the proof and the notations
+are in Appendix A.
+Theorem 1. (Convergence of SGD under ASP). Suppose
+that, in order to compute the minimizer x∗ of a convex
+function f (xxx) = ∑T
+t=1 ft (xxx), with ft ,t = 1,2, . . . ,T , convex,
+we use stochastic gradient descent on one component
+∇ ft at a time. Suppose also that 1) the algorithm is
+distributed in D data centers, each of which uses P
+machines, 2) within each data center, the SSP protocol is
+used, with a ﬁxed staleness ofs, and 3) a ﬁxed mirror clock
+difference ∆c is allowed between any two data centers.
+Let uuut =−ηt ∇ ft ( ˜xxxt ), where the step size ηt decreases
+as ηt = η√t and the signiﬁcance threshold vt decreases
+as vt = v√t . If we further assume that: ∥∇ ft (xxx)∥≤ L,
+∀xxx∈ dom( ft ) and max(D(xxx,xxx′))≤ ∆2,∀xxx,xxx′∈ dom( ft ).
+Then, as T→ ∞, the regret R[X] = ∑T
+t=1 ft ( ˜xxxt )− f (xxx∗) =
+O(
+√
+T ) and therefore limT→∞
+R[X]
+T → 0.
+4. Implementation
+We introduce the key components of Gaia in Section 4.1,
+and discuss the operation and design of individual com-
+ponents in the remaining sections.
+4.1. Gaia System Key Components
+Figure 7 presents the key components of Gaia. All of
+the key components are implemented in the parameter
+servers, and can be transparent to the ML programs and
+the worker machines. As we discuss above, we decouple
+the synchronization within a data center (LANs) from
+the synchronization across different data centers (W ANs).
+The local server () in each parameter server handles
+the synchronization between the worker machines in the
+same data center using the conventional BSP or SSP
+models. On the other hand, the mirror server () and the
+mirror client () handle the synchronization with other
+data centers using our ASP model. Each of these three
+components runs as an individual thread.
+Local 
+Server
+Gaia Parameter 
+ServerWorker 
+Machine
+Significance 
+Filter
+Parameter Store
+Worker 
+Machine
+Worker 
+Machine
+Mirror 
+Server
+Mirror 
+Client
+Data Center Boundary
+Control 
+Queue
+Data 
+Queue
+Gaia Parameter Server
+…
+❶
+❸
+❷
+❹
+❺ ❻
+❼
+Figure 7: Key components of Gaia
+4.2. System Operations and Communication
+We present a walkthrough of major system operations
+and communication.
+UPDATE from a worker machine. When a local server
+() receives a parameter update from a worker machine,
+it updates the parameter in its parameter store (), which
+maintains the parameter value and its accumulated update.
+The local server then invokes the signiﬁcance ﬁlter ()
+to determine whether or not the accumulated update of
+this parameter is signiﬁcant. If it is, the signiﬁcance ﬁlter
+sends a MIRROR UPDATE request to the mirror client ( )
+and resets the accumulated update for this parameter.
+Messages from the signiﬁcance ﬁlter. The signiﬁ-
+cance ﬁlter sends out three types of messages. First, as
+discussed above, it sends a MIRROR UPDATE request to
+the mirror client through the data queue ( ). Second,
+when the signiﬁcance ﬁlter detects that the arrival rate of
+signiﬁcant updates is higher than the underlying WAN
+bandwidth that it monitors at every iteration, it ﬁrst sends
+an ASP Barrier (Section 3.4) to the control queue ( )
+before sending the MIRROR UPDATE. The mirror client ()
+prioritizes the control queue over the data queue, so that
+the barrier is sent out earlier than the update. Third, to
+maintain the mirror clock (Section 3.4), the signiﬁcance
+ﬁlter also sends a MIRROR CLOCK request to the control
+queue at the end of each clock in the local server.
+Operations in the mirror client. The mirror client
+thread wakes up when there is a request from the control
+queue or the data queue. Upon waking up, the mirror client
+walks through the queues, packs together the messages
+to the same destination, and sends them.
+Operations in the mirror server. The mirror server
+handles above messages ( MIRROR UPDATE , ASP BARRIER ,
+and MIRROR CLOCK ) according to our ASP model. For
+MIRROR UPDATE , it applies the update to the correspond-
+ing parameter in the parameter store. For ASP BARRIER ,
+it sets a ﬂag in the parameter store to block the corre-
+sponding parameter from being read until it receives the
+corresponding MIRROR UPDATE . For MIRROR CLOCK , the
+mirror server updates its local mirror clock state for each
+parameter server in other data centers, and enforces the
+predeﬁned clock difference threshold DS (Section 3.4).
+4.3. Advanced Signiﬁcance Functions
+As we discuss in Section 3.4, the signiﬁcance ﬁlter allows
+the ML programmer to specify a custom signiﬁcance
+function to calculate the signiﬁcance of each update. By
+providing an advanced signiﬁcance function, Gaia can be
+more effective at eliminating the insigniﬁcant communica-
+tion. If several parameters are always referenced together
+to calculate the next update, the signiﬁcance function can
+take into account the values of all these parameters. For
+example, if three parameters a, b, and c are always used
+as a·b·c in an ML algorithm, the signiﬁcance of a, b,
+and c can be calculated as the change on a·b·c. If one
+of them is 0, any change in another parameter, however
+large it may be, is insigniﬁcant. Similar principles can
+be applied to model parameters that are non-linear or
+USENIX Association 14th USENIX Symposium on Networked Systems Design and Implementation    635
+===== PAGE 9 =====
+non-uniform. For unmodiﬁed ML programs, the system
+applies default signiﬁcance functions, such as the relative
+magnitude of an update for each parameter.
+4.4. Tuning of Signiﬁcance Thresholds
+The user of Gaia can specify two different goals for Gaia:
+(1) speed up algorithm convergence by fully utilizing the
+available W AN bandwidth and (2) minimize the commu-
+nication cost on W ANs. In order to achieve either of these
+goals, the signiﬁcance ﬁlter maintains two signiﬁcance
+thresholds and dynamically tunes these thresholds. The
+ﬁrst threshold is the hard signiﬁcance threshold. The
+purpose of this threshold is to guarantee ML algorithm
+convergence. As we discuss in our theoretical analysis
+(Section 3.5), the initial threshold is provided by the ML
+programmer or a default system setting, and the signif-
+icance ﬁlter reduces it over time. Every update whose
+signiﬁcance is above the hard threshold is guaranteed to
+be sent to other data centers. The second threshold is the
+soft signiﬁcance threshold. The purpose of it is to use
+underutilized W AN bandwidth to speed up convergence.
+This threshold is tuned based on the arrival rate of the
+signiﬁcant updates and the underlying W AN bandwidth.
+When the user chooses to optimize the ﬁrst goal (speed
+up algorithm convergence), the system lowers the soft sig-
+niﬁcance threshold whenever there is underutilized W AN
+bandwidth. The updates whose signiﬁcance is larger than
+the soft signiﬁcance threshold are sent in a best-effort
+manner. On the other hand, if the goal of the system
+is to minimize the WAN communication costs, the soft
+signiﬁcance threshold is not activated.
+While the conﬁguration of the initial hard threshold
+depends on how error tolerant each ML algorithm is, a
+simple and conservative threshold (such as 1%–2%) is
+likely to work in most cases. This is because most ML
+algorithms initialize their parameters with random values,
+and make large changes to their model parameters at
+early phases. Thus, they are more error tolerant at the
+beginning. As Gaia reduces the threshold over time, its
+accuracy loss is limited. An ML expert can choose a
+more aggressive threshold based on domain knowledge
+of the ML algorithm.
+4.5. Overlay Network and Hub
+While Gaia can eliminate the insigniﬁcant updates, each
+data center needs to broadcast the signiﬁcant updates to
+all the other data centers. This broadcast-based communi-
+cation could limit the scalability of Gaia when we deploy
+Gaia to many data centers. To make Gaia more scalable
+with more data centers, we use the concept of overlay
+networks [48].
+As we discuss in Section 2.2, the WAN bandwidth
+between geographically-close regions is much higher
+than that between distant regions. In light of this, Gaia
+supports having geographically-close data centers form a
+data center group. Servers in a data center group send
+their signiﬁcant updates only to the other servers in the
+same group. Each group has hub data centers that are in
+charge of aggregating all the signiﬁcant updates within
+the group, and sending to the hubs of the other groups.
+Similarly, a hub data center broadcasts the aggregated
+signiﬁcant updates from other groups to the other data
+centers within its group. Each data center group can
+designate different hubs for communication with different
+data center groups, so the system can utilize more links
+within a data center group. For example, the data centers
+in Virginia, California, and Oregon can form a data center
+group and assign the data center in Virginia as the hub
+to communicate with the data centers in Europe and the
+data center in Oregon as the hub to communicate with the
+data centers is Asia. This design allows Gaia to broadcast
+the signiﬁcant updates with lower communication cost.
+5. Methodology
+5.1. Experiment Platforms
+We use three different platforms for our evaluation.
+Amazon-EC2. We deploy Gaia to 22 machines spread
+across 11 EC2 regions as we show in Figure 2. In each
+EC2 region we start two instances of type c4.4xlarge
+or m4.4xlarge [8], depending on their availability. Both
+types of instances have 16 CPU cores and at least 30GB
+RAM, running 64-bit Ubuntu 14.04 LTS (HVM). In all,
+our deployment uses 352 CPU cores and 1204 GB RAM.
+Emulation-EC2. As the monetary cost of running all
+experiments on EC2 is too high, we run some experiments
+on our local cluster that emulates the computation power
+and W AN bandwidth of EC2. We use the same number
+of machines (22) in our local cluster. Each machine is
+equipped with a 16-core Intel Xeon CPU (E5-2698), an
+NVIDIA Titan X GPU, 64GB RAM, a 40GbE NIC, and
+runs the same OS as above. The computation power and
+the LAN speeds of our machines are higher than the
+ones we get from EC2, so we slow down the CPU and
+LAN speeds to match the speeds on EC2. We model
+the measured EC2 W AN bandwidth (Figure 2) with the
+Linux Trafﬁc Control tool [3]. As Section 6.1 shows,
+our emulation platform gives very similar results to the
+results from our real EC2 deployment.
+Emulation-Full-Speed. We run some of our experi-
+ments on our local cluster that emulates the W AN band-
+width of EC2 at full speed. We use the same settings as
+Emulation-EC2 except we do not slow down the CPUs
+and the LAN. We use this platform to show the results
+of deployments with more powerful nodes.
+5.2. Applications
+We evaluate Gaia with three popular ML applications.
+Matrix Factorization (MF) is a technique commonly
+used in recommender systems, e.g., systems that recom-
+mend movies to users on Netﬂix (a.k.a. collaborative
+ﬁltering) [25]. Its goal is to discover latent interactions
+between two entities, such as users and movies, via matrix
+factorization. For example, input data can be a partially
+ﬁlled matrix X, where every entry is a user’s rating for
+a movie, each row corresponding to a user, and each
+column corresponding to a speciﬁc movie. Matrix factor-
+636    14th USENIX Symposium on Networked Systems Design and Implementation USENIX Association
+===== PAGE 10 =====
+ization factorizes X into factor matrices L and R such that
+their product approximates X (i.e., X≈ LR). Like other
+systems [17,32,83], we implement MF using the stochas-
+tic gradient descent (SGD) algorithm. Each worker is
+assigned a portion of the known entries in X. The L
+matrix is stored locally in each worker, and the R matrix
+is stored in parameter servers. Our experiments use the
+Netﬂix dataset, a 480K-by-18K sparse matrix with 100M
+known entries. They are conﬁgured to factor the matrix
+into the product of two matrices, each with rank 500.
+Topic Modeling (TM) is an unsupervised method for
+discovering hidden semantic structures ( topics) in an
+unstructured collection of documents, each consisting of a
+bag (multi-set) of words [10]. TM discovers the topics via
+word co-occurrence. For example, “policy” is more likely
+to co-occur with “government” than “bacteria”, and thus
+“policy” and “government” are categorized to the same
+topic associated with political terms. Further, a document
+with many instances of “policy” would be assigned a topic
+distribution that peaks for the politics-related topics. TM
+learns the hidden topics and the documents’ associations
+with those topics jointly. Common applications for TM
+include community detection in social networks and news
+categorizations. We implement our TM solver using
+collapsed Gibbs sampling [30]. We use the Nytimes
+dataset [53], which has 100M words in 300K documents
+with a vocabulary size of 100K. Our experiments classify
+words and documents into 500 topics.
+Image Classiﬁcation (IC) is a task to classify im-
+ages into categories, and the state-of-the-art approach is
+using deep learning and convolutional neural networks
+(CNNs) [43]. Given a set of images with known cate-
+gories (training data), the ML algorithm trains a CNN
+to learn the relationship between the image features and
+their categories. The trained CNN is then used to predict
+the categories of another set of images (test data). We use
+GoogLeNet [65], one of the state-of-the-art CNNs as our
+model. We train GoogLeNet using stochastic gradient
+descent with back propagation [61]. As training a CNN
+with a large number of images requires substantial compu-
+tation, doing so on CPUs can take hundreds of machines
+over a week [13]. Instead, we use distributed GPUs with
+a popular deep learning framework, Caffe [38], which
+is hosted by a state-of-the-art GPU-specialized param-
+eter server system, GeePS [18]. Our experiments use
+the ImageNet Large Scale Visual Recognition Challenge
+2012 (ILSVRC12) [62] dataset, which consists of 1.3M
+training images and 50K test images. Each image is
+labeled as one of the 1,000 pre-deﬁned categories.
+5.3. Performance Metrics and Algorithm Conver-
+gence Criteria
+We use two performance metrics to evaluate the effective-
+ness of a globally distributed ML system. The ﬁrst metric
+is the execution time until algorithm convergence . We
+use the following algorithm convergence criterion, based
+on guidance from our ML experts: if the value of the
+objective function (the objective value) in an algorithm
+changes by less than 2% over the course of 10 iterations,
+we declare that the algorithm has converged [32]. In
+order to ensure that each algorithm accurately converges
+to the optimal point, we ﬁrst run each algorithm on our
+local cluster until it converges, and we record the absolute
+objective value. The execution time of each setting is the
+time it takes to converge to this absolute objective value.
+The second metric is the cost of algorithm convergence.
+We calculate the cost based on the cost model of Amazon
+EC2 [8], including the cost of the server time and the
+cost of data transfer on W ANs. We provide the details of
+the cost model in Appendix C.
+6. Evaluation Results
+We evaluate the effectiveness of Gaia by evaluating three
+types of systems/deployments: (1) Baseline, two state-
+of-the-art parameter server systems (IterStore [17] for
+MF and TM, GeePS [18] for IC) that are deployed across
+multiple data centers. Every worker machine handles the
+data in its data center, while the parameter servers are
+distributed evenly across all the data centers; (2) Gaia,
+our prototype systems based on IterStore and GeePS,
+deployed across multiple data centers; and (3) LAN, the
+baseline parameter servers (IterStore and GeePS) that are
+deployed within a single data center (also on 22 machines)
+that already hold all the data, representing the ideal case
+of all communication on a LAN. For each system, we
+evaluate two ML synchronization models: BSP and SSP
+(Section 2.1). For Baseline and LAN, BSP and SSP are
+used among all worker machines, whereas for Gaia, they
+are used only within each data center. Due to limited
+space, we present the results for BSP in this section and
+leave the results for SSP to Appendix B.
+6.1. Performance on EC2 Deployment
+We ﬁrst present the performance of Gaia and Baseline
+when they are deployed across 11 EC2 data centers. Fig-
+ure 8 shows the normalized execution time until conver-
+gence for our ML applications, normalized to Baseline
+on EC2. The data label on each bar is the speedup
+over Baseline for the respective deployment . As Sec-
+tion 5.1 discusses, we run only MF on EC2 due to the
+high monetary cost of WAN data transfer. Thus, we
+present the results of MF on all three platforms, while
+we show the results of TM and IC only on our emulation
+platforms. As Figure 8a shows, our emulation platform
+(Emulation-EC2) matches the execution time of our real
+EC2 deployment (Amazon-EC2) very well. We make two
+major observations.
+First, we ﬁnd that Gaia signiﬁcantly improves the
+performance of Baseline when deployed globally across
+many EC2 data centers. For MF, Gaia provides a speedup
+of 2.0× over Baseline. Furthermore, the performance of
+Gaia is very similar to the performance of LAN, indicating
+that Gaia almost attains the performance upper bound
+with the given computation resources. For TM, Gaia
+delivers a similar speedup (2.0×) and is within 1.25× of
+the ideal speed of LAN. For IC, Gaia provides a speedup
+USENIX Association 14th USENIX Symposium on Networked Systems Design and Implementation    637
+===== PAGE 11 =====
+2.0X 2.0X1.8X 1.8X
+3.8X 3.7X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+Baseline Gaia LAN
+Nromalized Execution Time
+Amazon-EC2
+Emulation-EC2
+Emulation-Full-Speed
+(a) Matrix Factorization (MF)
+2.0X
+2.5X
+3.7X 4.8X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+Baseline Gaia LAN
+Nromalized Execution Time
+Emulation-EC2
+Emulation-Full-Speed (b) Topic Modeling (TM)
+5.6X 7.5X6.0X 8.5X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+Baseline Gaia LAN
+Nromalized Execution Time
+Emulation-EC2
+Emulation-Full-Speed (c) Image Classiﬁcation (IC)
+Figure 8: Normalized execution time until convergence when deployed across 11 EC2 regions and our emulation cluster
+of 5.6× over Baseline, which is within 1.32× of the
+LAN speed, indicating that Gaia is also effective on a
+GPU-based ML system. The gap between Baseline and
+LAN is larger for IC than for the other two applications.
+This is because the GPU-based ML system generates
+parameter updates at a higher rate than the CPU-based
+one, and therefore the limited W AN bandwidth slows it
+down more signiﬁcantly.
+Second, Gaia provides a higher performance gain when
+deployed on a more powerful platform. As Figure 8 shows,
+the performance gap between Baseline and LAN signiﬁ-
+cantly increases on Emulation-Full-Speed compared to
+the slower platform Emulation-EC2. This is expected
+because the WAN bandwidth becomes a more critical
+bottleneck when the computation time reduces and the
+LAN bandwidth increases. Gaia successfully mitigates
+the W AN bottleneck in this more challenging Emulation-
+Full-Speed setting, and improves the system performance
+by 3.8× for MF, 3.7× for TM, and 6.0× for IC over
+Baseline, approaching the speedups provided by LAN.
+6.2. Performance and W AN Bandwidth
+To understand howGaia performs under different amounts
+of WAN bandwidth, we evaluate two settings where
+Baseline and Gaia are deployed across two data centers
+with two W AN bandwidth conﬁgurations: (1) V/C WAN,
+which emulates the WAN bandwidth between Virginia
+and California, representing a setting within the same
+continent; and (2) S/S WAN, which emulates the WAN
+bandwidth between Singapore and São Paulo, representing
+the lowest WAN bandwidth between any two Amazon
+EC2 sites. All the experiments are conducted on our
+emulation platform at full speed. Figures 9 and 10 show
+the results. Three observations are in order.
+3.7X3.5X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+Matrix Factorization 
+Normalized Exec. Time
+Baseline Gaia LAN
+3.7X3.9X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+Topic Modeling 
+Baseline Gaia LAN
+7.4X7.4X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+Image Classification
+Baseline Gaia LAN
+Figure 9: Normalized execution time until convergence
+with the W AN bandwidth between Virginia and California
+First, Gaia successfully matches the performance of
+LAN when W AN bandwidth is high (V/C WAN). As Fig-
+ure 9 shows, Gaia achieves a speedup of 3.7× for MF,
+3.7× for TM, and 7.4× for IC. For all three ML applica-
+tions, the performance of Gaia on WANs is almost the
+same as LAN performance.
+25X24X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+Matrix Factorization 
+Normalized Exec. Time
+Baseline Gaia LAN
+14X17X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+Topic Modeling 
+Baseline Gaia LAN
+54X54X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+Image Classification
+Baseline Gaia LAN
+Figure 10: Normalized execution time until convergence
+with the W AN bandwidth between Singapore and São Paulo
+Second, Gaia still performs very well when WAN
+bandwidth is low (S/S WAN, Figure 10): Gaia provides a
+speedup of 25.4× for MF, 14.1× for TM, and 53.5× for
+IC, and successfully approaches LAN performance. These
+results show that our design is robust for both CPU-based
+and GPU-based ML systems, and it can deliver high
+performance even under scarce W AN bandwidth.
+Third, for MF, the performance of Gaia (on W ANs) is
+slightly better than LAN performance. This is because we
+run ASP between different data centers, and the workers
+in each data center need to synchronize only with each
+other locally in each iteration. As long as the mirror
+updates on W ANs are timely, each iteration of Gaia can
+be faster than that of LAN, which needs to synchronize
+across all workers. While Gaia needs more iterations than
+LAN due to the accuracy loss, Gaia can still outperform
+LAN due to the faster iterations.
+6.3. Cost Analysis
+Figure 11 shows the monetary cost of running ML ap-
+plications until convergence based on the Amazon EC2
+cost model, normalized to the cost of Baseline on 11
+EC2 regions. Cost is divided into three components: (1)
+the cost of machine time spent on computation, (2) the
+cost of machine time spent on waiting for networks, and
+(3) the cost of data transfer across different data centers.
+As we discuss in Section 2.2, there is no cost for data
+transfer within a single data center in Amazon EC2. The
+data label on each bar shows the factor by which the
+cost of Gaia is cheaper than the cost of each respective
+Baseline. We evaluate all three deployment setups that
+we discuss in Sections 6.1 and 6.2. We make two major
+observations.
+First, Gaia is very effective in reducing the cost of
+running a geo-distributed ML application. Across all
+the evaluated settings, Gaia is 2.6× to 59.0× cheaper
+than Baseline. Not surprisingly, the major cost saving
+comes from the reduction of data transfer on WANs
+and the reduction of machine time spent on waiting for
+networks. For the S/S W AN setting, the cost of waiting
+for networks is a more important factor than the other
+638    14th USENIX Symposium on Networked Systems Design and Implementation USENIX Association
+===== PAGE 12 =====
+4.2X 6.0X 28.5X
+0
+0.5
+1
+1.5
+2
+2.5
+Baseline Gaia Baseline Gaia Baseline Gaia
+EC2-ALL V/C W AN S/S W AN
+Normliaed Cost
+Machine Cost (Compute)
+Machine Cost (Network)
+Communication Cost
+(a) Matrix Factorization (MF)
+2.6X 5.7X 18.7X
+0
+0.5
+1
+1.5
+2
+2.5
+BaselineGaiaBaselineGaiaBaselineGaia
+EC2-ALL V/C W AN S/S W AN
+Normliaed Cost
+Machine Cost (Compute)
+Machine Cost (Network)
+Communication Cost (b) Topic Modeling (TM)
+8.5X 10.7X 59.0X
+0
+0.5
+1
+1.5
+2
+2.5
+3
+3.5
+4
+BaselineGaiaBaselineGaiaBaselineGaia
+EC2-ALL V/C W AN S/S W AN
+Normliaed Cost
+Machine Cost (Compute)
+Machine Cost (Network)
+Communication Cost (c) Image Classiﬁcation (IC)
+Figure 11: Normalized monetary cost of Gaia vs. Baseline
+two settings, because it takes more time to transfer the
+same amount of data under low WAN bandwidth. As
+Gaia signiﬁcantly improves system performance and
+reduces data communication overhead, it signiﬁcantly
+reduces both cost sources. We conclude that Gaia is a
+cost-effective system for geo-distributed ML applications.
+Second, Gaia reduces data transfer cost much more
+when deployed on a smaller number of data centers. The
+reason is that Gaia needs to broadcast the signiﬁcant
+updates to all data centers, so communication cost is
+higher as the number of data centers increases. While
+we employ network overlays (Section 4.5) to mitigate
+this effect, there is still more overhead with more than
+two data centers. Nonetheless, the cost of Gaia is still
+much cheaper (4.2×/2.6×/8.5×) than Baseline even
+when deployed across 11 data centers.
+6.4. Comparisons with Centralized Data
+Gaia obtains its good performance without moving any
+raw data, greatly reducing WAN costs and respecting
+privacy and data sovereignty laws that prohibit raw data
+movement. For settings in which raw data movement isal-
+lowed, Table 1 summarizes the performance and cost com-
+parisons between Gaia and the centralized data approach
+(Centralized), which moves all the geo-distributed data
+into a single data center and then runs the ML application
+over the data. We make Centralized very cost efﬁcient
+by moving the data into the cheapest data center in each
+setting, and we use low cost machines ( m4.xlarge [8])
+to move the data. We make two major observations.
+Table 1: Comparison between Gaia and Centralized
+Application Setting Gaia Speedup
+over Centralized
+Gaia cost /
+Centralized cost
+MF
+EC2-ALL 1.11 3.54
+V/C W AN 1.22 1.00
+S/S W AN 2.13 1.17
+TM
+EC2-ALL 0.80 6.14
+V/C W AN 1.02 1.26
+S/S W AN 1.25 1.92
+IC
+EC2-ALL 0.76 3.33
+V/C W AN 1.12 1.07
+S/S W AN 1.86 1.08
+First, Gaia outperforms Centralized for most set-
+tings, except for TM and IC in the EC2-ALL setting.
+Other than these two cases, Gaia provides a 1.02–2.13×
+speedup over Centralized. This is because Gaia does
+not need to wait for data movement over W ANs, and the
+performance of Gaia is very close to that of LAN. On the
+other hand, Centralized performs better when there is
+a performance gap between Gaia and LAN, especially in
+the setting of all 11 data centers for TM and IC. The data
+movement overhead of Centralized is smaller in this
+setting because each data center has only a small fraction
+of the data, and Centralized moves the data from all
+data centers in parallel.
+Second, Centralized is more cost-efﬁcient than Gaia,
+but the gap is small in the two data centers setting. This
+is because the total WAN trafﬁc of Gaia is still larger
+than the size of the training data, even though Gaia
+signiﬁcantly reduces the communication overhead over
+Baseline. The cost gap is larger in the setting of 11
+data centers (3.33–6.14×) than in two data centers (1.00–
+1.92×), because the WAN trafﬁc of Gaia is positively
+correlated with the number of data centers (Section 4.5).
+6.5. Effect of Synchronization Mechanisms
+One of the major design considerations of ASP is to en-
+sure that the signiﬁcant updates arrive in a timely manner
+to guarantee algorithm convergence. To understand the
+effectiveness of our proposed synchronization mecha-
+nisms (i.e., ASP selective barrier and mirror clock), we
+run MF and TM on Gaia with both mechanisms disabled
+across 11 EC2 regions. Figure 12 shows the progress
+toward algorithm convergence with the synchronization
+mechanisms enabled ( Gaia) and disabled ( Gaia_Async).
+For MF, lower object value is better, while forTM, higher
+is better.
+0E+00
+1E+08
+2E+08
+3E+08
+4E+08
+5E+08
+6E+08
+7E+08
+8E+08
+9E+08
+1E+09
+0 50100150200250300350
+Objective value
+Time (Seconds)
+Gaia
+Gaia_Async
+convergence value
+(a) Matrix Factorization (MF)
+-1.5E+09
+-1.4E+09
+-1.3E+09
+-1.2E+09
+-1.1E+09
+-1.0E+09
+-9.0E+08
+0 250 500 7501000
+Objective value
+Time (Seconds)
+Gaia
+Gaia_Async
+convergence Value (b) Topic Modeling (TM)
+Figure 12: Progress toward algorithm convergence with
+and without Gaia’s synchronization mechanisms
+As Figure 12 shows, Gaia steadily reaches algo-
+rithm convergence for both applications. In contrast,
+Gaia_Async diverges from the optimum point at ~100
+seconds for MF. For TM, Gaia_Async looks like it makes
+faster progress at the beginning of execution because it
+eliminates the synchronization overhead. However, it
+makes very slow progress after ~200 seconds and does
+not reach the value that results in convergence until 1100
+seconds. It may take a long time for Gaia_Async to reach
+that point, if ever. Thus, the lack of synchronization leads
+to worse model quality than that achieved by using proper
+synchronization mechanisms. Both results demonstrate
+that the synchronization mechanisms we introduce in
+ASP are effective and vital for deploying ML algorithms
+on Gaia on W ANs.
+USENIX Association 14th USENIX Symposium on Networked Systems Design and Implementation    639
+===== PAGE 13 =====
+7. Related Work
+To our knowledge, this is the ﬁrst work to propose a
+globally distributed ML system that is (1) designed to run
+effectively over WANs while ensuring the convergence
+and accuracy of an ML algorithm, and (2) generic and
+ﬂexible to run a wide range of ML algorithms without
+requiring modiﬁcation. In this section, we discuss related
+works on 1) W AN-aware data analytics and ML systems,
+2) distributed ML systems, 3) non-uniform convergence
+in ML algorithms, 4) communication-efﬁcient ML algo-
+rithms, and 5) approximate queries on distributed data,
+all of which are related to our proposed system.
+W AN-aware Data Analytics and ML Systems.Prior
+work establishes the emerging problem of analyzing the
+globally-generated data in the context of data analytics
+systems (e.g., [33, 36, 41, 57, 58, 71–73]). These works
+show very promising W AN bandwidth reduction and/or
+system performance improvement with a WAN-aware
+data analytics framework. However, their goal is not to
+run an ML system effectively on W ANs, which has very
+different challenges from a data analytics system. Cano
+et al. [12] ﬁrst discuss the problem of running an ML
+system on geo-distributed data. They show that a geo-
+distributed ML system can perform signiﬁcantly better
+by leveraging a communication-efﬁcient algorithm [49]
+for logistic regression models. This solution requires the
+ML programmer to change the ML algorithm, which is
+challenging and algorithm-speciﬁc. In contrast, our work
+focuses on the design of communication-efﬁcient mecha-
+nisms at the system level and requires no modiﬁcation to
+the ML algorithms.
+Distributed ML Systems. There are many distributed
+ML systems that aim to enable large-scale ML applica-
+tions (e.g., [1, 2, 5, 6, 13, 16–18, 20, 34, 40, 45–47, 74, 77]).
+These systems successfully demonstrate their effective-
+ness on a large number of machines by employing various
+synchronization models and system optimizations. How-
+ever, all of them assume that the network communication
+happens within a data center and do not tackle the chal-
+lenges of scarce WAN bandwidth. As our study shows,
+state-of-the-art parameter server systems suffer from sig-
+niﬁcant performance degradation and data transfer cost
+when deployed across multiple data centers on W ANs. We
+demonstrate our idea on both CPU-based and GPU-based
+parameter server systems [17, 18], and we believe our
+proposed general solution can be applied to all distributed
+ML systems that use the parameter server architecture.
+Non-uniform Convergence in ML Algorithms.Prior
+work observes that, in many ML algorithms, not all model
+parameters converge to their optimal value within the same
+number of computation iterations [21,22,40,47,80]. Sev-
+eral systems exploit this property to improve the algorithm
+convergence speed, e.g., by prioritizing the computation
+of important parameters [40, 47, 80], communicating the
+important parameters more aggressively [74], or sending
+fewer updates with user-deﬁned ﬁlters [45, 46].
+Among these, the closest to our work is Li et al.’s
+proposal for a communication-efﬁcient parameter server
+system [45, 46], which employs various ﬁlters to reduce
+communication between worker machines and parameter
+servers. In contrast to our work, this work 1) does not
+differentiate the communication on LANs from the com-
+munication on W ANs, and thus it cannot make efﬁcient
+use of the abundant LAN bandwidth or the scarce and
+heterogeneous W AN bandwidth, and 2) does not propose
+a general synchronization model across multiple data
+centers, a key contribution of our work.
+Communication-Efﬁcient ML Algorithms. A large
+body of prior work proposes ML algorithms to reduce
+the dependency on intensive parameter updates to enable
+more efﬁcient parallel computation (e.g., [37, 52, 63, 66,
+81, 82, 84]). These works are largely orthogonal to our
+work, as we focus on a generic system-level solution that
+does not require any changes to ML algorithms. These
+ML algorithms can use our system to further reduce
+communication overhead over W ANs.
+Approximate Queries on Distributed Data. In the
+database community, there is substantial prior work that
+explores the trade-off between precision and performance
+for queries on distributed data over W ANs (e.g., [15, 55,
+56, 75]). The idea is to reduce communication overhead
+of moving up-to-date data from data sources to a query
+processor by allowing some user-deﬁned precision loss
+for the queries. At a high level, our work bears some
+resemblance to this idea, but the challenges we tackle
+are fundamentally different. The focus of distributed
+database systems is on approximating queries (e.g., simple
+aggregation) on raw data. In contrast, our work focuses
+on retaining ML algorithm convergence and accuracy by
+using approximate ML models during training.
+8. Conclusion
+We introduce Gaia, a new ML system that is designed
+to efﬁciently run ML algorithms on globally-generated
+data over WANs, without any need to change the ML
+algorithms. Gaia decouples the synchronization within a
+data center (LANs) from the synchronization across differ-
+ent data centers (W ANs), enabling ﬂexible and effective
+synchronization over LANs and W ANs. We introduce a
+new synchronization model, Approximate Synchronous
+Parallel (ASP), to efﬁciently utilize the scarce and hetero-
+geneous W AN bandwidth while ensuring convergence of
+the ML algorithms with a theoretical guarantee. Using
+ASP, Gaia dynamically eliminates insigniﬁcant, and thus
+unnecessary, communication over W ANs. Our evaluation
+shows that Gaia signiﬁcantly outperforms two state-of-
+the-art parameter server systems on W ANs, and is within
+0.94–1.40× of the speed of running the same ML al-
+gorithm on a LAN. Gaia also signiﬁcantly reduces the
+monetary cost of running the same ML algorithm on
+W ANs, by 2.6–59.0×. We conclude that Gaia is a prac-
+tical and effective system to enable globally-distributed
+ML applications, and we believe the ideas behind Gaia’s
+system design for communication across WANs can be
+applied to many other large-scale distributed ML systems.
+640    14th USENIX Symposium on Networked Systems Design and Implementation USENIX Association
+===== PAGE 14 =====
+Acknowledgments
+We thank our shepherd, Adam Wierman, and the review-
+ers for their valuable suggestions. We thank the SAFARI
+group members and Garth A. Gibson for their feedback.
+Special thanks to Henggang Cui for his help on IterStore
+and GeePS, Jinliang Wei for his help on Bösen, and their
+feedback. We thank the members and companies of the
+PDL Consortium (including Broadcom, Citadel, EMC,
+Facebook, Google, HP Labs, Hitachi, Intel, Microsoft
+Research, MongoDB, NetApp, Oracle, Samsung, Seagate,
+Tintri, Two Sigma, Uber, Veritas, and Western Digital)
+for their interest, insights, feedback, and support. We ac-
+knowledge the support of our industrial partners: Google,
+Intel, NVIDIA, Samsung and VMWare. This work is
+supported in part by NSF grant 1409723, Intel STC on
+Cloud Computing (ISTC-CC), Intel STC on Visual Cloud
+Systems (ISTC-VCS), and the Dept of Defense under con-
+tract FA8721-05-C-0003. Dimitris Konomis is partially
+supported by Onassis Foundation.
+References
+[1] “Apache Mahout.” http://mahout.apache.org/
+[2] “Apache Spark MLlib.” http://spark.apache.org/
+mllib/
+[3] “Linux Trafﬁc Control.” http://tldp.org/HOWTO/
+Trafﬁc-Control-HOWTO/intro.html
+[4] “Deep neural networks for acoustic modeling in
+speech recognition: The shared views of four re-
+search groups,”IEEE Signal Process. Mag., 2012.
+[5] M. Abadi, A. Agarwal, P. Barham, E. Brevdo,
+Z. Chen, C. Citro, G. S. Corrado, A. Davis, J. Dean,
+M. Devin, S. Ghemawat, I. Goodfellow, A. Harp,
+G. Irving, M. Isard, Y . Jia, R. Jozefowicz, L. Kaiser,
+M. Kudlur, J. Levenberg, D. Mané, R. Monga,
+S. Moore, D. Murray, C. Olah, M. Schuster,
+J. Shlens, B. Steiner, I. Sutskever, K. Talwar,
+P. Tucker, V . Vanhoucke, V . Vasudevan, F. Viégas,
+O. Vinyals, P. Warden, M. Wattenberg, M. Wicke,
+Y . Yu, and X. Zheng, “TensorFlow: Large-
+scale machine learning on heterogeneous systems,”
+2015, software available from tensorﬂow.org.
+http://tensorﬂow.org/
+[6] A. Ahmed, M. Aly, J. Gonzalez, S. M. Narayana-
+murthy, and A. J. Smola, “Scalable inference in
+latent variable models,” inWSDM, 2012.
+[7] Amazon, “AWS global infrastructure.” https://aws.
+amazon.com/about-aws/global-infrastructure/
+[8] Amazon, “Amazon EC2 pricing,” Janurary 2017.
+https://aws.amazon.com/ec2/pricing/
+[9] A. Auradkar, C. Botev, S. Das, D. D. Maagd,
+A. Feinberg, P. Ganti, L. Gao, B. Ghosh,
+K. Gopalakrishna, B. Harris, J. Koshy, K. Krawez,
+J. Kreps, S. Lu, S. Nagaraj, N. Narkhede, S. Pachev,
+I. Perisic, L. Qiao, T. Quiggle, J. Rao, B. Schul-
+man, A. Sebastian, O. Seeliger, A. Silberstein,
+B. Shkolnik, C. Soman, R. Sumbaly, K. Surlaker,
+S. Topiwala, C. Tran, B. Varadarajan, J. Westerman,
+Z. White, D. Zhang, and J. Zhang, “Data infrastruc-
+ture at LinkedIn,” inICDE, 2012.
+[10] D. M. Blei, A. Y . Ng, and M. I. Jordan, “Latent
+Dirichlet allocation,”JMLR, 2003.
+[11] J. K. Bradley, A. Kyrola, D. Bickson, and
+C. Guestrin, “Parallel coordinate descent for L1-
+regularized loss minimization,” inICML, 2011.
+[12] I. Cano, M. Weimer, D. Mahajan, C. Curino, and
+G. M. Fumarola, “Towards geo-distributed machine
+learning,”CoRR, 2016.
+[13] T. M. Chilimbi, Y . Suzue, J. Apacible, and K. Kalya-
+naraman, “Project Adam: Building an efﬁcient and
+scalable deep learning training system,” in OSDI,
+2014.
+[14] C. Chu, S. K. Kim, Y . Lin, Y . Yu, G. R. Bradski, A. Y .
+Ng, and K. Olukotun, “Map-Reduce for machine
+learning on multicore,” inNIPS, 2006.
+[15] G. Cormode, M. N. Garofalakis, S. Muthukrishnan,
+and R. Rastogi, “Holistic aggregates in a networked
+world: Distributed tracking of approximate quan-
+tiles,” inSIGMOD, 2005.
+[16] H. Cui, J. Cipar, Q. Ho, J. K. Kim, S. Lee, A. Ku-
+mar, J. Wei, W. Dai, G. R. Ganger, P. B. Gibbons,
+G. A. Gibson, and E. P. Xing, “Exploiting bounded
+staleness to speed up big data analytics,” inUSENIX
+ATC, 2014.
+[17] H. Cui, A. Tumanov, J. Wei, L. Xu, W. Dai,
+J. Haber-Kucharsky, Q. Ho, G. R. Ganger, P. B.
+Gibbons, G. A. Gibson, and E. P. Xing, “Ex-
+ploiting iterative-ness for parallel ML compu-
+tations,” in SoCC, 2014, software available at
+https://github.com/cuihenggang/iterstore.
+[18] H. Cui, H. Zhang, G. R. Ganger, P. B. Gibbons,
+and E. P. Xing, “GeePS: Scalable deep learning on
+distributed GPUs with a GPU-specialized parame-
+ter server,” inEuroSys, 2016, software available at
+https://github.com/cuihenggang/geeps.
+[19] W. Dai, A. Kumar, J. Wei, Q. Ho, G. Gibson,
+and E. P. Xing, “Analysis of high-performance dis-
+tributed ML at scale through parameter server con-
+sistency models,” inAAAI, 2015.
+[20] J. Dean, G. Corrado, R. Monga, K. Chen, M. Devin,
+Q. V . Le, M. Z. Mao, M. Ranzato, A. W. Senior,
+P. A. Tucker, K. Yang, and A. Y . Ng, “Large scale
+distributed deep networks,” inNIPS, 2012.
+[21] B. Efron, T. Hastie, I. Johnstone, and R. Tibshirani,
+“Least angle regression,” inThe Annals of Statistics,
+2004.
+[22] G. Elidan, I. McGraw, and D. Koller, “Residual
+belief propagation: Informed scheduling for asyn-
+chronous message passing,” inUAI, 2006.
+[23] ESnet and Lawrence Berkeley National Laboratory,
+“iperf3.” http://software.es.net/iperf/
+[24] A. Frome, G. S. Corrado, J. Shlens, S. Bengio,
+J. Dean, M. Ranzato, and T. Mikolov, “DeViSE:
+USENIX Association 14th USENIX Symposium on Networked Systems Design and Implementation    641
+===== PAGE 15 =====
+A deep visual-semantic embedding model,” inNIPS,
+2013.
+[25] R. Gemulla, E. Nijkamp, P. J. Haas, and Y . Sismanis,
+“Large-scale matrix factorization with distributed
+stochastic gradient descent,” inSIGKDD, 2011.
+[26] J. E. Gonzalez, Y . Low, H. Gu, D. Bickson, and
+C. Guestrin, “PowerGraph: Distributed graph-
+parallel computation on natural graphs,” in OSDI,
+2012.
+[27] J. E. Gonzalez, R. S. Xin, A. Dave, D. Crankshaw,
+M. J. Franklin, and I. Stoica, “GraphX: Graph pro-
+cessing in a distributed dataﬂow framework,” in
+OSDI, 2014.
+[28] Google, “Google data center loca-
+tions.” https://www.google.com/about/datacenters/
+inside/locations/index.html
+[29] A. G. Greenberg, J. R. Hamilton, D. A. Maltz, and
+P. Patel, “The cost of a cloud: research problems in
+data center networks,” Computer Communication
+Review, 2009.
+[30] T. L. Grifﬁths and M. Steyvers, “Finding scientiﬁc
+topics,” Proceedings of the National Academy of
+Sciences of the United States of America, 2004.
+[31] A. Gupta, F. Yang, J. Govig, A. Kirsch, K. Chan,
+K. Lai, S. Wu, S. G. Dhoot, A. R. Kumar, A. Agi-
+wal, S. Bhansali, M. Hong, J. Cameron, M. Siddiqi,
+D. Jones, J. Shute, A. Gubarev, S. Venkataraman,
+and D. Agrawal, “Mesa: Geo-replicated, near real-
+time, scalable data warehousing,”PVLDB, 2014.
+[32] A. Harlap, H. Cui, W. Dai, J. Wei, G. R. Ganger, P. B.
+Gibbons, G. A. Gibson, and E. P. Xing, “Address-
+ing the straggler problem for iterative convergent
+parallel ML,” inSoCC, 2016.
+[33] B. Heintz, A. Chandra, and R. K. Sitaraman, “Op-
+timizing grouped aggregation in geo-distributed
+streaming analytics,” inHPDC, 2015.
+[34] Q. Ho, J. Cipar, H. Cui, S. Lee, J. K. Kim, P. B.
+Gibbons, G. A. Gibson, G. R. Ganger, and E. P.
+Xing, “More effective distributed ML via a stale
+synchronous parallel parameter server,” in NIPS,
+2013.
+[35] C. Hong, S. Kandula, R. Mahajan, M. Zhang,
+V . Gill, M. Nanduri, and R. Wattenhofer, “Achiev-
+ing high utilization with software-driven W AN,” in
+SIGCOMM, 2013.
+[36] C. Hung, L. Golubchik, and M. Yu, “Scheduling
+jobs across geo-distributed datacenters,” in SoCC,
+2015.
+[37] M. Jaggi, V . Smith, M. Takác, J. Terhorst,
+S. Krishnan, T. Hofmann, and M. I. Jordan,
+“Communication-efﬁcient distributed dual coordi-
+nate ascent,” inNIPS, 2014.
+[38] Y . Jia, E. Shelhamer, J. Donahue, S. Karayev,
+J. Long, R. B. Girshick, S. Guadarrama, and T. Dar-
+rell, “Caffe: Convolutional architecture for fast fea-
+ture embedding,”CoRR, 2014.
+[39] A. Karpathy, G. Toderici, S. Shetty, T. Leung,
+R. Sukthankar, and F. F. Li, “Large-scale video clas-
+siﬁcation with convolutional neural networks,” in
+CVPR, 2014.
+[40] J. K. Kim, Q. Ho, S. Lee, X. Zheng, W. Dai, G. A.
+Gibson, and E. P. Xing, “STRADS: a distributed
+framework for scheduled model parallel machine
+learning,” inEuroSys, 2016.
+[41] K. Kloudas, R. Rodrigues, N. M. Preguiça, and
+M. Mamede, “PIXIDA: optimizing data parallel jobs
+in wide-area data analytics,”PVLDB, 2015.
+[42] N. Laoutaris, M. Sirivianos, X. Yang, and P. Ro-
+driguez, “Inter-datacenter bulk transfers with net-
+stitcher,” inSIGCOMM, 2011.
+[43] Y . LeCun, B. E. Boser, J. S. Denker, D. Henderson,
+R. E. Howard, W. E. Hubbard, and L. D. Jackel,
+“Backpropagation applied to handwritten zip code
+recognition,”Neural Computation, 1989.
+[44] G. Lee, J. J. Lin, C. Liu, A. Lorek, and D. V . Ryaboy,
+“The uniﬁed logging infrastructure for data analytics
+at Twitter,”PVLDB, 2012.
+[45] M. Li, D. G. Andersen, J. W. Park, A. J. Smola,
+A. Ahmed, V . Josifovski, J. Long, E. J. Shekita, and
+B. Su, “Scaling distributed machine learning with
+the parameter server,” inOSDI, 2014.
+[46] M. Li, D. G. Andersen, A. J. Smola, and K. Yu,
+“Communication efﬁcient distributed machine learn-
+ing with the parameter server,” inNIPS, 2014.
+[47] Y . Low, J. Gonzalez, A. Kyrola, D. Bickson,
+C. Guestrin, and J. M. Hellerstein, “Distributed
+GraphLab: A framework for machine learning in
+the cloud,”VLDB, 2012.
+[48] E. K. Lua, J. Crowcroft, M. Pias, R. Sharma, and
+S. Lim, “A survey and comparison of peer-to-peer
+overlay network schemes,”IEEE Communications
+Surveys and Tutorials, 2005.
+[49] D. Mahajan, S. S. Keerthi, S. Sundararajan, and
+L. Bottou, “A functional approximation based dis-
+tributed learning algorithm,”CoRR, 2013.
+[50] X. Meng, J. K. Bradley, B. Yavuz, E. R. Sparks,
+S. Venkataraman, D. Liu, J. Freeman, D. B. Tsai,
+M. Amde, S. Owen, D. Xin, R. Xin, M. J. Franklin,
+R. Zadeh, M. Zaharia, and A. Talwalkar, “MLlib:
+Machine learning in Apache Spark,”CoRR, 2015.
+[51] Microsoft, “Azure regions.” https://azure.microsoft.
+com/en-us/region
+[52] W. Neiswanger, C. Wang, and E. P. Xing, “Asymp-
+totically exact, embarrassingly parallel MCMC,” in
+UAI, 2014.
+[53] “New York Times dataset,” http://www.ldc.upenn.
+edu/.
+[54] D. Newman, A. U. Asuncion, P. Smyth, and
+M. Welling, “Distributed algorithms for topic mod-
+els,”JMLR, 2009.
+642    14th USENIX Symposium on Networked Systems Design and Implementation USENIX Association
+===== PAGE 16 =====
+[55] C. Olston, J. Jiang, and J. Widom, “Adaptive ﬁlters
+for continuous queries over distributed data streams,”
+in SIGMOD, 2003.
+[56] C. Olston and J. Widom, “Offering a precision-
+performance tradeoff for aggregation queries over
+replicated data,” inVLDB, 2000.
+[57] Q. Pu, G. Ananthanarayanan, P. Bodík, S. Kandula,
+A. Akella, P. Bahl, and I. Stoica, “Low latency geo-
+distributed data analytics,” inSIGCOMM, 2015.
+[58] A. Rabkin, M. Arye, S. Sen, V . S. Pai, and M. J.
+Freedman, “Aggregation and degradation in Jet-
+Stream: Streaming analytics in the wide area,” in
+NSDI, 2014.
+[59] B. Recht, C. Ré, S. J. Wright, and F. Niu, “Hogwild:
+A lock-free approach to parallelizing stochastic gra-
+dient descent,” inNIPS, 2011.
+[60] P. Richtárik and M. Takác, “Distributed coordinate
+descent method for learning with big data,”CoRR,
+2013.
+[61] D. E. Rumelhart, G. E. Hinton, and R. J. Williams,
+“Learning representations by back-propagating er-
+rors,”Cognitive modeling, 1988.
+[62] O. Russakovsky, J. Deng, H. Su, J. Krause,
+S. Satheesh, S. Ma, Z. Huang, A. Karpathy,
+A. Khosla, M. Bernstein, A. C. Berg, and L. Fei-Fei,
+“ImageNet large scale visual recognition challenge,”
+IJCV, 2015.
+[63] O. Shamir, N. Srebro, and T. Zhang,
+“Communication-efﬁcient distributed optimization
+using an approximate Newton-type method,” in
+ICML, 2014.
+[64] A. J. Smola and S. M. Narayanamurthy, “An archi-
+tecture for parallel topic models,”VLDB, 2010.
+[65] C. Szegedy, W. Liu, Y . Jia, P. Sermanet, S. E. Reed,
+D. Anguelov, D. Erhan, V . Vanhoucke, and A. Rabi-
+novich, “Going deeper with convolutions,” inCVPR,
+2015.
+[66] M. Takác, A. S. Bijral, P. Richtárik, and N. Srebro,
+“Mini-batch primal and dual methods for SVMs,” in
+ICML, 2013.
+[67] TeleGeography, “Global Internet geography.”
+https://www.telegeography.com/research-services/
+global-internet-geography/
+[68] A. Thusoo, Z. Shao, S. Anthony, D. Borthakur,
+N. Jain, J. S. Sarma, R. Murthy, and H. Liu, “Data
+warehousing and analytics infrastructure at Face-
+book,” inSIGMOD, 2010.
+[69] K. I. Tsianos, S. F. Lawlor, and M. G. Rabbat, “Com-
+munication/computation tradeoffs in consensus-
+based distributed optimization,” inNIPS, 2012.
+[70] L. G. Valiant, “A bridging model for parallel com-
+putation,”Commun. ACM, 1990.
+[71] R. Viswanathan, A. Akella, and G. Anantha-
+narayanan, “Clarinet: W AN-aware optimization for
+analytics queries,” inOSDI, 2016.
+[72] A. Vulimiri, C. Curino, B. Godfrey, K. Karanasos,
+and G. Varghese, “W ANalytics: Analytics for a geo-
+distributed data-intensive world,” inCIDR, 2015.
+[73] A. Vulimiri, C. Curino, P. B. Godfrey, T. Jungblut,
+J. Padhye, and G. Varghese, “Global analytics in the
+face of bandwidth and regulatory constraints,” in
+NSDI, 2015.
+[74] J. Wei, W. Dai, A. Qiao, Q. Ho, H. Cui, G. R.
+Ganger, P. B. Gibbons, G. A. Gibson, and E. P. Xing,
+“Managed communication and consistency for fast
+data-parallel iterative analytics,” inSoCC, 2015.
+[75] O. Wolfson, B. Xu, S. Chamberlain, and L. Jiang,
+“Moving objects databases: Issues and solutions,” in
+SSDBM, 1998.
+[76] Z. Wu, M. Butkiewicz, D. Perkins, E. Katz-Bassett,
+and H. V . Madhyastha, “SPANStore: Cost-effective
+geo-replicated storage spanning multiple cloud ser-
+vices,” inSOSP, 2013.
+[77] E. P. Xing, Q. Ho, W. Dai, J. K. Kim, J. Wei, S. Lee,
+X. Zheng, P. Xie, A. Kumar, and Y . Yu, “Petuum:
+A new platform for distributed machine learning on
+big data,” inSIGKDD, 2015.
+[78] E. P. Xing, Q. Ho, P. Xie, and W. Dai, “Strategies
+and principles of distributed machine learning on
+big data,”CoRR, 2015.
+[79] M. Zaharia, M. Chowdhury, T. Das, A. Dave, J. Ma,
+M. McCauly, M. J. Franklin, S. Shenker, and I. Sto-
+ica, “Resilient distributed datasets: A fault-tolerant
+abstraction for in-memory cluster computing,” in
+NSDI, 2012.
+[80] Y . Zhang, Q. Gao, L. Gao, and C. Wang, “PrIter: A
+distributed framework for prioritized iterative com-
+putations,” inSoCC, 2011.
+[81] Y . Zhang, J. C. Duchi, and M. J. Wainwright,
+“Communication-efﬁcient algorithms for statistical
+optimization,”JMLR, 2013.
+[82] Y . Zhang and X. Lin, “DiSCO: Distributed optimiza-
+tion for self-concordant empirical loss,” in ICML,
+2015.
+[83] M. Zinkevich, A. J. Smola, and J. Langford, “Slow
+learners are fast,” inNIPS, 2009.
+[84] M. Zinkevich, M. Weimer, A. J. Smola, and L. Li,
+“Parallelized stochastic gradient descent,” inNIPS,
+2010.
+USENIX Association 14th USENIX Symposium on Networked Systems Design and Implementation    643
+===== PAGE 17 =====
+Appendix
+A. Convergence Proof of SGD under ASP
+Stochastic Gradient Descent is a very popular algorithm,
+widely used for ﬁnding the minimizer/maximizer of a
+criterion (sum of differentiable functions) via iterative
+steps. The intuition behind the algorithm is that we
+randomly select an initial point xxx0 and keep moving
+toward the negative direction of the gradient, producing
+a sequence of points xxxi,i = 1, ...n until we detect that
+moving further decreases (increases) the minimization
+(maximization, respectively) criterion only negligibly.
+Formally, step t of the SGD algorithm is deﬁned as:
+xxxt = xxxt−1− ηt ∇ ft (xxxt ) = xxxt−1− ηtgggt = xxxt−1 + uuut (1)
+where ηt is the step size at step t, ∇ ft (xxxt ) or gggt is the
+gradient at step t, and uuut = ηtgggt is the update of step t.
+Let us deﬁne an order of the updates up to step t.
+Suppose that the algorithm is distributed inD data centers,
+each of which uses P machines, and the logical clocks
+that mark progress start at 0. Then,
+uuut = uuud,p,c = uuu⌊ t
+P⌋ mod D, t mod P,⌊ t
+DP⌋ (2)
+represents a mapping that loops through clocks ( c =
+⌊ t
+DP⌋) and for each clock loops through data centers
+(d =⌊ t
+P⌋ mod D) and for each data center loops through
+its workers ( p = t mod P).
+We now deﬁne a reference sequence of states that a
+single machine serial execution would go through if the
+updates were observed under the above ordering:
+xxxt = xxx0 +
+t
+∑
+t′=1
+uuut′ (3)
+Let ∆c denote the threshold of mirror clock difference
+between different data centers. At clock c, let Ad,c denote
+the (c− ∆c)-width window of updates at data center d:
+Ad,c = [0,P−1]× [0,c− ∆c−1]. Also, let Kd,c denote the
+subset of Ad,c of signiﬁcant updates (i.e., those broadcast
+to other data centers) and Ld,c denote the subset of Ad,c
+of the insigniﬁcant updates (not broadcast) from this data
+center. Clearly, Kd,c and Ld,c are disjoint and their union
+equals Ad,c.
+Let s denote a user-chosen staleness threshold for SSP.
+Let ˜xxxt denote the sequence of noisy (i.e., inaccurate)views
+of the parameters xxxt. Let Bd,c denote the 2s-width window
+of updates at data center d: Bd,c = [0,P− 1]× [c− s,c +
+s− 1]. A worker p in data center d will deﬁnitely see its
+own updates and may or may not see updates from other
+workers that belong to this window. Then, Md,c denotes
+the set of updates that are not seen in ˜xxxttt and are seen in
+xxxt, whereas Nd,c denotes the updates that are seen in ˜xxxttt
+and not seen in xxxt. The sets Md,c and Nd,c are disjoint
+and their union equals the set Bd,c.
+We deﬁne the noisy view ˜xxxttt using the above mapping:
+˜xxxd,p,c =
+P−1
+∑
+p′=0
+c−s−1
+∑
+c′=0
+uuud,p′,c′ +
+c−1
+∑
+c′=c−s
+uuud,p,c′
++ ∑
+(p′,c′)∈B′
+d,c⊂Bd,c
+uuud,p′,c′ + ∑
+d′̸=d
+[
+∑
+(p′,c′)∈Kd′ ,c′
+uuud′,p′,c′
+]
+(4)
+The difference between the reference view xxxt and the
+noisy view ˜xxxttt becomes:
+˜xxxt− xxxt = ˜xxxd,p,c− xxxt = ˜xxx⌊ t
+P⌋ mod D,t mod P,⌊ t
+DP⌋− xxxt =
+− ∑
+i∈Md,c
+uuui + ∑
+i∈Nd,c
+uuui− ∑
+d′̸=d
+∑
+i∈Ld′ ,c
+uuui
++ ∑
+d′̸=d
+[
+− ∑
+i∈Md′ ,c
+uuui + ∑
+i∈Nd′ ,c
+uuui
+]
+(5)
+Finally, let D(xxx,xxx′′′) denote the distance between points
+xxx,xxx′′′∈ Rn:
+D(xxx,xxx′′′) = 1
+2∥xxx− xxx′′′∥2. (6)
+We now prove the following lemma:
+Lemma. For any xxx∗, ˜xxxt∈ Rn,
+⟨ ˜xxxt− xxx∗, ˜gggt⟩ = 1
+2 ηt∥ ˜gggt∥2 + D(xxx∗,xxxt )− D(xxx∗,xxxt+1)
+ηt
++
+[
+− ∑
+i∈Md,c
+ηi⟨ ˜gggi, ˜gggt⟩ + ∑
+i∈Nd,c
+ηi⟨ ˜gggi, ˜gggt⟩
+]
++ ∑
+d′̸=d
+[
+− ∑
+i∈Ld′ ,c
+ηi⟨ ˜gggi, ˜gggt⟩
+]
++ ∑
+d′̸=d
+[
+− ∑
+i∈Md′ ,c
+ηi⟨ ˜gggi, ˜gggt⟩ + ∑
+i∈Nd′ ,c
+ηi⟨ ˜gggi, ˜gggt⟩
+]
+(7)
+Proof.
+D(xxx∗,xxxt+1)− D(xxx∗,xxxt ) = 1
+2∥xxx∗− xxxt+1∥2− 1
+2∥xxx∗− xxxt∥2
+= 1
+2∥xxx∗− xxxt + xxxt− xxxt+1∥2− 1
+2∥xxx∗− xxxt∥2
+= 1
+2∥xxx∗− xxxt + ηt ˜gggt∥2− 1
+2∥xxx∗− xxxt∥2
+= 1
+2⟨xxx∗− xxxt + ηt ˜gggt ,xxx∗− xxxt + ηt ˜gggt⟩− 1
+2⟨xxx∗− xxxt ,xxx∗− xxxt⟩
+= 1
+2⟨xxx∗− xxxt ,xxx∗− xxxt⟩ + 1
+2⟨ηt ˜gggt , ηt ˜gggt⟩ +⟨xxx∗− xxxt , ηt ˜gggt⟩
+− 1
+2⟨xxx∗− xxxt ,xxx∗− xxxt⟩
+= 1
+2 ηt 2∥ ˜gggt∥2 + ηt⟨xxx∗− xxxt , ˜gggt⟩
+= 1
+2 ηt 2∥ ˜gggt∥2− ηt⟨xxxt− xxx∗, ˜gggt⟩
+= 1
+2 ηt 2∥ ˜gggt∥2− ηt⟨xxxt− ˜xxxt + ˜xxxt− xxx∗⟩
+= 1
+2 ηt 2∥ ˜gggt∥2− ηt⟨xxxt− ˜xxxt , ˜gggt⟩− ηt⟨ ˜xxxt− xxx∗, ˜gggt⟩ =⇒
+644    14th USENIX Symposium on Networked Systems Design and Implementation USENIX Association
+===== PAGE 18 =====
+⟨ ˜xxxt− xxx∗, ˜gggt⟩ = 1
+2 ηt∥ ˜gggt∥2 + D(xxx∗,xxxt )− D(xxx∗,xxxt+1)
+ηt
+−⟨ xxxt− ˜xxxt , ˜gggt⟩ (8)
+Substituting the RHS of Equation 5 into Equation 8
+completes the proof.
+Theorem 1. (Convergence of SGD under ASP) .
+Suppose that, in order to compute the minimizerx∗ of a
+convex function f (xxx) = ∑T
+t=1 ft (xxx), with ft ,t = 1,2, . . . ,T ,
+convex, we use stochastic gradient descent on one com-
+ponent ∇ ft at a time. Suppose also that 1) the algorithm
+is distributed in D data centers, each of which uses P
+machines, 2) within each data center, the SSP protocol is
+used, with a ﬁxed staleness ofs, and 3) a ﬁxed mirror clock
+difference ∆c is allowed between any two data centers.
+Let uuut =−ηt ∇ ft ( ˜xxxt ), where the step size ηt decreases
+as ηt = η√t and the signiﬁcance threshold vt decreases
+as vt = v√t . If we further assume that: ∥∇ ft (xxx)∥≤ L,
+∀xxx∈ dom( ft ) and max(D(xxx,xxx′))≤ ∆2,∀xxx,xxx′∈ dom( ft ).
+Then, as T→ ∞,
+R[X] =
+T
+∑
+t=1
+ft ( ˜xxxt )− f (xxx∗) = O(
+√
+T )
+and therefore
+lim
+T→∞
+R[X]
+T → 0
+Proof.
+R[X] =
+T
+∑
+t=1
+ft ( ˜xxxt )− ft (xxx∗)
+≤
+T
+∑
+t=1
+⟨∇ ft ( ˜xxxt ), ˜xxxt− xxx∗⟩ (convexity of ft)
+=
+T
+∑
+t=1
+⟨ ˜gggt , ˜xxxt− xxx∗⟩
+=
+T
+∑
+t=1
+[
+1
+2 ηt∥ ˜gggt∥2 + D(xxx∗,xxxt )− D(xxx∗,xxxt+1)
+ηt
++ ∑
+d′̸=d
+[
+− ∑
+i∈Ld′ ,c
+ηi⟨ ˜gggi, ˜gggt⟩
+]
++
+[
+− ∑
+i∈Md,c
+ηi⟨ ˜gggi, ˜gggt⟩ + ∑
+i∈Nd,c
+ηi⟨ ˜gggi, ˜gggt⟩
+]
++ ∑
+d′̸=d
+[
+− ∑
+i∈Md′ ,c
+ηi⟨ ˜gggi, ˜gggt⟩ + ∑
+i∈Nd′ ,c
+ηi⟨ ˜gggi, ˜gggt⟩
+]]
+(9)
+We ﬁrst bound the upper limit of the term:
+T
+∑
+t=1
+1
+2 ηt∥ ˜gggt∥2:
+T
+∑
+t=1
+1
+2 ηt∥ ˜gggt∥2≤
+T
+∑
+t=1
+1
+2 ηtL2 (∥∇ ft (xxx)∥≤ L)
+=
+T
+∑
+t=1
+1
+2
+η√t L2
+= 1
+2 ηL2
+T
+∑
+t=1
+1√t (
+T
+∑
+t=1
+1√t≤ 2
+√
+T )
+≤ 1
+2 ηL22
+√
+T = ηL2√
+T (10)
+Second, we bound the upper limit of the term:
+T
+∑
+t=1
+D(x∗,xt )−D(x∗,xt+1)
+ηt :
+T
+∑
+t=1
+D(xxx∗,xxxt )− D(xxx∗,xxxt+1)
+ηt
+= D(xxx∗,xxx1)
+η1
+− D(xxx∗,xxxT +1)
+ηT
++
+T
+∑
+t=2
+D(xxx∗,xxxt )( 1
+ηt
+− 1
+ηt−1
+)
+≤ ∆2
+η − 0 + ∆2
+η
+T
+∑
+t=2
+[
+√
+t−
+√
+t− 1] ( max(D(xxx,xxx′))≤ ∆2)
+= ∆2
+η + ∆2
+η [
+√
+T− 1]
+= ∆2
+η
+√
+T (11)
+Third, we bound the upper limit of the term:
+T
+∑
+t=1
+∑
+d′̸=d
+[
+− ∑
+i∈Ld′,c
+ηi⟨ ˜gggi, ˜gggt⟩
+]
+:
+T
+∑
+t=1
+∑
+d′̸=d
+[
+− ∑
+i∈Ld′,c
+ηi⟨ ˜gggi, ˜gggt⟩
+]
+≤
+T
+∑
+t=1
+(D− 1)
+[
+− ∑
+i∈Ld′ ,c
+ηi⟨ ˜gggi, ˜gggt⟩
+]
+≤
+T
+∑
+t=1
+(D− 1)vt
+= (D− 1)
+T
+∑
+t=1
+v√
+t− (s + ∆c + 1)P
+≤ (D− 1)v
+T
+∑
+t=(s+∆c+1)P+1
+1√
+T− (s + ∆c + 1)P
+≤ 2(D− 1)v
+√
+T− (s + ∆c + 1)P
+≤ 2(D− 1)v
+√
+T
+≤ 2Dv
+√
+T (12)
+where the fourth inequality follows from the fact that:
+T
+∑
+t=(s+∆c+1)P+1
+1√
+T−(s+∆c+1)P≤
+√
+T− (s + ∆c + 1)P.
+Fourth, we bound the upper limit of the term:
+T
+∑
+t=1
+[
+− ∑
+i∈Md,c
+ηi⟨ ˜gggi, ˜gggt⟩ + ∑
+i∈Nd,c
+ηi⟨ ˜gggi, ˜gggt⟩
+]
+:
+USENIX Association 14th USENIX Symposium on Networked Systems Design and Implementation    645
+===== PAGE 19 =====
+T
+∑
+t=1
+[
+− ∑
+i∈Md,c
+ηi⟨ ˜gggi, ˜gggt⟩ + ∑
+i∈Nd,c
+ηi⟨ ˜gggi, ˜gggt⟩
+]
+≤
+T
+∑
+t=1
+[|Md,c| +|Nd,c|]ηmax(1,t−(s+1)P)L2
+= L2
+[ (s+1)P
+∑
+t=1
+[|Md,c| +|Nd,c|]η
++
+T
+∑
+t=(s+1)P+1
+[|Md,c| +|Nd,c|]ηt−(s+1)P
+]
+= L2
+[ (s+1)P
+∑
+t=1
+[|Md,c| +|Nd,c|]η
++
+T
+∑
+t=(s+1)P+1
+[|Md,c| +|Nd,c|] η√
+t− (s + 1)P
+]
+≤ ηL2
+[ (s+1)P
+∑
+t=1
+2s(P− 1)
++
+T
+∑
+t=(s+1)P+1
+2s(P− 1) 1√
+t− (s + 1)P
+]
+= 2ηL2s(P− 1)
+[
+(s + 1)P +
+T
+∑
+t=(s+1)P+1
+1√
+T− (s + 1)P
+]
+≤ 2ηL2s(P− 1)
+[
+(s + 1)P + 2
+√
+T− (s + 1)P
+]
+≤ 2ηL2s(P− 1)[(s + 1)P + 2
+√
+T ]
+= 2ηL2s(s + 1)(P− 1)P + 4ηL2s(P− 1)
+√
+T
+≤ 2ηL2(s + 1)(s + 1)(P− 1)P + 4ηL2(s + 1)(P− 1)
+√
+T
+= 2ηL2(s + 1)2(P− 1)P + 4ηL2(s + 1)(P− 1)
+√
+T
+≤ 2ηL2(s + 1)2PP + 4ηL2(s + 1)P
+√
+T
+= 2ηL2[(s + 1)P]2 + 4ηL2(s + 1)P
+√
+T (13)
+where the ﬁrst inequality follows from the fact that
+ηmax(1,t−(s+1)P)≥ ηt ,t∈ Md,t∪ Nd,t, the second inequal-
+ity follows from the fact that |Md,t| +|Nd,t|≤ 2s(P− 1),
+and the third inequality follows from the fact that
+T
+∑
+t=(s+1)P+1
+[
+1√
+T−(s+1)P
+]
+≤ 2
+√
+T− (s + 1)P.
+Similarly,∀d′∈ D′ = D\{d}, we can prove that:
+T
+∑
+t=1
+[
+− ∑
+i∈Md′ ,c
+ηi⟨ ˜gggi, ˜gggt⟩ + ∑
+i∈Nd′ ,c
+ηi⟨ ˜gggi, ˜gggt⟩
+]
+≤
+2ηL2[(s + ∆c + 1)P]2 + 4ηL2(s + ∆c + 1)P
+√
+T
+which implies:
+T
+∑
+t=1
+∑
+d′̸=d
+[
+− ∑
+i∈Md′ ,c
+uuui + ∑
+i∈Nd′ ,c
+uuui
+]
+≤
+D
+[
+2ηL2[(s + ∆c + 1)P]2 + 4ηL2(s + ∆c + 1)P
+√
+T
+]
+By combining all the above upper bounds, we have:
+R[X]≤ ηL2√
+T + ∆2
+η
+√
+T + 2Dv
+√
+T + 2ηL2[(s + 1)P]2
++ 4ηL2(s + 1)P
+√
+T
++ D
+[
+2ηL2[(s + ∆c + 1)P]2 + 4ηL2(s + ∆c + 1)P
+√
+T
+]
+= O(
+√
+T ) (14)
+and thus lim
+T→∞
+R[X]
+T → 0.
+B. Performance Results of SSP
+Due to limited space, we present the performance results
+of SSP for MF (Matrix Factorization) and TM (Topic
+Modeling) here. We do not present the results of SSP
+for IC (Image Classiﬁcation) because SSP has worse
+performance than BSP for IC [18]. In our evaluation,
+BSP and SSP are used among all worker machines for
+Baseline and LAN, whereas for Gaia, they are used
+only within each data center. To show the performance
+difference between BSP and SSP, we show both results
+together.
+B.1. SSP Performance on EC2 Deployment
+Similar to Section 6.1, Figures 13 and 14 show the execu-
+tion time until convergence for MF and TM, normalized
+to Baseline with BSP on EC2. The data label above each
+bar shows the speedup over Baseline for the respective
+deployment and synchronization model.
+2.0X 2.0X 1.5X 1.5X1.8X 1.8X
+1.3X 1.3X
+3.8X 3.7X 3.0X 2.7X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+Baseline Gaia LAN Baseline Gaia LAN
+BSP SSP
+Nromalized Execution Time
+Amazon-EC2
+Emulation-EC2
+Emulation-Full-Speed
+Figure 13: Normalized execution time of MF until conver-
+gence when deployed across 11 EC2 regions
+2.0X
+2.5X
+1.5X 1.7X
+3.7X 4.8X
+2.0X
+3.5X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+Baseline Gaia LAN Baseline Gaia LAN
+BSP SSP
+Nromalized Execution Time
+Emulation-EC2
+Emulation-Full-Speed
+Figure 14: Normalized execution time of TM until conver-
+gence when deployed across 11 EC2 regions
+We see that Gaia signiﬁcantly improves the perfor-
+mance of Baseline with SSP. For MF, Gaia provides a
+speedup of 1.3–3.0× over Baseline with SSP, and suc-
+cessfully approaches the speedups of LAN with SSP. For
+TM, Gaia achieves speedups of 1.5–2.0× over Baseline.
+Note that for TM, Gaia with BSP outperforms Gaia with
+SSP. The reason is that SSP allows using stale, and thus
+646    14th USENIX Symposium on Networked Systems Design and Implementation USENIX Association
+===== PAGE 20 =====
+inaccurate, values in order to get the beneﬁt of more efﬁ-
+cient communication. However, compared to Baseline,
+the beneﬁt of employing SSP to reduce communication
+overhead is much smaller for Gaia because it uses SSP
+only to synchronize a small number of machines within
+a data center. Thus, the cost of inaccuracy outweighs the
+beneﬁt of SSP in this case. Fortunately, Gaia decouples
+the synchronization model within a data center from the
+synchronization model across different data centers. Thus,
+we can freely choose the combination of synchronization
+models that works better for Gaia.
+B.2. SSP Performance and W AN Bandwidth
+Similar to Section 6.2, Figures 15 and 16 show the nor-
+malized execution time until convergence on two de-
+ployments: V/C WAN and S/S WAN. The data label
+above each bar shows the speedup over Baseline for the
+respective deployment and synchronization model.
+3.7X 2.6X3.5X 2.3X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+BSP SSP
+Nromalized Exec. Time
+BaselineGaiaLAN
+(a) Matrix Factorization (MF)
+3.7X 3.1X3.9X 3.2X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+BSP SSP
+Nromalized Exec. Time
+BaselineGaiaLAN (b) Topic Modeling (TM)
+Figure 15: Normalized execution time until convergence
+with the W AN bandwidth between Virginia and California
+25X 16X24X 14X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+BSP SSP
+Nromalized Exec. Time
+BaselineGaiaLAN
+(a) Matrix Factorization (MF)
+14X 17X17X 21X
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+1.1
+1.2
+BSP SSP
+Nromalized Exec. Time
+Baseline Gaia LAN (b) Topic Modeling (TM)
+Figure 16: Normalized execution time until convergence
+with the W AN bandwidth between Singapore and São Paulo
+We ﬁnd that Gaia performs very well compared to
+Baseline with SSP in both high W AN bandwidth (V/C
+WAN) and low WAN bandwidth (S/S WAN) settings.
+For V/C WAN, Gaia achieves a speedup of 2.6 × for
+MF and 3.1× for TM over Baseline with SSP. For
+both applications, the performance of Gaia is almost the
+same as the performance of LAN. For S/S WAN, Gaia
+provides a speedup of 15.7× / 16.8× for MF / TM over
+Baseline with SSP, and successfully approaches the LAN
+speedups. We conclude that Gaia provides signiﬁcant
+performance improvement over Baseline, irrespective
+of the synchronization model used by Baseline.
+C. EC2 Cost Model Details
+We use the on-demand pricing of Amazon EC2 published
+for January 2017 as our cost model [8]. As the pricing
+might change over time, we provide the details of the
+cost model in Table 2.
+The CPU instance is c4.4xlarge or m4.4xlarge, de-
+pending on the availability in each EC2 region. The
+GPU instance is g2.8xlarge. The low-cost instance
+(m4.xlarge) is the one used for centralizing input data.
+All the instance costs are shown in USD per hour. All
+W AN data transfer costs are shown in USD per GB.
+Table 2: Cost model details
+Region CPU
+Instance
+GPU
+Instance
+Low-cost
+Instance
+Send to
+W ANs
+Recv. from
+W ANs
+Virginia $0.86 $2.60 $0.22 $0.02 $0.01
+California $1.01 $2.81 $0.22 $0.02 $0.01
+Oregon $0.86 $2.60 $0.22 $0.02 $0.01
+Ireland $0.95 $2.81 $0.24 $0.02 $0.01
+Frankfurt $1.03 $3.09 $0.26 $0.02 $0.01
+Tokyo $1.11 $3.59 $0.27 $0.09 $0.01
+Seoul $1.06 $3.59 $0.28 $0.08 $0.01
+Singapore $1.07 $4.00 $0.27 $0.09 $0.01
+Sydney $1.08 $3.59 $0.27 $0.14 $0.01
+Mumbai $1.05 $3.59 $0.26 $0.09 $0.01
+São Paulo $1.37 $4.00 $0.34 $0.16 $0.01
+USENIX Association 14th USENIX Symposium on Networked Systems Design and Implementation    647
+===== PAGE 21 =====

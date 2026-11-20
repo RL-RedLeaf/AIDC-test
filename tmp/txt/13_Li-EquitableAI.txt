@@ -1,0 +1,2197 @@
+
+===== PAGE 1 =====
+Towards Environmentally Equitable AI
+via Geographical Load Balancing
+Pengfei Li
+pli081@ucr.edu
+University of California, Riverside
+Jianyi Yang
+jyang239@ucr.edu
+University of California, Riverside
+Adam Wierman
+adamw@caltech.edu
+California Institute of Technology
+Shaolei Ren
+shaolei@ucr.edu
+University of California, Riverside
+ABSTRACT
+Fueled by the soaring popularity of foundation models, the ac-
+celerated growth of artificial intelligence (AI) models’ enormous
+environmental footprint has come under increased scrutiny. While
+many approaches have been proposed to make AI more energy-
+efficient and environmentally friendly, environmental inequity —
+the fact that AI’s environmental footprint can be disproportionately
+higher in certain regions than in others — has emerged, raising
+social-ecological justice concerns. This paper takes a first step to-
+ward addressing AI’s environmental inequity by fairly balancing its
+regional environmental impact. Concretely, we focus on the carbon
+and water footprints of AI model inference and propose equity-
+aware geographical load balancing (eGLB) to explicitly minimize
+AI’s highest environmental cost across all the regions. The con-
+sideration of environmental equity creates substantial algorithmic
+challenges as the optimal GLB decisions require complete offline
+information that is lacking practice. To address the challenges,
+we introduce auxiliary variables and optimize GLB decisions on-
+line based on dual mirror descent. In addition to analyzing the
+performance of eGLB theoretically, we run trace-based empirical
+simulations by considering a set of geographically distributed data
+centers that serve inference requests for a large language AI model.
+The results demonstrate that existing GLB approaches may amplify
+environmental inequity while eGLB can significantly reduce the
+regional disparity in terms of carbon and water footprints.
+ACM Reference Format:
+Pengfei Li, Jianyi Yang, Adam Wierman, and Shaolei Ren. 2024. Towards
+Environmentally Equitable AI via Geographical Load Balancing. In The 15th
+ACM International Conference on Future and Sustainable Energy Systems
+(E-Energy ’24), June 4–7, 2024, Singapore, Singapore. ACM, New York, NY,
+USA, 16 pages. https://doi.org/10.1145/3632775.3661938
+1 INTRODUCTION
+The success of artificial intelligence (AI) relies heavily on computa-
+tionally intensive calculations to learn useful information from data
+during training and provide insightful predictions during inference.
+As such, AI models, especially large generative models like GPT-3
+Permission to make digital or hard copies of part or all of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed
+for profit or commercial advantage and that copies bear this notice and the full citation
+on the first page. Copyrights for third-party components of this work must be honored.
+For all other uses, contact the owner/author(s).
+E-Energy ’24, June 4–7, 2024, Singapore, Singapore
+© 2024 Copyright held by the owner/author(s).
+ACM ISBN 979-8-4007-0480-2/24/06.
+https://doi.org/10.1145/3632775.3661938
+[1], are typically trained on large clusters of power-hungry servers
+that may each have multiple graphic processing units (GPUs) and
+are housed in warehouse-scale data centers. Moreover, for infer-
+ence, AI models are often deployed in geographically distributed
+data centers to serve users with low transmission latency.
+Consequently, the exponentially growing demand for AI has cre-
+ated an enormous appetite for energy as well as a negative impact
+on the environment [1–6]. For example, putting aside the environ-
+mental toll of chip manufacturing (e.g., raw material extraction and
+toxic chemicals) [7–9] and the noise pollution of running AI servers
+[10], training a large language model like GPT-3 and LaMDA can
+easily consume hundreds of megawatt-hour of electricity, generate
+many tonnes of carbon emissions, and evaporate hundreds of thou-
+sands of liters of clean freshwater for cooling [6, 11, 12]. Crucially,
+in addition to their impacts on the global climate, AI’s environ-
+mental footprint also has significant local and regional impacts.
+Elevated carbon emissions have localized social costs [13] and may
+increase local ozone, particulate matter, and premature mortality
+[14]; electricity generation, especially when burning fuels, produces
+local air pollutants, discharges pollution such as thermal pollution
+into water bodies, and generates solid wastes (possibly including
+hazardous wastes) [15]; and staggering water consumption, both
+directly for on-site cooling and indirectly for off-site electricity
+generation, can further stress the already-limited local freshwater
+resources and even worsen extended megadroughts in regions like
+Arizona [12, 16].
+Fueled by the soaring popularity of large language and founda-
+tion models, the accelerated growth of AI’s environmental footprint
+has come under increased scrutiny recently [17, 18]. To make AI
+more energy-efficient and environmentally friendly, research stud-
+ies have pursued a variety of approaches, including computationally
+efficient training and inference [19, 20], energy-efficient GPU and
+accelerator designs [2, 21, 22], carbon-aware task scheduling [5, 18],
+green cloud infrastructures [23–25], sustainable AI policy recom-
+mendations [8, 17], among others. As supply-side solutions, data
+center operators have also increasingly adopted carbon-free energy
+such as solar and wind power, (partially) powering AI servers and
+lowering carbon emissions [18, 26, 27]. Additionally, to reduce on-
+site water consumption and mitigate the stress on already-limited
+freshwater resources, climate-conscious cooling system designs
+(e.g., using air-side economizers if the climate condition permits)
+have recently seen an uptick in the data center industry [28, 29].
+While existing efforts are encouraging, a worrisome outcome
+— environmental inequity — has unfortunately emerged. That is,
+arXiv:2307.05494v2  [cs.AI]  2 May 2024
+===== PAGE 2 =====
+E-Energy ’24, June 4–7, 2024, Singapore, Singapore Pengfei Li, Jianyi Yang, Adam Wierman, and Shaolei Ren
+minimizing the total environmental cost of AI across multiple re-
+gions does not necessarily mean each region is treated equitably.
+In fact, AI’s environmental footprint is often disproportionately
+higher in certain regions than in others, potentially exacerbating
+other unintended social-ecological consequences [30]. For example,
+a data center’s on-site cooling water usage effectiveness (WUE,
+the ratio of water consumption to IT energy consumption) highly
+depends on the outside temperature [31] — while it can stay well
+below 1.0 L/kWh for data centers located in cooler climates, the
+monthly average WUE can be as high as 9.0 L/kWh in the summer
+in drought-stricken Arizona [32]. Likewise, there exists a signifi-
+cant regional difference in terms of the carbon efficiency — as of
+2020, only 4% of the energy for Google’s data center in Singapore
+is carbon-free, whereas this number goes up to 94% in Finland [2],
+creating a 23× disparity. Thus, as a result of such regional differ-
+ences, certain data center locations are severely disadvantaged and
+more negatively impacted by the environmental toll of AI. Further
+compounded by enduring socioeconomic disparities and even po-
+tentially amplified by existing data center scheduling algorithms,
+environmental inequity of AI can pose critical business risks and
+hence needs to be properly reconciled.
+Indeed, addressing its environmental inequity is increasingly
+important and becoming integral to responsible AI and computing
+[33, 34]. For example, in the first-ever global agreement to ensure
+healthy development of AI, the United Nations Educational, Scien-
+tific and Cultural Organization (UNESCO) recommends that “AI
+should not be used” if it creates “disproportionate negative impacts
+on the environment” [35]. The AI Now Institute even compares the
+uneven regional distribution of AI’s environmental costs to “histor-
+ical practices of settler colonialism and racial capitalism” in its 2023
+Landscape report [36]. Among all the environmental-related topics,
+Meta ranks environmental justice as the most critical one with the
+greatest impact on its business risks and opportunities [27]. More
+recently, studies have also emerged to suggest new regulations per-
+tinent to AI’s growing environmental footprint [17], and holistic
+assessment of AI as social-ecological-technological systems using
+available tools from environmental justice [37, 38].
+In this paper, we take a first step to address the emerging envi-
+ronmental inequity of AI by balancing its negative environmental
+impact across geographically distributed data centers. More con-
+cretely, we focus on the carbon and water footprints of AI model
+inference and dynamically schedule users’ inference requests (also
+referred to asworkloads in this paper) using equity-aware geograph-
+ical load balancing (GLB) to fairly distribute AI’s environmental
+cost to each region. To mitigate environmental inequity, our key
+novelty is to augment the traditional cost-saving objective by ex-
+plicitly including minimization of the most significant negative
+environmental impacts among all the data centers.
+Nonetheless, the consideration of environmental equity in GLB
+decisions creates substantial algorithmic challenges. Specifically,
+due to their dependency on the long-term carbon and water foot-
+prints, the equity-related costs couple all the GLB decisions over
+𝑇 time slots (see (4a)–(4d)). This means that the optimal GLB de-
+cisions require all the offline information (e.g., future workload
+arrivals and water efficiency) in advance, while we must make GLB
+decisions online without knowing all the future. To address this
+challenge, we propose a new online equity-aware GLB algorithm,
+called eGLB, which leverages online information to optimize the
+GLB decisions based on dual mirror descent. We also bound the cost
+performance of eGLB compared to the offline optimal equity-aware
+GLB algorithm (eGLB-Off).
+To empirically evaluate our proposed equity-aware GLB, we run
+trace-based simulations by considering a set of 10 geographically
+distributed data centers that serve inference requests for a large
+language AI model. Our results demonstrate that the proposed
+equity-aware GLB can significantly reduce the carbon and water
+footprints in the most disadvantaged region. In stark contrast, ex-
+isting carbon- and water-saving GLB approaches may even amplify
+environmental inequity, showing that minimizing the total envi-
+ronmental footprint does not necessarily treat each region fairly.
+In summary, our work is the first study to advance AI’s envi-
+ronmental equity via GLB, connecting research across data center
+scheduling, sustainable AI, and equitable AI. It highlights the need
+and great potential of equity-aware GLB to fairly distribute AI’s
+environmental cost across different regions for environmental eq-
+uity.
+2 PROBLEM FORMULATION
+While AI model training is energy-intensive, the environmental
+footprint of its inference phase is also enormous and can even be
+several times higher than the training process [ 39]. As such, we
+consider a pre-trained AI model (e.g., large language model) and
+focus on the inference phase. The AI model inference service is
+deployed over a setN ={1,··· ,𝑁} of geographically distributed
+data centers to serve users in different regions. There are a set
+J ={1,··· ,𝐽} of front-end traffic gateways that aggregate users’
+requests from their respective surrounding areas and assign the
+requests to data centers, which is also referred to as geographical
+load balancing (GLB) in the literature [39, 40]. The GLB decisions
+are made in a time-slotted manner over a total of 𝑇 time slots.
+Each time slot can range from a few minutes to about an hour,
+depending on how frequently the decisions are updated. We also
+interchangeably use “workloads” and “requests” when referring to
+users’ demand for the AI model inference service. Our model is
+consistent with those used in the literature such as [31, 40, 41].
+Each data center houses a cluster of servers (typically each
+equipped with multiple GPUs) to host AI models for inference.
+For the ease of presentation, we assume a homogeneous AI model
+on all the servers, while the extension to heterogeneous AI models
+with different model sizes is considered in Appendix C. During
+each time slot, the maximum service capacity for the AI model
+inference is 𝑀𝑖 for data center 𝑖. We use𝜆𝑗,𝑡 to denote the total
+amount of workloads arriving at gateway𝑗 at time𝑡, and𝑥𝑖𝑗(𝑡)≥ 0
+to represent the GLB decision (i.e., the load assigned to data center
+𝑖 from gateway 𝑗). For the convenience of presentation, we also
+use𝑥(𝑡) ={𝑥𝑖,𝑗(𝑡)| 𝑖∈N ,𝑗 ∈J} as the collection of all the GLB
+decisions at time𝑡.
+The total load assigned to data center 𝑖 is Í
+𝑗∈J 𝑥𝑖𝑗(𝑡) ≤𝑀𝑖
+at time𝑡, thus resulting in a total server energy consumption of
+𝑒𝑖(𝑥(𝑡)) which is an increasing function of Í
+𝑗∈J 𝑥𝑖𝑗(𝑡). For exam-
+ple, a common model [40] is𝑒𝑖(𝑥(𝑡)) =𝜌𝑖,𝑡 ¯𝐸𝑖,𝑠+
+Í
+𝑗∈J𝑥𝑖 𝑗(𝑡)
+𝑀𝑖 · ¯𝐸𝑖,𝑑
+where ¯𝐸𝑖,𝑠 is the server cluster’s static/idle energy even when no
+workload is processed in data center𝑖, ¯𝐸𝑖,𝑑 is the cluster’s dynamic
+===== PAGE 3 =====
+Towards Environmentally Equitable AI
+via Geographical Load Balancing E-Energy ’24, June 4–7, 2024, Singapore, Singapore
+energy consumed when only processing workloads,
+Í
+𝑗∈J𝑥𝑖 𝑗(𝑡)
+𝑀𝑖 is
+the cluster-level utilization, and
+Í
+𝑗∈J𝑥𝑖 𝑗(𝑡)
+𝑀𝑖 ≤ 𝜌𝑖,𝑡 ≤ 1 indicates
+how well the cluster is right-sized in proportion to the workloads
+(i.e.,𝜌𝑖,𝑡 =
+Í
+𝑗∈J𝑥𝑖 𝑗(𝑡)
+𝑀𝑖 means the cluster is perfectly sized to the
+workloads by turning off unused servers, while𝜌𝑖,𝑡 = 1 means the
+servers are always kept on regardless of the assigned workloads).
+Next, we model the energy cost, carbon footprint, and water
+footprint in terms of the GLB decisions. Here, we explicitly model
+carbon and water footprints separately, as they are two complemen-
+tary and non-substitutable measures for ecological impacts [42].
+Energy cost. Suppose that the electricity price and power usage
+effectiveness (PUE, which accounts for non-IT energy consumption
+such as cooling systems and power distribution losses) are𝑝𝑖,𝑡 and
+𝛾𝑖,𝑡 for data center𝑖 at time𝑡, respectively. Then, the total energy
+cost at time𝑡 can be written as
+𝑔𝑡(𝑥(𝑡)) =
+∑︁
+𝑖∈N
+𝑝𝑖,𝑡𝛾𝑖,𝑡𝑒𝑖(𝑥(𝑡)). (1)
+Note that, if the AI model inference service is run on virtual machine
+(VM) instances rented from public cloud providers, the electricity
+price𝑝𝑖,𝑡 becomes the VM price subject to the VM instance type
+and𝑔𝑡(𝑥(𝑡)) = Í
+𝑖∈N 𝑝𝑖,𝑡𝑒𝑖(𝑥(𝑡)) is the total VM rental cost at time
+𝑡 where𝑒𝑖(𝑥(𝑡)) represents the number of VM instances rented to
+process the assigned workloads in location𝑖.
+Carbon footprint. The carbon footprint of AI model inference
+is embedded in the generation of electricity using carbon-intensive
+fuels such as coal [6, 9, 43]. By denoting the carbon intensity as𝛼𝑖,𝑡
+with a unit of gram/kWh, we have the following carbon footprint
+for data center𝑖 at time𝑡:
+𝑐𝑖,𝑡(𝑥(𝑡)) =𝛼𝑖,𝑡𝛾𝑖,𝑡𝑒𝑖(𝑥(𝑡)) (2)
+The carbon intensity 𝛼𝑖,𝑡 can be obtained by querying the local
+utility or averaging the carbon intensity of the grid’s fuel mix [43].
+Water footprint. In parallel with the carbon footprint, data
+centers’ staggering water footprint has recently become a new
+focused area for sustainability (see, e.g., the pledge of “Water Pos-
+itive by 2030” by big techs [28, 44]). To serve AI model inference,
+data centers consume clean freshwater both directly and indirectly
+[12, 28, 45, 46]. The direct water consumption comes from the cool-
+ing system to keep servers from overheating. AI servers use either
+air or closed-loop liquid to transfer the heat to the facility level (e.g.,
+the facility cooling water loop or heat exchanger [ 47]). Then, to
+further reject the heat into the outside environment, data centers
+commonly use cooling towers due to their energy efficiency and
+applicability to a wide range of weather conditions. Nonetheless, a
+large amount of water is evaporated into the outside environment
+(i.e., not discharged or returned to the source) and hence considered
+“consumed” [28]. For example, depending on the outside wet-bulb
+temperature, a cooling tower typically consume 1∼4 liters of water
+(up to 9 liters of water in the summer) for each kWh server energy
+[32]. Importantly, the vast majority of the cooling water supply is
+drinking-grade (e.g., nearly 90% for Google’s U.S. data centers in
+2021 [28]). Alternatively, air-side economizers (i.e., directly using
+outside air to cool down servers) can be used to save water if the
+climate condition is suitable, but water is still needed when the
+outside temperature is high and/or the humidity is low — Meta’s
+state-of-the-art cooling systems use an average of 0.26 liters of
+water for each kWh server energy across its global data center fleet
+in 2021 [27]. AI systems are also accountable for water consump-
+tion embedded in the electricity generation process. For example,
+thermal and nuclear power plants require a large volume of water
+consumption for cooling, while hydropower consumes water by
+expediting evaporation downstream [48, 49].
+Thus, the total water footprint for data center𝑖 at time𝑡 is
+𝑤𝑖,𝑡(𝑥(𝑡)) =
+
+𝜖𝑖,𝑡+𝛽𝑖,𝑡𝛾𝑖,𝑡
+
+·𝑒𝑖(𝑥(𝑡)), (3)
+where𝜖𝑖,𝑡 is the direct water usage effectiveness (WUE) for on-site
+cooling,𝛽𝑖,𝑡 is the indirect WUE for off-site electricity generation,
+and𝛾𝑖,𝑡 is the PUE. The direct WUE is defined as the ratio of water
+consumption to IT server energy consumption [50], and hence we
+do not need to multiply𝛾𝑖,𝑡 when calculating the direct water con-
+sumption. In practice, the direct WUE𝜖𝑖,𝑡 heavily depends on the
+outside temperature [12, 32]. Like the carbon intensity, the indirect
+WUE𝛽𝑖,𝑡 measures the water consumption per kWh electricity gen-
+eration and can be calculated by averaging over the water intensity
+of different energy fuels [31]. The monetary price for on-site water
+consumption is typically much smaller compared to the energy cost
+and can be factored into the price𝑝𝑖,𝑡 for modeling purposes.
+3 ENVIRONMENTALLY EQUITABLE GLB
+To make AI environmentally equitable, we propose a novel on-
+line equity-aware GLB algorithm, called eGLB, to distribute AI’s
+environmental cost across different data centers in a fair manner.
+3.1 Objective
+Our goal is not to blindly equalize its regional environmental foot-
+print, which, as similarly observed in the context of mitigating AI’s
+algorithmic unfairness [51], may artificially elevate the environmen-
+tal footprints in those otherwise advantaged regions and provide
+a false sense of fairness. Instead, we adopt the notion of minimax
+fairness [51–53] and exploit the power of GLB as a software-based
+approach to explicitly minimize AI’s environmental impact on the
+most disadvantaged region.
+Mathematically, we augment the traditional cost-saving objective
+by including the minimization of the greatest environmental cost
+among all the data centers. By normalizing the energy cost and
+environmental footprints over𝑇 , our equity-aware GLB problem is
+formulated as follows
+min
+𝑥(𝑡)
+1
+𝑇
+𝑇∑︁
+𝑡 =1
+𝑔𝑡(𝑥(𝑡))+ 𝜇𝑐· max
+𝑖∈N
+"
+H𝑖,𝑐
+ 
+1
+𝑇
+𝑇∑︁
+𝑡 =1
+𝑐𝑖,𝑡(𝑥(𝑡))
+!#
++𝜇𝑤· max
+𝑖∈N
+"
+H𝑖,𝑤
+ 
+1
+𝑇
+𝑇∑︁
+𝑡 =1
+𝑤𝑖,𝑡(𝑥(𝑡))
+!#
+,
+(4a)
+𝑠.𝑡., 𝑥 𝑖,𝑗(𝑡) = 0, if𝐵𝑖,𝑗 = 0, ∀𝑖∈N ,𝑗 ∈J ,𝑡 = 1,··· ,𝑇,
+(4b)
+∑︁
+𝑗∈J
+𝑥𝑖,𝑗(𝑡)≤ 𝑀𝑖, ∀𝑖∈N ,𝑡 = 1,··· ,𝑇, (4c)
+∑︁
+𝑖∈N
+𝑥𝑖,𝑗(𝑡) =𝜆𝑗,𝑡, ∀ 𝑗∈J ,𝑡 = 1,··· ,𝑇, (4d)
+===== PAGE 4 =====
+E-Energy ’24, June 4–7, 2024, Singapore, Singapore Pengfei Li, Jianyi Yang, Adam Wierman, and Shaolei Ren
+where the assignment condition𝐵𝑖,𝑗 = 0 indicates that the work-
+loads cannot be assigned from gateway 𝑗 to data center𝑖 (due to,
+e.g., latency constraints or data sovereignty regulations) and hence
+enforces𝑥𝑖,𝑗 = 0 in (4b), the constraint (4c) means that the total
+workloads assigned to a data center cannot exceed its processing
+capacity, and the constraint(4d) requires that all workloads arriving
+at a gateway be assigned to data centers. In the optimization ob-
+jective (4a), the monotonically-increasing convex functionsH𝑖,𝑐()
+andH𝑖,𝑤() quantify the environmental impacts of AI on data cen-
+ter𝑖 due to its long-term carbon footprint and water footprint,
+respectively, and can be specified based on the local environment
+assessment. Note that the carbon footprint is also a good indicator
+of the amount of local air/thermal pollution caused by our GLB deci-
+sions. For example, coal-based energy sources are carbon-intensive
+and also proportionally create air and thermal pollution for local
+communities [15].
+UsingH𝑖,𝑤
+
+1
+𝑇
+Í𝑇
+𝑡 =1𝑤𝑖,𝑡(𝑥(𝑡))
+
+= 𝜃𝑖
+𝑇 · Í𝑇
+𝑡 =1𝑤𝑖,𝑡(𝑥(𝑡)) as an
+illustrative example, we can set a higher 𝜃𝑖 ≥ 0 if data center 𝑖
+is located in a severely water-stressed and drought-prone region.
+In line with the principle of proportionality, the carbon footprintÍ𝑇
+𝑡 =1𝑐𝑖,𝑡(𝑥(𝑡)) inH𝑖,𝑐() and water footprint Í𝑇
+𝑡 =1𝑤𝑖,𝑡(𝑥(𝑡)) in
+H𝑖,𝑤() for data center𝑖 can also be normalized by the maximum
+processing capacity𝑀𝑖 to achieve proportional fair distribution of
+AI’s environmental cost.
+The two functionsH𝑖,𝑐() andH𝑖,𝑤() are general enough and
+can also capture the effects of additional sustainability practices
+that data center operators may adopt (e.g., installing solar for car-
+bon mitigation and restoring watersheds for local water supply
+[26, 27]). The term Í𝑇
+𝑡 =1𝑔𝑡(𝑥(𝑡)) in (4a) is the total energy cost.
+The hyperparameters𝜇𝑐≥ 0 and𝜇𝑤≥ 0 indicate the relative im-
+portance weights of carbon footprint equity and water footprint
+equity, respectively, and can be flexibly tuned to balance the impact
+of carbon and water footprints. For example, by setting 𝜇𝑐 = 0,
+we focus solely on the negative environmental impact of AI’s wa-
+ter footprint. In addition, we can also include into (4a) AI’s other
+environmental impacts such as concerns with the servers’ noise
+pollution if applicable [10].
+Importantly, the cost terms max𝑖∈N
+h
+H𝑖,𝑐
+
+1
+𝑇
+Í𝑇
+𝑡 =1𝑐𝑖,𝑡(𝑥(𝑡))
+i
+and max𝑖∈N
+h
+H𝑖,𝑤
+Í 1𝑇 Í𝑇
+𝑡 =1𝑤𝑖,𝑡(𝑥(𝑡))
+i
+improve environmen-
+tal equity by explicitly penalizing the greatest environmental im-
+pacts that AI model inference creates on different regions. This is
+fundamentally different from the existing sustainable GLB tech-
+niques that have predominantly focused on minimizing the weighted
+sum of energy costs, carbon footprint and/or water footprint [25,
+31, 40, 43, 54]. As shown in our experiments (Section 4), minimiz-
+ing the total environmental footprint does not necessarily treat
+each individual region fairly and can even potentially exacerbate
+environmental inequity due to aggressive exploitation of certain
+regions.
+3.2 An Online Algorithm
+The addition of two equity-related costs in (4a) explicitly mitigates
+the greatest long-term environmental costs across all the data cen-
+ters. Thus, they couple all the GLB decisions over 𝑇 time slots.
+Consequently, the optimal GLB decisions require complete offline
+information (including future workload arrivals and carbon/water
+efficiencies) in advance, which is lacking in practice. Next, we pro-
+pose an online algorithm, called eGLB, to solve (4a)–(4d) and opti-
+mize equity-aware GLB decisions in an online manner.
+A crucial step in eGLB is to construct a new optimization prob-
+lem that can be solved based on available online information by
+removing the dependency of the optimization objective on future
+information. To this end, we first transform the original problem
+(4a)–(4d) into an equivalent new problem that can be solved us-
+ing dual mirror descent (DMD). Specifically, for every time step
+𝑡∈[ 1,𝑇], we introduce a set of auxiliary variables{𝑧𝑐(𝑡),𝑧𝑤(𝑡)}
+and consider the following new transformed problem:
+min
+𝑥(𝑡),𝑧𝑐(𝑡),𝑧𝑤(𝑡)
+1
+𝑇
+𝑇∑︁
+𝑡 =1
+𝑔𝑡(𝑥(𝑡))+ 𝜇𝑐
+𝑇
+𝑇∑︁
+𝑡 =1
+max
+𝑖∈N
+
+H𝑖,𝑐(𝑧𝑖,𝑐(𝑡))
+
++𝜇𝑤
+𝑇
+𝑇∑︁
+𝑡 =1
+max
+𝑖∈N
+
+H𝑖,𝑤(𝑧𝑖,𝑤(𝑡))
+
+(5a)
+𝑠.𝑡., constraints (4b)(4c)(4d) (5b)
+1
+𝑇
+𝑇∑︁
+𝑡 =1
+𝑧𝑖,𝑐(𝑡)≥ 1
+𝑇
+𝑇∑︁
+𝑡 =1
+𝑐𝑖,𝑡(𝑥(𝑡)), ∀𝑖∈N (5c)
+1
+𝑇
+𝑇∑︁
+𝑡 =1
+𝑧𝑖,𝑤(𝑡)≥ 1
+𝑇
+𝑇∑︁
+𝑡 =1
+𝑤𝑖,𝑡(𝑥(𝑡)), ∀𝑖∈N (5d)
+where the auxiliary variables 𝑧𝑐(𝑡) = (𝑧1,𝑐(𝑡)··· ,𝑧𝑁,𝑐(𝑡)) and
+𝑧𝑤(𝑡) = (𝑧1,𝑤(𝑡)··· ,𝑧𝑁,𝑤(𝑡)) are chosen from a fixed feasible
+setZ𝑐 andZ𝑤, respectively. Here, we setZ𝑐 ={𝑧𝑐|0≤ 𝑧𝑖,𝑐 ≤
+¯𝑧𝑖,𝑐,∀𝑖 = 1,··· ,𝑁} andZ𝑤 ={𝑧𝑤|0≤𝑧𝑖,𝑤≤ ¯𝑧𝑖,𝑤,∀𝑖 = 1,··· ,𝑁}
+to guarantee a feasible solution for any𝑥𝑡∈X𝑡 . Specifically, we can
+choose ¯𝑧𝑖,𝑐 and ¯𝑧𝑖,𝑤 to be the maximum possible per-time carbon
+footprint and water footprint in data center𝑖, respectively.
+Next, we prove the equivalence of the new transformed problem
+to the original problem.
+Lemma 1. The transformed problem (5a)–(5d) and the original
+problem (4a)–(4d) have the same optimal GLB decisions.
+Proof. To prove this, we first define the optimal GLB decisions
+as𝑥∗
+1:𝑇 = (𝑥(1)∗,··· ,𝑥(𝑇)∗) for the original problem (4a)–(4d).
+Then, we can construct a feasible solution𝑧𝑖,𝑐(𝑡) = 1
+𝑇
+Í𝑇
+𝑡 =1𝑐𝑖,𝑡(𝑥∗(𝑡))
+and𝑧𝑖,𝑤(𝑡) = 1
+𝑇
+Í𝑇
+𝑡 =1𝑤𝑖,𝑡(𝑥∗(𝑡)),∀𝑡∈[ 1,𝑇] for the transformed
+problem (5a)–(5d), which results in an equivalent objective function
+value as (4a) in the original problem. Therefore, the optimal value
+of the transformed objective in (5a) is less than or equal to that in
+the original problem.
+On the other hand, suppose that there exists another solution,
+denoted as{𝑥′(𝑡),𝑧𝑐(𝑡)′,𝑧𝑤(𝑡)′,𝑡 ∈[ 1,𝑇]}, which minimizes the
+transformed problem and makes the transformed objective in (5a)
+strictly smaller than the original one in (4a). By the convexity as-
+sumption ofH𝑖,𝑤(·) andH𝑖,𝑐(·) and Jensen’s inequality, we have
+max
+𝑖∈N
+"
+H𝑖,𝑐
+ 
+1
+𝑇
+𝑇∑︁
+𝑡 =1
+𝑧′
+𝑖,𝑐(𝑡)
+!#
+≤ 1
+𝑇
+𝑇∑︁
+𝑡 =1
+max
+𝑖∈N
+h
+H𝑖,𝑐
+
+𝑧′
+𝑖,𝑐(𝑡)
+i
+, (6)
+max
+𝑖∈N
+"
+H𝑖,𝑤
+ 
+1
+𝑇
+𝑇∑︁
+𝑡 =1
+𝑧′
+𝑖,𝑤(𝑡)
+!#
+≤ 1
+𝑇
+𝑇∑︁
+𝑡 =1
+max
+𝑖∈N
+h
+H𝑖,𝑤
+
+𝑧′
+𝑖,𝑤(𝑡)
+i
+. (7)
+===== PAGE 5 =====
+Towards Environmentally Equitable AI
+via Geographical Load Balancing E-Energy ’24, June 4–7, 2024, Singapore, Singapore
+Based on the monotonically increasing assumption onH𝑖,𝑐(·) and
+H𝑖,𝑤(·) and by substituting𝑥′
+1:𝑇 =(𝑥′(𝑡),··· ,𝑥′(𝑇)) back to (4a),
+we see that the objective value in (4a) with𝑥′(𝑡) as the solution
+is even smaller, which is in contradiction to the assumption that
+𝑥∗
+1:𝑇 is optimal. Therefore, for the transformed problem, the optimal
+objective value has to be the same as the original one, and the action
+𝑥∗
+1:𝑇 =𝑥′
+1:𝑇 is the optimal solution. □
+Based on the equivalence of the new transformed problem to
+the original problem, we now focus on solving the transformed
+problem (5a)–(5d). The two added constraints (5c) and (5d) still
+involve all the decisions over𝑇 time slots. To remove the temporal
+coupling, we consider the Lagrangian form of the transformed
+problem (5a)–(5d). For the convenience of notation, we first define
+H𝑐(𝑧𝑐(𝑡)) =[H1,𝑐(𝑧𝑐(𝑡)),··· ,H𝑁,𝑐(𝑧𝑐(𝑡))], (8)
+H𝑤(𝑧𝑤(𝑡)) =[H1,𝑤(𝑧𝑤(𝑡)),··· ,H𝑁,𝑤(𝑧𝑤(𝑡))], (9)
+C(𝑡) =[𝑐1,𝑡(𝑥(𝑡)),··· ,𝑐𝑁,𝑡(𝑥(𝑡))], (10)
+W(𝑡) =[𝑤1,𝑡(𝑥(𝑡)),··· ,𝑤𝑁,𝑡(𝑥(𝑡))]. (11)
+Then, subject to the constraints(4b)(4c)(4d), we write the Lagrangian
+as follows:
+L(𝑥1:𝑇,𝑧𝑐,1:𝑇,𝑧𝑤,1:𝑇,𝜅)
+= 1
+𝑇
+ 𝑇∑︁
+𝑡 =1
+𝑔𝑡(𝑥(𝑡))+ 𝜇𝑐∥H𝑐(𝑧𝑐(𝑡))∥∞+𝜇𝑤∥H𝑤(𝑧𝑤(𝑡))∥∞
+!
++⟨𝜅,
+
+1
+𝑇·
+Í𝑇
+𝑡 =1C𝑡(𝑥(𝑡))− Í𝑇
+𝑡 =1𝑧𝑐(𝑡)
+
+1
+𝑇·
+Í𝑇
+𝑡 =1𝑤𝑡(𝑥(𝑡))− Í𝑇
+𝑡 =1𝑧𝑤(𝑡)
+
+
+⟩
+(12)
+where𝜅 is the Lagrangian multipliers associated with the con-
+straints (5c) and (5d), and⟨𝑎,𝑏⟩ denotes the inner product of two
+vectors𝑎 and𝑏.
+By solving the problem (12) online subject to the constraints
+(4b)(4c)(4d), we would obtain the optimal GLB decisions if the op-
+timal Lagrangian multiplier𝜅 were provided. Nonetheless,𝜅 can
+only be estimated with online information. Based on this insight,
+we sequentially update 𝜅 using dual mirror descent (DMD) [ 55]
+based on online information and obtain GLB decisions 𝑥(𝑡) for
+𝑡 = 1,··· ,𝑇 .
+We describe the algorithm in Algorithm 1. More specifically,
+at time 𝑡, we receive the cost functions and optimize the action
+𝑥(𝑡) and auxiliary variable𝑧(𝑡) =(𝑧𝑐(𝑡),𝑧𝑤(𝑡)) according to the
+current estimate of dual variable𝜅𝑡 . These variables are optimized
+in Line 4 and Line 5, respectively. The insight is that the estimated
+dual variable𝜅𝑡 controls the adjusted penalty for the GLB action
+𝑥(𝑡) based on how much the cumulative actual carbon and water
+footprints have deviated from the targets𝑧(𝑡) =(𝑧𝑐(𝑡),𝑧𝑤(𝑡)).
+We update the dual variable𝜅𝑡 using DMD. More concretely, by
+taking the subgradient of𝜅 with respect to the Lagrange function
+and using the online information at time𝑡, we obtain a stochastic
+gradient estimate of𝜅𝑡 . In Line 7, the vector𝑑𝑡 is set as the opposite
+direction to the gradient of𝜅𝑡 in order to minimize the Lagrange
+function. Finally, the updated dual variable𝜅𝑡+1 is obtained with
+Bregman projection using a reference function ℎ(·) which is dif-
+ferentiable and strongly convex. For example, a common choice of
+the reference function isℎ(𝑎) = 1
+2∥𝑎∥2, which results in additive
+updates of the dual variable estimate𝜅𝑡 [56].
+Algorithm 1: Online GLB for Environmentally Equitable
+AI (eGLB)
+1 Input: Initial Lagrange multiplier𝜅1∈ R2𝑁
+≥0 , reference
+functionℎ(·) : R2𝑁→ R, total length of horizon𝑇 and
+learning rate𝜂
+2 for𝑡 = 1,...,𝑇 do
+3 Receive the cost function of energy, carbon and water as
+𝑔𝑡(·),𝑐𝑡(·) and𝑤𝑡(·), the action constraint
+X𝑡 ={𝑥|𝑥 satisfies (4b)(4c)(4d)}.
+4 Make the primal decision
+𝑥(𝑡) = arg min
+𝑥(𝑡)∈X 𝑡
+{𝑔𝑡(𝑥(𝑡))+ 𝜅⊤
+𝑡 ·
+C𝑡(𝑥(𝑡))
+W𝑡(𝑥(𝑡))
+
+},
+5 Determine the auxiliary variable:
+{𝑧𝑐(𝑡),𝑧𝑤(𝑡)} = arg min
+𝑧𝑐∈Z𝑐,𝑧𝑤∈Z 𝑤
+{𝜇𝑐∥H𝑐(𝑧𝑐)∥∞
++𝜇𝑤∥H𝑤(𝑧𝑤)∥∞−𝜅⊤
+𝑡
+𝑧𝑐
+𝑧𝑤
+
+},
+6 Obtain a stochastic subgradient of𝜅𝑡 :
+𝑑𝑡 =
+𝑧𝑐(𝑡)
+𝑧𝑤(𝑡)
+
+−
+C𝑡(𝑥(𝑡))
+W𝑡(𝑥(𝑡))
+
+.
+7 Update the dual variable by mirror descent:
+𝜅𝑡+1 = arg min
+𝜅∈R 2𝑁
+≥0
+⟨𝑑𝑡,𝜅⟩+ 1
+𝜂𝑉ℎ(𝜅,𝜅𝑡),
+where𝑉ℎ(𝑥,𝑦) =ℎ(𝑥)− ℎ(𝑦)−∇ ℎ(𝑦)⊤(𝑥−𝑦) is the
+Bregman divergence.
+Next, we analyze eGLB in terms of the cost objective in (4a).
+Theorem 1. By initializing𝜅1∈ R2𝑁
+≥0 as a zero vector, considering
+the reference functionℎ(𝑎) = 1
+2∥𝑎∥2, and denoting the GLB actions
+as𝑥1:𝑇 =(𝑥(1),··· ,𝑥(𝑇)) and the overall cost defined in (4a) as
+cost(𝑥1:𝑇), we have the following:
+cost(𝑥1:𝑇)≤ cost(𝑥∗
+1:𝑇)+ 𝜂𝐵𝑇+𝐶
+√︄
+2
+𝑇(𝐵+ 𝑀
+𝜂 𝐷) (13)
+where cost(𝑥∗
+1:𝑇) is the minimum cost given by optimal offline al-
+gorithm, 𝜂 > 0 is the learning rate, 𝑐𝑚 and 𝑤𝑚 are the maxi-
+mum possible gradients of carbon and water footprints in (2) and
+(3), 𝑀 = max𝑖∈N 𝑀𝑖 is the maximum processing capacity of all
+data centers, 𝜃𝑚 is the maximum gradient of 𝐻𝑖,𝑐(·) and𝐻𝑖,𝑤(·) ,
+𝐵 = 𝑁
+2
+h
+max𝑖∈N ¯𝑧2
+𝑖,𝑐
+i
++𝑁
+2
+h
+max𝑖∈N ¯𝑧2
+𝑖,𝑤
+i
+(in which ¯𝑧𝑖,𝑐 and ¯𝑧𝑖,𝑤 are
+the maximum possible per-time carbon and water footprints in data
+center𝑖, respectively),𝐶 =𝜃𝑚(𝜇𝑐+𝜇𝑤) and𝐷 =𝜃𝑚(𝜇𝑐𝑐𝑚+𝜇𝑤𝑤𝑚),
+respectively. Moreover, by setting the learning rate 𝜂 =O( 1/𝑇), we
+have
+cost(𝑥1:𝑇)≤ cost(𝑥∗
+1:𝑇)+O( 1). (14)
+Theorem 1 bounds the gap between eGLB and the optimal offline
+algorithm in terms of the overall cost defined in(4a). The constants
+𝐵 and𝐷 are problem-specific and naturally increase as the input
+range is larger. In addition, the gap depends on the choice of the
+learning rate𝜂. Specifically, by increasing𝜂, eGLB updates the dual
+===== PAGE 6 =====
+E-Energy ’24, June 4–7, 2024, Singapore, Singapore Pengfei Li, Jianyi Yang, Adam Wierman, and Shaolei Ren
+variable𝜅 by more aggressively following the stochastic gradient
+(Line 6 in Algorithm 1). This can introduce greater drifts due to the
+“forgetting” of the past time slots and hence increases the term𝜂𝐵𝑇 .
+On the other hand, a larger 𝜂 can reduce the time steps needed
+for updating the dual variable to track the optimal dual variable,
+and hence reduce the term 𝐷
+√︃
+2
+𝑇(𝐵+ 𝑀
+𝜂 𝐷). Thus, by setting the
+learning rate𝜂 =O( 1/𝑇) to balance the two terms, we can have an
+O( 1) cost gap. Note that, without further stochastic assumptions
+(e.g., all the inputs follow an independent and identical distribution),
+eliminating theO( 1) cost gap between eGLB and the optimal offline
+algorithm remains an open challenge in the literature [56, 57]. For
+example, in a relevant context of online budget allocation, having a
+zero cost gap is impossible in general adversarial settings that we
+consider [56]. Importantly, as is shown in our experimental results
+(Section 4.2), eGLB demonstrates a strong empirical performance
+even compared to the optimal offline algorithm.
+4 EXPERIMENTS
+In this section, we report on experiments of different GLB algo-
+rithms using trace-based simulations. Our results demonstrate that
+eGLB has a great potential to effectively address AI’s environmental
+inequity that would otherwise be potentially amplified by other
+GLB algorithms. Importantly, the empirical cost performance of
+eGLB is close to the optimal offline equity-aware GLB, complement-
+ing our theoretical analysis of eGLB in Theorem 1.
+4.1 Methodology
+As detailed information about AI system and workload settings is
+typically proprietary, we run simulations by scaling up workload
+traces collected from public sources and considering synthetic data
+center settings that approximate realistic scenarios. This is in line
+with the prior GLB literature [31, 40, 43, 58]. Next, we describe the
+default setup of our experiments, which will later be varied for
+sensitivity studies.
+4.1.1 Workload Trace. To obtain the workload trace, we extract
+the GPU power usage data from [6] for the server cluster hosting
+the large language model BLOOM over an 18-day period (between
+September 23 and October 11 in 2022). Because there is only a
+single workload trace provided for BLOOM in [6], we follow the
+data augmentation method in [ 39] and distribute the workload
+trace to the 10 gateways (plus a small perturbation to account for
+different time zones). As in [6], we directly quantify the amount
+of workload using power demand. We also scale up the workload
+trace to let the maximum workload match our data center power
+capacity as introduced below. The 18-day workload trace will be
+also be extended using data augmentation techniques to evaluate
+different GLB algorithms over a longer timescale (Section 4.2.4).
+4.1.2 Data Centers. We consider a set of 10 geo-distributed data
+centers, including four in the U.S. (Virginia, Georgia, Texas, and
+Nevada), four in Europe (Belgium, the Netherlands, Germany, and
+Denmark), and two in Asia (Singapore and Japan). These locations
+are all a large presence of data centers, including Google’s data
+centers [2]. The details of data center locations are available in the
+appendix.
+Assuming that there are 10 gateways corresponding to the 10
+data center locations, we consider two scenarios: (1) full GLB
+flexibility: the workloads can be flexibly dispatched from any
+gateway to any data center; and (2) partial GLB flexibility: the
+workloads arriving at a gateway can only be dispatched to a certain
+subset of data centers. As shown in recent studies [39], even cross-
+continent AI workload placement only marginally increases the
+end-to-end latency without degrading service quality. Thus, the
+“full GLB flexibility” scenario is already feasible in practice, whereas
+the “partial GLB flexibility” scenario accounts for various other
+constraints such as strict latency and bandwidth.
+For processing AI inference workloads, we assume that each data
+center houses a cluster of 500 homogeneous servers. Each server is
+equipped with four NVIDIA A100 GPUs and has a maximum total
+power of 2 kW. Thus, excluding the network switches and servers
+for other services beyond the scope of our study, each data center
+has a maximum server power of 1 MW for AI inference.
+We set the data center PUE as 1.1, which is consistent with
+the state-of-the-art PUE value with efficient operation [2, 26]. For
+simplicity, we use the actual carbon footprint and water footprint
+to measure the regional environmental impact (i.e., H𝑖,𝑐(𝑥) = 𝑥
+andH𝑖,𝑤(𝑥) =𝑥 in (4a)).
+4.1.3 Energy Price, Carbon Intensity, and WUE. We collect hourly
+energy prices for the 10 data centers over the same 18-day period
+as our workload trace. Specifically, for each data center in Europe
+and Asia, we collect the hourly country-level energy prices from
+[59]. For the U.S. data centers, we collect the hourly energy prices
+from their respective ISOs [60].
+For each of the U.S. data centers, we collect the state-level hourly
+energy fuel mix data [60] and calculate the indirect WUE based on
+the fuel mix by following [43] and [31], respectively. The carbon
+intensity and energy water intensity factor (EWIF) for each fuel
+mix are chosen based on [43] and [12]. We do not have free access
+to the hourly energy fuel mix data for our data center locations
+in Europe and Asia [59]. Thus, we generate synthetic hourly fuel
+mixes for these locations based on the U.S. data. Besides, the hourly
+carbon intensity of each datacenter is obtained from [61], where
+the US locations are ISO level and the Europe and Asia locations
+are country-level carbon intensity. The details are available in the
+appendix.
+To model the on-site WUE, we assume that the data centers
+use cooling towers for heat rejection, which are common in the
+industry (even in water-stressed regions like Arizona [ 32]). We
+collect the hourly weather data from [62] for the airports closest
+to each of our data center locations, and then obtain the wet bulb
+temperature from the dry bulb temperature and relative humid-
+ity based on [ 63]. Next, we calculate the on-site WUE using the
+empirical formula in terms of the wet-bulb temperature presented
+in [31]. While assuming cooling towers for rejecting heat into the
+outside environment, our study can be easily adapted to air-side
+economizers, which use water for humidity control or when the
+outside dry bulb temperature is high [29].
+4.1.4 Offline and Online Optimization. Assuming complete knowl-
+edge of future information, we first use offline optimization in order
+to quantify the maximal potential of equity-aware GLB to address
+===== PAGE 7 =====
+Towards Environmentally Equitable AI
+via Geographical Load Balancing E-Energy ’24, June 4–7, 2024, Singapore, Singapore
+Table 1: Comparison of different GLB algorithms. The metric ratio is the maximum water or carbon footprint divided by the
+average. The results of eGLB with the learning rate 𝜂 = 1.7× 10−4 are bolded.
+GLB Metric Algorithm
+Flexibility GLB-Energy GLB-Carbon GLB-Water GLB-C2 GLB-All GLB-Nearest eGLB-Off eGLB-MPC eGLB
+Full
+Energy (US$) avg 29170 47708 56184 33735 32466 47038 36106 36199 37643
+Water (m3)
+avg 1525.1 1396.2 1243.9 1486.3 1426.7 1446.7 1431.8 1444.4 1448.7
+max 2607.5 2671.6 2010.4 2675.7 2358.0 2090.9 1705.2 1898.3 1928.0
+max/avg 1.71 1.91 1.62 1.80 1.65 1.45 1.19 1.31 1.33
+Carbon (ton)
+avg 118.17 90.50 103.17 100.75 105.83 111.80 102.59 105.06 105.70
+max 205.10 166.79 224.49 166.82 171.50 143.46 128.79 134.68 139.39
+max/avg 1.74 1.84 2.18 1.66 1.62 1.28 1.26 1.28 1.32
+Partial
+Energy (US$) avg 29659 47694 53976 33729 32822 47038 36013 37210 37768
+Water (m3)
+avg 1524.1 1415.5 1249.9 1490.4 1420.1 1446.7 1440.6 1446.6 1450.1
+max 2616.1 2700.3 2028.4 2668.8 2344.7 2090.9 1777.3 1891.4 1929.0
+max/avg 1.72 1.91 1.62 1.79 1.65 1.45 1.23 1.31 1.33
+Carbon (ton)
+avg 117.52 92.22 106.07 102.13 106.53 111.80 103.31 105.11 105.65
+max 205.77 168.42 224.49 166.44 177.43 143.46 133.45 135.42 139.89
+max/avg 1.75 1.83 2.12 1.63 1.67 1.28 1.29 1.29 1.32
+AI’s environmental inequity. We then use our online algorithm
+eGLB to demonstrate how much of that potential can be realized.
+In the offline case, we consider hourly GLB decisions and use
+cvxpy to solve (4a)–(4d) offline based on the complete informa-
+tion about all the future workload arrivals, energy prices, carbon
+intensity, and WUE values. We refer to this offline algorithm as
+eGLB-Off. It takes about 3 minutes on a desktop with Intel i7-9700K
+CPU and 16GB RAM to solve the problem for an 18-day simulation
+in our experiments. The weight hyperparameters in (4a) are set as
+𝜇𝑐 = 1500 $/ton and𝜇𝑤 = 60 $/m3. Note that these hyperparam-
+eters are only used to adjust the relative importance of different
+cost terms in the optimization process and do not reflect the true
+monetary costs of carbon or water footprints.
+In the online case, we use eGLB to optimize the GLB decisions
+according to the sequentially revealed workload arrivals, energy
+price, carbon intensity, and water efficiency information. It takes
+around 30 seconds on the same machine to calculate GLB decisions
+for the 18-day simulation. Besides, we compare eGLB with another
+online policy, eGLB-MPC, which leverages model predictive control
+(MPC). Specifically, eGLB-MPC optimizes the objective in Eqn (4a)
+over a receding 24-hour horizon, utilizing predictions of future
+workloads, energy prices, carbon intensities, and water efficiencies.
+For a fair comparison, the hyperparameters𝜇𝑐 and𝜇𝑤 by eGLB and
+eGLB-MPC are chosen as the same values as the offline optimizer
+eGLB-Off.
+4.1.5 Metrics. We evaluate our equity-aware GLB algorithms using
+the following metrics: average energy cost , the total energy cost
+throughout the 18-day period divided by 10 data center locations;
+average carbon/water footprint , the total carbon/water footprint
+throughout the 18-day period divided by 10 data center locations;
+and the maximum regional carbon/water footprint over the 18-day
+period among the 10 data center locations. If scaled up by a factor of
+10, the average value is equivalent to the total value. We also include
+the maximum regional carbon/water footprint to the average value
+to reflect the level of environmental equity, i.e., the smaller𝑚𝑎𝑥/𝑎𝑣𝑔,
+the more equitable, and𝑚𝑎𝑥/𝑎𝑣𝑔 = 1 means all the regions have the
+same environmental cost in terms of the carbon/water footprint.
+4.1.6 Baseline Algorithms. We consider the following GLB-related
+algorithms for comparison.
+• GLB-Energy: This algorithm is based on [40, 58, 64] and only
+minimizes the total energy cost. It is a special case of eGLB
+by setting𝜇𝑐 = 0 and𝜇𝑤 = 0 in (4a).
+• GLB-Carbon: Minimization of the total carbon footprint.
+• GLB-Water: Minimization of the total water footprint.
+• GLB-C2: This algorithm is based on [43] and minimizes the
+weighted sum of the total energy cost and carbon footprint.
+• GLB-All: This algorithm is based on [31] and minimizes the
+weighted sum of the total energy cost, carbon footprint, and
+water footprint.
+• GLB-Nearest: This algorithm is a special case of GLB and
+directly routes workloads from each gateway to its nearest
+data center. It is commonly used in practice as a default
+baseline algorithm [43, 64].
+Without considering equity-related costs, the GLB decisions
+in these algorithms are not coupled over time and hence can be
+optimally obtained online. The weights for carbon and water (if
+applicable) in GLB-C2 and GLB-All are set such that their respec-
+tive total carbon and water footprints are smaller than those of
+eGLB-Off.
+4.2 Results
+We show our results in Table 1 by considering two different sce-
+narios: GLB with full or partial flexibility. Our results highlight
+that eGLB can improve AI’s environmental equity by reducing the
+environmental impact on the most disadvantaged region while still
+keeping the average environmental footprint and energy cost close
+to or even lower than those of alternative GLB algorithms. In ad-
+dition, the empirical performance of eGLB is close to the optimal
+offline algorithm eGLB-Off. Next, we discuss our results in detail.
+4.2.1 GLB with Full Flexibility. We first consider the full-flexibility
+scenario in which the workloads can be dispatched to any data cen-
+ter. Among all the algorithms, eGLB-Off has the lowest carbon and
+water footprints for the most disadvantaged regions with complete
+information of workload, carbon and water footprints. Meanwhile,
+the average energy cost, carbon footprint, and water footprint of
+eGLB-Off are comparable to or even lower than the other GLB
+algorithms. Thus, eGLB-Off has almost the lowest “maximum to
+===== PAGE 8 =====
+E-Energy ’24, June 4–7, 2024, Singapore, Singapore Pengfei Li, Jianyi Yang, Adam Wierman, and Shaolei Ren
+(a) Total weighted cost
+ (b) Average energy cost
+ (c) Maximum water
+(d) Average water
+ (e) Maximum carbon
+ (f) Average carbon
+Figure 1: The energy cost, carbon and water footprint of eGLB with different learning rates 𝜂 under full GLB flexibility. The
+results for eGLB-Off, GLB-Energy, GLB-Carbon, and GLB-Water are shown for comparison.
+average” ratio in terms of both the carbon footprint and water foot-
+print, effectively reducing the regional disparity and improving
+environmental equity.
+Interestingly, while GLB-Energy, GLB-Carbon, and GLB-Water
+can minimize the total energy cost, carbon footprint, and water
+footprint, respectively, they amplify the environmental inequity
+compared to GLB-Nearest. This is due to the inequity unaware-
+ness of these algorithms — their aggressive exploitation of certain
+regions may come at the cost of harming these regions in terms
+of environmental impacts. For example, GLB-Energy exploits the
+cheaper energy price of Texas by assigning more workloads to this
+region, but this can result in a disproportionately high environ-
+mental footprint in Texas due to its worse carbon intensity and/or
+WUE than some other regions. While GLB-C2 and GLB-All can
+balance the energy cost and environmental footprints in terms of
+the average/total metric, they can still result in disproportionately
+high environmental burdens on the already-disadvantaged regions
+due to the unawareness of equity. This is similar to algorithmic
+unfairness against disadvantaged individuals or user groups caused
+by an AI model that purely minimizes the average loss [51, 52].
+While the prior studies [31, 43] have demonstrated that the total
+carbon footprint and water footprint are often in tension with the
+energy cost, our results further add that environmental equity may
+not be cost-free either. Nonetheless, by balancing the energy cost
+and environmental equity as formulated in (4a), the price we pay
+for equity can be reasonably low.
+eGLB vs. eGLB-Off. In comparison to the offline optimizer, eGLB
+only has access to online causal information. This naturally leads to
+worse performance than if full information were available; however,
+the carbon and water footprints for the most disadvantaged regions
+in eGLB are still better than all other GLB algorithms. In Table 1, the
+maximum/average carbon and water footprints of eGLB are mostly
+within 10% of the offline optimal solutions from eGLB-Off, which
+demonstrates the empirical effectiveness of eGLB and complements
+our theoretical analysis in Theorem 1.
+eGLB vs. eGLB-MPC. Unlike the offline optimal policy eGLB-Off,
+eGLB-MPC is limited to future information within the next 24-hour
+prediction window. This limitation reflects real-world constraints,
+where perfect foresight of the entire future is unavailable. As ex-
+pected, eGLB-MPC outperforms eGLB (with sequentially revealed
+information) in terms of the average energy cost, water footprint,
+and carbon footprint. Interestingly, the maximum-to-average ratios
+for carbon and water footprints are similar between eGLB-MPC and
+eGLB, despite eGLB-MPC’s 24-hour prediction window. This observa-
+tion emphasizes the fundamental challenge of achieving long-term
+environmental equity when faced with limited predictions of the
+future.
+As shown in Theorem 1,𝜂 is an important parameter that deter-
+mines the cost gap between eGLB and its offline version eGLB-Off.
+Thus, we also evaluate the impact of the learning rate𝜂 in Fig. 1.
+The total cost is calculated by summing up the energy cost and
+equity-related carbon/water costs (weighted by𝜇𝑐 and𝜇𝑤, respec-
+tively). Then, in line with Section 4.1.5, we divide the total cost by
+10 data center locations and show it in Fig. 1a. As we increase the
+learning rate𝜂, the total cost first decreases and then increases as
+suggested by Theorem 1. Empirically, the optimal learning rate𝜂 is
+around 3× 10−5 in our setting. In Fig. 1b, the average energy cost
+increases as we increase𝜂, since larger𝜂 leads to more aggressive
+===== PAGE 9 =====
+Towards Environmentally Equitable AI
+via Geographical Load Balancing E-Energy ’24, June 4–7, 2024, Singapore, Singapore
+GLB-C2 GLB-All GLB-Off eGLB
+2.6
+3.0
+3.4
+3.8Energy Cost (x104 $) (1500, 60)
+(1300, 50)
+(900, 40)
+(600, 40)
+(a) Average energy cost
+GLB-C2 GLB-All GLB-Off eGLB
+1.5
+1.8
+2.1
+2.4
+2.7
+3.0Water (x103 m3)
+(1500, 60)
+(1300, 50)
+(900, 40)
+(600, 40) (b) Maximum water
+GLB-C2 GLB-All GLB-Off eGLB
+1.0
+1.4
+1.8
+2.2Carbon (x103 m3)
+(1500, 60)
+(1300, 50)
+(900, 40)
+(600, 40) (c) Maximum carbon
+GLB-C2 GLB-All GLB-Off eGLB
+1.0
+1.2
+1.4
+1.6
+1.8
+2.0Water Max / Average
+(1500, 60)
+(1300, 50)
+(900, 40)
+(600, 40) (d) Max/avg for water
+GLB-C2 GLB-All GLB-Off eGLB
+1.0
+1.2
+1.4
+1.6
+1.8
+2.0Carbon Max / Average
+(1500, 60)
+(1300, 50)
+(900, 40)
+(600, 40) (e) Max/avg for carbon
+Figure 2: The energy cost, carbon footprint, and water footprint of eGLB with different(𝜇𝑤,𝜇𝑐) shown in the legend under full
+GLB flexibility. The results for eGLB-Off, GLB-Energy, GLB-Carbon, and GLB-Water are also shown for comparison.
+Table 2: Comparison of different GLB algorithms. The default workload trace is augmented to 180 days to evaluate the long-term
+impact of different GLB algorithms. The results of eGLB with the learning rate 𝜂 = 1.7× 10−4 are bolded.
+GLB Metric Algorithm
+Flexibility GLB-Energy GLB-Carbon GLB-Water GLB-C2 GLB-All GLB-Nearest eGLB-Off eGLB
+Full
+Energy (US$) avg 279620 454608 539847 326104 312372 450992 341998 359433
+Water (m3)
+avg 14329.6 12992.8 11694.2 13822.4 13338.4 13584.9 13439.3 13591.5
+max 23753.4 24779.5 19478.0 25154.2 21307.6 19662.3 16339.6 18199.0
+max/avg 1.66 1.91 1.67 1.82 1.60 1.45 1.22 1.34
+Carbon (ton)
+avg 1098.29 830.66 947.89 925.28 975.76 1035.97 951.91 977.92
+max 1868.37 1544.89 2110.61 1566.99 1656.06 1342.44 1202.91 1294.23
+max/avg 1.70 1.86 2.23 1.69 1.70 1.30 1.26 1.32
+Partial
+Energy (US$) avg 283551 456028 516966 324368 314254 450992 342498 359510
+Water (m3)
+avg 14312.2 13249.7 11755.2 13903.6 13298.1 13584.9 13508.3 13619.4
+max 23961.6 25347.0 18852.3 24833.9 21734.6 19662.3 16824.7 18267.1
+max/avg 1.67 1.91 1.60 1.79 1.63 1.45 1.25 1.34
+Carbon (ton)
+avg 1093.61 850.24 981.20 942.91 986.54 1035.97 964.03 980.46
+max 1874.35 1577.51 2110.77 1545.47 1695.69 1342.44 1240.80 1301.70
+max/avg 1.71 1.86 2.15 1.64 1.72 1.30 1.29 1.33
+updates of the Lagrange multiplier𝜅. The Lagrange multiplier𝜅 is
+used to penalize the cost objective according to the environmental
+footprint, which means larger𝜅 shifts the objective function more
+towards environmental equity, as compared with purely minimiz-
+ing the energy cost. Similarly, as we increase the learning rate𝜂,
+the carbon and water footprints for the most disadvantaged regions
+decrease, as shown in Fig 1c and 1e. The underlying reason is sim-
+ilar — a larger learning rate𝜂 updates𝜅 more rapidly, eventually
+leading to more attention to equity-related costs. Interestingly, the
+average carbon and water footprints of eGLB are very close to the
+offline version, eGLB-Off. Like in the task of machine learning
+training, the learning rate hyperparemeter can be tuned based on a
+validation dataset to get the desired performance in practice.
+4.2.2 GLB with Partial Flexibility. Now, we consider the partial-
+flexibility scenario in which intra-continental workload routing
+is fully flexible but inter-continental workload routing is partially
+restricted. Specifically, we only allow partial inter-continental work-
+load routing as follows: workloads can be flexibly routed between
+Asia and the western U.S. (Nevada), and between Europe and the
+eastern U.S. (Virginia and Georgia).
+Our results are similar to those in the full-flexibility scenario.
+Specifically, while the inter-continental workload routing restric-
+tion limits the GLB decision space, eGLB-Off still has the lowest
+carbon and water footprints for the most disadvantaged regions.
+Meanwhile, the average energy cost, carbon footprint, and water
+footprint of eGLB-Off are all comparable to or even lower than the
+other GLB algorithms. Thus, even without full flexibility,eGLB-Off
+demonstrates a great potential to address AI’s environmental in-
+equity in today’s geographically distributed data center infrastruc-
+tures. Additionally, as shown in Table 1, the performance of eGLB
+is very close to its offline counterpart, eGLB-Off.
+GLB-Nearest does not route workloads across data centers and
+hence is not affected by the partial GLB flexibility. Interestingly,
+the result of GLB-Carbon is not affected by the inter-continental
+workload routing restriction in our setting, because the workloads
+from each continent can be processed in at least one low-carbon
+data center in our setup (see Table 3).
+With partial GLB flexibility, the impact of the learning rate 𝜅
+is similar as that with full GLB flexibility. More details about the
+empirical results can be found in Appendix B.
+4.2.3 GLB with Different 𝜇𝑐 and𝜇𝑤. Adjusting the weight hyper-
+parameters𝜇𝑐 and𝜇𝑤 allows us to control the relative importance
+of the energy cost and environmental equity. Here, by using the
+default setup, we evaluate how the weights for carbon and water
+footprints impact the performance of different GLB algorithms. We
+show the results in in Fig. 2. We only compare the performance of
+GLB-C2, GLB-All, eGLB-Off and eGLB, as the other GLB algorithms
+are not affected by these weight hyperparameters. Naturally, by
+assigning lower weights to carbon and/or footprints, the emphasis
+on reducing the environmental inequity in terms of these footprints
+is lessened, allowing all the four GLB algorithms to have a reduced
+energy cost. However, this also results in a higher maximum car-
+bon and/or water footprint (as well as higher maximum-to-average
+ratios) for these algorithms, with the only exception being GLB-C2.
+More specifically, unlike the other algorithms, GLB-C2 minimizes
+===== PAGE 10 =====
+E-Energy ’24, June 4–7, 2024, Singapore, Singapore Pengfei Li, Jianyi Yang, Adam Wierman, and Shaolei Ren
+the weighted sum of the energy cost and carbon footprint without
+accounting for the impact of water footprint. As a result, it has a
+higher (maximum) water footprint as we increase the weight of
+carbon for reducing the carbon footprint. This empirical finding
+suggests that the goals of reducing carbon emission and water us-
+age may not be aligned, or even in opposition, necessitating a joint
+optimization of their combined weighted sum.
+While eGLB applies with any𝜇𝑐≥ 0 and𝜇𝑤≥ 0, it is up to the
+AI system operator to tune weight hyperparameters (e.g., based on
+validation dataset) to achieve a desired outcome. This is also a com-
+mon and standard practice in real systems (see Google’s dynamic
+capacity planning to balance the energy cost and environmental
+impacts [41]).
+4.2.4 Evaluation over a Longer Timescale. The open-source BLOOM
+inference trace is only for 18 days [6] and used in our default setup.
+Due to limited availability of public data, we extend the 18-day
+BLOOM inference trace to 180 days by using data augmentation
+techniques to evaluate the impacts of eGLB in terms of environmen-
+tal equity over a longer timescale. More specifically, we add 25%
+random perturbations and append the perturbed workload trace to
+the original one to construct a 180-day trace. The results are shown
+in Table 2, offering similar insights as in the default case for both
+full and partial GLB scenarios. We can see that compared to the
+other equity-oblivious GLB algorithms, eGLB can effectively reduce
+the environmental inequity among different regions in terms of the
+maximum-to-average ratio for both carbon and water footprints.
+Even compared to eGLB-Off, eGLB delivers a similar performance
+in terms of environmental equity while only marginally increasing
+the total energy cost, which demonstrates the potential of eGLB to
+address AI’s emerging environmental inequity in practice without
+knowing all the future information.
+5 RELATED WORK
+Our work is the first to address the critical concern of AI’s emerg-
+ing environmental inequity by leveraging GLB, and contributes
+to the GLB literature for cloud computing and data centers [ 24,
+25, 31, 40, 41, 43, 58, 64–71]. Specifically, prior studies focus on
+reducing the total energy cost, carbon footprint, water footprint,
+or a weighted combination of these metrics; ignoring the poten-
+tial for regional disparities. We show in this paper that existing
+GLB algorithms can potentially amplify environmental inequity by
+further exploiting already vulnerable regions. For example, GLB
+algorithms that aggressively exploit lower electricity prices [58, 64]
+and/or more renewables [40, 43] may schedule more workloads to
+data centers (located in, for example, Arizona) that are extremely
+water-stressed; thus adding a disproportionately high pressure to
+local water systems.
+Sustainable AI has received a significant amount of attention in
+recent years [1–5, 11, 72]. To make AI more energy-efficient and
+sustainable, a variety of approaches have been explored and studied,
+including computationally efficient training and inference [19, 20],
+energy-efficient GPU and accelerator designs [ 2, 21, 22], carbon-
+aware task scheduling [5, 18], green cloud infrastructures [23–25,
+73], among others. While they are useful for overall sustainability,
+these studies do not address the emerging environmental equity
+among different regions for deploying AI services. Additionally,
+they have mostly focused on carbon footprint, neglecting other
+crucial environmental footprints, e.g., water footprint [12, 26, 27,
+74]. In contrast, we holistically consider both carbon and water
+footprints and make novel contributions to sustainable AI from the
+perspective of environmental equity.
+There also exist non- computational approaches to improving
+AI’s environmental sustainability. For example, data center oper-
+ators have increasingly adopted carbon-free energy such as solar
+and wind power to lower AI’s carbon emissions [ 18, 26, 27, 74].
+To cut on-site potable water consumption and mitigate the stress
+on already-limited freshwater resources, climate-conscious cool-
+ing system designs (e.g., air-side economizers and purifying non-
+potable water) have recently seen an uptick in the data center
+industry [28, 29]. These non-computational approaches alone are
+typically not the most effective solution to sustainable AI, and must
+be designed in conjunction with computational approaches (e.g.,
+workload scheduling) [25, 41, 75, 76]. As such, our study of equity-
+aware GLB can inform the planning of on-site carbon-free energy
+and cooling system renovation projects to better achieve social and
+environmental justice.
+Equity and fairness are crucial considerations for AI. The existing
+research in this space has predominantly focused on mitigating pre-
+diction unfairness against disadvantaged individuals and/or groups
+under a variety of settings [51, 52, 77–86]. Our work on environ-
+mental equity adds a unique dimension of fairness and greatly
+complements the existing rich body of research, collaboratively and
+holistically building equitable and socially-responsible AI.
+6 CONCLUDING REMARKS
+In this paper, we take a first step to address the emerging environ-
+mental inequity of AI by balancing its regional negative environ-
+mental impact in an equitable manner. Concretely, we focus on the
+carbon and water footprints of AI model inference and propose
+equity-aware GLB to explicitly address the environmental impact
+on the most disadvantaged region.eGLB can optimize GLB decisions
+to fairly balance AI’s environmental cost across different regions
+in an online manner. We run trace-based simulations by consider-
+ing a set of 10 geographically distributed data centers that serve
+inference requests for a large language AI model. The results high-
+light that, compared to the existing GLB approaches, our proposed
+equity-aware GLB can significantly reduce the regional disparity
+in terms of AI’s carbon and water footprints.
+Our work demonstrates the need and great potential of equity-
+aware GLB to address AI’s emerging environmental equity. It opens
+up multiple new research directions to further improve AI’s envi-
+ronmental equity, such as how to jointly optimize GLB and non-IT
+resource (e.g., batteries) management and how to leverage envi-
+ronmental science tools to quantify the impact of AI’s carbon and
+water footprints on each region’s ecological system.
+ACKNOWLEDGEMENT
+Pengfei Li, Jianyi Yang, and Shaolei Ren were supported in part
+by the NSF under grants CNS-1910208 and CCF-2324941. Adam
+Wierman was supported in part by the NSF under grants CNS-
+2146814, CPS-2136197, CNS-2106403 and NGSDI-2105648, and by
+the Resnick Sustainability Institute.
+===== PAGE 11 =====
+Towards Environmentally Equitable AI
+via Geographical Load Balancing E-Energy ’24, June 4–7, 2024, Singapore, Singapore
+REFERENCES
+[1] Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan,
+Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda
+Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan,
+Rewon Child, Aditya Ramesh, Daniel Ziegler, Jeffrey Wu, Clemens Winter, Chris
+Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess,
+Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever,
+and Dario Amodei. Language models are few-shot learners. In H. Larochelle,
+M. Ranzato, R. Hadsell, M.F. Balcan, and H. Lin, editors, Advances in Neural
+Information Processing Systems, volume 33, pages 1877–1901. Curran Associates,
+Inc., 2020.
+[2] David Patterson, Joseph Gonzalez, Urs Hölzle, Quoc Le, Chen Liang, Lluis-Miquel
+Munguia, Daniel Rothchild, David R. So, Maud Texier, and Jeff Dean. The carbon
+footprint of machine learning training will plateau, then shrink. Computer,
+55(7):18–28, 2022.
+[3] Roy Schwartz, Jesse Dodge, Noah A. Smith, and Oren Etzioni. Green AI.Commun.
+ACM, 63(12):54–63, nov 2020.
+[4] Emma Strubell, Ananya Ganesh, and Andrew McCallum. Energy and policy
+considerations for deep learning in NLP. InProceedings of the 57th Annual Meeting
+of the Association for Computational Linguistics , pages 3645–3650, Florence, Italy,
+July 2019. Association for Computational Linguistics.
+[5] Peter Henderson, Jieru Hu, Joshua Romoff, Emma Brunskill, Dan Jurafsky, and
+Joelle Pineau. Towards the systematic reporting of the energy and carbon foot-
+prints of machine learning. J. Mach. Learn. Res. , 21(1), jan 2020.
+[6] Alexandra Sasha Luccioni, Sylvain Viguier, and Anne-Laure Ligozat. Estimating
+the carbon footprint of BLOOM, a 176B parameter language model. Journal of
+Machine Learning Research, 24(253):1–15, 2023.
+[7] Jennifer Switzer, Gabriel Marcano, Ryan Kastner, and Pat Pannuto. Junkyard
+computing: Repurposing discarded smartphones to minimize carbon. In Pro-
+ceedings of the 28th ACM International Conference on Architectural Support for
+Programming Languages and Operating Systems, Volume 2 , ASPLOS 2023, page
+400–412, New York, NY, USA, 2023. Association for Computing Machinery.
+[8] OECD. Measuring the environmental impacts of artificial intelligence compute
+and applications: The AI footprint. OECD Digital Economy Papers , (341), 2022.
+[9] Udit Gupta, Mariam Elgamal, Gage Hills, Gu-Yeon Wei, Hsien-Hsin S. Lee, David
+Brooks, and Carole-Jean Wu. Act: Designing sustainable computer systems
+with an architectural carbon modeling tool. In Proceedings of the 49th Annual
+International Symposium on Computer Architecture , ISCA ’22, page 784–799, New
+York, NY, USA, 2022. Association for Computing Machinery.
+[10] Steven Gonzalez Monserrate. The Cloud Is Material: On the Environmen-
+tal Impacts of Computation and Data Storage. MIT Case Studies in Social
+and Ethical Responsibilities of Computing , Winter, January 2022. https://mit-
+serc.pubpub.org/pub/the-cloud-is-material.
+[11] Romal Thoppilan, Daniel De Freitas, Jamie Hall, Noam Shazeer, Apoorv Kul-
+shreshtha, Heng-Tze Cheng, Alicia Jin, Taylor Bos, Leslie Baker, Yu Du, YaGuang
+Li, Hongrae Lee, Huaixiu Steven Zheng, Amin Ghafouri, Marcelo Menegali,
+Yanping Huang, Maxim Krikun, Dmitry Lepikhin, James Qin, Dehao Chen,
+Yuanzhong Xu, Zhifeng Chen, Adam Roberts, Maarten Bosma, Vincent Zhao,
+Yanqi Zhou, Chung-Ching Chang, Igor Krivokon, Will Rusch, Marc Pickett,
+Pranesh Srinivasan, Laichee Man, Kathleen Meier-Hellstern, Meredith Ringel
+Morris, Tulsee Doshi, Renelito Delos Santos, Toju Duke, Johnny Soraker, Ben
+Zevenbergen, Vinodkumar Prabhakaran, Mark Diaz, Ben Hutchinson, Kristen
+Olson, Alejandra Molina, Erin Hoffman-John, Josh Lee, Lora Aroyo, Ravi Ra-
+jakumar, Alena Butryna, Matthew Lamm, Viktoriya Kuzmina, Joe Fenton, Aaron
+Cohen, Rachel Bernstein, Ray Kurzweil, Blaise Aguera-Arcas, Claire Cui, Marian
+Croak, Ed Chi, and Quoc Le. LaMDA: Language models for dialog applications,
+2022.
+[12] Pengfei Li, Jianyi Yang, Mohammad A. Islam, and Shaolei Ren. Making AI less
+“thirsty”: Uncovering and addressing the secret water footprint of ai models.
+arXiv 2304.03271, 2023.
+[13] José-Luis Cruz and Esteban Rossi-Hansberg. Local carbon policy. Working Paper
+30027, National Bureau of Economic Research, May 2022.
+[14] Mark Z. Jacobson. Enhancement of local air pollution by urban CO2 domes.
+Environmental Science & Technology, 44(7):2497–2502, 2010. PMID: 20218542.
+[15] U.S. Environmental Protection Agency. About the U.S. electricity system and its
+impact on the environment.
+[16] Paul Allen Torcellini, Nicholas Long, and Ron Judkoff. Consumptive water use
+for US power production. National Renewable Energy Laboratory Technical Paper
+(TP-550-33905), December 2003.
+[17] Philipp Hacker. Sustainable AI regulation. In Privacy Law Scholars Conference ,
+2023, https://arxiv.org/abs/2306.00292.
+[18] Carole-Jean Wu, Ramya Raghavendra, Udit Gupta, Bilge Acun, Newsha Ardalani,
+Kiwan Maeng, Gloria Chang, Fiona Aga, Jinshi Huang, Charles Bai, et al. Sustain-
+able AI: Environmental implications, challenges and opportunities. InProceedings
+of Machine Learning and Systems , volume 4, pages 795–813, 2022.
+[19] Samyam Rajbhandari, Conglong Li, Zhewei Yao, Minjia Zhang, Reza Yazdani
+Aminabadi, Ammar Ahmad Awan, Jeff Rasley, and Yuxiong He. Deepspeed-MOE:
+Advancing mixture-of-experts inference and training to power next-generation
+AI scale. In ICML, 2022.
+[20] Lingjiao Chen, Matei Zaharia, and James Zou. Frugalgpt: How to use large
+language models while reducing cost and improving performance, 2023.
+[21] Pengfei Xu, Xiaofan Zhang, Cong Hao, Yang Zhao, Yongan Zhang, Yue Wang,
+Chaojian Li, Zetong Guan, Deming Chen, and Yingyan Lin. AutoDNNchip: An
+automated DNN chip predictor and builder for both FPGAs and ASICs. In FPGA,
+2020.
+[22] Suyog Gupta and Berkin Akin. Accelerator-aware neural network design using
+AutoML. arXiv preprint arXiv:2003.02838, 2020.
+[23] Anshul Gandhi, Kanad Ghose, Kartik Gopalan, Syed Rafiul Hussain, Dongyoon
+Lee, Yu David Liu, Zhenhua Liu, Patrick McDaniel, Shuai Mu, and Erez Zadok.
+Metrics for sustainability in data centers. In HotCarbon, 2022.
+[24] Noman Bashir, Tian Guo, Mohammad Hajiesmaili, David Irwin, Prashant Shenoy,
+Ramesh Sitaraman, Abel Souza, and Adam Wierman. Enabling sustainable
+clouds: The case for virtualizing the energy system. In Proceedings of the ACM
+Symposium on Cloud Computing , SoCC ’21, page 350–358, New York, NY, USA,
+2021. Association for Computing Machinery.
+[25] Bilge Acun, Benjamin Lee, Fiodar Kazhamiaka, Kiwan Maeng, Udit Gupta, Manoj
+Chakkaravarthy, David Brooks, and Carole-Jean Wu. Carbon explorer: A holistic
+framework for designing carbon aware datacenters. In Proceedings of the 28th
+ACM International Conference on Architectural Support for Programming Lan-
+guages and Operating Systems, Volume 2 , ASPLOS 2023, page 118–132, New York,
+NY, USA, 2023. Association for Computing Machinery.
+[26] Google. Environmental report, 2022, https://sustainability.google/reports/.
+[27] Meta. Sustainability report, 2021, https://sustainability.fb.com/.
+[28] Google. Water commitments, 2023, https://sustainability.google/commitments/
+water/.
+[29] Meta. Sustainability — water, https://sustainability.fb.com/water/.
+[30] U.S. Department of Engergy. What is environmental justice?, https://www.energy.
+gov/lm/what-environmental-justice.
+[31] Mohammad A. Islam, Kishwar Ahmed, Hong Xu, Nguyen H. Tran, Gang Quan,
+and Shaolei Ren. Exploiting spatio-temporal diversity for water saving in geo-
+distributed data centers. IEEE Transactions on Cloud Computing , 6(3):734–746,
+2018.
+[32] Leila Karimi, Leeann Yacuel, Joseph Degraft-Johnson, Jamie Ashby, Michael
+Green, Matt Renner, Aryn Bergman, Robert Norwood, and Kerri L. Hickenbot-
+tom. Water-energy tradeoffs in data centers: A case study in hot-arid climates.
+Resources, Conservation and Recycling , 181:106194, 2022.
+[33] Johanna Okerlund, Evan Klasky, Aditya Middha, Sujin Kim, Hannah Rosenfeld,
+Molly Kleinman, and Shobita Parthasarathy. What’s in the Chatterbox? large
+language models, why they matter, and what we should do about them.University
+of Michigan Technology Assessment Project Report , April 2022.
+[34] Rachel Bergmann and Sonja Solomun. From tech to justice: A call for environ-
+mental justice in AI. AI Now Institute, October 2021.
+[35] UNESCO. Recommendation on the ethics of artificial intelligence. In Policy
+Recommendation, 2022.
+[36] Amba Kak and Sarah Myers West. AI Now 2023 landscape: Confronting tech
+power. AI Now Institute, April 2023.
+[37] Bogdana Rakova and Roel Dobbe. Algorithms as social-ecological-technological
+systems: an environmental justice lens on algorithmic audits. In Proceedings of
+the 2023 Conference on Fairness, Accountability, and Transparency, FAccT ’23, New
+York, NY, USA, 2023. Association for Computing Machinery.
+[38] Emily M. Bender, Timnit Gebru, Angelina McMillan-Major, and Shmargaret
+Shmitchell. On the dangers of stochastic parrots: Can language models be too
+big? In Proceedings of the 2021 ACM Conference on Fairness, Accountability, and
+Transparency, FAccT ’21, page 610–623, New York, NY, USA, 2021. Association
+for Computing Machinery.
+[39] Andrew A Chien, Liuzixuan Lin, Hai Nguyen, Varsha Rao, Tristan Sharma, and
+Rajini Wijayawardana. Reducing the carbon impact of generative AI inference
+(today and in 2035). In Proceedings of the 2nd Workshop on Sustainable Computer
+Systems, HotCarbon ’23, New York, NY, USA, 2023. Association for Computing
+Machinery.
+[40] Zhenhua Liu, Minghong Lin, Adam Wierman, Steven H. Low, and Lachlan L.H.
+Andrew. Greening geographical load balancing. In SIGMETRICS, 2011.
+[41] Ana Radovanović, Ross Koningstein, Ian Schneider, Bokan Chen, Alexandre
+Duarte, Binz Roy, Diyue Xiao, Maya Haridasan, Patrick Hung, Nick Care, Saurav
+Talukdar, Eric Mullen, Kendal Smith, MariEllen Cottman, and Walfredo Cirne.
+Carbon-aware computing for datacenters. IEEE Transactions on Power Systems ,
+38(2):1270–1280, 2023.
+[42] Kai Fang, Reinout Heijungs, and Geert R. de Snoo. Theoretical exploration for the
+combination of the ecological, energy, carbon, and water footprints: Overview of
+a footprint family. Ecological Indicators, 36:508–518, 2014.
+[43] Peter Xiang Gao, Andrew R. Curtis, Bernard Wong, and Srinivasan Keshav. It’s
+not easy being green. SIGCOMM Comput. Commun. Rev., 2012.
+[44] Microsoft. Environmental sustainability report, 2022, https://www.microsoft.
+com/en-us/corporate-responsibility/sustainability/report.
+===== PAGE 12 =====
+E-Energy ’24, June 4–7, 2024, Singapore, Singapore Pengfei Li, Jianyi Yang, Adam Wierman, and Shaolei Ren
+[45] Md Abu Bakar Siddik, Arman Shehabi, and Landon Marston. The environmental
+footprint of data centers in the United States. Environmental Research Letters ,
+16(6):064017, 2021.
+[46] Mohammad. A. Islam, Shaolei Ren, Gang Quan, Muhammad Z. Shakir, and
+Athanasios V. Vasilakos. Water-constrained geographic load balancing in data
+centers. IEEE Trans. Cloud Computing , 2015.
+[47] David Sickinger, Otto Van Geet, Suzanne Belmont, Thomas Carter, and David
+Martinez. Thermosyphon cooler hybrid system for water savings in an energy-
+efficient hpc data center. NREL Technical Report NREL/TP-2C00-72196, 2018.
+[48] Paul Reig, Tianyi Luo, Eric Christensen, and Julie Sinistore. Guidance for calcu-
+lating water use embedded in purchased electricity. World Resources Institute,
+2020.
+[49] A. Shehabi, S. J. Smith, N. Horner, I. Azevedo, R. Brown, J. Koomey, E. Masanet,
+D. Sartor, M. Herrlin, and W. Lintner. United States data center energy usage
+report. Lawrence Berkeley National Laboratory, Berkeley, California. LBNL-1005775,
+2016.
+[50] The Green Grid. Water usage effectiveness (WUE): A green grid data center
+sustainability metric. Whitepaper, 2011.
+[51] Emily Diana, Wesley Gill, Michael Kearns, Krishnaram Kenthapadi, and Aaron
+Roth. Minimax group fairness: Algorithms and experiments. In Proceedings of
+the 2021 AAAI/ACM Conference on AI, Ethics, and Society , AIES ’21, page 66–76,
+New York, NY, USA, 2021. Association for Computing Machinery.
+[52] Natalia Martinez, Martin Bertran, and Guillermo Sapiro. Minimax pareto fairness:
+A multi objective perspective. In Proceedings of the 37th International Conference
+on Machine Learning, ICML’20. JMLR.org, 2020.
+[53] L. Tassiulas and S. Sarkar. Maxmin fair scheduling in wireless networks. In Pro-
+ceedings 21st Annual Joint Conference of the IEEE Computer and Communications
+Societies, volume 2, pages 763–772 vol.2, 2002.
+[54] Kien Le, Ricardo Bianchini, Thu D. Nguyen, Ozlem Bilgir, and Margaret Martonosi.
+Capping the brown energy consumption of internet services at low cost. InIGCC,
+2010.
+[55] Elad Hazan et al. Introduction to online convex optimization. Foundations and
+Trends® in Optimization, 2(3-4):157–325, 2016.
+[56] Santiago R. Balseiro, Haihao Lu, and Vahab Mirrokni. The best of many worlds:
+Dual mirror descent for online allocation problems.Operations Research, 0(0):null,
+May 2022.
+[57] M. J. Neely. Universal scheduling for networks with arbitrary traffic, channels,
+and mobility, http://arxiv.org/abs/1001.0960.
+[58] L. Rao, X. Liu, L. Xie, and Wenyu Liu. Reducing electricity cost: Optimization of
+distributed internet data centers in a multi-electricity-market environment. In
+INFOCOM, 2010.
+[59] International Energy Agency (IEA). Data and statistics, https://www.iea.org/data-
+and-statistics.
+[60] U.S. Energy Information Administration. Open data, https://www.eia.gov/
+opendata/.
+[61] Electricity Maps. Open database, https://www.electricitymaps.com/.
+[62] Iowa State University. Iowa environmental mesonet, https://mesonet.agron.
+iastate.edu/.
+[63] D. Meyer and D. Thevenard. PsychroLib: A library of psychrometric functions
+to calculate thermodynamic properties of air. Journal of Open Source Software ,
+4(33):1137, 2019.
+[64] Asfandyar Qureshi, Rick Weber, Hari Balakrishnan, John Guttag, and Bruce
+Maggs. Cutting the electric bill for internet-scale systems. In Proceedings of the
+ACM SIGCOMM 2009 Conference on Data Communication , SIGCOMM ’09, page
+123–134, New York, NY, USA, 2009. Association for Computing Machinery.
+[65] Udit Gupta, Young Geun Kim, Sylvia Lee, Jordan Tse, Hsien-Hsin S. Lee, Gu-
+Yeon Wei, David Brooks, and Carole-Jean Wu. Chasing carbon: The elusive
+environmental footprint of computing. IEEE Micro, 42(4):37–47, jul 2022.
+[66] Chuangang Ren, Di Wang, Bhuvan Urgaonkar, and Anand Sivasubramaniam.
+Carbon-aware energy capacity planning for datacenters. In MASCOTS, 2012.
+[67] Xin He, Prashant Shenoy, Ramesh Sitaraman, and David Irwin. Cutting the cost
+of hosting online services using cloud spot markets. In HPDC, 2015.
+[68] Stephen Lee, Rahul Urgaonkar, Ramesh Sitaraman, and Prashant Shenoy. Cost
+minimization using renewable cooling and thermal energy storage in CDNs. In
+ICAC, 2015.
+[69] Jose Camacho, Ying Zhang, Minghua Chen, and Dah Ming Chiu. Balance your
+bids before your bits: The economics of geographic load-balancing. In e-Energy,
+2014.
+[70] Marco Brocanelli, Sen Li, Xiaorui Wang, and Wei Zhang. Maximizing the revenues
+of data centers in regulation market by coordinating with electric vehicles. to
+appear in Sustainable Computing: Informatics and Systems , 2014.
+[71] Kien Le, Ricardo Bianchini, Jingru Zhang, Yogesh Jaluria, Jiandong Meng, and
+Thu D. Nguyen. Reducing electricity cost through virtual machine placement in
+high performance computing clouds. In SuperComputing, 2011.
+[72] David Patterson, Joseph Gonzalez, Quoc Le, Chen Liang, Lluis-Miquel Munguia,
+Daniel Rothchild, David So, Maud Texier, and Jeff Dean. Carbon emissions and
+large neural network training, 2021.
+[73] Chao Li, Amer Qouneh, and Tao Li. iSwitch: Coordinating and optimizing
+renewable energy powered server clusters. In ISCA, 2012.
+[74] Shefy Manayil Kareem. Introducing critical new water data capabilities
+in Microsoft Cloud for Sustainability, 2023, https://www.microsoft.com/en-
+us/industry/blog/sustainability/2023/03/22/introducing-critical-new-water-
+data-capabilities-in-microsoft-cloud-for-sustainability/.
+[75] Thomas Anderson, Adam Belay, Mosharaf Chowdhury, Asaf Cidon, and Irene
+Zhang. Treehouse: A case for carbon-aware datacenter software. In HotCarbon,
+2022.
+[76] Microsoft. Carbon-aware computing: Measuring and reducing the carbon foot-
+print associated with software in execution. In Whitepaper, 2023.
+[77] Dana Pessach and Erez Shmueli. A review on fairness in machine learning. ACM
+Comput. Surv., 55(3), feb 2022.
+[78] Tian Li, Maziar Sanjabi, Ahmad Beirami, and Virginia Smith. Fair resource alloca-
+tion in federated learning. InInternational Conference on Learning Representations,
+2020.
+[79] Rich Zemel, Yu Wu, Kevin Swersky, Toni Pitassi, and Cynthia Dwork. Learning
+fair representations. In Sanjoy Dasgupta and David McAllester, editors, Pro-
+ceedings of the 30th International Conference on Machine Learning , volume 28 of
+Proceedings of Machine Learning Research , pages 325–333, Atlanta, Georgia, USA,
+17–19 Jun 2013. PMLR.
+[80] Batya Friedman and Helen Nissenbaum. Bias in computer systems. ACM Trans.
+Inf. Syst., 14(3):330–347, jul 1996.
+[81] Dino Pedreshi, Salvatore Ruggieri, and Franco Turini. Discrimination-aware
+data mining. In Proceedings of the 14th ACM SIGKDD International Conference on
+Knowledge Discovery and Data Mining , KDD ’08, page 560–568, New York, NY,
+USA, 2008. Association for Computing Machinery.
+[82] Reuben Binns. On the apparent conflict between individual and group fairness. In
+Proceedings of the 2020 Conference on Fairness, Accountability, and Transparency ,
+FAT* ’20, page 514–524, New York, NY, USA, 2020. Association for Computing
+Machinery.
+[83] Xueru Zhang and Mingyan Liu. Fairness in Learning-Based Sequential Decision
+Algorithms: A Survey, pages 525–555. Springer International Publishing, Cham,
+2021.
+[84] Cynthia Dwork, Moritz Hardt, Toniann Pitassi, Omer Reingold, and Richard
+Zemel. Fairness through awareness. In Proceedings of the 3rd Innovations in
+Theoretical Computer Science Conference , ITCS ’12, page 214–226, New York, NY,
+USA, 2012. Association for Computing Machinery.
+[85] Nripsuta Ani Saxena, Karen Huang, Evan DeFilippis, Goran Radanovic, David C.
+Parkes, and Yang Liu. How do fairness definitions fare? testing public attitudes
+towards three algorithmic definitions of fairness in loan allocations. Artificial
+Intelligence, 283:103238, 2020.
+[86] Oyku Deniz Kose and Yanning Shen. Fast&fair: Training acceleration and bias
+mitigation for GNNs. Transactions on Machine Learning Research , 2023.
+[87] Jordan Macknick, Robin Newmark, Garvin Heath, and KC Hallett. A review of
+operational water consumption and withdrawal factors for electricity generating
+technologies. NREL Tech. Report: NREL/TP-6A20-50900, 2011.
+[88] Song Han, Huizi Mao, and William J. Dally. Deep compression: Compressing
+deep neural networks with pruning, trained quantization and huffman coding.
+In ICLR, 2016.
+[89] Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yas-
+mine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhos-
+ale, Dan Bikel, Lukas Blecher, Cristian Canton Ferrer, Moya Chen, Guillem Cucu-
+rull, David Esiobu, Jude Fernandes, Jeremy Fu, Wenyin Fu, Brian Fuller, Cynthia
+Gao, Vedanuj Goswami, Naman Goyal, Anthony Hartshorn, Saghar Hosseini,
+Rui Hou, Hakan Inan, Marcin Kardas, Viktor Kerkez, Madian Khabsa, Isabel
+Kloumann, Artem Korenev, Punit Singh Koura, Marie-Anne Lachaux, Thibaut
+Lavril, Jenya Lee, Diana Liskovich, Yinghai Lu, Yuning Mao, Xavier Martinet,
+Todor Mihaylov, Pushkar Mishra, Igor Molybog, Yixin Nie, Andrew Poulton,
+Jeremy Reizenstein, Rashi Rungta, Kalyan Saladi, Alan Schelten, Ruan Silva,
+Eric Michael Smith, Ranjan Subramanian, Xiaoqing Ellen Tan, Binh Tang, Ross
+Taylor, Adina Williams, Jian Xiang Kuan, Puxin Xu, Zheng Yan, Iliyan Zarov,
+Yuchen Zhang, Angela Fan, Melanie Kambadur, Sharan Narang, Aurelien Ro-
+driguez, Robert Stojnic, Sergey Edunov, and Thomas Scialom. Llama 2: Open
+foundation and fine-tuned chat models. arXiv preprint arXiv:2307.09288, 2023.
+APPENDIX
+A ADDITIONAL DETAILS ABOUT THE
+EXPERIMENTAL SETUP
+In this section, we provide additional details about the data used
+in the experiments, particularly the sources of our data on the fuel
+mix and water intensity factors.
+===== PAGE 13 =====
+Towards Environmentally Equitable AI
+via Geographical Load Balancing E-Energy ’24, June 4–7, 2024, Singapore, Singapore
+Table 3: The detailed information of our data center locations. The values shown in the table are averaged over the 18-day
+period between September 23 and October 11, 2022.
+Country State/Province City Total WUE Carbon Intensity Energy Price
+(m3/MWh) (ton/MWh) ($/MWh)
+U.S. Texas Midlothian 5.7397 0.4011 64.931
+U.S. Virginia Loudoun 5.9755 0.3741 77.793
+U.S. Georgia Douglas 5.9001 0.4188 80.566
+U.S. Nevada Storey 4.9306 0.2980 84.738
+Germany Hessen Frankfurt 4.5889 0.3295 315.233
+Belgium Hainaut Saint-Ghislain 4.9316 0.4802 247.083
+Netherlands Groningen Eemshaven 3.0928 0.4454 248.258
+Denmark Fredericia Fredericia 3.8900 0.1391 213.773
+Japan Chiba Prefecture Inzai 2.4989 0.3280 129.269
+Singapore Singapore Jurong West 5.8652 0.5260 155.462
+(a) Total weighted cost
+ (b) Average energy cost
+ (c) Maximum water
+(d) Average water
+ (e) Maximum carbon
+ (f) Average carbon
+Figure 3: The energy cost, carbon and water footprint of eGLB with different learning rates 𝜂 under partial GLB flexibility. The
+results for eGLB-Off, GLB-Energy, GLB-Carbon, and GLB-Water are shown for comparison.
+We do not have free access to the hourly energy fuel mix data
+for our data center locations in Europe and Asia. Thus, we generate
+synthetic hourly fuel mixes for these locations based on the U.S. data.
+We first obtain from [59] the average percentages of renewable and
+non-renewable energy in electricity generation between September
+23 and October 11, 2022, for each data center location in Europe
+and Asia. Then, we scale the hourly energy fuel mix data in the U.S.
+to match the average percentages by mapping Texas’ fuel mixes
+between June 1 and June 19, 2022, to Germany with non-renewable
+energy fuels scaled by 0.8503, Georgia’s fuel mixes between June
+1 and June 19, 2022, to Belgium with non-renewable energy fuels
+scaled by 1.5319, Georgia’s fuel mixes between March 1 and March
+19, 2022, to the Netherlands with non-renewable energy fuels scaled
+by 1.2759, Oregon’s fuel mixes between July 1 and July 19, 2022, to
+Denmark with non-renewable energy scaled by 0.2657, Nevada’s
+fuel mixes between March 1 and March 19, 2022, to Japan with
+non-renewable energy fuels scaled by 3.2374, Georgia’s fuel mixes
+between May 1 and May 19, 2022, to Singapore with non-renewable
+energy fuels scaled by 4.4875. We choose different 18-day periods
+in order to de-correlate the European and Asian energy fuel mix
+traces from our actual U.S. data over the workload trace period
+(between September 23 and October 11, 2022).
+We also show the estimated energy water intensity factor (EWIF)
+in m3/MWh for common energy fuel types in the U.S. in Table 4
+[12, 87], and the details of our 10 data center locations in Table 3.
+B ADDITIONAL RESULTS FOR GLB WITH
+PARTIAL FLEXIBILITY
+In this experiment, the goal is to evaluate the performance of eGLB
+under partial GLB flexibility. Intra-continental workload routing
+===== PAGE 14 =====
+E-Energy ’24, June 4–7, 2024, Singapore, Singapore Pengfei Li, Jianyi Yang, Adam Wierman, and Shaolei Ren
+Table 4: Estimated EWIF for common energy fuel types in the U.S. [87].
+Fuel Type Coal Nuclear Natural Gas Solar (PV) Wind Other Hydro
+EWIF (L/kWh) 1.7 2.3 1.1 0 0 1.8 68 (0, if excluded)
+is fully flexible but inter-continental workload routing is partially
+restricted. Specifically, we only allow partial inter-continental work-
+load routing as follows: workloads can be flexibly routed between
+Asia and the western U.S. (Nevada), and between Europe and the
+eastern U.S. (Virginia and Georgia). Similar to the full GLB flexibil-
+ity scenario, the increase of the learning rate𝜂 helps improve the
+environmental equity at the expense of increasing the energy cost.
+The results are shown in Fig. 3.
+C EXTENSION TO HETEROGENEOUS AI
+MODELS
+For the same inference service, a set of heterogeneous AI models
+with distinct computing resource consumption and accuracy per-
+formance may be available via model pruning and compression in
+practice [88], offering flexible energy-accuracy tradeoffs. For exam-
+ple, there are eight different GPT-3 model sizes, ranging from the
+smallest one with 125 million parameters to the largest one with 175
+billion parameters [1]. Now, we extend our problem formulation to
+this generalized setting.
+Suppose that there are a setL ={1,··· ,𝐿} of heterogeneous
+AI models for our considered inference service. For time𝑡, we can
+dynamically choose to run one or more AI models to serve the
+incoming workloads. This is also equivalent to distributing the
+workload Í
+𝑗∈J 𝑥𝑖,𝑗(𝑡) to𝐿 heterogeneous AI models within data
+center𝑖. We denote by 𝑦𝑖,𝑙(𝑡) ≥0 as the amount of workloads
+distributed to AI model 𝑙 in data center 𝑖. Naturally,𝑦𝑖,𝑙(𝑡) = 0
+means that the AI model𝑙 is not chosen in data center𝑖 at time𝑡.
+When deployed in data center𝑖, the energy consumption and
+server resource usage of AI model𝑙 for processing workloads𝑦𝑖,𝑙(𝑡)
+are denoted by𝑒𝑖,𝑙(𝑦𝑖,𝑙(𝑡)) and𝑟𝑖,𝑙(𝑦𝑖,𝑙(𝑡)), respectively. Thus, the
+total server energy consumption in data center𝑖 becomes ˜𝑒𝑖(𝑦(𝑡)) =Í
+𝑙∈L 𝑒𝑖,𝑙(𝑦𝑖,𝑙(𝑡)), where𝑦(𝑡) ={𝑦𝑖,𝑙(𝑡)| 𝑖∈N ,𝑙 ∈L} represents
+the collection of decisions for workload assignment to different AI
+models. Similarly, with heterogeneous AI models, we can re-define
+the carbon footprint and water footprint as˜𝑐𝑖,𝑡(𝑦(𝑡)) and ˜𝑤𝑖,𝑡(𝑦(𝑡))
+by replacing𝑒𝑖(𝑥(𝑡)) with ˜𝑒𝑖(𝑦(𝑡)) = Í
+𝑙∈L 𝑒𝑖,𝑙(𝑦𝑖,𝑙(𝑡)) in (2) and
+(3), respectively.
+To optimally distribute workloads to AI models with different
+energy-accuracy tradeoffs, we need to consider the inferencecost as-
+sociated with different accuracies, since otherwise always choosing
+the smallest model can always result in the lowest energy con-
+sumption. Specifically, we refer to the cost as performance cost
+and denote it by 𝑠𝑙(𝑦𝑖,𝑙(𝑡)), whose dependency on 𝑦𝑖,𝑙(𝑡) can be
+explained by noting that the performance cost is potentially more
+significant when more users use the model (i.e., 𝑦𝑖,𝑙(𝑡) is larger).
+Next, by combining the energy cost and performance cost, we con-
+sider a generalized operational cost as follows:
+˜𝑔𝑡(𝑦(𝑡)) =
+∑︁
+𝑖∈N
+∑︁
+𝑙∈L
+
+𝑝𝑖,𝑡𝛾𝑖,𝑡·𝑒𝑖,𝑙(𝑦𝑖,𝑙(𝑡))+ 𝜙·𝑠𝑙(𝑦𝑖,𝑙(𝑡))
+
+, (15)
+where the hyperparameter𝜙≥ 0 converts the performance cost
+𝑠𝑙(𝑦𝑖,𝑙(𝑡)) to a monetary value and indicates the importance of
+inference performance relative to the energy cost.
+Finally, we formulate the generalized GLB problem with hetero-
+geneous AI models as follows:
+min
+𝑥(𝑡),𝑦(𝑡)
+𝑇∑︁
+𝑡 =1
+˜𝑔𝑡(𝑦(𝑡))+ 𝜇𝑐· max
+𝑖∈N
+"
+H𝑖,𝑐
+ 𝑇∑︁
+𝑡 =1
+˜𝑐𝑖,𝑡(𝑦(𝑡))
+!#
++𝜇𝑤· max
+𝑖∈N
+"
+H𝑖,𝑤
+ 𝑇∑︁
+𝑡 =1
+˜𝑤𝑖,𝑡(𝑦(𝑡))
+!#
+,
+(16a)
+𝑠.𝑡. 𝑥 𝑖,𝑗(𝑡) = 0, if𝐵𝑖,𝑗 = 0, ∀𝑖∈N ,𝑗 ∈J ,𝑡 = 1,··· ,𝑇,
+(16b)
+∑︁
+𝑥∈N
+𝑥𝑖,𝑗(𝑡) =𝜆𝑗,𝑡, ∀ 𝑗∈J ,𝑡 = 1,··· ,𝑇, (16c)
+∑︁
+𝑘∈K
+𝑟𝑖,𝑘
+ 𝑦𝑖,𝑘(𝑡)≤𝑀𝑖, ∀𝑖∈N ,𝑡 = 1,··· ,𝑇, (16d)
+∑︁
+𝑗∈J
+𝑥𝑖,𝑗(𝑡) =
+∑︁
+𝑘∈K
+𝑦𝑖,𝑘(𝑡), ∀ 𝑗∈J ,𝑡 = 1,··· ,𝑇, (16e)
+where the objective (16a) is to minimize the generalized operational
+cost (including both energy and performance costs) while address-
+ing environmental inequity, the constraint (16d) means that the
+total resource demand must be no more than the server cluster’s
+capacity, and the last constraint (16e) ensures that the workload
+assigned to each data center is always served by one of the het-
+erogeneous AI models. The problem (16a)–(16e) can be solved by
+introducing auxiliary variables and optimizing the Lagrangian with
+estimated dual variables. The algorithm is similar to Algorithm 1.
+Next, we conduct a trace-based simulation to evaluate the perfor-
+mance of different GLB algorithms with heterogeneous AI models.
+We consider a similar setup as the default one with homogeneous
+AI models, where we keep the weights𝜇𝑤 and𝜇𝑐 unchanged. As
+the open-sourced BLOOM has only one model size and is not suit-
+able for the heterogeneous AI model case, we consider the Llama-2
+model released by Meta with three different available model sizes
+(7B, 13B, and 70B), corresponding to different accuracies and energy
+demands [89]. We normalize the average inference accuracy and
+energy consumption by that of the largest model. We set the accu-
+racy performance weight such that the average inference accuracy
+is roughly the same as that of the model with the medium size.
+As each performance weight corresponds to an average inference
+constraint, this is essentially equivalent to constraining the average
+inference accuracy (weighted by the amount of requests for each
+model) to be equal to that of the medium-size model. Each of the
+10 geo-distributed data centers can handle a specified quantity of
+requests for each model size subject to the total capacity constraint.
+By using the same traces for carbon intensity, water usage efficiency,
+and workloads as in the homogeneous case, we run different GLB
+algorithms and show the results Table 5.
+===== PAGE 15 =====
+Towards Environmentally Equitable AI
+via Geographical Load Balancing E-Energy ’24, June 4–7, 2024, Singapore, Singapore
+Table 5: Comparison of different GLB algorithms in terms of energy cost, carbon and water footprint with heterogeneous AI
+models. The results of eGLB with the learning rate 𝜂 = 10−5 are bolded.
+GLB Metric Algorithm
+Flexibility GLB-Energy GLB-Carbon GLB-Water GLB-C2 GLB-All GLB-Nearest eGLB-Off eGLB
+Full
+Energy (US$) avg 20656 56891 58345 29047 26071 47038 29279 35034
+Water (m3)
+avg 1549.8 1311.9 1075.8 1476.7 1367.2 1446.7 1416.1 1424.6
+max 4521.5 4537.4 2788.5 3786.7 2640.2 2090.9 1612.7 1830.9
+max/avg 2.92 3.46 2.59 2.56 1.93 1.45 1.14 1.29
+Carbon (ton)
+avg 121.37 67.21 100.17 87.73 98.63 111.80 96.90 101.77
+max 352.84 171.07 375.92 233.49 201.94 143.46 116.59 129.94
+max/avg 2.91 2.55 3.75 2.66 2.05 1.28 1.20 1.28
+Full
+Energy (US$) avg 21684 49516 54478 27329 26094 47038 30011 36170
+Water (m3)
+avg 1561.8 1411.2 1106.9 1503.3 1385.9 1446.7 1442.1 1437.6
+max 4343.4 3699.6 2758.4 4106.1 3045.9 2090.9 1782.4 1885.4
+max/avg 2.78 2.62 2.49 2.73 2.20 1.45 1.24 1.31
+Carbon (ton)
+avg 119.50 79.67 103.45 96.26 103.17 111.80 99.46 103.33
+max 340.16 183.15 351.76 254.43 230.12 143.46 131.22 135.26
+max/avg 2.85 2.30 3.40 2.64 2.23 1.28 1.32 1.31
+The results provide similar insights as in the homogeneous case
+for both full and partial GLB scenarios. Specifically, we see that
+compared to the other equity-oblivious GLB algorithms, eGLB can
+effectively reduce the environmental inequity among different re-
+gions in terms of the maximum-to-average ratio for both carbon
+and water footprints. Additionally, even compared to eGLB-Off,
+eGLB delivers a comparable performance in terms of environmental
+equity while only slightly increasing the total energy cost. Again,
+this demonstrates the potential of eGLB to address AI’s emerging
+environmental inequity.
+D PROOF OF THEOREM 1
+When the reference function isℎ(𝑎) = 1
+2∥𝑎∥2, the update rule in
+Line 7 in Algorithm 1 can be rewritten as
+1
+𝜂𝜅𝑡+1 =
+ 1
+𝜂𝜅𝑡−𝑑𝑡
++
+=
+ 1
+𝜂𝜅𝑡+(
+C𝑡(𝑥(𝑡))
+W𝑡(𝑥(𝑡))
+
+−
+𝑧𝑐(𝑡)
+𝑧𝑤(𝑡)
+
+)
++
+(17)
+where[𝑥]+ =𝑥 when𝑥 is positive, otherwise it’s set as zero. Given
+the dual variable𝜅𝑡 , the optimization goal of Line 4 and Line 5 can
+be written as
+min
+𝑥(𝑡),𝑧𝑐(𝑡),𝑧𝑤(𝑡)
+1
+𝜂
+
+𝑔𝑡(𝑥(𝑡))+ 𝜇𝑐∥H𝑐(𝑧𝑐(𝑡))∥∞
++𝜇𝑤∥H𝑤(𝑧𝑤(𝑡))∥∞
+
++𝜅⊤
+𝑡
+𝜂 ·(−𝑑𝑡)
+(18)
+by multiplying Eqn (18) with𝜂, it corresponds to the change of
+Lagrange function at time𝑡. Now we define a new variable Δ1(𝑡) =
+1
+2𝜂2(𝜅2
+𝑡+1−𝜅2
+𝑡) to quantify the change of Lagrange multiplier 𝜅𝑡 .
+Our next step is to provide bounds on this dual variable𝜅𝑡 , which
+is done by the following lemma.
+Lemma 2. If the reference functionℎ(𝑎) = 1
+2∥𝑎∥2 and𝜅1 = 0, then
+the dual variable𝜅𝑡 is bounded by
+∥𝜅𝑇+1∥≤ 𝜂
+√︄
+2𝑇(𝐵+ 𝑀𝜃𝑚
+𝜂 (𝜇𝑐𝑐𝑚+𝜇𝑤𝑤𝑚)) (19)
+where constant𝐵 = 𝑁
+2(¯𝑧2𝑐+ ¯𝑧2𝑤).
+Proof. From Eqn (17), we have the following inequality
+Δ1(𝑡)≤ 1
+2𝜂2
+
+(𝜅𝑡−𝜂𝑑𝑡)2−𝜅2
+𝑡
+
+(20)
+= 1
+𝜂𝜅𝑡·(−𝑑𝑡)+ 1
+2𝑑2
+𝑡 (21)
+≤ 1
+𝜂𝜅𝑡·(−𝑑𝑡)+ 𝐵 (22)
+where𝐵 = 𝑁
+2·( ¯𝑧2𝑐+¯𝑧2𝑤), the first inequality is based on([𝑥]+)2≤𝑥2
+and the second inequality comes from our assumption that ¯𝑧𝑐 and
+¯𝑧𝑤 are the largest possible values of the carbon and water footprint.
+Suppose at time𝑡, the optimal solution for Eqn (18) is𝑥(𝑡)†,
+𝑧𝑐(𝑡)†,𝑧𝑤(𝑡)†, for any other𝑧𝑐(𝑡)′∈Z𝑐,𝑧𝑤(𝑡)′∈Z𝑤 we have
+Δ1(𝑡)+ 1
+𝜂
+
+𝑔𝑡(𝑥(𝑡)†)+ 𝜇𝑐∥H𝑐(𝑧𝑐(𝑡)†)∥∞+𝜇𝑤∥H𝑤(𝑧𝑤(𝑡)†)∥∞
+
+≤𝐵+ 1
+𝜂
+
+𝑔𝑡(𝑥(𝑡)†)+ 𝜇𝑐∥H𝑐(𝑧𝑐(𝑡)′)∥∞+𝜇𝑤∥H𝑤(𝑧𝑤(𝑡)′)∥∞
+
++𝜅⊤
+𝑡
+𝜂 ·(
+C𝑡(𝑥(𝑡)†)
+W𝑡(𝑥(𝑡)†)
+
+−
+𝑧𝑐(𝑡)′
+𝑧𝑤(𝑡)′
+
+)
+(23)
+In the second inequality, we choose𝑧𝑐(𝑡)′ and𝑧𝑤(𝑡)′ such that the
+term
+C𝑡(𝑥(𝑡)†)
+W𝑡(𝑥(𝑡)†)
+
+−
+𝑧𝑐(𝑡)′
+𝑧𝑤(𝑡)′
+
+= 0 , then we have
+Δ1(𝑡)≤ 𝐵+ 𝜇𝑐
+𝜂
+
+∥H𝑐(𝑧𝑐(𝑡)′)∥∞−∥H𝑐(𝑧𝑐(𝑡)†)∥∞
+
++
+𝜇𝑤
+𝜂
+
+∥H𝑤(𝑧𝑤(𝑡)′)∥∞−∥H 𝑤(𝑧𝑤(𝑡)†)∥∞
+ (24)
+≤𝐵+ 𝑀𝜃𝑚
+𝜂 (𝜇𝑐𝑐𝑚+𝜇𝑤𝑤𝑚) (25)
+where the second inequality results from the assumption of maxi-
+mum carbon or water price, the maximum datacenter capacity𝑀
+and𝜃𝑚, the maximum gradient of functionH𝑤(·) andH𝑐(·). By
+summing up Δ1(𝑡) through𝑡 = 1 to𝑇 , then we have
+1
+2𝜂2(𝜅2
+𝑇+1−𝜅2
+1)≤ 𝑇(𝐵+ 𝑀𝜃𝑚
+𝜂 (𝜇𝑐𝑐𝑚+𝜇𝑤𝑤𝑚)) (26)
+□
+===== PAGE 16 =====
+E-Energy ’24, June 4–7, 2024, Singapore, Singapore Pengfei Li, Jianyi Yang, Adam Wierman, and Shaolei Ren
+Using the previous result, we can now proceed by proving the
+following technical lemma, which when combined with the analysis
+above will let us complete the proof.
+Lemma 3. Suppose the optimal solution for Eqn (18) is𝑥†
+1:𝑇 ,𝑧†
+𝑐,1:𝑇
+and𝑧†
+𝑤,1:𝑇 , for any 𝑥(𝑡)′,𝑧𝑐(𝑡)′,𝑧𝑤(𝑡)′ satisfying the constraints in
+Eqn (5b) – (5d) we have
+𝑇∑︁
+𝑡 =1
+Δ1(𝑡)+ 1
+𝜂
+𝑇∑︁
+𝑡 =1
+
+𝑔𝑡(𝑥(𝑡)†)+ 𝜇𝑐∥H𝑐(𝑧𝑐(𝑡)†)∥∞
++𝜇𝑤∥H𝑤(𝑧𝑤(𝑡)†)∥∞
+
+≤𝐵𝑇+𝐵𝑇(𝑇− 1)+ 𝜅1
+𝜂
+𝑇∑︁
+𝑡 =1
+ C𝑡(𝑥(𝑡)′
+W𝑡(𝑥(𝑡)′)
+
+−
+𝑧𝑐(𝑡)′
+𝑧𝑤(𝑡)′
+
++ 1
+𝜂
+𝑇∑︁
+𝑡 =1
+
+𝑔𝑡(𝑥(𝑡)′)+ 𝜇𝑐∥H𝑐(𝑧𝑐(𝑡)′)∥∞+𝜇𝑤∥H𝑤(𝑧𝑤(𝑡)′)∥∞
+
+(27)
+Proof. Similar to Eqn (23), for any other 𝑥(𝑡)∈X 𝑡 ,𝑧𝑐(𝑡)′∈
+Z𝑐,𝑧𝑤(𝑡)′∈Z𝑤 we have
+Δ1(𝑡)+ 1
+𝜂
+
+𝑔𝑡(𝑥(𝑡)†)+ 𝜇𝑐∥H𝑐(𝑧𝑐(𝑡)†)∥∞+𝜇𝑤∥H𝑤(𝑧𝑤(𝑡)†)∥∞
+
+≤𝐵+ 1
+𝜂
+ 𝑔𝑡(𝑥(𝑡)′)+ 𝜇𝑐∥H𝑐(𝑧𝑐(𝑡)′)∥∞+𝜇𝑤∥H𝑤(𝑧𝑤(𝑡)′)∥∞
+
++𝜅⊤
+𝑡
+𝜂 ·(
+C𝑡(𝑥(𝑡)′)
+W𝑡(𝑥(𝑡)′)
+
+−
+𝑧𝑐(𝑡)′
+𝑧𝑤(𝑡)′
+
+)
+(28)
+Now we define the subgradient of the action𝑥(𝑡)′ as𝑑′
+𝑡 =
+C𝑡(𝑥(𝑡)′)
+W𝑡(𝑥(𝑡)′)
+
+−
+𝑧𝑐(𝑡)′
+𝑧𝑤(𝑡)′
+
+. According to the update rule of𝜅𝑡 , the maximum differ-
+ence between dual variables at 𝑡 = 1 and𝑡 = 𝜏+ 1 is bounded
+by
+−𝜏𝑁(¯𝑧2
+𝑐+ ¯𝑧2
+𝑤)≤⟨ 𝜅𝜏+1
+𝜂 −𝜅1
+𝜂 ,𝑑′
+𝑡⟩≤ 𝜏𝑁(¯𝑧2
+𝑐+ ¯𝑧2
+𝑤) (29)
+Therefore, for all𝑡∈[ 1,𝑇], we have
+𝜅⊤
+𝑡
+𝜂 ·(−𝑑′
+𝑡)≤
+𝜅⊤
+1
+𝜂 ·(−𝑑′
+𝑡)+ 𝑁(𝑡− 1)( ¯𝑧2
+𝑐+ ¯𝑧2
+𝑤) (30)
+By summing up the inequality, we have
+𝑇∑︁
+𝑡 =1
+𝜅⊤
+𝑡
+𝜂 ·(−𝑑′
+𝑡)≤
+𝜅⊤
+1
+𝜂
+ 𝑇∑︁
+𝑡 =1
+(−𝑑′
+𝑡)
+!
++𝑁(¯𝑧2
+𝑐+ ¯𝑧2
+𝑤)
+𝑇∑︁
+𝑡 =1
+𝑡− 1
+=
+𝜅⊤
+1
+𝜂
+ 𝑇∑︁
+𝑡 =1
+(−𝑑′
+𝑡)
+!
++𝑇(𝑇− 1)𝑁
+2(¯𝑧2
+𝑐+ ¯𝑧2
+𝑤)
+(31)
+By summing up Eqn(28) through𝑡 = 1 to𝑇 , we finish the proof. □
+We are now ready to complete the proof. Note thatÍ𝑇
+𝑡 =1 Δ1(𝑡)≥
+0. Suppose𝑥∗
+1:𝑇 is the optimal solution to the Eqn (4), which also
+satisfies the constraints in Eqn (5b) – (5d). Substituting𝑥∗
+1:𝑇 back
+to Eqn (27) gives
+1
+𝑇
+𝑇∑︁
+𝜏=𝑡0
+h
+𝑔𝑡(𝑥(𝑡)†)+ 𝜇𝑐∥H𝑐(𝑧𝑐(𝑡)†)∥∞+𝜇𝑤∥H𝑤(𝑧𝑤(𝑡)†)∥∞
+i
+≤𝜂(𝐵+𝐵(𝑇− 1))+ 1
+𝑇
+𝑇∑︁
+𝜏=𝑡0
+h
+𝑔𝑡(𝑥(𝑡)∗)+ 𝜇𝑐∥H𝑐(𝑧𝑐(𝑡)∗)∥∞
++𝜇𝑤∥H𝑤(𝑧𝑤(𝑡)∗)∥∞
+i
+(32)
+where theÍ𝑇
+𝑡 =1
+𝑧𝑐(𝑡)∗
+𝑧𝑤(𝑡)∗
+
+= Í𝑇
+𝑡 =1
+C𝑡(𝑥(𝑡)∗)
+W𝑡(𝑥(𝑡)∗)
+
+, so the term𝜅1
+Í𝑇
+𝑡 =1𝑑𝑡
+is equal to zero.
+The left hand side of Eqn (32) is mixed up with GLB decisions
+𝑥(𝑡)† and auxiliary variables 𝑧𝑐(𝑡)†,𝑧𝑤(𝑡)†. The next step is to
+eliminate these auxiliary variables by bounding their difference.
+Based on the update rule of𝜅𝑡 and Lemma 2, we have
+1
+𝑇∥
+𝑇∑︁
+𝑡 =1
+C𝑡(𝑥(𝑡)′)
+W𝑡(𝑥(𝑡)′)
+
+−
+𝑧𝑐(𝑡)′
+𝑧𝑤(𝑡)′
+
+∥
+≤ 1
+𝑇
+
+∥𝜅𝑇+1
+𝜂 ∥−∥ 𝜅1
+𝜂∥
+
+≤
+√︄
+2
+𝑇(𝐵+ 𝑀𝜃𝑚
+𝜂 (𝜇𝑐𝑐𝑚+𝜇𝑤𝑤𝑚))
+(33)
+The maximum gradient of𝜇𝑐∥H𝑐(𝑧𝑐(𝑡)†)∥∞+𝜇𝑤∥H𝑤(𝑧𝑤(𝑡)†)∥∞
+with respect to[𝑧𝑐(𝑡),𝑧𝑤(𝑡)], is always bounded by𝐶 =𝜃𝑚(𝜇𝑐+
+𝜇𝑤). For simplicity, we define 𝐷 = 𝜃𝑚(𝜇𝑐𝑐𝑚+𝜇𝑤𝑤𝑚), then we
+have
+𝜇𝑐∥H𝑐( 1
+𝑇
+𝑇∑︁
+𝜏=𝑡0
+C𝑡(𝑥(𝑡)†))∥∞+𝜇𝑤∥H𝑤( 1
+𝑇
+𝑇∑︁
+𝜏=𝑡0
+C𝑡(𝑥(𝑡)†))∥∞
+≤𝜇𝑐∥H𝑐( 1
+𝑇
+𝑇∑︁
+𝜏=𝑡0
+𝑧𝑐(𝑡)†)∥∞+𝜇𝑤∥H𝑤( 1
+𝑇
+𝑇∑︁
+𝜏=𝑡0
+𝑧𝑤(𝑡)†)∥∞
++
+h
+𝜃𝑚(𝜇𝑐+𝜇𝑤)
+i√︄
+2
+𝑇(𝐵+ 𝑀
+𝜂 𝐷)
+≤ 1
+𝑇
+𝑇∑︁
+𝜏=𝑡0
+
+𝜇𝑐∥H𝑐(𝑧𝑐(𝑡)†)∥∞+𝜇𝑤∥H𝑤(𝑧𝑤(𝑡)†)∥∞
+
++
+h
+𝜃𝑚(𝜇𝑐+𝜇𝑤)
+i√︄
+2
+𝑇(𝐵+ 𝑀
+𝜂 𝐷)
+(34)
+where the first inequality is based on the maximum gradient 𝐷,
+the second inequality is from Jensen’s inequality. By substituting
+Eqn (34) back to Eqn (32), we recover the cost objective in Eqn (4a)
+and finish the proof.

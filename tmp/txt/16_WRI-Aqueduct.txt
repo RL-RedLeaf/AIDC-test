@@ -1,0 +1,2979 @@
+
+===== PAGE 1 =====
+TECHNICAL NOTE   |  Version 1.0  |  August 2023  |  1
+CONTENTS
+Introduction. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .2
+Water risk framework ..................... 2
+Hydrological model ....................... 4
+Future projections. . . . . . . . . . . . . . . . . . . . . . . . .9
+Indicators ................................ 10
+Country and state aggregation .......... 33
+Grouped and overall water risk .......... 35
+Limitations .............................. 36
+Appendix A .............................. 39
+Appendix B .............................. 40
+Appendix C .............................. 41
+Appendix D ............................. 44
+Endnotes. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45
+References .............................. 46
+Acknowledgements. . . . . . . . . . . . . . . . . . . . . .51
+About the authors. . . . . . . . . . . . . . . . . . . . . . . .51
+Technical notes document the research or analytical 
+methodology underpinning a publication, interactive 
+application, or tool.
+Suggested Citation: Kuzma, S., M.F.P . Bierkens, S. 
+Lakshman, T . Luo, L. Saccoccia, E. H. Sutanudjaja, 
+and R. Van Beek. 2023. “Aqueduct 4.0: Updated 
+decision-relevant global water risk indicators.” 
+Technical Note. Washington, DC: World Resources 
+Institute. Available online at: doi.org/10.46830/
+writn.23.00061.
+TECHNICAL NOTE
+Aqueduct 4.0: Updated decision-relevant 
+global water risk indicators
+Samantha Kuzma, Marc F.P. Bierkens, Shivani Lakshman, Tianyi Luo, Liz Saccoccia, Edwin H. Sutanudjaja, and Rens Van Beek
+ABSTRACT
+Water is essential to the progress of human societies. Food production, elec-
+tricity generation, and manufacturing, among other things, all depend on it. 
+However, many decision-makers lack the technical expertise to fully under-
+stand hydrological information. 
+We present Aqueduct 4.0, the latest iteration of WRI’s water risk framework 
+designed to translate complex hydrological data into intuitive indicators of 
+water-related risk. We curated 13 water risk indicators—spanning quantity, 
+quality, and reputational concerns—into a comprehensive framework. Each 
+indicator is sourced from an open-source, peer-reviewed data provider 
+and then transformed to normalized risk score based on the severity of the 
+water challenge. For 5 of the 13 indicators, we used a global hydrological 
+model called PCR-GLOBWB 2 to generate novel datasets on sub-basin water 
+supply and use. 
+We also used the PCR-GLOBWB 2 model to project future sub-basin water 
+supply, demand, stress, depletion, and variability using CMIP6 climate forcings. 
+The projections centered around three periods (2030, 2050, and 2080) under 
+three future scenarios (business-as-usual SSP 3 RCP 7.0, optimistic SSP 1 RCP 
+2.6, and pessimistic SSP 5 RCP 8.5). 
+The normalized indicator scores have been aggregated by category (quantity, 
+quality, reputational, and overall) into composite risk scores using sector-
+specific weighting schemes. In addition, select sub-basin scores have been 
+aggregated into country and provincial administrative boundaries using a 
+weighted average approach, where sub-basins with more demand have a 
+higher influence over the final administrative score. 
+The main audience for this technical note includes users of the Aqueduct 
+tool, for whom the short descriptions on the tool and in the metadata docu-
+ment are insufficient. Key elements of Aqueduct, such as overall water risk, 
+can not be directly measured and therefore are not validated. Aqueduct 
+remains primarily a prioritization tool and should be augmented by local and 
+regional deep dives.
+===== PAGE 2 =====
+2  |  
+  
+INTRODUCTION
+Background
+WRI’s Aqueduct™ information platform compiles advances in 
+hydrological modeling, remotely sensed data, and published data 
+sets into a freely accessible online platform. 
+Since its inception in 2011, the Aqueduct information platform 
+has informed companies, governments, and non governmental 
+organizations (NGOs) about water-related risks. Since then, 
+the data have been updated regularly, making them comparable 
+on a global scale and accessible to decision-makers worldwide. 
+The Aqueduct information platform contains the follow-
+ing online tools: 
+ ▪ Aqueduct Water Risk Atlas 
+ ▪ Aqueduct Food 
+ ▪ Aqueduct Floods 
+ ▪ Aqueduct Country Rankings 
+This technical note covers the development of the Aqueduct 
+4.0 framework and serves as the basis of the updated Aqueduct 
+Water Risk Atlas and Country Rankings online tools.
+The updated framework, database, and associated tools improve 
+one of the most widely used and respected water risk frame-
+works. We continue to build on years of experience applying and 
+standardizing these concepts within the water community, while 
+presenting the latest advancements in hydrological data and 
+climate science. 
+Structure and scope of this  
+technical note
+This technical note will first introduce the updated water risk 
+framework (“Water risk framework”). Many indicators in the 
+framework are based on updated inputs to a global hydrological 
+model, which is covered in “Hydrological model” and “Future 
+projections” (baseline and future, respectively). In “Indica-
+tors” we discuss how the hydrological data is transformed into 
+Aqueduct water risk indicators. “Country and state aggrega-
+tion” and “Grouped and overall water risk “cover how the 
+individual indicators are aggregated into administrative-level 
+scores and grouped (categorical risk) scores. “Limitations” lists 
+key limitations. 
+WATER RISK FRAMEWORK
+Overview
+The water risk framework follows a composite index approach 
+and allows multiple water-related risks to be combined. 
+There are three hierarchical levels, as can be seen in Figure 1. 
+We start with 13 indicators covering various types of water risk. 
+We then group the indicators and calculate the grouped water 
+risk scores (composite score) using default, industry-defined, or 
+user-defined weighting schemes. Finally, the three groups are 
+combined into a single overall water risk score.
+The rationale for creating a water risk framework is described 
+in WRI’s earlier publication: “Aqueduct Water Risk Atlas” 
+(Reig et al. 2013): 
+This [water risk] framework organizes indicators into categories 
+of risk that allow the creation of a composite index that brings 
+together multiple dimensions of water-related risk into compre-
+hensive aggregated scores. By providing consistent scores across 
+the globe, the Aqueduct W ater Risk Atlas enables rapid compari-
+son across diverse aspects of water risk. . . .
+The Aqueduct W ater Risk Framework enables users to study 
+indicators individually or collectively, as well as to quantify and 
+compare a variety of multidimensional water-related measures. 
+We selected the 13 indicators in Aqueduct 4.0 in three steps: 
+ ▪ We reviewed literature on relevant water issues, exist ing 
+water indicators, and data sources. 
+ ▪ We evaluated potential data sources through a com-
+parative analysis of their spatial and temporal cover age, 
+granularity, relevance to water users, consistency, and 
+credibility of sources. 
+ ▪ We consulted with industry, public sector, and aca demic 
+water experts. 
+We applied the following three principal criteria in select-
+ing indicators: 
+ ▪ They should cover the full breadth of water-related risks, 
+while minimizing overlap and potential confu sion resulting 
+from an overabundance of indicators. 
+ ▪ They should be actionable in the context of private and 
+public sector decision-making. 
+===== PAGE 3 =====
+TECHNICAL NOTE   |  August 2023  |  3
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Figure 1  |  Overview of Aqueduct framework
+Note: Baseline water stress, baseline water depletion, interannual variability, and seasonal variability use the new PCR-GLOBWB 2 data, described in “Hydrological model” and Appendix C. 
+Source: WRI.
+OVERALL WATER RISK
+PHYSICAL RISK QUANTITY
+PHYSICAL RISK QUALITY
+REGULATORY AND 
+REPUTAIONAL RISK
+Baseline water stress
+Baseline water depletion
+Interannual variability
+Seasonal variability
+Groundwater table decline
+Riverine flood risk
+Coastal flood
+Drought risk
+Untreated connected wastewater
+Coastal eutrophication potential
+Unimproved/no drinking water
+Unimproved/no sanitation
+Peak RepRisk country 
+ESG risk index
+Updated in Aqueduct 4.0
+===== PAGE 4 =====
+4  |  
+  
+ ▪ They should comply with WRI’s commitment to open 
+data and transparency—allowing input data, code, and 
+results to be publicly available (“WRI’s Open Data 
+Commitment” n.d.). 
+HYDROLOGICAL MODEL
+Five of the 13 indicators in our framework are based on the data 
+from a global hydrological model called PCR-GLOBWB 2. 
+Readers interested only in the indicator definitions can proceed 
+directly to “Indicators.” In the present section, we describe 
+how we have selected the hydrological model and processed 
+its data for the baseline indicators of Aqueduct. For data 
+sources used in Aqueduct’s future projections, please refer to 
+“Future projections.” 
+From the model, we make use of water use, water supply, and 
+groundwater data1 to calculate water stress, water depletion, 
+seasonal variabil ity, interannual variability, and groundwater 
+table decline (see Table 1). 
+Model selection
+We considered several global hydrological models and selected 
+the PCRaster Global Water Balance (PCR-GLOBWB 2) 
+model (Wada et al. 2014; Sutanudjaja et al. 2018) over others, 
+most notably Water Global Assessment and Prognosis (Water-
+GAP) (Müller Schmied et al. 2014; Eisner 2016) and Global 
+Land Data Assimilation System (GLDAS) Phase 2 (Rodell et 
+al. 2004). While these three are not the only global hydrological 
+models available (Paul et al. 2021; Wang et al. 2021), they were 
+short-listed because of their dynamic human-freshwater system 
+modeling and their potential to be used for water target setting. 
+At the time the indicators were developed for Aqueduct 3.0 
+(2016–2019), GLDAS provided information until the year 
+2012, making it less relevant than PCR-GLOBWB 2 and 
+WaterGAP , both of which could be run for more recent years. 
+There are many similarities between PCR-GLOBWB 2 and 
+WaterGAP . For example, both mod els run global hydrology and 
+water resources on a global scale at a daily time step; integrate 
+demand, withdrawal, and return flows2 per time step; include 
+reservoirs; and use kinematic wave routing of river water. 
+However, PCR-GLOBWB 2 can couple to a global two-layer 
+ground water model (based on MODFLOW) to better represent 
+groundwater flow (de Graaf et al. 2017). The code for PCR-
+GLOBWB 2 is open source and therefore aligned with WRI’s 
+Open Data Commitment (“WRI’s Open Data Commitment” 
+n.d.). For these reasons, WRI chose to continue to work with 
+PCR-GLOBWB 2 and use it as the updated global hydro logical 
+model underpinning Aqueduct. 
+A description of the model itself and the settings used for Aque-
+duct 4.0 can be found in Appendix C. This includes references 
+to the new input datasets used to run PCR-GLOBWB 2 for 
+Aqueduct 4.0 compared to the run in 2019 for Aqueduct 3.0.
+Model data used by Aqueduct
+PCR-GLOBWB 2 is a global, gridded hydrological model. 
+Each grid cell has a size of 5 × 5 arc minutes. This equates 
+roughly to 10 kilometer (km) × 10 km pixels, with any variation 
+depending on the latitude. Aqueduct indicators are calculated 
+using three PCR-GLOBWB 2 datasets: water use, water supply, 
+and groundwater data (see Table 1).
+Table 1  |  Aqueduct indicators based on hydrological model output
+AQUEDUCT INDICATOR MODEL DATA USED
+Water Use Water Supply Groundwater Heads
+Water stress ✓ ✓
+Water depletion ✓ ✓
+Interannual variability ✓
+Seasonal variability ✓
+Groundwater table decline ✓
+Note: Aqueduct indicators are calculated using the respective outputs of a hydrological model. For example, water depletion is calculated using water consumption and available blue 
+water from the hydrological model.
+Source: WRI.
+===== PAGE 5 =====
+TECHNICAL NOTE   |  August 2023  |  5
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+WATER USE: 
+Aqueduct considers two metrics of water use: gross demand 
+and net consumption. Gross demand3 is the maximum potential 
+water required to meet sectoral demands, and net consump-
+tion is the portion of demand that is lost in use—evaporated or 
+incorporated into a product—and not returned to the system 
+(Gassert et al. 2014).
+Gross demand and net consumption4 for four sec tors: domestic, 
+industrial, irrigation5, and livestock6. The (2 x 4=) 8 gridded data 
+sets are available for each month between January 1960 and 
+December 2019. 
+WATER SUPPLY: 
+Aqueduct defines supply as available blue water—the total 
+amount of renewable freshwater available to a sub-basin with 
+upstream consumption removed (Gassert et al. 2014). We com-
+pute available blue water as internal sub-basin runoff plus the 
+accumulated water flowing into the sub-basin from upstream, 
+where upstream consumption is already removed (i.e., discharge) 
+(Gassert et al. 2014). This includes freshwater from the follow-
+ing sources: surface flow, interflow7, and groundwater recharge. 
+Internal runoff8 monthly at each grid cell between January 1960 
+and December 2019.
+Discharge9 monthly at each grid cell between January 1960 and 
+December 2019. 
+GROUNDWATER HEADS: 
+Groundwater heads for each month and each grid cell between 
+January 1990 and December 2014. These have been obtained 
+from the 5 arc minute two-layer global groundwater model of 
+de Graaf et al (2017) coupled to PCR-GLOBWB 2. Note: this 
+dataset has not been rerun since its original release in 2019. 
+Processing model data
+To make the model data suitable for the Aque duct indicator 
+calculation, we further processed the data by spatial and tempo-
+ral aggregation. 
+ ▪ Spatial aggregation. Water use and water supply are 
+aggregated to hydrological sub-basins. Groundwater heads 
+are aggregated to aquifers. 
+ ▪ Temporal aggregation. We apply statistical meth ods to the 
+output time series to get a representative value for the recent 
+situation, while correcting for annual anomalies. 
+Spatial aggregation
+Grid cells are not an appropriate spatial unit to use as input 
+for the Aqueduct indicators. For water stress, water deple-
+tion, seasonal variability, and interannual variability, the 
+preferred spatial units are hydrological sub-basins (Gassert et 
+al. 2014). For groundwater table decline, the preferred spatial 
+units are aquifers. 
+HYDROLOGICAL SUB-BASINS:  
+A hydrological basin is an area that drains at a single point to 
+an outlet such as a river, ocean or inland lake. Each basin can 
+be divided into smaller sub-basins at the confluence of two 
+streams (Lehner and Grill 2013). The assumption is that within 
+each hydrological sub-basin, water resources are pooled. Water 
+withdrawal is satisfied using the water resources available to 
+the sub-basin. 
+Aqueduct 4.0 uses the HydroBASINS level 6 hydrological sub-
+basins for a few reasons, including the following: 
+ ▪ HydroBASINS are used in other tools and databases, so 
+comparing and collating data is easier. 
+ ▪ The HydroBASINS sub-basin data set contains 12 levels, 
+ranging from large basins to small sub-basins. In the future, 
+this hierarchical model will allow flexibility when combining 
+additional data sets (Lehner and Grill 2013).
+Of the 12 levels, we chose level 6 as the appropriate size of the 
+sub-basins. Water demand is often satisfied with water from 
+a nearby or slightly more distant source. The average distance 
+from source to destination of water supply is the main selection 
+criterion of the appropriate HydroBASINS level. The goal is to 
+select a level large enough to minimize the nonnatural effect of 
+transfers of water (“inter-basin transfer”)10 and small enough to 
+capture meaningful local variations. 
+Based on limitations, primarily the lack of comprehensive local 
+level inter-basin transfer data in PCR-GLOBWB 2, HydroBA-
+SINS level 6 is deemed the most appropriate sub-basin level for 
+Aqueduct 4.0 analysis. For perspec tive, HydroBASINS level 6 
+has a median area per sub-basin11 of 5,318 km2 (roughly the size 
+of the U.S. state of Delaware or twice the size of Luxembourg). 
+The distribu tion of sub-basin areas is depicted in Figure 2.
+PCR-GLOBWB 2 and HydroBASINS level 6 both assume 
+a strictly convergent flow. This means that it cannot model 
+bifurcations. This is an issue in delta regions, where rivers 
+tend to split. To address this issue, we have identified delta 
+sub-basins and merged them. The methodology is explained 
+in Appendix D. 
+===== PAGE 6 =====
+6  |  
+  
+AQUIFERS
+Groundwater head data are aggregated to groundwater aquifers 
+(BGR and UNESCO 2008). This data set of global aquifers is 
+selected because it has global coverage and is used in the previ-
+ous versions of Aqueduct. 
+STEP 1: SPATIAL AGGREGATION OF WATER USE
+Sectoral gross demand and net consumption are aggregated to 
+Hydro BASINS level 6. First, the data are resampled from 5 × 
+5 arc minute to 1 × 1 arc minute12. Then, the data, which are in 
+flux (m/month), are converted to volume (million m3/month) 
+by multiplying each grid by its cell area (m2) and dividing by a 
+million. Finally, we sum the gridded volume per sub-basin. 
+STEP 2: SPATIAL AGGREGATION OF WATER SUPPLY 
+Supply—also known as available blue water—is also aggregated 
+to HydroBASIN level 6. Available blue water equals the internal 
+sub-basin runoff plus the accumulated water flowing into the 
+sub-basin from upstream, where upstream consumption is 
+already removed (i.e., discharge) (Gassert et al. 2014). 
+First, we use the internal runoff to find the renewable water sup-
+ply within each sub-basin—that is, internal catchment supply 
+before consumption is removed. Like the demand data, runoff is 
+available as a flux, and so we follow the same spatial aggregation 
+process as demand. 
+Next, we use discharge to account for the accumulated water 
+flowing into each sub-basin, with upstream consumption 
+already removed. Discharge is the rate (m3/sec) of water flow-
+ing through a river channel, not a flux, and therefore requires a 
+different spatial aggregation technique. 
+To turn discharge into inflow, we first must identify inflow and 
+outflow points13 for each sub-basin using the PCR-GLOBWB 
+2 local drainage direction (LDD14) network (see Appendix C). 
+Normally, a hydrologically sound sub-basin would have just one 
+inflow and one outflow point; however, due to the rasteriza-
+tion15 of the sub-basins and the mismatched resolutions between 
+PCR-GLOBWB 2’s digital elevation model and the HydroBA-
+SIN sub-basins16, we have numerous inflow and outflow points 
+per sub-basin (see Figure 3). Some of these discharge flow 
+points are considered “false”17, meaning the stream temporarily 
+leaves or enters the sub-basin. In each sub-basin, all flow points 
+satisfy this condition: 
+true outflow = all discharge inflow–false discharge outflow + 
+internal runoff–internal consumption
+This translates to the definition of available blue water by 
+removing the internal consumption term:
+available blue water = all discharge inflow–false discharge 
+outflow + internal runoff
+We sum the discharge values at all (true and false) inflow points 
+and subtract the discharge values from the false outflow points 
+(white and purple arrows in Figure 3, respectively) to calculate 
+the accumulated water flowing into the sub-basin. We then add 
+internal runoff to estimate available blue water.
+Figure 2  |  Area distribution of HydroBASIN Level 6
+Source: WRI.
+0
+1,000
+2,000
+3,000
+4,000
+5,000
+6,000
+7,000
+Area km/two.sups
+Frequency
+10/zero.numr1 0/one.numr 10/two.numr1 0/three.numr 10/five.numr10/four.numr
+===== PAGE 7 =====
+TECHNICAL NOTE   |  August 2023  |  7
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Temporal aggregation
+One of the advantages of the Aqueduct framework is its ease of 
+use. Although time series provide detailed insights, for a priori-
+tization method and combined framework, summary indicators 
+are preferred. Aqueduct provides chronic water risk information. 
+This is very different from near-real-time water risk information 
+or a historical assessment. Ideally, each indicator is representative 
+of the relative time period—be that baseline or future—without 
+anomalies (the exception being the variability indicators, in 
+which anomalies are intentionally captured). 
+We apply temporal aggregation steps to convert historical time 
+series into useful input for the baseline indicator cal culations. 
+Aqueduct 4.0’s baseline represents a 40-year period (1979–
+2019)18. For water stress and depletion, the long-term trends 
+are extracted from the noise using the methodology below. For 
+seasonal and interannual variability, the raw time series are used. 
+Temporal aggregation for future projections can be found 
+“Processing model data” in the next section. Groundwater head 
+data are processed sepa rately; see “Groundwater table decline” in 
+the “Indicators” section for more information. 
+STEP 1: TOTAL WATER USE 
+We calculate the total gross demand and total net consumption 
+by sum ming up the four sectors (domestic, industrial, irrigation, 
+and livestock) for each sub-basin and month ( January 1979–
+December 2019). The results are two time series: Gross total 
+demand and net total consumption for Janu ary 1979–December 
+2019 for each sub-basin. 
+STEP 2: SPLIT MONTHS 
+We then break up the time series into one series for each month. 
+This yields time series of all Januarys between 1979 and 2019, all 
+Februarys between 1979 and 2019, and so on to all Decembers 
+between 1979 and 2019. We do this for total gross demand, total 
+net consumption, and available blue water. 
+STEP 3: REGRESSION 
+In most sub-basins, the water use data follow a clearly increas-
+ing trend. This is caused by increases in under lying drivers such 
+as growth in population and gross domestic product (GDP). In 
+Figure 3  |  Example of discharge inflow and outflow points
+Source: Authors.
+
+===== PAGE 8 =====
+8  |  
+  
+addition, both the demand data19 and supply data can be erratic. 
+We try to reduce noise while keeping an accurate representa-
+tion of the present value based on the long-term trend. We first 
+smooth the data by applying a trailing moving average with a 
+window size of 10 years. We then run a Theil-Sen regression20 
+on the moving average to capture the trend. We select the point 
+intersecting with our target year—2019—to represent the base-
+line. The independent variable is time (year), and the dependent 
+variable is either gross total withdrawal, net total withdrawal, or 
+available blue water. 
+Additionally, we restrict the predicted value to the mini mum 
+and maximum range of the 10-year moving average window 
+values. The predicted value can never exceed the maxi mum of 
+the 10-year window values or be lower than the minimum of the 
+10-year window functions. 
+We opted for a window size of 10 years to capture longer 
+climatic and socioeconomic trends while filtering annual 
+anomalies. The temporal aggregation steps 1 through 3 for an 
+example sub-basin are shown in Figure 4.
+STEP 4: MASK ARID AND LOW WATER USE SUB-BASINS 
+Aqueduct indicators require robust data as inputs.21 Sub-
+basins where data are sparse or very close to zero should 
+therefore be handled separately. We identi fied those sub-basins 
+using two criteria with thresholds taken from Aqueduct 2.1 
+(Gassert et al. 2014): 
+A sub-basin is “arid” if annual baseline available water < 
+0.03 meters per year (m/yr) 
+A sub-basin is “low water use” if annual baseline gross total 
+with drawal < 0.012 m/yr 
+Data must be below both the arid and low water use thresholds 
+to be masked. Monthly data is masked using the annual arid and 
+low water use categories. 
+Processed water use and water supply
+After applying the spatial and temporal aggregation steps, we 
+have estimates of gross demand (ww), net consumption (wn), 
+and available blue water (ba) for each sub-basin. 
+Delta regions and arid and low water use sub-basins will be 
+treated accordingly in the indicator calculation. We use the 
+aggregated time series of gross total withdrawal, net total 
+withdrawal, and available water to calculate water stress, water 
+depletion, seasonal variabil ity, and interannual variability.
+Figure 4  |  Theil-Sen regression for gross demand on a 10-year moving average window for July in an example basin 
+(Erbo Sub-basin [216041])
+Source: Authors.
+0
+0.002
+0.004
+0.006
+0.008
+0.01
+0.012
+0.014
+0.016
+0.018
+0.02
+gross demand (m/month)
+Year
+Gross demand (m/month) 10-year moving average Theil Sen Regression
+1979 1985 1990 19952 000 2005 2010 2015 2019
+===== PAGE 9 =====
+TECHNICAL NOTE   |  August 2023  |  9
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+FUTURE PROJECTIONS
+The availability of and competition for water resources around 
+the world will be affected by climate change, population growth, 
+and economic development. This analysis complements our 
+baseline water risk data by providing information on future 
+water availability that is relevant for long-term planning, adapta-
+tion, and investment by both the private and public sectors.
+This section details the methodology used to develop global 
+estimates of water supply (available blue water), water use 
+(gross demand and net consumption), water stress (the ratio of 
+demand to supply), water depletion (the ratio of consumption 
+to supply), interannual variability, and seasonal (intra-annual) 
+variability for three 30-year periods centered on milestone 
+years 2030, 2050, and 2080. Projections of climate variables are 
+driven primarily by general circulation models from the Coupled 
+Model Intercomparison Project phase 6 (CMIP6) project, and 
+socioeconomic variables are based on the Shared Socioeconomic 
+Pathways database from the International Institute for Applied 
+Systems Analysis. 
+Model data used by Aqueduct
+The Aqueduct Future Projections are based on a new dataset 
+called PCR-GLOWB-based hydrological projection of future 
+global water states with CMIP 6 (HYPFLOWSCI6) (Sutan-
+udjaja et al. 2023). They use the same model structure and 
+classes of data to define water use and supply as the baseline, 
+except they are created using different climate forcing data 
+and cover greater time periods. HYPFLOWSCI6 uses climate 
+forcing data from multiple future scenarios of socioeconomic 
+and climate conditions, which are each run through five separate 
+climate models. 
+SOCIOECONOMIC AND CLIMATE SCENARIOS:
+Estimates of each indicator are developed for three socio-
+economic and climate scenarios used in CMIP6 (SSP1–2.6, 
+SSP3-7.0, and SSP5-8.5). Shared socioeconomic pathways 
+(SSPs), indicated by the first number in each scenario (1, 3, and 
+5), describe alternative futures of societal development and water 
+use. The second number in each scenario (2.6, 7.0, and 8.5) 
+indicates the level of radiative forcing (W m−2) through 2100. 
+These drive the climate factors in general circulation models 
+(GCMs). The SSP pathways were used to project future water 
+use, while the SSP/RCP combined pathways were used to 
+project future water supply.
+SSP1–2.6 represents an “optimistic” scenario limiting the rise in 
+average global surface temperatures by 2100 to 1.3°C to 2.4°C 
+compared to preindustrial levels (1850–1900) (Arias et al. 2021). 
+SSP1 is characterized by sustainable socioeconomic growth: 
+stringent environmental regulations and effective institutions, 
+rapid technological change and improved resource efficiency, 
+and low population growth (Wada et al. 2016). SSP3-7.0 repre-
+sents a “business as usual” scenario with temperatures increasing 
+by 2.8°C to 4.6°C by 2100. SSP3 is a socioeconomic scenario 
+characterized by regional competition and inequality, includ-
+ing slow economic growth, weak governance and institutions, 
+low investment in the environment and technology, and high 
+population growth, especially in developing countries. SSP5-8.5 
+represents a “pessimistic” scenario with temperature increases 
+up to 3.3°C to 5.7°C. SSP5 describes fossil-fueled development: 
+rapid economic growth and globalization powered by carbon-
+intensive energy, strong institutions with high investment in 
+education and technology but a lack of global environmental 
+concern, and the population peaking and declining in the 21st 
+century. Each scenario has varying effects on water availability in 
+different parts of the world.
+GENERAL CIRCULATION MODELS (GCMS):
+For each scenario, we ran five GCMs to account for the uncer-
+tainty in climate models: GFDL-ESM4, IPSL-CM6A-LR, 
+MPI-ESM1–2-HR, MRI-ESM2-0, and UKESM1-0-LL. The 
+five GCMs were bias-corrected22 toward the observed climate 
+forcing data used for the baseline (Lange 2021, Hempel et 
+al. 2013). They were chosen because they represent a span of 
+temperature-precipitation variations (e.g., cold-wet). These five 
+variations provided a good sample size for model uncertainty 
+given our computational limitations23. GCM data are converted 
+into PCR-GLOBWB inputs using the methodology described 
+in Sutanudjaja et al. (2023). GCM data are prepared for both 
+the historic time period (1960–2014) and the three future 
+scenarios (2015–2100, each). In all, there are 5 historical runs 
+and (5 x 3=) 15 future runs. 
+Processing model data
+To make the model data suitable as input for the Aqueduct indi-
+cator calculation for future projections, we again process the data 
+by spatial and temporal aggregations. 
+Spatial aggregation
+For each future indicator, we aggregate water use and water sup-
+ply to HydroBASINS level 6 hydrological sub-basins using the 
+same methodology applied to the baseline (see under “Hydro-
+logical model”).
+===== PAGE 10 =====
+10  |  
+  
+Temporal aggregation
+We also follow the baseline methodology (see under “Hydro-
+logical model”) to temporally aggregate the future projections 
+time series of water supply, demand, and consumption to our 
+milestone years: we smooth the data using a 10-year trailing 
+moving average and isolate the trend using a Theil-Sen regres-
+sion. The only difference is the time periods used:
+ ▪ 2014: 1960–2014 (historic GCM data)
+ ▪ 2030: 2015–2045 (future GCM data)
+ ▪ 2050: 2035–2065 (future GCM data)
+ ▪ 2080: 2065–2095 (future GCM data)
+We select the regressed value for each milestone year. We 
+perform this step for each month in order to generate our 
+annual results. 
+BIAS CORRECTION:
+Each GCM uses unique estimates of climate under a given 
+scenario spanning from the pre-industrial age to the year 2100, 
+meaning that historical GCM climate forcing data may deviate 
+from what actually happened. To correct this, we must adjust the 
+future monthly GCM data to our monthly baseline data—spe-
+cifically, total gross demand, total net consumption, and available 
+blue water. We perform this bias correction in two steps. First, 
+we calculate the change between the future GCM output and 
+the historical GCM output: 
+Processed water use and water supply
+After applying the spatial and temporal aggregation steps and 
+the bias correction, we have 2030, 2050, and 2080 estimates of 
+total gross demand, total net consumption, and available blue 
+water for each GCM for each scenario. We use these data to 
+calculate future water stress, water depletion, seasonal variability, 
+and interannual variability using the indicator methodology 
+outlined in “Indicators.”  Then, we find the median, minimum, 
+maximum, and standard deviation across the GCMs per 
+scenario for each indicator. The median is used as the default 
+representation for each scenario. We estimate the uncertainty 
+of the GCM data by calculating the coefficient of variation 
+of the five GCMs scores per indicator within each catchment 
+(Luck et al. 2015). 
+Adjusted Future Data =  
+Baseline + (Future GCM - Historic GCM)
+Future projections limitations
+Irrigation data projects crop extents using the IMAGE dataset, 
+which ends in 2050 (Doelman et al. 2018). Therefore, crop 
+extents beyond 2050 are assumed to remain static to the 2050 
+extent (though total irrigation demand may still fluctuate 
+beyond 2050 due to varying climatic conditions). This could 
+underestimate future (2051–2100) irrigation demand in loca-
+tions with historically low levels of irrigation that are likely to 
+expand over the next century (like many countries in Africa). 
+Likewise, livestock water demand data ends in 2014, and is 
+assumed to remain constant through 2100. Livestock water 
+demand is the daily drinking water required per animal as a 
+function of temperature (Wada et al. 2016) and amounts to less 
+than 1 percent of global demand in 2019. Ninety-eight percent 
+of an animal’s water footprint comes from the feed they con-
+sume (Mekonnen and Hoekstra 2012), which Aqueduct covers 
+under irrigation demand. Still, we are underestimating future 
+(2020–2100) livestock demand. 
+INDICATORS
+For each of the 13 indicators in our framework, this section 
+offers a description, a calculation of raw values, and a conversion 
+to 0–5 scores. This enables us to aggregate the indicators into 
+groups, as well as to provide an overall water risk score. For each 
+indicator, we also include the key limitations. 
+Aqueduct 4.0 uses the United Nations Office for Disaster Risk 
+Reduction (UNDRR) risk element terminology of hazard, expo-
+sure, and vulnerability. Each indicator is assigned a risk element 
+(see Figure 5): 
+ ▪ HAZARD: Threatening event or condition (e.g., flood event, 
+water stress condition). 
+ ▪ EXPOSURE: Elements present in the area affected by the 
+hazard (e.g., population, asset, economic value). 
+ ▪ VULNERABILITY: The resilience or lack of resilience of 
+the elements exposed to the hazard. 
+Figure 5  |  Elements of risk
+Source: Raw data from UNDRR, modified/aggregated by WRI.
+HAZARDRISK EXPOSURE VULNERABILITY
+= XX
+===== PAGE 11 =====
+TECHNICAL NOTE   |  August 2023  |  11
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Baseline water stress
+Description
+Baseline water stress measures the ratio of total water demand 
+to available renewable surface and groundwater supplies. Water 
+demand includes domestic, industrial, irrigation, and livestock 
+consumptive and nonconsumptive uses. Available renewable 
+water supplies include the impact of upstream consumptive 
+water users and large dams on downstream water availability. 
+Higher values indicate more competition among users.
+Calculation
+Baseline water stress is calculated using the postpro cessed gross 
+demand and available blue water per sub-basin time series 
+from the default PCR-GLOBWB 2 run (covered in “Hydro-
+logical model”).
+STEP 1: CALCULATE MONTHLY WATER STRESS
+In which,
+wsm,b = Water stress per month, per sub-basin in [-]
+GENERAL:
+Name Baseline Water Stress
+Subgroup Physical risk quantity
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Hydrological sub-basin (HydroBASINS 6)
+Temporal resolution Monthly and annual
+SOURCE:
+Spatial resolution 5 x 5 arc minute grid cells
+Temporal resolution Monthly
+Temporal range 1979–2019
+EXTRA:
+Partner organization(s): Utrecht University
+Model PCR-GLOBWB 2
+Date of publication 2023
+wwm,b = Total gross demand per month, per sub-basin in 
+[million m3/month]
+bam,b = Available blue water per month, per sub-basin in 
+[million m3/month] 
+This results in 12 time series of water stress (one for each 
+month) per sub-basin. Additionally, we limit the raw values to a 
+maximum of 1 and a minimum of 0. Note that water resources 
+in delta sub-basins are pooled. 
+STEP 2: CALCULATE ANNUAL WATER STRESS 
+We calculate the annual water stress by applying a weighted 
+average of monthly values, with total demand as the weight; 
+months with higher demand will have more influence on the 
+annual stress value. Months with more demand reflect when the 
+human need for water is greatest—it is also when socioeconomic 
+dependency for water is most critical (Gassert et al. 2013). The 
+annual raw value (wsy,b) is found by multiplying the monthly raw 
+value (wsm,b) by the monthly weight (wwm,b), summing, and 
+dividing by the sum of the weights across the year (y).
+Sub-basins classified as “arid and low water use” are han-
+dled separately.
+Conversion to risk categories
+The risk thresholds are based on Aqueduct 2.1 (Gassert  
+et al. 2014).
+RAW VALUE RISK CATEGORY SCORE
+<10% Low 0–1
+10–20% Low-medium 1–2
+20–40% Medium-high 2–3
+40–80% High 3–4
+>80% Extremely high 4–5
+Arid and low water use 5
+===== PAGE 12 =====
+12  |  
+  
+The raw values are remapped to a 0–5 scale using the fol-
+lowing equation: 
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+Limitations
+All limitations of the underlying data, including those pro-
+duced by the PCR-GLOBWB 2 global hydrological model and 
+HydroBASINS 6 hydrological sub-basin delineation, apply to 
+this indicator. Please see the original publications of these data 
+sets for a full list of limitations. 
+One of the biggest assumptions is that water resources are 
+pooled within each sub-basin. However, in HydroBASINS 6, 
+coastal and island sub-basins are often grouped to make the area 
+of the sub-basins more homogeneous. The assumption of shared 
+water resources might not hold in aggregated coastal sub-basins. 
+Although the underlying models have been validated, the results 
+are not. Water stress remains subjective and cannot be measured 
+directly. The lack of direct validation makes it impossible to 
+assess some of the parameters in our calculation, such as the 
+length of the input time series, regression method, and optimal 
+moving window size.
+The water stress indicator presented here does not explic itly take 
+into account environmental flow requirements,24 water quality, or 
+access to water. Views differ regarding what to include in a water 
+stress indicator (Vanham et al. 2018). 
+Finally, we should stress that Aqueduct is tailored to large-scale 
+comparison of water-related risks. The indica tors have limited 
+added value on a local scale.
+===== PAGE 13 =====
+TECHNICAL NOTE   |  August 2023  |  13
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+STEP 1: CALCULATE MONTHLY WATER DEPLETION
+In which,
+wdm,b = Water depletion per month, per sub-basin in [-]
+wnm,b = Total net consumption per month, per sub-basin in 
+[million m3/month]
+bam,b = Available blue water per month, per sub-basin in 
+[million m3/month] 
+This results in 12 time series of water depletion (one for each 
+month) per sub-basin. Additionally, we limit the raw values to a 
+maximum of 1 and a minimum of 0. Note that water resources 
+in delta sub-basins are pooled. 
+STEP 2: CALCULATE ANNUAL WATER DEPLETION 
+We calculate the annual water depletion by applying a weighted 
+average of monthly values, with total net consumption as the 
+weight; months with higher consumption will have more 
+influence on the annual depletion value. Months with more 
+consumption reflect when the human need for water is great-
+est—it is also when socioeconomic dependency for water is 
+most critical (Gassert et al. 2013). The annual raw value (wda,b) is 
+found by multiplying the monthly raw value (wdm,b) by the 
+monthly weight (wnm,b), summing, and dividing by the sum of 
+the weights across the year (y).
+Sub-basins classified as “arid and low water use” are han-
+dled separately.
+Baseline water depletion
+Description
+Baseline water depletion measures the ratio of total water 
+consumption to available blue water. Total water consumption 
+includes domestic, industrial, irrigation, and livestock consump-
+tive uses. Available renewable water supplies include the impact 
+of upstream consumptive water users and large dams on down-
+stream water availability. Higher values indicate larger impact 
+on the local water supply and decreased water availability for 
+downstream users. 
+Baseline water depletion is similar to baseline water stress; 
+however, instead of looking at gross water demand (consumptive 
+plus nonconsumptive), baseline water depletion is calculated 
+using consumptive with drawal only.
+Calculation
+Baseline water depletion is calculated using the processed total 
+net consumption and available blue water per sub-basin time 
+series from the default PCR-GLOBWB 2 run (covered in 
+“Hydrological model”).
+GENERAL:
+Name Baseline Water Depletion
+Subgroup Physical risk quantity
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Hydrological sub-basin (HydroBASINS 6)
+Temporal resolution Monthly and annual
+SOURCE:
+Spatial resolution 5 x 5 arc minute grid cells
+Temporal resolution Monthly
+Temporal range 1979–2019
+EXTRA:
+Partner organization(s): Utrecht University
+Model PCR-GLOBWB 2
+Date of publication 2023
+===== PAGE 14 =====
+14  |  
+  
+Conversion to risk categories 
+The thresholds are based on Brauman et al. (2016).
+We use linear interpolation within each category to remap the 
+raw values to a 0–5 scale using the following equation: 
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+RAW VALUE RISK CATEGORY SCORE
+<5% Low 0–1
+5–25% Low-medium 1–2
+25–50% Medium-high 2–3
+50–75% High 3–4
+>75% Extremely high 4–5
+Arid and low water use 5
+Limitations
+See Baseline Water Stress, Limitations (above in this section). 
+In addition, we had to omit the categories “dry year” and “sea-
+sonal” from Brauman et al. (2016) to make the indica tor suitable 
+for the Aqueduct framework.
+===== PAGE 15 =====
+TECHNICAL NOTE   |  August 2023  |  15
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Interannual variability
+Description
+Interannual variability measures the average between-year 
+variability of available water supply, including both renewable 
+surface and groundwater supplies. Higher values indicate wider 
+variations in available sup ply from year to year.
+Calculation
+Interannual variability is calculated using the available water 
+time series from the default PCR-GLOBWB 2 aggregated in 
+space but not in time. See “Hydrological model.”
+Interannual, or between year, variability is defined as the 
+coefficient of variation (CV) of available water for each sub-
+basin. The CV is the standard deviation (SD) of the available 
+water, divided by the mean. The CV per sub-basin is determined 
+for each individual month, as well as annually.
+GENERAL:
+Name Interannual Variability
+Subgroup Physical risk quantity
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Hydrological sub-basin (HydroBASINS 6)
+Temporal resolution Monthly and annual
+SOURCE:
+Spatial resolution 5 x 5 arc minute grid cells
+Temporal resolution Monthly
+Temporal range 1979–2019
+EXTRA:
+Partner organization(s): Utrecht University
+Model PCR-GLOBWB 2
+Date of publication 2023
+In which,
+iavm,b = Interannual variability per month, per 
+sub-basin in [-]
+cvm,b = Coefficient of variation per month, per 
+sub-basin in [-]
+bam,b = Available blue water per month, per sub-basin in 
+[million m3/year]
+Conversion to risk categories
+The risk thresholds are based on Aqueduct 2.1 (Gas-
+sert et al. 2014).
+The raw values are remapped to a 0–5 scale using the fol-
+lowing equation: 
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+Limitations
+See Baseline Water Stress, Limitations (in this section). 
+In addition, we have analyzed the full time series of PCR-
+GLOBWB 2; that is, 1979 to 2019. We have not analyzed the 
+effect of using a different range.
+RAW VALUE RISK CATEGORY SCORE
+<0.25% Low 0–1
+0.25–0.50% Low-medium 1–2
+0.50–0.75% Medium-high 2–3
+0.75–1.00% High 3–4
+>1.00% Extremely high 4–5
+score = max(0, min(5,4r))
+===== PAGE 16 =====
+16  |  
+  
+Seasonal variability
+Description
+Seasonal variability measures the average within-year variability 
+of available water supply, including both renewable surface and 
+groundwater supplies. Higher values indicate wider variations 
+of available sup ply within a year.
+Calculation
+Seasonal variability is calculated using the available water time 
+series from the default PCR-GLOBWB aggregated in space but 
+not in time. See “Hydrological model.”
+First, the available water per month, per sub-basin, is cal culated 
+over the entire time series 1979–2019 (40 years).
+In which,
+bam,b = Average available blue water per month, per sub-
+basin in [million m3/year] 
+bay,m,b = Available blue water per year month, per sub-basin 
+in [million m3/year] 
+GENERAL:
+Name Seasonal Variability
+Subgroup Physical risk quantity
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Hydrological sub-basin (HydroBASINS 6)
+Temporal resolution Annual baseline
+SOURCE:
+Spatial resolution 5 x 5 arc minute grid cells
+Temporal resolution Monthly
+Temporal range 1979–2019
+EXTRA:
+Partner organization(s): Utrecht University
+Model PCR-GLOBWB 2
+Date of publication 2023
+The coefficient of variation is calculated using these 12 averages.
+In which,
+sevb = Seasonal variability per sub-basin in [-]
+bam,b = Available water per month, per sub-
+basin in [m/month]
+Conversion to risk categories
+The risk thresholds are based on Aqueduct 2.1 (Gas-
+sert et al. 2014).
+The raw values are remapped to a 0–5 scale using the fol-
+lowing equation: 
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+Limitations
+See Baseline Water Stress, Limitations (in this section). 
+Additionally, the effect of using different lengths of the input 
+time series is not examined. The human and cli matic influence 
+on available water is likely to be more profound in recent years.
+RAW VALUE RISK CATEGORY SCORE
+<0.33 Low 0–1
+0.33–0.66 Low-medium 1–2
+0.66–1.00 Medium-high 2–3
+1.00–1.33 High 3–4
+>1.33 Extremely high 4–5
+score = max(0, min(5,3r))
+===== PAGE 17 =====
+TECHNICAL NOTE   |  August 2023  |  17
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Groundwater table decline
+Description
+Groundwater table decline measures the average decline of the 
+groundwater table as the average change for the period of study 
+(1990–2014). The result is expressed in centimeters per year 
+(cm/yr). Higher values indicate higher levels of unsustainable 
+groundwater withdrawals.
+Calculation
+Groundwater table decline is calculated using the ground water 
+heads time series from the PCR-GLOBWB 2 run coupled with 
+MODFLOW to account for lateral groundwa ter flow processes. 
+This indicator is based on the gridded25 monthly groundwater 
+heads between January 1990 and December 2014.26 
+The groundwater aquifers contain several geomorphologi cal 
+features, which for practical reasons can be divided into sedi-
+mentary basins and mountain ranges. In moun tainous areas, 
+most materials are hard rock and eventu ally weathered. In the 
+PCR-GLOBWB 2 model coupled with MODFLOW, very 
+deep groundwater influences the averages in mountainous 
+cells and is not representative. These cells are therefore dis-
+carded from the calculations following the method in de Graaf 
+et al. (2015). 
+GENERAL:
+Name Groundwater Table Decline
+Subgroup Physical risk quantity
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Groundwater aquifer (WHYMAP)
+Temporal resolution Annual baseline
+SOURCE:
+Spatial resolution 5 x 5 arc minute grid cells
+Temporal resolution Monthly
+Temporal range 1960–2014
+EXTRA:
+Partner organization(s): Deltares, Utrecht University
+Model PCR-GLOBWB 2 + MODLFLOW
+Date of publication 2019
+Mountainous areas are determined by comparing the height of 
+the floodplain within a cell with the average elevation of that 
+same cell. The elevation of the floodplain is derived from the 30 
+× 30 arc second digital elevation data from HydroSheds (Lehner 
+et al. 2008). The flood plain elevation is simply the mini-
+mum of the input.
+In which,
+hfloodplain,5’ = Elevation of floodplain in meters for each 5 x 5 
+arc minute cell
+hDEM 30” = Elevation derived from 30 x 30 arc second digital 
+elevation model (DEM) in meters
+The average elevation for each 5 arc minute cell is taken directly 
+from the HydroSheds data. If the difference between the flood-
+plain elevation and the average elevation is greater than 50m, 
+the cell is classified as mountainous.
+In which,
+hfloodplain,5’ = Elevation of floodplain in meters for each 5 x 5 
+arc minute cell
+hDEM 5’ = Elevation derived from 5 x 5 arc minute DEM in 
+meters (approximately 11km at the equator)
+The threshold of 50m was chosen as it proved to include 70 
+percent of the unconsolidated sediments mapped in the Global 
+Lithological Map (Hartmann and Moosdorf 2012). 
+After masking the mountainous areas, results are aggre gated to 
+groundwater aquifers derived from the World wide Hydrogeo-
+logical Mapping and Assessment Pro gramme (WHYMAP) 
+data set (BGR and UNESCO 2018). 
+The monthly results at the aquifer scale are fitted with a first-
+order regression. The slope of this regression line (cm/yr) 
+indicates the existence of a downward (or upward) trend. The 
+following estimators are used to further assess the trend: (1) 
+coefficient of determination and (2) the p value. 
+
+===== PAGE 18 =====
+18  |  
+  
+The coefficient of determination is used to determine whether 
+the trend is linear or erratic. A minimum thresh old of 0.9 is 
+applied to mask out erratic and error-prone trends. 
+For the p value, a maximum threshold of 0.05 is used.
+Conversion to risk categories
+The risk category thresholds are based on a combination of 
+expert judgment and a literature review (Galvis Rodrí-
+guez et al. 2017).
+Within each category, we use linear interpolation to convert the 
+raw values to a 0–5 using the following equation:
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+RAW VALUE RISK CATEGORY SCORE
+<0 cm/y Low 0–1
+0–2 cm/y Low-medium 1–2
+2–4 cm/y Medium-high 2–3
+4–8 cm/y High 3–4
+>8 cm/y Extremely high 4–5
+Limitations
+The limitations of PCR-GLOBWB 2, MODFLOW, 
+WHYMAP , climate forcing, and other input data sets are 
+propagated to these results. The results are only validated using 
+a literature review of selected aquifers and by com paring the 
+results to coarse remote-sensing data. 
+The threshold for masking out mountainous areas was set once 
+without a sensitivity analysis. The temporal range [1990–2014] 
+was selected on the basis of expert judgment and differs from 
+some of the other water quantity indica tors that use [1960–
+2014] as the input time series. 
+See Galvis Rodríguez et al. (2017) for additional limitations.
+===== PAGE 19 =====
+TECHNICAL NOTE   |  August 2023  |  19
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Riverine flood risk
+Description
+Riverine flood risk measures the percentage of population 
+expected to be affected by riverine flooding in an average year, 
+accounting for existing flood-protection standards. Flood risk 
+is assessed using hazard (inundation caused by river overflow), 
+exposure (population in flood zone), and vulnerability.27 The 
+existing level of flood protection is also incorporated into the 
+risk calculation. It is important to note that this indicator 
+represents flood risk not in terms of maximum possible impact 
+but rather as average annual impact. The impacts from infre-
+quent, extreme flood years are averaged with more common, less 
+newsworthy flood years to produce the “expected annual affected 
+popula tion.” Higher values indicate that a greater propor­
+tion of the population is expected to be impacted by riverine 
+floods on average.
+Additional data source Existing flood protection levels
+Input spatial resolution State
+Input temporal resolution Annual
+Input temporal rance 2016
+Source FLOPROS (Scussolini et al. 2016)
+GENERAL:
+Name Riverine Flood Risk
+Subgroup Physical risk quantity
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Hydrological sub-basin (HydroBASINS 6)
+Temporal resolution Annual baseline
+SOURCE:
+Spatial resolution 30 x 30 arc minute grid cells
+Temporal resolution Annual
+Temporal range 2010
+EXTRA:
+Partner organization(s): Deltares, IVM, PBL, Utrecht University
+Model GLOFRIS (Ward et al. 2020)
+Date of publication 2019
+Calculation
+Data on the population impacted by riverine floods are provided 
+by Aqueduct Floods at the state/HydroBASIN 6 intersect 
+scale (Ward et al. 2020). The data set estimates the average 
+number of people to be impacted annually for several flood 
+event magnitudes (2, 5, 10, 25, 50, 100, 250, 500, and 1,000 in 
+return periods). 
+The expected annual affected population is calculated using a risk 
+curve (Meyer et al. 2009). To create the curve, the return periods 
+are first converted into probabilities (i.e., 1/return period) and 
+then plotted on the x axis against the impacted population (Fig-
+ure 6). Next, flood protection is added to the graph. The current 
+level of flood protection, given in return years, comes from the 
+Flood Protection Standards (FLOPROS) model (Scussolini et 
+al. 2016). All impacts that fall to the right of the flood protec-
+tion line (i.e., impacted by smaller floods) are assumed to be 
+protected against floods and are removed from the calculation. 
+The expected annual affected population is calculated by integrating 
+the area under the curve to the left of the flood protection line. 
+The expected annual affected population is calculated for each 
+state/HydroBASIN 6 intersect, then aggregated up to the 
+HydroBASIN 6 scale. The total population in each state/Hydro-
+BASIN 6 intersect is also summed to the HydroBASIN 6 scale 
+(Ward et al. 2020). Finally, the raw riverine flood risk score—the 
+percentage of popu lation expected to be affected annually by riverine 
+floods per HydroBASIN 6—is calculated:
+In which,
+rfr = Riverine flood risk raw values in [-]
+popexp,r,y = Expected annual affected population by riverine 
+flooding in [number of people]
+
+===== PAGE 20 =====
+20  |  
+  
+The raw values are remapped to a 0–5 scale using the fol-
+lowing equation:
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+Limitations
+Riverine and coastal flood risks must be evaluated and used 
+separately, as the compound risks between river and storm 
+surges are not modeled. The data also assume that flood events 
+are entirely independent of each other, so the impact from 
+overlapping flood events is not considered. Finally, the data do 
+not include any indirect impacts from flooding (e.g., disrupted 
+transportation, loss of work, etc.).
+Conversion to risk categories
+The thresholds are based on quantiles, with the exception of the 
+basins with no riverine hazard. Basins without a flood hazard are 
+given the lowest risk score, 0, and are removed from the rest of 
+the data set before the quantiles are calculated.
+RAW VALUE RISK CATEGORY SCORE
+0 to 1 in 1,000 Low 0–1
+1 in 1,000 to 2 in 1,000 Low-medium 1–2
+2 in 1,000 to 6 in 1,000 Medium-high 2–3
+6 in 1,000 to 1 in 100 High 3–4
+More than 1 in 100 Extremely high 4–5
+Figure 6  |  Risk Curve Used to Calculate Expected Annual Affected Population from Floods
+Source: WRI.
+0
+10 0
+20 0
+300
+01 0% 20% 30% 40 %5 0% 60 %
+Aﬀec ted population (millions )
+Pro babilit y of event occurring
+Pr obabilit y -impac t cur ve
+F lood P ro tec tion
+1/10 year flood 
+protection
+Protected/damage avoided
+Non-protected/
+expected damage
+===== PAGE 21 =====
+TECHNICAL NOTE   |  August 2023  |  21
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Coastal flood risk
+Description
+Coastal flood risk measures the percentage of the popu lation 
+expected to be affected by coastal flooding in an average year, 
+accounting for existing flood protection standards. Flood risk is 
+assessed using hazard (inunda tion caused by storm surge), expo-
+sure (population in flood zone), and vulnerability.28 The existing 
+level of flood protection is also incorporated into the risk 
+calculation. It is important to note that this indicator represents 
+flood risk not in terms of maximum possible impact but rather 
+as average annual impact. The impacts from infrequent, extreme 
+flood years are averaged with more common, less newsworthy 
+flood years to produce the “expected annual affected population.” 
+Higher values indicate that a greater proportion of the popu­
+lation is expected to be impacted by coastal floods on average.
+Additional data source Existing flood protection levels
+Input spatial resolution State
+Input temporal resolution Annual
+Input temporal rance 2016
+Source FLOPROS (Scussolini et al. 2016)
+GENERAL:
+Name Coastal Flood Risk
+Subgroup Physical risk quantity
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Hydrological sub-basin (HydroBASINS 6)
+Temporal resolution Annual baseline
+SOURCE:
+Spatial resolution 30 x 30 arc minute grid cells
+Temporal resolution Annual
+Temporal range 2010
+EXTRA:
+Partner organization(s): Deltares, IVM, PBL, Utrecht University
+Model GLOFRIS (Ward et al. 2020)
+Date of publication 2019
+Calculation
+Data on the population impacted by coastal floods are provided 
+by Aqueduct Floods at the state/HydroBASIN 6 intersect 
+scale (Ward et al. 2020). The data set estimates the average 
+number of people to be impacted annually for several flood 
+event magnitudes (2, 5, 10, 25, 50, 100, 250, 500, and 1,000 in 
+return periods). 
+The expected annual affected population is calculated using a risk 
+curve (Meyer et al. 2009). To create the curve, the return periods 
+are first converted into probabilities (i.e., 1/return period) and 
+then plotted on the x axis against the impacted population 
+(Figure 6). Next, vulner ability—or flood protection—is added 
+to the graph as a vertical line. The current level of flood protec-
+tion, given in return years, comes from the FLOPROS model 
+(Scus solini et al. 2016). All impacts that fall to the right of 
+the flood protection line (i.e., impacted by smaller floods) are 
+assumed to be protected against floods and are removed from 
+the calculation. The expected annual affected population is calcu-
+lated by integrating the area under the curve to the left of the 
+flood protection line.
+The expected annual affected population is calculated for each 
+state/HydroBASIN 6 intersect and then aggregated up to the 
+HydroBASIN 6 scale. The total population in each state/Hydro-
+BASIN 6 intersect is also summed to the HydroBASIN 6 scale 
+(Ward et al. forthcoming). Finally, the raw coastal flood risk 
+score—the percentage of popu lation expected to be affected annually 
+by coastal floods per HydroBASIN 6—is calculated:
+In which,
+cfr = Coastal flood risk raw values in [-]
+popexp,r,y = Expected annual affected population by coastal 
+flooding in [number of people]
+
+===== PAGE 22 =====
+22  |  
+  
+Conversion to risk categories
+The thresholds are based on quantiles, with the excep tion of the 
+basins with no coastal hazard. Basins without a flood hazard are 
+given the lowest risk score, –1, and removed from the rest of the 
+data set before the quantiles are calculated.
+The raw values are remapped to a 0–5 scale using the fol-
+lowing equation:
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+RAW VALUE RISK CATEGORY SCORE
+0 to 9 in 1,000,000 Low 0
+9 in 1,000,000 to 7 
+100,000
+Low-medium 1–2
+7 in 100,000 to 3 in 
+10,000
+Medium-high 2–3
+3 in 10,000 to 2 in 1,000 High 3–4
+More than 2 in 1,000 Extremely high 4–5
+Limitations
+Riverine and coastal flood risks must be evaluated and used 
+separately, as the compound risks between river and storm 
+surges are not modeled. The data also assume that flood events 
+are entirely independent of each other, so the impact from 
+overlapping flood events is not considered. Finally, the data do 
+not include any indirect impacts from flooding (e.g., disrupted 
+transportation, loss of work, etc.).
+===== PAGE 23 =====
+TECHNICAL NOTE   |  August 2023  |  23
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Drought risk
+Description
+Drought risk measures where droughts are likely to occur, the 
+population and assets exposed, and the vulner ability of the 
+population and assets to adverse effects. Higher values indicate 
+higher risk of drought.
+Calculation
+The drought risk indicator is based on Carrão et al. (2016) and 
+is used with minimal alterations. Drought risk is assessed for 
+the period 2000–2014 and is a combina tion of drought hazard, 
+drought exposure, and drought vulnerability. 
+Risk = hazard × exposure × vulnerability 
+The methodology is explained in Carrão et al. (2016): 
+Drought hazard is derived from a non-parametric analysis of 
+historical precipitation deficits at the 0.5 [degree resolution]; 
+drought exposure is based on a non-parametric aggregation of 
+gridded indi cators of population and livestock densities, crop 
+cover and water stress; and drought vulnerability is computed as 
+the arithmetic composite of high level factors of social, economic 
+and infrastruc tural indicators, collected at both the national and 
+sub-national levels. 
+GENERAL:
+Name Drought Risk
+Subgroup Physical risk quantity
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Hydrological sub-basin (HydroBASINS 6)
+Temporal resolution Annual baseline
+SOURCE:
+Spatial resolution 5 x 5 arc minute grid cells 
+Temporal resolution Annual
+Temporal range 2000–2014
+EXTRA:
+Partner organization(s): IRC
+Model Various
+Date of publication 2016
+The hazard, exposure, vulnerability, risk, and no-data mask data 
+available at 5 × 5 arc minute resolution are averaged for each 
+hydrological sub-basin.
+In which,
+drsub-basin = Drought risk per sub-basin
+npix = Number of pixels per sub-basin
+drpix = Drought risk per pixel
+Conversion to risk categories
+The risk categories are derived from Carrão et al. (2016):
+The raw values are remapped to a 0–5 scale using the fol-
+lowing equation:
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+Limitations
+Many of the indicators in the Aqueduct water risk frame work 
+represent a hazard. Some indicators, including drought risk, 
+add exposure and vulnerability. Aqueduct combines these risk 
+elements into a single framework. 
+The drought risk indicator does not consider hydrological 
+drought and excludes associated risks such as unnavigable rivers. 
+Other Aqueduct risk categories are typically skewed toward 
+the higher side, with the category “extremely high” as the top 
+category. The drought risk indicator has not been interpreted yet 
+and is therefore presented at a low–high scale instead of low–
+extremely high. 
+See Carrão et al. (2016) for limitations of the different risk ele-
+ments (hazard, exposure, vulnerability) and the input data sets.
+RAW VALUE RISK CATEGORY SCORE
+0.0–0.2 Low 0
+0.2–0.4 Low-medium 1–2
+0.4–0.6 Medium 2–3
+0.6–0.8 Medium-high 3–4
+0.8–1.0 High 4–5
+score = 5r
+===== PAGE 24 =====
+24  |  
+  
+Untreated connected wastewater
+Description
+Untreated connected wastewater measures the percent age of 
+domestic wastewater that is connected through a sewerage 
+system and not treated to at least a primary treatment level. 
+Wastewater discharge without adequate treatment could expose 
+water bodies, the general public, and ecosystems to pollutants 
+such as pathogens and nutrients. The indicator compounds 
+two crucial elements of wastewater management: connection 
+and treatment. Low connection rates reflect households’ lack 
+of access to public sewerage systems; the absence of at least 
+primary treatment reflects a country’s lack of capacity (infra-
+structure, institutional knowledge) to treat wastewater. Together 
+these factors can indicate the level of a country’s current capacity 
+to manage its domestic wastewater through two main pathways: 
+extremely low connection rates (below 1 percent), and high 
+connection rates with little treatment. Higher values indicate 
+higher per centages of point source wastewater discharged 
+without treatment.
+Calculation
+Sewerage connection and wastewater treatment data come 
+from a white paper published by the International Food Policy 
+Research Institute (IFPRI) and Veolia (Xie et al. 2016). In 
+brief, Xie et al. aggregate three of the leading research papers 
+GENERAL:
+Name Untreated Connected Wastewater
+Subgroup Physical risk quantity
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Country
+Temporal resolution Annual baseline
+SOURCE:
+Spatial resolution Country
+Temporal resolution Annual
+Temporal range 2000–2010
+EXTRA:
+Partner organization(s): IFPRI, Veolia
+Model Various
+Date of publication 2016
+on country-level connection and treatment rates into one data 
+set through a hierarchical methodology. The data include the 
+percentage of house holds connected to sewerage systems (percent 
+connected), and the percentage of wastewater connected left 
+untreated (i.e., not treated using primary, secondary, or tertiary 
+treatments) (percent untreated). 
+The calculation is based on the Environmental Perfor mance 
+Index’s Wastewater Treatment (WWT) indicator 
+(Wendling et al. 2018):
+WWT examines the performance of wastewater treatment 
+(Wendling et al. 2018). The untreated, connected waste water 
+indicator reverses the WWT to instead examine the hazard:
+In which,
+UCW = Unimproved/connected wasterwater 
+raw value in [%]
+c = Percent connected wastewater in [%]
+u = Percent untreated wastewater in [%]
+Conversion to risk categories
+The risk thresholds are based on quantiles, with the exception of 
+the “low to no wastewater connected” thresh old. All data 
+marked in this category are given the highest risk score and 
+removed from the rest of the data set before the quantiles 
+are calculated.
+WWT = percent treated to at least primary * percent connected
+RAW VALUE RISK CATEGORY SCORE
+<30% Low 0
+30–60% Low-medium 1–2
+60–90% Medium-high 2–3
+90–100% High 3–4
+100% Extremely high 4–5
+Low to no wastewater 
+connected
+5
+===== PAGE 25 =====
+TECHNICAL NOTE   |  August 2023  |  25
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+The raw values are remapped to a 0–5 scale using the fol-
+lowing equation:
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+Limitations
+Important sources of water pollution, such as industrial waste 
+and agricultural runoff, are not included. Waste water that may 
+be treated on-site, such as with private septic tanks, is also not 
+captured due to a lack of available data. In addition, the severity 
+of water pollution, which depends on the magnitude of loadings 
+of pollutants and dilution capacity of receiving water bodies, 
+is not repre sented (from a 2017 personal communication with 
+Xie). This indicator also does not account for all water pollution 
+sources, as it is focused primarily on household connec tion rates.
+===== PAGE 26 =====
+26  |  
+  
+indicate higher levels of excess nutrients with respect to silica, 
+creat ing more favorable conditions for harmful algal growth 
+and eutrophication in coastal waters downstream.
+Calculation
+The calculation described below is based on Billen and Garnier’s 
+(2007) Indicator of Coastal Eutrophication Potential (ICEP) 
+methodology. The nutrient data come from Bouwman et al. 
+(2015). In short, the data are based on the Global NEWS 2 
+model (Mayorga et al. 2010) and aligned to Simulated Topo-
+logical Network basins (Vörösmarty et al. 2000). The NEWS 
+2 model uses biophysical, natural, and anthropogenic (both 
+point and nonpoint) nutrient sources, along with in-watershed 
+and in-river removal processes, to derive global nutrient yields 
+(Mayorga et al. 2010). Total N and P fluxes are calculated by 
+summing NEWS 2 nutrient yield data for dissolved organic, 
+dissolved inorganic, and particulate nutrients. Si fluxes are 
+simply the dissolved inorganic Si yields in the basin.
+The calculation is based on the Redfield molar ratio (C:N:P:Si = 
+106:16:1:20), which is a representation of the approximate 
+nutrient requirement of marine diatoms (Bil len and 
+Garnier 2007):
+In which,
+CEP = Coastal eutrophication potential [kg 
+C-equivalent km2/day]
+jn = Mean flux of total nitrogen delivered at the outlet of the 
+river basin [kg N/km2/yr]
+jp = Mean flux of total phosphorus delivered at the outlet of 
+the river basin [kg P/km2/yr]
+jSi = Mean flux of dissolved silica delivered at the outlet of 
+the river basin [kg Si/km2/yr]
+N = Molar mass of nitrogen [14g/mol]
+Si = Molar mass of silica [28g/mol]
+P = Molar mass of phosphorus [14g/mol]
+A negative value indicates that silica is present in excess over the 
+limiting nutrient and thus suggests the absence of eutrophica-
+tion. A positive value indicates an excess of nutrients over the 
+Coastal eutrophication potential
+Description
+Coastal eutrophication potential (CEP) measures the potential 
+for riverine loadings of nitrogen (N), phospho rus (P), and silica 
+(Si) to stimulate harmful algal blooms in coastal waters. The 
+CEP indicator is a useful metric to map where anthropogenic 
+activities produce enough point-source and nonpoint-source 
+pollution to potentially degrade the environment. When N and 
+P are discharged in excess over Si with respect to diatoms, a 
+major type of algae, undesirable algal species often develop. The 
+stimulation of algae leading to large blooms may in turn result 
+in eutrophication and hypoxia (excessive biological growth and 
+decomposition that reduces oxygen available to other organ-
+isms). It is therefore possible to assess the potential for coastal 
+eutrophication from a river’s N, P , and Si loading. Higher values 
+Additional data source STN Basins
+Input spatial resolution 30 x 30 arc seconds
+Input temporal resolution Annual
+Input temporal rance 2000
+Source Vörösmarty et al. (2000)
+GENERAL:
+Name Coastal Eutrophication Potential
+Subgroup Physical risk quality
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Hydrological sub-basin (HydroBASINS 6)
+Temporal resolution Annual baseline
+SOURCE:
+Spatial resolution Simulated Topological Network (STN)
+Temporal resolution Annual
+Temporal range 2000
+EXTRA:
+Partner organization(s): Utrecht University, Washington State 
+University
+Model NA
+Date of publication 2016
+===== PAGE 27 =====
+TECHNICAL NOTE   |  August 2023  |  27
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+potential for diatom growth, suggest ing suitable conditions for 
+the growth of harmful algae (Garnier et al. 2010). 
+As a final step, the results are aggregated to HydroBASIN level 
+6 to align the indicator with the remainder of the framework.
+Conversion to risk categories
+The thresholds used to convert raw values into risk scores are 
+based on the suggested risk categories of the Trans boundary 
+Water Assessment Programme (TWAP) for ICEP (IOC-
+UNESCO and UNEP 2016), with one adjust ment: the 
+boundary between TWAP’s low and medium categories was 
+increased from –1 to 0 to better reflect the elevated risk warn-
+ing in Aqueduct.
+RAW VALUE RISK CATEGORY SCORE
+<-5 Low 0–1
+-5–0 Low-medium 1–2
+0–1 Medium-high 2–3
+1–5 High 3–4
+>5 Extremely high 4–5
+The raw values are remapped to a 0–5 scale using the fol-
+lowing equation:
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+Limitations
+Eutrophication can also impact freshwater, but a global data 
+set for freshwater eutrophication potential is not cur rently 
+available. Therefore, the indicator does not reflect the risk of 
+eutrophication upstream of the coastal zone. In addition, the 
+index calculation does not account for shifts in seasonality or the 
+characteristics of the receiving water body.
+
+===== PAGE 28 =====
+28  |  
+  
+Unimproved/No drinking water
+Description
+Unimproved/no drinking water reflects the percent age of the 
+population collecting drinking water from an unprotected dug 
+well or spring, or directly from a river, dam, lake, pond, stream, 
+canal, or irrigation canal (WHO and UNICEF 2017). Specifi-
+cally, the indicator aligns with the unimproved and surface water 
+categories of the Joint Monitoring Programme ( JMP)—the 
+lowest tiers of drink ing water services. Higher values indi­
+cate areas where people have less access to safe drinking 
+water supplies.
+Calculation
+Data for this indicator come from the 2015 drinking water 
+access rates published by JMP (WHO and UNICEF 2017). 
+The statistics from JMP’s “at least basic” and “limited” fields 
+Additional data source Urban extents Gridded population
+Input spatial resolution 30 arc seconds 30 arc seconds
+Input temporal resolution Annual Annual
+Input temporal rance 2010 2010
+Source van Huijstee et al. (2018) van Vuuren et al. (2007)
+GENERAL:
+Name Unimproved/No Drinking Water
+Subgroup Regulatory and reputational risk
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Hydrological sub-basin (HydroBASINS 6)
+Temporal resolution Annual baseline
+SOURCE:
+Spatial resolution Country (rural/urban)
+Temporal resolution Annual
+Temporal range 2015
+EXTRA:
+Partner organization(s): JMP
+Model NA
+Date of publication 2017
+are summed to represent the percentage of the population 
+with access to improved drinking water. The improved rate is 
+then inverted into the unimproved/no access rate by subtracting 
+improved from 100 percent. This is done for the national, rural, 
+and urban averages in each country. The national average is used 
+to fill in any missing rural or urban averages. 
+The unimproved/no access rate is matched to each Aque duct 
+geometry (intersect of states, HydroBASIN 6, and aquifers; see 
+6.1) using the International Organization for Standardization 
+(ISO) codes provided by the Database of Global Administrative 
+Areas (GADM) (“GADM Metadata” n.d.).
+Rural and urban populations are calculated for each Aqueduct 
+geometry. Rural and urban populations come from a gridded 
+2010 population data set produced by the Netherlands Envi-
+ronmental Assessment Agency (PBL) (van Vuuren et al. 2007). 
+The gridded population data set is parsed into rural and urban 
+populations using a 2010 urban extent data layer (van Huijstee 
+et al. 2018) and then summed by Aqueduct geometry. 
+The rural and urban unimproved/no access rate is mul tiplied by 
+the rural and urban populations, respectively, to find the number of 
+people with unimproved/no access to drinking water in each 
+Aqueduct geometry. The rural and urban totals are then summed 
+and aggregated to the HydroBASIN 6 scale, along with total 
+population. Finally, the raw score—the weighted percentage of 
+population with unimproved/no access per HydroBASIN 6—
+is calculated:
+In which,
+UDW = Unimproved/no drinking water raw value in [-]
+rrural = Rural unimproved/no access to drinking 
+water rate in [-]
+rurban = Urban unimproved/no access to drinking 
+water rate in [-]
+poprural = Rural population in [number of people]
+popurban = Urban population in [number of people]
+poptot = Total population in [number of people]
+
+===== PAGE 29 =====
+TECHNICAL NOTE   |  August 2023  |  29
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Conversion to risk categories
+The risk thresholds are based on Aqueduct 2.1 (Gas-
+sert et al. 2014).
+The raw values are remapped to a 0–5 scale using the fol-
+lowing equation:
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+RAW VALUE RISK CATEGORY SCORE
+<2.5% Low 0–1
+2.5–5.0% Low-medium 1–2
+5.0–10.0% Medium-high 2–3
+10.0–20.0% High 3–4
+>20.0% Extremely high 4–5
+Limitations
+The unimproved/no drinking water indicator is presented at 
+a finer resolution than originally published by JMP under the 
+assumption that access rates among rural and urban communi-
+ties are consistent throughout a country. The methodology 
+fails to account for regional and local differences in access 
+within countries.
+===== PAGE 30 =====
+30  |  
+  
+Unimproved/No sanitation 
+Description
+Unimproved/no sanitation reflects the percentage of the popula-
+tion using pit latrines without a slab or platform, hanging/
+bucket latrines, or directly disposing human waste in fields, 
+forests, bushes, open bodies of water, beaches, other open spaces, 
+or with solid waste (WHO and UNICEF 2017). Specifically, 
+the indicator aligns with JMP’s unimproved and open defecation 
+categories— the lowest tier of sanitation services. Higher values 
+indicate areas where people have less access to improved 
+sanitation services.
+GENERAL:
+Name Unimproved/No Drinking Sanitation
+Subgroup Regulatory and reputational risk
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Hydrological sub-basin (HydroBASINS 6)
+Temporal resolution Annual baseline
+SOURCE:
+Spatial resolution Country (rural/urban)
+Temporal resolution Annual
+Temporal range 2015
+EXTRA:
+Partner organization(s): JMP
+Model NA
+Date of publication 2017
+Additional data source Urban extents Gridded population
+Input spatial resolution 30 arc seconds 30 arc seconds
+Input temporal resolution Annual Annual
+Input temporal rance 2010 2010
+Source van Huijstee et al. (2018) van Vuuren et al. (2007)
+Calculation
+Data for this indicator come from the 2015 sanitation access 
+rates published by JMP (WHO and UNICEF 2017). Statistics 
+from JMP’s “at least basic” and “limited” fields are summed 
+to represent the percentage of the population with access to 
+improved sanitation. The improved rate is then inverted into the 
+unimproved/no access rate by subtracting improved from 100 
+percent. This is done for the national, rural, and urban averages 
+in each country. The national average is used to fill in any miss-
+ing rural or urban averages. 
+The unimproved/no access rate is matched to each Aque duct 
+geometry (intersect of states, HydroBASINS 6, and aquifers; see 
+6.1) using the International Organization for Standardization 
+(ISO) codes provided by GADM (“GADM Metadata” n.d.). 
+Rural and urban populations are calculated for each Aqueduct 
+geometry. Rural and urban populations come from a gridded 
+2010 population data set produced by PBL (van Vuuren et al. 
+2007). The gridded population data set is parsed into rural and 
+urban populations using a 2010 urban extent data layer (van 
+Huijstee et al. 2018), and then summed by Aqueduct geometry.
+The rural and urban unimproved/no access rate is multiplied by 
+the rural and urban populations, respec tively, to find the number 
+of people with unimproved/no access to sanitation in each 
+Aqueduct geometry. The rural and urban totals are then summed 
+and aggregated to the HydroBASINS 6 scale, along with total 
+population. Finally, the raw score—the weighted percentage of 
+popu lation with unimproved/no access per HydroBASINS 6—
+is calculated:
+In which,
+USA = Unimproved/no sanitation raw value in [-]
+rrural = Rural unimproved/no access to sanitation rate in [-]
+rurban = Urban unimproved/no access to drinking 
+water rate in [-]
+poprural = Rural population in [number of people]
+popurban = Urban population in [number of people]
+poptot = Total population in [number of people]
+
+===== PAGE 31 =====
+TECHNICAL NOTE   |  August 2023  |  31
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Conversion to risk categories
+The risk thresholds are based on Aqueduct 2.1 (Gas-
+sert et al. 2014).
+The raw values are remapped to a 0–5 scale using the fol-
+lowing equation:
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+RAW VALUE RISK CATEGORY SCORE
+<2.5% Low 0–1
+2.5–5.0% Low-medium 1–2
+5.0–10.0% Medium-high 2–3
+10.0–20.0% High 3–4
+>20.0% Extremely high 4–5
+Limitations
+Unimproved/no sanitation is presented at a finer reso lution 
+than is originally published by JMP under the assumption that 
+access rates among rural and urban com munities are consistent 
+throughout a country. The meth odology fails to account for 
+regional and local differences in access within countries.
+===== PAGE 32 =====
+32  |  
+  
+Peak RepRisk country ESG risk index
+Description
+The Peak RepRisk country ESG risk index quantifies business 
+conduct risk exposure related to environmental, social, and gov-
+ernance (ESG) issues in the corresponding country. The index 
+provides insights into potential finan cial, reputational, and com-
+pliance risks, such as human rights violations and environmental 
+destruction. RepRisk is a leading business intelligence provider 
+that specializes in ESG and business conduct risk research for 
+companies, projects, sectors, countries, ESG issues, NGOs, and 
+more, by leveraging artificial intelligence and human analysis 
+in 20 languages. WRI has elected to include the Peak RepRisk 
+country ESG risk index in Aqueduct to reflect the broader 
+regulatory and reputational risks that may threaten water 
+quantity, quality, and access. While the underlying algorithm is 
+proprietary, we believe that our inclusion of the Peak RepRisk 
+country ESG risk index, normally unavailable to the public, is 
+a value-add to the Aqueduct community. The peak value equals 
+the high est level of the index in a given country over the last two 
+years. The higher the value, the higher the risk exposure.
+Calculation
+RepRisk screens over 80,000 media, stakeholder, and third-party 
+sources daily to identify and analyze ESG-related risk incidents 
+and quantify them into the Peak RepRisk country ESG risk 
+GENERAL:
+Name Peak RepRisk Country EDG Risk Index
+Subgroup Regulatory and reputational risk
+Risk Element R = H x E x V
+RESULTS:
+Spatial resolution Country
+Temporal resolution Annual baseline
+SOURCE:
+Spatial resolution Country
+Temporal resolution Annual
+Temporal range 2016–2018
+EXTRA:
+Partner organization(s): RepRisk
+Model NA
+Date of publication 2018
+index (RepRisk n.d.). The results of the screening process are 
+delivered to the RepRisk team of analysts, who are responsible 
+for curat ing and analyzing the information. They hand select the 
+items, give each risk incident a score (based on severity, source, 
+and novelty), and write a risk summary. Before the risk incident 
+is published, a senior analyst runs a quality check to ensure that 
+the process has been completed in line with RepRisk’s strict, 
+rules-based methodology. After the senior analyst has given her 
+or his approval, the final step in the process, the quantification 
+of the risk, is per formed through data science. The Peak RepRisk 
+country ESG risk index takes into consideration the impact of a 
+country’s risk incidents within the last two years and the average 
+of a country’s Worldwide Governance Indica tors. The data used 
+in Aqueduct 3.0 cover October 2016 through October 2018. To 
+learn more about RepRisk, please visit https://www.reprisk.com/
+our-approach or contact RepRisk.
+Conversion to risk categories
+The risk thresholds are based on guidance from RepRisk 
+(RepRisk n.d.).
+The raw values are remapped to a 0–5 scale using the fol-
+lowing equation:
+Where r is the raw indicator value and score is the indica-
+tor score [0–5].
+RAW VALUE RISK CATEGORY SCORE
+<25% Low 0–1
+25–50% Low-medium 1–2
+50–60% Medium-high 2–3
+60–75% High 3–4
+>75% Extremely high 4–5
+
+===== PAGE 33 =====
+TECHNICAL NOTE   |  August 2023  |  33
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+COUNTRY AND STATE 
+AGGREGATION
+The updated country and state aggregations of the baseline and 
+future projection data follow the weighted aggregation method-
+ology published in Gassert et al. 2013. We provide an excerpt of 
+their rationale and methods here for your convenience:
+Most water-related decisions are made across political or 
+administrative boundaries, creating a demand for simple and 
+robust water information to support decision making at the 
+administrative level. Governments devise policies to manage 
+water resources within their borders and can use country indica-
+tors as a statistic against which to benchmark themselves. Many 
+financial institutions divide their portfolios by country, and thus 
+require national-level water data to evaluate portfolio exposure 
+to water-related risks. 
+However, accurately assessing the state of water resources across 
+administrative boundaries is a significant challenge; and simple, 
+comparable, and robust water information to support decision 
+making at that level remains sparse. The spatial variation of 
+water resources complicates the development of meaningful 
+country and basin-level indicators. As opposed to other resources 
+such as forests and agricultural lands, whose stationarity simpli-
+fies measurement and management, water cannot be accounted 
+for by using only administrative boundaries. Even within small 
+administrative regions, hydrological conditions may vary from 
+lush rainforest to dry prairie. Transboundary lakes and rivers 
+further complicate water accounting, as special efforts must be 
+made to avoid double counting the water supply, they provide 
+across regions. 
+The Aqueduct W ater Risk Atlas (Aqueduct) first models global 
+water-risk indicators at a relatively granular hydrological 
+catchment scale. In this analysis WRI then employs a weighted 
+aggregation methodology that brings Aqueduct’s catchment-level 
+information up to the country and state levels. This methodology 
+addresses each of the challenges described above by starting with 
+indicators that were computed within basic hydrological units, 
+and assigning spatially explicit weights to reflect the importance 
+of the specific areas based on where water is being used. From 
+these calculations, WRI generated estimates of the average 
+level of exposure to Aqueduct’s baseline water stress indicator 
+for all countries.
+Inputs
+This section details the methodology to aggregate Aqueduct 
+indicators from the sub-basin level to state and country borders. 
+The methodology requires three inputs: gridded weights to 
+define where water is being used, an Aqueduct indicator score to 
+rescale, and target regions (state and country borders). 
+Gridded weights
+The gross demand data is used to indicate where human need 
+for water is greatest—it is also where socioeconomic dependency 
+for water is most critical (Gassert et al. 2013). Areas with higher 
+water demand will have more influence over the final aggre-
+gated score. We use the following gridded demand data sets 
+from PCR-GLOBWB 2:
+Baseline gross demand for four sec tors: domestic, industrial, 
+irrigation, and livestock. The 4 gridded data sets are available for 
+each month between January 1960 and December 2019. 
+Projected gross demand for four sec tors—domestic, industrial, 
+irrigation, and livestock—available for each month between 
+January 1960 and December 2100. Domestic, industrial, and 
+livestock demand vary among the three future scenarios, mean-
+ing there are 3 data sets per demand type for every time step. 
+Irrigation29 also varies by GCM (5 total) within each scenario, 
+meaning there are (5 x 3=) 15 irrigation data sets available for 
+every time step. See “Future projections” for more details on the 
+future projections data. 
+Aqueduct indicators
+Water stress measures the competition over water resources and 
+is an effective metric to evaluate water-related risks at the state 
+and country levels. We take the water stress score—the normal-
+ized version of the raw data—for the baseline, 2030, 2050, and 
+2080. See the first section of “Indicators” for more details on 
+how the water stress score is calculated. 
+Target regions
+Our target geometries are state and country borders. We use 
+GADM Level 1 data (GADM Metadata n.d.) to define the 
+borders. These are state borders, which inherently also contain 
+country borders. We intersect the GADM Level 1 data with 
+the HydroBASIN level 6 data (sub-basins used by Aqueduct) to 
+traverse between the two systems. 
+===== PAGE 34 =====
+34  |  
+  
+Figure 7  |  Examples of the Three Spatially Explicit Inputs
+Notes: a. Source indicators: baseline water stress; b. Gridded weights: total water withdrawal; c. Target regions: country boundaries.
+Source: WRI Aqueduct.
+A BC
+Weighted aggregation
+Processing gridded weights
+First, we sum the gridded gross demand monthly layers into 
+annual data. Then, we follow the same methodology described 
+in the Spatial aggregation of water use section (in 2.3.1)—we 
+resample, convert flux to volume, and sum per target geometry. 
+The only difference is we use the state/sub-basin intersect as the 
+target geometry rather than the sub-basins. Next, we then sum-
+marize the data by the following milestone years:
+ ▪ Baseline: 1979–2019 (historic observed climate forcing)
+ ▪ 2014: 1960–2014 (historic GCM climate forcing)
+ ▪ 2030: 2015–2045 (future GCM climate forcing) 
+ ▪ 2050: 2035–2065 (future GCM climate forcing)
+ ▪ 2080: 2065–2095 (future GCM climate forcing)
+To do this, we follow the Temporal Aggregation steps outlined in 
+“Hydrological model”—we calculate total demand by sum-
+ming sectoral demand, smooth the data using a 10-year moving 
+average, and apply a Theil Sen regression—with two exceptions: 
+(1) we do not split the data by months because we are only 
+using annual data, and (2) we perform the temporal aggregation 
+of the individual sectors as well as total demand. Finally, we 
+bias-correct the projected demand data to the baseline using the 
+methodology outlined in “Future projections.” For the projected 
+demand, we use the median value of the five GCMs to represent 
+each scenario. 
+In the end, we have five measures of gross demand (total, 
+domestic, industrial, irrigation, livestock) for five time periods 
+(baseline, 2014, 2030, 2050, and 2080) for the three SSP sce-
+narios (for the future periods). 
+Applying the weighted average
+We compute the average water stress score for every target 
+region (i.e., states and countries) using a weighted average 
+approach, where the weight is water demand. Following Gassert 
+et al. 2013, the weighted mean indicator value (sr) is found by 
+multiplying the sub-basin indicator (sp) by the state-sub-basin 
+weight (wp), summing, and dividing by the sum of the weights 
+across the entire administrative region (r).
+
+===== PAGE 35 =====
+TECHNICAL NOTE   |  August 2023  |  35
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+GROUPED AND OVERALL 
+WATER RISK
+After calculating the 13 indicators and converting them to a 
+uniform 0–5 scale, we can calculate the grouped and overall 
+water risks (composite indices). See Figure 1 for an over-
+view of the groups.
+Geometries
+Each of the 13 indicators is calculated at one of three different 
+spatial scales: hydrological sub-basin, country, or groundwater 
+aquifer. See “results: spatial resolution” in the summary table 
+of each indicator. To combine the indicators into one frame-
+work, we take the union of the three geometries. The resulting 
+geometries are a unique combination of a hydrological basin, 
+groundwater aqui fers, and an administrative boundary.
+Weighted aggregation
+The subgroups (physical risk quantity, physical risk qual ity, and 
+regulatory and reputational risk) and overall risks are calculated 
+by taking a weighted average of the indica tors that belong to 
+each subgroup. 
+Exposure to water-related risks varies with the charac teristics 
+of water users. To obtain aggregated water risk scores, users can 
+modify the weight of each indicator to match their exposure 
+to the different aspects of water risk. There are five weights, or 
+descriptors of relevance, on a base 2 exponential scale. This is 
+preferred over a linear scale because of the human tendency to 
+categorize inten sity by orders of magnitude of difference (Tri-
+antaphyllou 2010). Users can also exclude indicators completely 
+from aggregation. See Table 2 for an overview of the weights.
+Users have three options for the weighting scheme: default, 
+industry-specific, or custom. 
+Default weighting scheme 
+To determine a default set of indicator weights, we used input 
+from six staff water experts following the principles of the 
+Delphi technique. This technique uses a series of intensive 
+questionnaires interspersed with controlled opinion feedback 
+to obtain the most reliable consensus of opinion from a group 
+of experts (Rowe and Wright 1999). The Delphi technique is 
+intended for use in judgment situ ations; that is, ones in which 
+pure model-based statistical methods are not practical or pos-
+sible because of the lack of appropriate historical data, and thus 
+some form of human judgment input is necessary (Dalkey and 
+Helmer 1963). The lack of consistent information on exposure 
+Table 2  |  Industry or user relevance weights and  
+their descriptions
+LEGEND WEIGHT INTERPRETATION
+No weight 0 Not relevant 
+Very low 0.25 Represents very low relevance to 
+the industry or user
+Low 0.5 Represents low relevance to the 
+industry or user
+Medium 1 Represents medium relevance to 
+the industry or user
+High 2 Represents high relevance to the 
+industry or user
+Very high 4 Represents very high relevance 
+to the industry or user
+Source: WRI.
+to water risks and the subjective nature of indicator weights 
+made this technique an ideal fit. The results of the default 
+weighting scheme can be found in the first column of Table 3. 
+Industry-specific weighting scheme 
+Additionally, we developed preset weighting schemes for nine 
+industry sectors on the basis of information provided in corpo-
+rate water disclosure reports and input from industry experts 
+to reflect the risks and challenges faced by each water-intensive 
+sector. For each industry, we modified the default indicator 
+weights on the basis of the relative importance of each indicator 
+to the industry using information disclosed by companies on 
+their exposure to, and losses from, water-related risks. To vali-
+date the industry-sector preset weighting schemes, we presented 
+preliminary weighting schemes to industry representa tives 
+from the nine sectors and solicited feedback on the relative 
+importance of each indicator for their sector. The results can be 
+found in Table 3. 
+Custom weighting scheme 
+In the online tool, users can specify their own custom 
+weighting scheme. 
+Using the weighting schemes, grouped water risk scores can be 
+calculated. The relative weight of each indicator is illustrated in 
+Figure 7. The definition for each subgroup is listed below: 
+===== PAGE 36 =====
+36  |  
+  
+Physical Risk Quantity 
+Physical Risk Quantity measures risk related to too little or 
+too much water by aggregating all selected indicators from the 
+physical risk quantity category. Higher values indicate higher 
+water quantity risks.
+Physical Risk Quality 
+Physical Risk Quality measures risk related to water that is unfit 
+for use by aggregating all selected indicators from the Physi-
+cal Risk Quality category. Higher values indicate higher water 
+quality risks. 
+Regulatory and Reputational Risk 
+Regulatory and Reputational Risk measures risk related to 
+uncertainty in regulatory change, as well as conflicts with the 
+public regarding water issues. Higher values indicate higher 
+regulatory and reputational water risks. 
+Finally, the three grouped water risk scores can be used to 
+determine the overall water risk score. The sums of the weights 
+are used to calculate the relative contribution of each group. 
+Overall Water Risk 
+Overall Water Risk measures all water-related risks, by aggre-
+gating all selected indicators from the Physical Risk Quantity, 
+Physical Risk Quality, and Regulatory and Reputational Risk 
+categories. Higher values indicate higher water risk.
+LIMITATIONS
+Not every aspect of water risk has usable global data sets 
+enabling it to be incorporated into our framework. Certain 
+important elements are partially missing from the frame work, 
+such as water management and governance.30 
+The local social dimensions of water risks are not incorpo-
+rated into this framework and database. Policy, regulation, and 
+response to water crises are paramount in estimating water risks 
+and fully understanding their impacts. In the end, each region 
+or location’s ability to cope with water-related issues will affect 
+its water risk. 
+Several limitations are associated with the framework (com-
+posite index) approach. First, it requires mapping the indicators 
+to comparable (0–5) scale, thereby losing infor mation such as 
+absolute values. The second limitation, linked to the first, is that 
+we combined data with various spatial and temporal resolutions 
+and ranges into a single framework. Third, there are only two 
+and three indica tors in the quality and regulatory and reputa-
+tional groups, respectively. This makes these groups sensitive to 
+errors in the underlying data. We provide industry and custom 
+weighting to mitigate this limitation, but this requires the user 
+to understand the data. The framework’s water qual ity indicators 
+do not reflect the full range of water quality threats but focus 
+on nutrient pollution. The framework does not endorse framing 
+water-quality solutions solely around coastal eutrophication or 
+municipal wastewater. A fourth limitation of the framework 
+approach is the mixing of risk types. The framework is incon-
+sistent in including the exposure and vulnerability layers for 
+all indicators. 
+In addition to the limitations of the framework approach, 
+each indicator’s baseline and future projections come with its 
+own limitations. For the indicator-and-projection-specific 
+limitations, please see the relevant sections above and the 
+associated literature. Since many of the indicators rely on the 
+PCR-GLOBWB 2 hydrologi cal model and HydroBASINS 
+6 (hydrological sub-basins), some of these specific limitations 
+are copied below.
+Coastal sub-basins and islands in HydroBASINS 6 are often 
+grouped for various reasons explained in Lehner et al. (2008). 
+This grouping is coarse and results in inaccura cies, primarily 
+when water demand can be satisfied using remote water supply. 
+PCR-GLOBWB 2 has no means to model interbasin trans fer. 
+Interbasin transfer happens when demand in one sub-basin 
+is satisfied with supply from another sub-basin that is not 
+upstream. Many major metropolitan areas source their water 
+from adjacent sub-basins. Thus, baseline water stress in a given 
+sub-basin may at times appear worse than it is where interbasin 
+transfers are available to meet demand in that sub-basin. Alter-
+natives to the moving window size and regression method used 
+to process the PCR-GLOBWB 2 results could not be assessed 
+due to the lack of validation data. 
+Direct validation of the aggregated grouped water risks and 
+overall water risk is not possible. The perception of water risk 
+is subjective, and robust validation methods for multi-indicator 
+frameworks are unavailable. 
+It is crucial to understand what the Aqueduct 4.0 frame work 
+and database can and cannot do. Aqueduct 4.0 is tailored to 
+comparing regions on a larger scale. It has limited application at 
+a local level. The pre sented results should therefore be used as a 
+prioritization tool, after which deeper dive assessments should 
+be used to understand local conditions with greater accuracy.
+===== PAGE 37 =====
+TECHNICAL NOTE   |  August 2023  |  37
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Table 3  |  Industry or user relevance weights and their descriptions
+DEFAULT AGRICULTURE CHEMICALS CONSTRUCTION 
+MATERIALS
+ELECTRIC 
+POWER
+FOOD AND 
+BEVERAGE
+MINING OIL AND 
+GAS
+SEMICONDUCTOR TEXTILE
+PHYSICAL RISK QUANTITY 
+1 Baseline water 
+stress 4 4 2 2 4 4 2 1 2 2
+2 Baseline water 
+depletion 4 4 2 2 4 4 2 1 2 2
+3 Interannual 
+variability 0.5 2 1 2 1 1 2 1 2 2
+4 Seasonal 
+variability 0.5 0.5 1 0.5 2 0.5 1 0.5 1 0.5
+5 Groundwater 
+table decline 4 4 2 2 0.5 4 2 1 2 1
+6 Riverine flood 
+risk 1 1 4 1 2 0.5 4 1 1 1
+7 Coastal flood 
+risk 1 1 4 1 4 0.5 4 4 1 2
+8 Drought risk 2 4 2 1 4 2 4 0.5 1 1
+PHYSICAL RISK QUALITY 
+9
+Untreated 
+connected 
+wastewater
+2 1 2 1 0.25 2 0.5 0.25 4 4
+10
+Coastal 
+eutrophication 
+potential
+1 4 0.25 0.5 1 2 0.25 0 2 1
+REGULATORY AND REPUTATIONAL RISK 
+11
+Unimproved/
+no drinking 
+water 
+2 2 2 1 0.25 1 4 4 1 2
+12 Unimproved/
+no sanitation 2 2 2 1 0.25 1 4 4 1 2
+13
+Peak RepRisk 
+country ESG 
+risk index
+0.5 0.25 2 0.5 0.25 2 4 4 2 4
+Source: WRI.
+===== PAGE 38 =====
+38  |  
+  
+Figure 8  |  Indicator weights per industry
+Notes: Weights are based on data availability. Masked or NoData values are excluded from the aggregated weighting. Please see the online tool for the results. The data are also 
+available for download. 
+Source: WRI.
+00 .2 0.40 .6 0.81 .0
+PHYSICAL RISK QUANTITY PHYSICAL RISK QUALITY REGULATORY & REPUTATIONAL RISK
+Agriculture
+Chemicals
+Construction
+ materials
+Default
+Electric Power
+Food & Beverage
+Mining
+Oil & Gas
+Semiconductor
+Textile
+Baseline water stress
+Baseline water depletion
+Interannual variability
+Seasonal variability Coastal flood risk
+Drought risk
+Riverine flood risk
+Groundwater table decline
+Untreated connected wastewater
+Coastal eutrophication potential
+Unimproved/no drinking water
+Unimproved/no sanitation
+Peak RepRisk country ESG risk index
+===== PAGE 39 =====
+TECHNICAL NOTE   |  August 2023  |  39
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+APPENDIX A: DEMAND, 
+WITHDRAWAL, AND RETURN FLOW
+This appendix describes the hydrological terminology used in 
+PCR-GLOBWB 2. An overview is shown in Figure A1. PCR-GLOBWB 
+2 determines water demand. Withdrawal is demand limited by 
+available water. 
+Withdrawal consists of two components: Consumptive withdrawal 
+and nonconsumptive withdrawal. Gross withdrawal refers to 
+consumptive plus nonconsumptive withdrawal.  Net withdrawal refers 
+to only the consumptive withdrawal. 
+The nonconsumptive withdrawal will return to the water body, usually 
+downstream, and is also referred to as return flow. 
+Figure A1  |  Schematic of demand, gross and net 
+withdrawal, and return flow
+Source: WRI.
+WATER CONSUMPTION
+WATER WITHDRAWALS
+WATER RESOURCES
+(e.g., river, aquifer, lake, ocean)
+RETURN FLOWS
+===== PAGE 40 =====
+40  |  
+  
+APPENDIX B: GEOGRAPHIC 
+CONVERSION TABLE
+Table B1 is intended to provide a quick and 
+approximate sense of scale
+Table B1  |  Common arc lengths
+ARC LENGTH DECIMAL DEGREES DISTANCE AT EQUATOR (KM) APPROXIMATE DISTANCE AT EQUATOR (KM)
+360 arc degrees 360 40,030.17 40,000
+1 arc degree 1 111.19 110
+30 arc minutes 0.5 55.60 55
+5 arc minutes 0.08333 9.27 10
+1 arc minute 0.016667 1.85 2
+30 arc seconds 0.008333 0.93 1
+15 arc seconds 0.004167 0.46 .5
+Source: WRI
+===== PAGE 41 =====
+TECHNICAL NOTE   |  August 2023  |  41
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+APPENDIX C: PCR-GLOBWB 2
+Water stress, water depletion, interannual variability, seasonal 
+variability, groundwater table decline, and elements of the flood 
+risk indicators are all based on the PCRaster Global Water 
+Balance 2 model (PCR-GLOBWB 2) (Sutanudjaja et al. 2018; 
+Sutanudjaja et al. 2023). 
+This appendix covers the basic model structure of PCR-GLOBWB 2 
+and the settings used for the Aqueduct run. 
+For baseline water stress, baseline water depletion, interannual 
+variability, and seasonal variability we used a setup with default 
+groundwater configuration. We will refer to this run as the default 
+PCR-GLOBWB 2 run. 
+For the groundwater table decline indicator, we used a setup of PCR-
+GLOBWB 2 with an advanced representation of groundwater based 
+on MODFLOW (de Graaf et al., 2017). We will refer to this setup as the 
+PCR-GLOBWB 2 + MODFLOW run.
+Digital elevation model
+The starting point of almost any hydrological model and analysis 
+is a digital elevation model (DEM). The DEM will determine the 
+runoff direction; that is, the way the water flows. Aqueduct uses the 
+same DEM as PCR-GLOBWB 2 and is a combination of the 30 × 
+30 arc second HydroSheds data (Lehner et al. 2008) with the 3 ×3 
+arc second Multi-Error-Removed Improved-Terrain Hydro Digital 
+Elevation Model (MERIT Hydro DEM) (Yamazaki et al. 2019). Lakes 
+and wetlands from the Global Lakes and Wetlands Database (GLWD) 
+(Lehner and Döll 2004a) are extracted. Finally, reservoirs and dams 
+from the Global Reservoir and Dam (GRanD) database have been 
+used (Lehner et al. 2011). In short, lakes and reservoirs are part of 
+PCR GLOBWB 2’s drainage network, meaning their storage is actively 
+updated through the routing network. Lake outflow uses a standard 
+storage-outflow relationship (Bos, 1989); reservoir flow follows a 
+release strategy based on the average passing discharge (limited by 
+the minimum and maximum storage per each reservoir’s construction 
+year). Lake and reservoir storage is subject to abstraction from both 
+evaporation and human withdrawals. The result is a hydrologically 
+corrected data set of elevation, resampled to the PCRGLOBWB 
+resolution of 5 × 5 arc minutes (approximately 10 km at the equator).
+Local drainage direction
+The local drainage direction, or the way water flows from one grid 
+cell to the next, is derived from the DEM and assumes a strictly 
+convergent flow. This means that in PCR-GLOBWB 2 and Aqueduct, 
+bifurcations and river deltas are modeled as one stream instead of 
+splitting rivers.
+Model structure
+PCR-GLOBWB 2 is a grid-based, modular global hydrological model. 
+The world is represented by a 4,320 × 2,610 grid with a resolution 
+of 5 × 5 arc minutes. For each of these cells, the model contains the 
+following modules: 
+ ▪ Meteorological forcing 
+ ▪ Land surface 
+ ▪ Groundwater
+ ▪ Surface water routing
+ ▪ Irrigation and water use
+See Figure C1 for a schematic representation of the model.
+Meteorological forcing module
+To model key weather elements that affect hydrology, the 
+meteorological forcing of PCR-GLOBWB 2 uses daily time series of 
+spatial fields of precipitation, temperature, and reference evaporation. 
+The default run is forced using data from two data sources: Global 
+Soil Wetness Project Phase 3 (GSWP3) v1.09 (Dirmeyer et al. 
+2006) for the period 1960–78 and W5E5 (which merges WATCH 
+Forcing Data with ERA5 31 (WFDE5)) to extend the analysis to 2019 
+(Lange et al. 2021).
+Reference evapotranspiration is calculated using Penman-Monteith, 
+according to the FAO guidelines (Allen et al. 1998). 
+For groundwater, the PCR-GLOBWB 2 + MODFLOW run is forced 
+using combined Climatic Research Unit (CRU) and Era-Interim (Harris 
+et al. 2014; Dee et al. 2011). Although the model ran for 1959–2015, 
+only the results for 1990–2014 have been used to calculate the 
+groundwater table decline indicator (Verdin and Greenlee 1996).
+Land surface model
+This is the central module of PCR-GLOBWB 2 and connects directly 
+to all other modules. It consists of multiple vertically stacked layers: 
+canopy, snow, soil layer 1 (S1), and soil layer 2 (S2). See Figure C1. 
+There are vertical fluxes between the stacked layers (e.g., S1 to S2 
+and vice versa), as well as with the climate forcing module (e.g., 
+precipitation and evaporation) and the groundwater module (e.g., S2 
+to groundwater). Furthermore, there are horizontal fluxes to the runoff 
+===== PAGE 42 =====
+42  |  
+  
+Figure C1  |  PCR-GLOBWB 2 schematic overview
+Note: “Schematic overview of a PCR-GLOBWB 2 cell and its modeled states and fluxes. S1, S2 (soil moisture storage), S3 (groundwater storage), Qdr (surface runoff—from rainfall 
+and snowmelt), Qsf (interflow or stormflow), Qbf (baseflow or groundwater discharge), and Inf (riverbed infiltration from to groundwater). The thin red lines indicate surface water 
+withdrawal, the thin blue lines groundwater abstraction, the thin red dashed lines return flows from surface water use, and the thin dashed blue lines return flows from groundwater 
+use surface. For each sector, withdrawal − return flow = consumption. Water consumption adds to total evaporation. In the figure, the five modules that make up PCR-GLOBWB 2 are 
+portrayed on the model components” (Sutanudjaja et al. 2018).
+Source: Based on raw data from Sutanudjaja et al. (2018), modified/aggregated by WRI. 
+Soil 2
+Soil 1
+Snow
+Canopy
+DomesticLivestockIrrigation
+Desalination
+Industrial
+Surface water withdrawal Return flows from surface water use Groundwater abstractionR eturn flows from groundwater use surface
+ReservoirsQsf
+Qdr
+IRRIGATION AND
+WATER USE MODULE
+LAND SURFACE
+MODULE
+METEOROLOGICAL
+FORCING MODULE
+GROUNDWATER
+MODULE
+SURFACE WATER
+ROUTING MODULE
+Precipitation Evaporation
+Groundwater
+Qbf
+lnf
+Qchannel
+===== PAGE 43 =====
+TECHNICAL NOTE   |  August 2023  |  43
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+module. Within each grid cell, subgrid variability is modeled using a 
+land-use class approach. This means that each grid cell is assigned a 
+fraction of four land-use classes: 
+ ▪ Tall natural vegetation 
+ ▪ Short natural and nonnatural (rainfed crops) vegetation
+ ▪ Nonpaddy-irrigated crops
+ ▪ Paddy-irrigated crops (e.g., wet rice)
+For instance, a grid cell might consist of 20 percent tall natural 
+vegetation, 25 percent short vegetation, 40 percent nonpaddy-
+irrigated crops, and 15 percent paddy-irrigated crops (total 100 
+percent). Soil and vegetation parameters are obtained for each class 
+and for each grid cell. Hence the soil and vegetation conditions are 
+spatially distributed. 
+The Global Land Cover Characteristics Data Base, version 2.0 (“GLCC 
+2.0” 2010) and land surface parameter data set (Hagemann 2002) are 
+used to assign the four land-use classes to each 5 arc minute grid 
+cell as well as obtain a few soil and vegetation parameters. 
+For each of the four land-use classes and for each soil layer (S1 and 
+S2), the remaining soil parameters are defined using SoilGrids250 
+(Hengl et al., 2017) and the WISE data set on global soil properties 
+(Batjes 2012). SoilGrids250 was used to replace the Digital Soil Map 
+of the World (Nachtergaele et al. 2009) because of its finer resolution.
+Finally, additional monthly vegetation properties, including leaf area 
+index (LAI) and crop factors, are derived from the MIRCA 2000 data 
+set (Portmann et al. 2010) and the Global Crop Water Model (Siebert 
+and Döll 2010). For each of the four land-use classes, the following 
+evaporative fluxes are defined:
+ ▪ Interception evaporation
+ ▪ Bare soil evaporation
+ ▪ Snow sublimation
+ ▪ Vegetation-specific transpiration
+Another main building block in the land surface model is runoff 
+and infiltration modeling. There are two runoff components in the 
+land surface module: (1) direct runoff from soil layer 1 combined 
+with snowmelt from the snow layer and (2) stormflow19 runoff 
+from soil layer 2. 
+Direct and stormflow runoff are determined by excess infiltration 
+according to the advanced ARNO scheme approach (Todini 1996; 
+Hagemann and Gates 2003). This scheme determines which fraction 
+will transfer vertically (infiltration) or horizontally (runoff).
+===== PAGE 44 =====
+44  |  
+  
+APPENDIX D: DELTA SUB-BASINS
+The underlying digital elevation models of PCR-GLOBWB 2 and 
+HydroBASINS assume a strictly convergent flow, which in some 
+cases leads to erroneous results. Rivers will sometimes bifurcate, 
+especially in flat delta areas. Available water resources and water 
+withdrawal are pooled within each sub-basin.  Therefore, sub-basins 
+that are part of the same delta need to be grouped and assumed to 
+belong to a common hydrological unit.
+The previous version of Aqueduct uses sub-basins derived from the 
+Global Drainage Basin Database (GDBD) (Masutomi et al. 2009). 
+By default, GDBD does not contain information about which basins 
+were grouped. According to the author of GDBD, it is not possible 
+to replicate the delta grouping using the HydroBASINS data set.  
+Therefore, additional information regarding the 67 delta basins in 
+GDBD was obtained directly from the authors and joined to the 
+original database. 
+The process of finding and grouping delta HydroBASINS includes 
+a semiautomated way to create a shortlist for potential delta sub-
+basins, and a manual step to ensure the correct classification. 
+To classify HydroBASINS into delta regions, a spatial join was 
+performed between HydroBASIN level 6 and GDBD with delta 
+classifier information.  The HydroBASINS that intersect the GDBD 
+delta basins are put on a shortlist for further inspection. 
+The second step is to count the number of separate GDBD 
+streams in each sub-basin. Multiple streams are an indication for 
+delta sub-basins. 
+As a third step, each shortlisted delta sub-basin is manually 
+checked by comparing the shortlisted sub-basins with all water 
+bodies extracted from OpenStreetMaps and the flow direction 
+and flow accumulation of both HydroBASINS and PCR-GLOBWB 
+2 (OpenStreetMap contributors 2018; Lehner and Grill 2013; 
+Sutanudjaja et al. 2018). 
+In total, 196 HydroBASINS are grouped into 63 delta basins. Eighty-
+nine delta regions have been examined. A column containing delta 
+information is added to the final Aqueduct database. 
+===== PAGE 45 =====
+TECHNICAL NOTE   |  August 2023  |  45
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+ENDNOTES
+1. We used time series of groundwater heads. Groundwater head is 
+a measure of pressure and can be linked to groundwater tables. 
+See the groundwater table decline indicator for more information.
+2. See Appendix A for the terminology. 
+3. Gross demand is the maximum potential water requirement, 
+compared to withdrawals, which represents the actual amount of 
+water used. For example, a given year may use fewer withdrawals 
+if heavy precipitation satisfied the water requirements. See Ap -
+pendix A for more details. 
+4. Water use estimates for domestic, industrial, and livestock sectors 
+are inputs to PCR-GLOBWB 2. Irrigation is the only sectoral de -
+mand that is an output of PCR-GLOBWB 2. Irrigation demand is a 
+function of crop extents and climatic conditions such as tempera -
+ture and humidity, and is therefore calculated on-the-fly during 
+the modeling process (to adjust to the climate forcing data). For 
+example, a crop field will require more water during a hotter sum -
+mer than a cooler summer. 
+5. Consumption from irrigation is calculated by taking the portion of 
+precipitation lost to evaporation.
+6. We assume that all water withdrawn for livestock is consumed. 
+Therefore, livestock net consumption equals livestock gross de -
+mand.
+7. Interflow is the flow of water in the unsaturated ground below the 
+surface but above the groundwater level. It discharges to above-
+ground streams rather than infiltrates into groundwater. 
+8. The PCR-GLOBWB2 output is called “runoff”. It is the sum of direct 
+runoff, interflow, and base flow within the catchment. Consump -
+tion is not removed. For more detail, see Ap  pendix C.
+9. The PCR-GLOBWB2 output is called “river discharge”. It is the 
+accumulative flow of direct runoff, interflow and base flow, minus 
+water consumption (i.e., surface water abstraction—return flow). 
+Evaporation from river and infiltration from river to groundwater 
+are also removed from the accumulated flow. For more detail, see 
+Ap pendix C. 
+10. Water that is being transported from one basin to another other 
+than natural flow. 
+11. Using the World Eckert IV projection. 
+12. Aqueduct 3.0 rescaled data to a 30 arc second resolution. How -
+ever, with the inclusion of the 15 future projections runs, Aqueduct 
+4.0 had about 43x more data to process; therefore, we experi -
+mented with different resampling sizes, assessing both the run 
+time and change in results. We found that by using a 1 arc minute 
+resolution, we could run the spatial reduction twice as fast while 
+introducing minimal changes in the results.
+13. An inflow point is where the stream enters the catchment for the 
+first time and is completely upstream of the catchment (there is 
+no presence of the catchment in its upstream path); an output 
+point is where the stream leaves the catchment, and there is no 
+presence of the catchment in its downstream path.
+14. LDD is at the same 5 x 5 arc minute resolution as discharge data.
+15. Rasterization is the process of turning a polygon into a grid (i.e., a 
+series of squares). Polygons may have rounded edges, which can 
+get lost in the rasterization process. Location boundaries, such as 
+sub-basins and state borders, are polygons, whereas hydrological 
+data, such as discharge, exist in a gridded format.  
+16. PCR-GLOBWB 2 uses a 5 x 5 arc minute spatial resolution, 
+whereas HydroBASINS sub-basins are derived from a much 
+finer digital elevation model (3 ×3 arc seconds) resampled to 15 
+x 15 arc second resolution. The result is that the larger 5 × 5 arc 
+minute grid cells might (partially) overlap adjacent sub-basins, 
+thereby erroneously making water available to that sub-basin.
+17. Discharge represents cumulative flow. Although a false output 
+point may temporarily show flow into an adjacent sub-basin, it is 
+not contributing to that basin’s accumulated flow because they 
+are not hydrologically connected. 
+18. Years prior to 1979 (1960–1978) are no longer included in the 
+baseline because they use a different reference climate forcing 
+dataset than the more recent years. Data from 1979 to 2019 use 
+W5E5 (Lange et al. 2021) for its observed atmospheric climate 
+forcing data. Data from 1960 to 1978 use Global Soil Wetness 
+Project Phase 3 (GSWP3) v1.09 (Dirmeyer et al. 2006).
+19. The irrigation is especially sensitive to climate forcing and evapo -
+transpiration algorithm limitations. 
+20. The Theil-Sen regressor is a non-parametric method for linear 
+regression that uses the median slope between points to estimate 
+trend (Sen 1968). It is particularly powerful at handling outliers, 
+which is why we use it over the Ordinary Least Sum regressor. 
+===== PAGE 46 =====
+46  |  
+  
+REFERENCES
+Allen, R.G., L.S. Pereira, D. Raes, M. Smith, and others. 1998. “Crop 
+Evapotranspiration: Guidelines for Computing Crop Water Require -
+ments.” FAO Irrigation and Drainage Paper 56. 
+“AQUASTAT.” n.d. http://www.fao.org/nr/water/aquastat/main/index.
+stm. Accessed February 13, 2019. 
+Arias, P., N. Bellouin, E. Coppola, R. Jones, G. Krinner, J. Marotzke, 
+V. Naik, M. Palmer, G.-K. Plattner, J. Rogelj, M. Rojas, J. Sillmann, 
+T.  Storelvmo, P. Thorne, B. Trewin, K. Rao, B. Adhikary, R. Allan, K. 
+Armour, K. Zickfeld, 2021. IPCC AR6 WGI Technical Summary. pp. 
+33–144. https://doi.org/10.1017/9781009157896.002.
+Batjes, N.H. 2012. “ISRIC-WISE Derived Soil Properties on a 5 by 5 
+Arc-Minutes Global Grid (Ver. 1.2).” ISRIC-World Soil Information. 
+BGR and UNESCO (Bundesanstalt für Geowissenschaften und  
+Rohstoffe and United Nations Educational, Scientific, and Cul -
+tural Organization). 2018. “Groundwater Resources of the World.” 
+https://www.whymap.org/whymap/EN/ Maps_Data/Gwrw/
+gwrw_node_en.html. 
+Billen, G., and J. Garnier. 2007. “River Basin Nutrient Delivery to 
+the Coastal Sea: Assessing Its Potential to Sustain New Produc -
+tion of Non-siliceous Algae.” Marine Chemistry  106 (1–2): 148–60. 
+doi:10.1016/j.marchem.2006.12.017. 
+Bouwman, A., T. Kram, and K. Klein Goldewijk. 2006. “Integrated Mod -
+elling of Global Environmental Change: An overview of IMAGE.4.” PBL 
+Netherlands Environmental Assessment Agency, September 11. 
+Bouwman, A.F., A.H.W. Beusen, J.A. Harrison, and D.C. Reed. 2015. 
+“Nutrient Release in Global Coastal Marine Ecosystems, and Model -
+ing of Impacts (Hypoxia, Harmful Algal Blooms and Fisheries) in Rela -
+tion to Coastal Conditions.” Global Foundations for Reducing Nutrient 
+Enrichment and Oxygen Depletion from Land Based Pollution, in 
+Support of Global Nutrient Cycle. Global Environment Facility, United 
+Nations Development Programme, and Intergovernmental Oceano -
+graphic Commission. https://www.thegef.org/project/global-founda -
+tions-reducingnutrient-enrichment-and-odflb-pollution-support-gnc. 
+Brauman, K.A., B.D. Richter, S. Postel, M. Malsy, and M. Flörke. 2016. 
+“Water Depletion: An Improved Metric for Incorporating Seasonal and 
+Dry-Year Water Scarcity into Water Risk Assessments.” Elementa: Sci -
+ence of the Anthropocene 4 (January): 000083. doi:10.12952/journal.
+elementa.000083. 
+21. Baseline water stress and baseline water depletion use a fraction 
+approach. When the denominator is very close to zero, the value 
+will be extremely high and is often based on only a few data 
+points. Please see the “Indicator” section and the respective equa -
+tions. 
+22. Bias-corrected date for these GCMs are available under the ISI-
+MIP 3b protocol (ISIMIP 3 Protocol 2021).
+23. The computation resources for running the model and storing its 
+outputs limited us to 5 GCM runs per scenario. 
+24. Environmental flow requirements are implicitly considered in the 
+thresholds. 
+25. 5 x 5 arc minute. 
+26. Our research partners at Deltares and Utrecht University ran the 
+model for 1960–2014, but only 1990–2014 has been used to cal -
+culate the indicator. The reason is that groundwater development 
+began to increase in the late 1980s and 1990s in some countries 
+that use groundwater intensively. We assume this period to be 
+representative of the current trend; however, further optimization 
+might provide better insights as to the best range. Although this is 
+different from some other indicators, we are consistently calcu -
+lating baseline scores, thereby making it possible to aggregate 
+various temporal ranges. 
+27. The vulnerability of people to floods is assessed as a binary con -
+dition: they are either flooded or they are not. 
+28. The vulnerability of people to floods is assessed as a binary con -
+dition: they are either flooded or they are not. 
+29. Water use estimates for domestic, industrial, and livestock sectors 
+are inputs to PCR-GLOBWB 2. Irrigation is the only sectoral de -
+mand that is an output of PCR-GLOBWB 2. Irrigation demand is a 
+function of crop extents and climatic conditions such as tempera -
+ture and humidity and is therefore calculated on-the-fly during 
+the modeling process (to adjust to the climate forcing data). For 
+example, a crop field will require more water during a hotter sum -
+mer than a cooler summer. 
+30. These elements are indirectly covered in the Regulatory and 
+Reputational Risk group. 
+31. WATCH (WATer and global CHange); ERA5 (ECMWF Re-Analysis 
+fifth generation); ECMWF (European Centre for Medium-Range 
+Weather Forecasts).
+===== PAGE 47 =====
+TECHNICAL NOTE   |  August 2023  |  47
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Carrão, H., G. Naumann, and P. Barbosa. 2016. “Mapping Global 
+Patterns of Drought Risk: An Empirical Framework Based on 
+Sub-national Estimates of Hazard, Exposure and Vulnerability.” 
+Global Environmental Change 39 (July): 108–24. doi: 10.1016/j.gloenv -
+cha.2016.04.012. 
+Dalkey, N., and O. Helmer. 1963. “An Experimental Application of the 
+DELPHI Method to the Use of Experts.” Management Science  9 (3): 
+458–67. doi:10.1287/ mnsc.9.3.458. 
+Dirmeyer, P., X. Gao, M. Zhao, Z. Guo, T. Oki, N. Hanasaki, 2006. 
+“GSWP–2: Multimodel Analysis and Implications for Our Perception of 
+the Land Surface.” Bulletin of The American Meteorological Society 87 
+(10): 1381--98. https://doi.org/10.1175/BAMS-87–10–1381.
+Dee, D.P., S.M. Uppala, A.J. Simmons, P. Berrisford, P. Poli, S. Ko -
+bayashi, U. Andrae, et al. 2011. “The ERA-Interim Reanalysis: Configu -
+ration and Performance of the Data Assimilation System.” Quar -
+terly Journal of the Royal Meteorological Society 137 (656): 553–97. 
+doi:10.1002/qj.828.
+de Graaf, I., E. Sutanudjaja, L. Van Beek, and M. Bierkens. 2015. “A 
+High-Resolution Global-Scale Groundwater Model.” Hydrology and 
+Earth System Sciences  19 (2): 823–37. 
+de Graaf, I.E.M., R.L.P.H. van Beek, T. Gleeson, N. Moosdorf, O. 
+Schmitz, E.H. Sutanudjaja, and M.F.P. Bierkens. 2017. “A Global-Scale 
+Two-Layer Transient Groundwater Model: Development and Applica -
+tion to Groundwater Depletion.” Advances in Water Resources  102 
+(April): 53–67. doi:10.1016/j. advwatres.2017.01.011. 
+Doelman, J.C., E. Stehfest, A. Tabeau, H. van Meijl, L. Lassaletta, 
+D.E.H.J. Gernaat, K. Hermans, M. Harmsen, V. Daioglou, H. Biemans, 
+S. van der Sluis, D.P. van Vuuren, 2018. “Exploring SSP land-use 
+dynamics using the IMAGE model: Regional and gridded scenarios of 
+land-use change and land-based climate change mitigation.” Global 
+Environmental Change 48: 119–35. https://doi.org/10.1016/j.gloen -
+vcha.2017.11.014
+Doorenbos, J., and W. Pruitt. 1977. “Crop Water Requirements.” Irriga -
+tion and Drainage Paper No. 24. Rome: FAO (Food and Agriculture 
+Organization of the United Nations). 
+EOG and NOAA (Earth Observation Group and National Oceanic and 
+Atmospheric Administration). n.d. “Nighttime Lights.” NOAA. https://
+ngdc.noaa.gov/eog/viirs/ download_dnb_composites.html. Accessed 
+February 13, 2019. 
+Eisner, S. 2016. “Comprehensive Evaluation of the WaterGAP3 Model 
+across Climatic, Physiographic, and Anthropogenic Gradients.” PhD 
+diss., University of Kassel. 
+“FAOSTAT.” 2012. FAO (Food and Agriculture Organization of the 
+United Nations). http://faostat.fao.org/. Accessed February 12, 2019. 
+“GADM Metadata.” n.d. https://gadm.org/metadata.html. Accessed 
+February 11, 2019. 
+Galvis Rodríguez, S., E.H. Sutanudjaja, and M. Faneca Sànchez. 2017. 
+“Memo: Update on the Groundwater Risk Indicators.” Memo. Delft, the 
+Netherlands: Deltares. 
+Garnier, J., A. Beusen, V. Thieu, G. Billen, and L. Bouwman. 2010. 
+“N:P:Si Nutrient Export Ratios and Ecological Consequences in 
+Coastal Seas Evaluated by the ICEP Approach.” Global Biogeochemi -
+cal Cycles 24 (4). doi:10.1029/2009GB003583. 
+Gassert, F., M. Luck, M. Landis, P. Reig, and T. Shiao. 2014. “Aqueduct 
+Global Maps 2.1: Constructing Decision-Relevant Global Water Risk 
+Indicators.” World Resources Institute. https://wriorg.s3.amazonaws.
+com/s3fs-public/Aqueduct_ Global_Maps_2.1-Constructing_De -
+cicion-Relevant_Global_Water_Risk_ Indicators_final_0.pdf. 
+Hagemann, S. 2002. “An Improved Land Surface Parameter Dataset 
+for Global and Regional Climate Models.” Max-Planck-Institut für 
+Meteorologie, January. doi:10.17617/2.2344576. 
+Hagemann, S., and L.D. Gates. 2003. “Improving a Subgrid Runoff 
+Parameterization Scheme for Climate Models by the Use of High 
+Resolution Data Derived from Satellite Observations.” Climate Dynam -
+ics 21 (3–4): 349–59. doi:10.1007/s00382-003-0349-x. 
+Harris, I., P.D. Jones, T.J. Osborn, and D.H. Lister. 2014. “Updated 
+High-Resolution Grids of Monthly Climatic Observations: The CRU 
+TS3.10 Dataset.” International Journal of Climatology  34 (3): 623–42. 
+doi:10.1002/joc.3711. 
+Hartmann, J., and N. Moosdorf. 2012. “The New Global Lithological 
+Map Database GLiM: A Representation of Rock Properties at the 
+Earth Surface.” Geochemistry, Geophysics, Geosystems  13 (12). https://
+agupubs.onlinelibrary.wiley.com/ doi/10.1029/2012GC004370. 
+Hempel, S., K. Frieler, L. Warszawski, J. Schewe, F. Piontek, “A trend-
+preserving bias correction—the ISI-MIP approach.” Earth System 
+Dynamics 4: 219–36 (2013). 
+Hengl, T., J.M. de Jesus, G.B.M.Heuvelink, M.R. Gonzalez, M. Kili -
+barda, A. Blagotić, W. Shangguan, M.N. Wright, X. Geng, B. Bauer-
+Marschallinger, M.A. Guevara, R. Vargas, R.A. MacMillan, N.H. Batjes, 
+J.G.B. Leenaars, E. Ribeiro, I. Wheeler, S. Mantel, B. Kempen, 2017. 
+“SoilGrids250m: Global gridded soil information based on machine 
+learning.” PLOS ONE 12, e0169748. https://doi.org/10.1371/jour -
+nal.pone.0169748
+===== PAGE 48 =====
+48  |  
+  
+IGRAC (International Groundwater Resources Assessment Centre). 
+n.d. “Global Groundwater Information System (GGIS).” https://www.
+un-igrac.org/globalgroundwater-information-system-ggis. Accessed 
+February 13, 2019. 
+IOC-UNESCO and UNEP (Intergovernmental Oceanographic Com -
+mission and United Nations Environment Programme). 2016. “Large 
+Marine Ecosystems: Status and Trends.” Nairobi: UNEP. http://geft -
+wap.org/water-systems/largemarine-ecosystems. 
+Kraijenhoff van de Leur, D.A. 1958. “A Study of Non-steady Ground -
+water Flow with Special Reference to a Reservoir Coefficient.” De 
+Ingenieur 19: B87–B94 
+Lange, S., 2021. ISIMIP3b Bias Adjustment Fact Sheet. ISIMIP.
+Lange, S., C. Menz, S. Gleixner, M. Cucchi, G.P. Weedon, A. Amici, N. 
+Bellouin, H. Müller Schmied, H. Hersbach, C. Buontempo, C. Cag -
+nazzo, 2021. WFDE5 over land merged with ERA5 over the ocean  
+(W5E5 v2.0). https://doi.org/10.48364/ISIMIP.342217.
+Lehner, B., and P. Döll. 2004b. “Development and Validation of a 
+Global Database of Lakes, Reservoirs and Wetlands.” Journal of Hy-
+drology 296 (1–4): 1–22. doi:10.1016/j.jhydrol.2004.03.028. 
+Lehner, B., and G. Grill. 2013. “Global River Hydrography and Network 
+Routing: Baseline Data and New Approaches to Study the World’s 
+Large River Systems.” Hydrological Processes  27 (15): 2171–86. 
+Lehner, B., K. Verdin, and A. Jarvis. 2008. “New Global Hydrography 
+Derived from Spaceborne Elevation Data.” Eos, Transactions, Ameri -
+can Geophysical Union  89 (10): 93. doi:10.1029/2008EO100001. 
+Lehner, B., C.R. Liermann, C. Revenga, C. Vörösmarty, B. Fekete, P. 
+Crouzet, P. Döll, et al. 2011. “High-Resolution Mapping of the World’s 
+Reservoirs and Dams for Sustainable River-Flow Management.” Fron -
+tiers in Ecology and the Environment 9 (9): 494–502.
+Luck, M., M. Landis, F. Gassert. 2015. “Aqueduct Water Stress Projec -
+tions: Decadal Projections of Water Supply and Demand Using 
+CMIP5 GCMs.” Technical Note. Washington, DC: World Resources 
+Institute. wri.org/publication/aqueduct-water-stress-projections.
+Masutomi, Y., Y. Inui, K. Takahashi, and Y. Matsuoka. 2009. “Develop -
+ment of Highly Accurate Global Polygonal Drainage Basin Data.” 
+Hydrological Processes  23 (4): 572–84. doi:10.1002/hyp.7186. 
+Mayorga, E., S.P. Seitzinger, J.A. Harrison, E. Dumont, A.H.W. Beusen, 
+A.F. Bouwman, B.M. Fekete, et al. 2010. “Global Nutrient Export from 
+WaterSheds 2 (NEWS 2): Model Development and Implementation.” 
+Environmental Modelling & Software 25 (7): 837–53. doi:10.1016/j.
+envsoft.2010.01.007.
+Mekonnen, M.M. and A.Y. Hoekstra, 2012. “A Global Assessment of the 
+Water Footprint of Farm Animal Products.” Ecosystems  15, 401–415. 
+https://doi.org/10.1007/s10021-011-9517-8.
+Meyer, V., D. Haase, and S. Scheuer. 2009. “Flood Risk Assessment in 
+European River Basins—Concept, Methods, and Challenges Exempli -
+fied at the Mulde River.” Integrated Environmental Assessment and 
+Management 5 (1): 17–26. doi:10.1897/ IEAM_2008-031.1. 
+Müller Schmied, H., S. Eisner, D. Franz, M. Wattenbach, F.T. Portmann, 
+M. Flörke, and P. Döll. 2014. “Sensitivity of Simulated Global-Scale 
+Freshwater Fluxes and Storages to Input Data, Hydrological Model 
+Structure, Human Water Use and Calibration.” Hydrology and Earth 
+System Sciences  18 (9): 3511–38. doi:10.5194/ hess–18-3511–2014. 
+Nachtergaele, F., H. van Velthuizen, L. Verelst, N. Batjes, K. Dijkshoorn, 
+V. van Engelen, G. Fischer, et al. 2009. “Harmonized World Soil Data -
+base.” Wageningen, the Netherlands: ISRIC. 
+OpenStreetMap contributors. 2018. Planet Dump. https://
+Planet.Osm.Org. 
+Paul, P.K., Y. Zhang, N. Ma, A. Mishra, N. Panigrahy, R. Singh, 2021. 
+“Selecting hydrological models for developing countries: Perspective 
+of global, continental, and country scale models over catchment scale 
+models.” Journal of Hydrology 600, 126561. https://doi.org/10.1016/j.
+jhydrol.2021.126561.
+Portmann, F.T., S. Siebert, and P. Döll. 2010. “MIRCA2000-Global 
+Monthly Irrigated and Rainfed Crop Areas around the Year 
+2000: A New High-Resolution Data Set for Agricultural and 
+Hydrological Modeling.” Global Biogeochemical Cycles 24 (1). 
+doi:10.1029/2008GB003435. 
+Reig, P., T. Shao, and F. Gassert. 2013. “Aqueduct Water Risk Frame -
+work.” Working paper. Washington, DC: World Resources Institute. 
+https://wriorg.s3.amazonaws. com/s3fs-public/aqueduct_water_
+risk_framework.pdf. 
+RepRisk. n.d. “RepRisk ESG Data Science and Quantitative Solutions.” 
+www. reprisk.com. 
+Rodell, M., P.R. Houser, U. Jambor, J. Gottschalck, K. Mitchell, C.-J. 
+Meng, K. Arsenault, et al. 2004. “The Global Land Data Assimila -
+tion System.” Bulletin of the American Meteorological Society 85 (3): 
+381–94. doi:10.1175/BAMS-85-3-381. 
+Rohwer, J., D. Gerten, and W. Lucht. 2007. Development of Functional 
+Irrigation Types for Improved Global Crop Modelling . PIK Report. 
+===== PAGE 49 =====
+TECHNICAL NOTE   |  August 2023  |  49
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+Rowe, G., and G. Wright. 1999. “The Delphi Technique as a Forecast -
+ing Tool: Issues and Analysis.” International Journal of Forecasting  15 
+(4): 353–75. doi:10.1016/S0169–2070(99)00018-7.
+Sen, P.K., 1968. Estimates of the Regression Coefficient Based on Ken -
+dall’s Tau. Journal of the American Statistical Association 63: 1379–89. 
+https://doi.org/10.2307/2285891
+Scussolini, P., J.C.J.H. Aerts, B. Jongman, L.M. Bouwer, H.C. Winse -
+mius, H. de Moel, and P.J. Ward. 2016. “FLOPROS: An Evolving Global 
+Database of Flood Protection Standards.” Natural Hazards and Earth 
+System Sciences  16 (5): 1049–61. doi:10.5194/nhess–16–1049–2016. 
+Shiklomanov, I. 1997. “Comprehensive Assessment of the Fresh -
+water Resources of the World.” Stockholm: World Meteorologi -
+cal Organization. 
+Siebert, S., and P. Döll. 2010. “Quantifying Blue and Green Virtual 
+Water Contents in Global Crop Production as Well as Potential 
+Production Losses without Irrigation.” Journal of Hydrology  384 (3–4): 
+198–217. doi:10.1016/j. jhydrol.2009.07.031. 
+Steinfeld, H., P. Gerber, T.D. Wassenaar, V. Castel, M. Rosales, and 
+C. de Haan. 2006. Livestock’s Long Shadow: Environmental Issues 
+and Options. Rome: FAO (Food and Agriculture Organization of the 
+United Nations). 
+Strahler, A.N. 1957. “Quantitative Analysis of Watershed Geomorphol -
+ogy.” Eos, Transactions, American Geophysical Union 38 (6): 913–20. 
+Sutanudjaja, E.H., R. van Beek, N. Wanders, Y. Wada, J.H.C. Bosmans, 
+N. Drost, R.J. van der Ent, et al. 2018. “PCR-GLOBWB 2: A 5 Arcmin 
+Global Hydrological and Water Resources Model.” Geoscientific 
+Model Development 11 (6): 2429–53. doi:10.5194/gmd–11–2429–2018. 
+Sutanudjaja, E.H., R. van Beek, E. Saccoccia, S. Kuzma, T. Luo, and 
+M.F.P Bierkens. 2023. “Hydrological projection of future global water 
+states with CMIP6.” Utrecht University. https://public.yoda.uu.nl/geo/
+UU01/YM7A5H.html.
+Todini, E. 1996. “The ARNO Rainfall: Runoff Model.” Journal of Hydrol -
+ogy 175 (1): 339–82. doi:10.1016/S0022–1694(96)80016-3. 
+Triantaphyllou, E. 2010. Multi-criteria Decision Making Methods: A 
+Comparative Study. Applied Optimization 44. Dordrecht, the Neth -
+erlands: Kluwer.
+UNEP (United Nations Environment Programme). n.d. “UNEP.” https://
+www. unenvironment.org/. Accessed on February 28, 2019.
+Vanham, D., A.Y. Hoekstra, Y. Wada, F. Bouraoui, A. de Roo, M.M. Me -
+konnen, W.J. van de Bund, et al. 2018. “Physical Water Scarcity Metrics 
+for Monitoring Progress towards SDG Target 6.4: An Evaluation of In -
+dicator 6.4.2 ‘Level of Water Stress.’” Science of the Total Environment  
+613–14 (February): 218–32. doi:10.1016/j. scitotenv.2017.09.056. 
+van Huijstee, J., B. van Bemmel, A. Bouwman, and F. van Rijn. 2018. 
+“Towards an Urban Preview: Modelling Future Urban Growth 
+with 2UP.” 3255. The Hague: PBL Netherlands Environmental As -
+sessment Agency. https://www.pbl.nl/en/ publications/towards-
+an-urban-preview.
+van Vuuren, D., P. P.L. Lucas, and H. Hilderink. 2007. “Downscaling 
+Drivers of Global Environmental Change: Enabling Use of Global 
+SRES Scenarios at the National and Grid Levels.” Global Environmen -
+tal Change: Uncertainty and Climate Change Adaptation and Mitiga -
+tion 17 (1): 114–30. doi:10.1016/j.gloenvcha.2006.04.004. 
+Verdin, K.L., and S. Greenlee. 1996. “Development of Continental Scale 
+Digital Elevation Models and Extraction of Hydrographic Features.” In 
+Proceedings, Third International Conference/Workshop on Integrating 
+GIS and Environmental Modeling, Santa Fe, New Mexico, 21–26. 
+Vörösmarty, C.J., B.M. Fekete, M. Meybeck, and R.B. Lammers. 2000. 
+“Global System of Rivers: Its Role in Organizing Continental Land 
+Mass and Defining Land-to-Ocean Linkages.” Global Biogeochemical 
+Cycles 14 (2): 599–621. doi:10.1029/1999GB900092. 
+Vörösmarty, C.J., C. Léveque, C. Revenga, R. Bos, C. Caudill, J. Chilton, 
+E. Douglas, et al. 2005. Millennium Ecosystem Assessment Volume 1: 
+Conditions and Trends, chap. 7, “Freshwater Ecosystems.” Millennium 
+Ecosystem Assessment 1: 165–207. 
+Wada, Y., L.P.H. van Beek, and M.F.P. Bierkens. 2011a. “Modelling 
+Global Water Stress of the Recent Past: On the Relative Importance of 
+Trends in Water Demand and Climate Variability.” Hydrology and Earth 
+System Sciences  15 (12): 3785–808. doi:10.5194/hess–15-3785–2011. 
+Wada, Y., L.P.H. van Beek, D. Viviroli, H.H. Dürr, R. Weingartner, and 
+M.F.P. Bierkens. 2011b. “Global Monthly Water Stress: 2. Water Demand 
+and Severity of Water Stress , 2.” Water Resources Research 47 (7). 
+doi:10.1029/2010WR009792. 
+Wada, Y., D. Wisser, and M.F.P. Bierkens. 2014. “Global Modeling 
+of Withdrawal, Allocation and Consumptive Use of Surface Water 
+and Groundwater Resources.” Earth System Dynamics 5 (1): 15–40. 
+doi:10.5194/esd-5–15–2014. 
+===== PAGE 50 =====
+50  |  
+  
+Wada, Y., M. Flörke, N. Hanasaki, S. Eisner, G. Fischer, S. Tramberend, 
+Y. Satoh, M.T.H. van Vliet, P. Yillia, C. Ringler, P. Burek, D. Wiberg, 
+2016. “Modeling global water use for the 21st century: the Water 
+Futures and Solutions (WFaS) initiative and its approaches.” Geo -
+scientific Model Development  9: 175–222. https://doi.org/10.5194/
+gmd-9–175–2016.
+Wang, D., K. Hubacek, Y. Shan, W. Gerbens-Leenes, J. Liu, 2021. “A 
+Review of Water Stress and Water Footprint Accounting.” Water  13, 
+201. https://doi.org/10.3390/w13020201.
+Ward, P.J., H.C. Winsemius, S. Kuzma, T. Luo, M.F.P. Bierkens, A. Bouw -
+man, H. de Moel, et al. 2020. “Aqueduct Floods Methodology.” Techni -
+cal Note. Washington, DC: World Resources Institute.
+Wendling, Z.A., J.W. Emerson, D.C. Esty, M.A. Levy, and A. de 
+Sherbinin. 2018. “2018 Environmental Performance Index.” New 
+Haven, CT: Yale Center for Environmental Law and Policy. https://epi.
+envirocenter.yale.edu/2018-epi-report/ introduction.
+Wint, W., and T.P. Robinson. 2007. Gridded Livestock of the World, 
+2007. Rome: Food and Agriculture Organization of the United Nations. 
+World Bank. n.d. “World Bank National Accounts Data.” World Bank. 
+https://data. worldbank.org. Accessed February 13, 2019. 
+WHO and UNICEF (World Health Organization and United Nations 
+Children’s Fund). 2017. Progress on Drinking Water, Sanitation and 
+Hygiene: 2017 Update and SDG Baselines . https://washdata.org/. 
+WRI (World Resources Institute). n.d. WRI’s Open Data Commitment: 
+World Resources Institute. https://www.wri. org/about/open-data-
+commitment. Accessed February 27, 2019. 
+WRI, UNEP, UNDP, and World Bank, eds. 1998. World Resources, 
+1998–99: A Guide to the Global Environment Environmental Change 
+and Human Health. New York: Oxford University Press. 
+Xie, H., C. Ringler, and G. Pitois. 2016. “Assessing Global BOD, Nitro -
+gen and Phosphorus Loadings under Socioeconomic and Climate 
+Change Scenarios.” Technical note. IFPRI (International Food Policy 
+Research Institute).
+Yamazaki, D., D. Ikeshima, J. Sosa, P. Bates, G. Allen, T. Pavelsky, 2019. 
+“Hydro: A High‐Resolution Global Hydrography Map Based on Lat -
+est Topography Dataset.” Water Resources Research  55. https://doi.
+org/10.1029/2019WR024873.
+===== PAGE 51 =====
+TECHNICAL NOTE   |  August 2023  |  51
+Aqueduct 4.0: Updated decision-relevant global water risk indicators
+ACKNOWLEDGEMENTS
+We are pleased to acknowledge our institutional strategic partners, 
+who provide core funding to WRI: Netherlands Ministry of Foreign 
+Affairs, Royal Danish Ministry of Foreign Affairs, and Swedish 
+International Development Cooperation Agency.
+This publication was made possible thanks to the support of 
+Microsoft, Moody’s RMS, and Cargill Inc., and the Aqueduct Alliance 
+(Accenture, Ansell, Cargill Inc., Ecolab Inc., Dutch Ministry of 
+Infrastructure and Water Management, Gap, International Paper, 
+Mars, Meta, Microsoft, Proctor & Gamble Company, Tyson Foods Inc., 
+3M). Additionally, we thank the World Bank for supporting parts of 
+Aqueduct Floods.
+The authors would like to thank the following people for providing 
+invaluable insight and assistance in their reviews of this report: 
+Zablon Adane (WRI), Courtnae Baily (WRI), Brittany Craig (Tyson 
+Foods Inc.) and Homero Paltan Lopez (World Bank).
+The authors would also like to thank our research partners at 
+Deltares, IFPRI, IVM, RepRisk, and Utrecht University, as well as 
+our WRI colleagues Nancy Sanchez, Carlos DelReal, Renee Pineda, 
+Carlos Muñoz, Laura Malaguzzi Valeri, and Romain Warnault, for 
+their extensive guidance and feedback during the design and 
+development of this study.
+Opinions or points of view expressed in this report are those of the 
+authors and do not necessarily reflect the position of the reviewers, 
+research partners, or the organizations they represent.
+ABOUT THE AUTHORS
+Samantha Kuzma  is the data lead and senior manager for Global 
+Water Data Products at World Resources Institute. 
+Contact: samantha.kuzma@wri.org
+Marc F. P. Bierkens is a professor of hydrology at Utrecht University, 
+where he holds the Chair of Earth Surface Hydrology in the 
+Department of Physical Geography. He is also a senior scientist at 
+Deltares.
+Shivani Lakshman  is a corporate water stewardship research 
+analyst at the World Resources Institute. 
+Tianyi Luo is a director at Bluerisk.
+Liz Saccoccia  is a water security and geospatial associate at the 
+World Resources Institute. 
+Edwin H. Sutanudjaja  is the core developer of PCR-GLOBWB 2 in 
+the Department of Physical Geography at Utrecht University.
+Rens van Beek  is an associate professor of large-scale hydrology 
+and Earth surface processes at Utrecht University.
+===== PAGE 52 =====
+Copyright 2023 World Resources Institute. This work is licensed under the Creative Commons Attribution 4.0 International License.  
+To view a copy of the license, visit http://creativecommons.org/licenses/by/4.0/
+  
+10 G Street, NE  |  Washington, DC 20002  |  WRI.ORG
+ABOUT WRI 
+World Resources Institute is a global research organization that 
+turns big ideas into action at the nexus of environment, economic 
+opportunity, and human well-being. 
+Our challenge
+Natural resources are at the foundation of economic opportunity and 
+human well-being. But today, we are depleting Earth’s resources at 
+rates that are not sustainable, endangering economies and people’s 
+lives. People depend on clean water, fertile land, healthy forests, 
+and a stable climate. Livable cities and clean energy are essential 
+for a sustainable planet. We must address these urgent, global 
+challenges this decade.
+Our vision
+We envision an equitable and prosperous planet driven by the wise 
+management of natural resources. We aspire to create a world where 
+the actions of government, business, and communities combine to 
+eliminate poverty and sustain the natural environment for all people.
+Our approach
+COUNT IT
+We start with data. We conduct independent research and draw on 
+the latest technology to develop new insights and recommendations. 
+Our rigorous analysis identifies risks, unveils opportunities, and 
+informs smart strategies. We focus our efforts on influential 
+and emerging economies where the future of sustainability 
+will be determined.
+CHANGE IT
+We use our research to influence government policies, business 
+strategies, and civil society action. We test projects with communities, 
+companies, and government agencies to build a strong evidence 
+base. Then, we work with partners to deliver change on the ground 
+that alleviates poverty and strengthens society. We hold ourselves 
+accountable to ensure our outcomes will be bold and enduring.
+SCALE IT
+We don’t think small. Once tested, we work with partners to adopt 
+and expand our efforts regionally and globally. We engage with 
+decision-makers to carry out our ideas and elevate our impact. We 
+measure success through government and business actions that 
+improve people’s lives and sustain a healthy environment.

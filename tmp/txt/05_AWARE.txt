@@ -1,0 +1,1070 @@
+
+===== PAGE 1 =====
+W A TER USE IN LCA
+The WULCA consensus characterization model for water scarcity
+footprints: assessing impacts of water consumption based
+on available water remaining (A W ARE)
+Anne-Marie Boulay1,2 & Jane Bare3 & Lorenzo Benini4 & Markus Berger5 &
+Michael J. Lathuillière6 & Alessandro Manzardo7 & Manuele Margni1 &
+Masaharu Motoshita8 & Montserrat Núñez9 & Amandine Valerie Pastor10,11 &
+Bradley Ridoutt12,13 & Taikan Oki14 & Sebastien Worbe15 & Stephan Pfister16
+Received: 12 December 2016 / Accepted: 10 May 2017 / Published online: 8 June 2017
+# The Author(s) 2017. This article is an open access publication
+Abstract
+Purpose Life cycle assessment (LCA) has been used to assess
+freshwater-related impacts according to a new water footprint
+framework formalized in the ISO 14046 standard. To date, no
+consensus-based approach exists for applying this standard
+and results are not always comparable when different scarcity
+or stress indicators are used for characterization of impacts.
+This paper presents the outcome of a 2-year consensus
+building process by the Water Use in Life Cycle Assessment
+(WULCA), a working group of the UNEP-SETAC Life Cycle
+Initiative, on a water scarcity midpoint method for use in LCA
+and for water scarcity footprint assessments.
+Methods In the previous work, the question to be answered
+was identified and different expert workshops around the
+world led to three different proposals. After eliminating one
+proposal showing low relevance for the question to be
+Responsible editor: Sarah McLaren
+Electronic supplementary material The online version of this article
+(doi:10.1007/s11367-017-1333-8) contains supplementary material,
+which is available to authorized users.
+* Anne-Marie Boulay
+anne-marie.boulay@polymtl.ca
+1 CIRAIG, Polytechnique Montreal, Montreal, Canada
+2 LIRIDE, Sherbrooke University, Sherbrooke, Canada
+3 Office of Research and Development, National Risk Management
+Research Laboratory, Sustainable Technology Division, USEP A,
+Cincinnati, OH, USA
+4 Joint Research Centre, Sustainability Assessment Unit, European
+Commission, Ispra, V A, Italy
+5 Sustainable Engineering, Technische Universität Berlin,
+Berlin, Germany
+6 Institute for Resources, Environment and Sustainability, University of
+British Columbia, V ancouver, Canada
+7 Department of Industrial Engineering, CESQA, University of
+Padova, Padua, Italy
+8 National Institute of Advanced Industrial Science and Technology,
+Tsukuba, Japan
+9 ELSA, ELSA-P ACT, UMR IT AP , IRSTEA, 361 Rue Jean François
+Breton, 34196 Montpellier, France
+10 International Institute of Applied Systems Analysis (IIASA),
+Laxenburg, Austria
+11 Earth System Science, WageningenUniversity,
+Wageningen, The Netherlands
+12 Commonwealth Scientific and Industrial Research Organisation
+(CSIRO), Clayton, VIC, Australia
+13 Department of Agricultural Economics, University of the Free State,
+Bloemfontein, South Africa
+14 Institute of Industrial Science, The University of Tokyo, Tokyo, Japan
+15 V eolia Research and Innovation, Maisons-Laffitte, France
+16 ETH Zurich, Zurich, Switzerland
+Int J Life Cycle Assess (2018) 23:368–378
+DOI 10.1007/s11367-017-1333-8
+
+===== PAGE 2 =====
+answered, the remaining two were evaluated against four
+criteria: stakeholder acceptance, robustness with closed ba-
+sins, main normative choice, and physical meaning.
+Results and discussion The recommended method, AW ARE,
+is based on the quantification of the relative available water
+remaining per area once the demand of humans and aquatic
+ecosystems has been met, answering the questionBWhat is the
+potential to deprive another user (human or ecosystem) when
+consuming water in this area?^ The resulting characterization
+factor (CF) ranges between 0.1 and 100 and can be used to
+calculate water scarcity footprints as defined in the ISO
+standard.
+Conclusions After 8 years of development on water use im-
+pact assessment methods, and 2 years of consensus building,
+this method represents the state of the art of the current knowl-
+edge on how to assess potential impacts from water use in
+LCA, assessing both human and ecosystem users ’potential
+deprivation, at the midpoint level, and provides a consensus-
+based methodology for the calculation of a water scarcity
+footprint as per ISO 14046.
+Keywords Impact assessment . LCIA . Life cycle
+assessment . UNEP-SETAC life cycle initiative. Water
+consumption . Water footprint . Water stress . Water use .
+WULCA
+1 Introduction
+For several decades, life cycle assessment (LCA) (ISO 14040
+2006) has served as a decision-making tool to help reduce
+environmental impacts of products and services (Hellweg
+and Milà i Canals 2014). Recently, a new water footprint
+concept relying on a life cycle approach was framed in the
+ISO 14046 standard (ISO 14046 2014). In recent years, busi-
+nesses have started to include water scarcity indicators (some-
+times also called stress indicators) to assess potential impacts
+of water consumption. In the context of the ISO standard, this
+is the equivalent of a Bwater scarcity footprint ^ which ad-
+dresses potential impacts associated with the quantity aspect
+of water use (i.e., water consumption) without considering the
+additional quality component of availability (e.g., water func-
+tionality as described in (Boulay et al.2011a, b) ) .H o w e v e r ,t o
+date, no consensus-based approach exists to assess water scar-
+city impact as illustrated by the technical report (ISO 14073
+2016) accompanying the ISO 14046 standard (ISO 14046
+2014). It presents a series of water scarcity footprint examples
+which are simply not directly comparable, because the char-
+acterization models have different scales and ranges, and are
+based on different modeling choices, with some more human
+health or ecosystem quality oriented (Boulay et al.2014). The
+need for a consensus-based method emerged from method
+developers and several environmental label and declaration
+initiatives wishing to use global metrics and ensure compara-
+bility (Galatola and Pant 2014; ISO 14046 2014;B o u l a ye ta l .
+2015b) and was identified as priority by the UNEP-SETAC
+Life Cycle Initiative (Jolliet et al. 2014). The Water Use in
+LCA (WULCA) Working Group took over this task by bring-
+ing together method developers and experts in LCA, hydrol-
+ogy, and ecology from academia, public and private sectors.
+In January 2014, building on the water use in LCA frame-
+work (Bayart et al. 2010; Kounina et al. 2013), WULCA
+commenced a 2-year activity aiming at developing
+consensus-based indicator(s) for water use impact assessment
+focusing first on a generic scarcity-based Bproxy^ midpoint
+indicator (labeled proxy as it does not lead directly to endpoint
+impacts on human health nor ecosystem quality specifically)
+applicable to water consumption (surface and groundwater).
+Unless specified, the terminology used in this paper is com-
+pliant with the ISO (14046 2014) standard, which can be
+consulted for detailed definitions. The term scarcity is retained
+here for compatibility with ISO 14046, although no difference
+with the term Bstress^ has been found in this context and other
+definitions of scarcity exist (Schyns et al. 2015). This paper
+presents the process that was established to answer the follow-
+ing introduced question and the resulting method. This meth-
+od was approved and recommended as part of the UNEP-
+SETAC Life Cycle Initiative Flagship Project on impact as-
+sessment method recommendations (UNEP2017) and applied
+on a series of illustrative case studies available online ( www.
+wulca-waterlca.org).
+2 Consensus process and member’sp a r t i c i p a t i o n
+This consensus work built on previous WULCA deliverable,
+specifically the quantitative method comparison which iden-
+tified the different modeling choices made in existing scarcity
+indicators and their influence on the results (Boulay et al.
+2015c). As the consensus building work started in 2013, par-
+ticipation was sought in four different ways: 1— Active mem-
+bers, 2 — V olunteered experts, 3— Invited experts, and 4 —
+Pellston workshop participants. The core working group
+(and authors of this paper) was composed of previous method
+developers on water use in LCA as well as additional mem-
+bers who demonstrated interest in this work and could con-
+tribute as Bactive members.^ An open call for participation
+was made to the LCA community at SETAC meetings and
+via the Global Guidance UNEP-SETAC Life Cycle Initiative
+Flagship project recruitment, following theBActive members^
+time commitment description provided on the WULCA
+website. Members who indicated a desire to participate as
+Bexperts^ were added to a mailing list, amounting to over
+100 names, which were used for punctual consultations, in-
+cluding workshop invitation, dissemination, and experts sur-
+veys. In addition, for the expert workshops, specific expertise
+Int J Life Cycle Assess (2018) 23:368–378 369
+===== PAGE 3 =====
+was invited on hydrological models and Environmental Water
+Requirements (EWR), including Aquaduct (Francis Gassert,
+(Gassert et al. 2013)), WaterGap (Petra Döll, (Alcamo et al.
+2003)), LPJmL (Dieter Gerten, (Bondeau et al. 2007)), and
+H08 (Naoki Shirakawa, (Hanasaki 2010)). Lastly, the final
+consensus was approved in a Pellston workshop in January
+2016, following the Pellston workshop representation rules as
+described in the UNEP-SETAC, Life Cycle Initiative report
+(2017) and applied on the required (10) number of case studies.
+3 Method development
+3.1 Identifying the right question
+Water issues are complex and several relevant questions can
+be asked, such as understanding the potential to reduce water
+availability in a specific location, to increase competition
+among water users, or to adversely impact humans or ecosys-
+tems. Answering each question requires the development of a
+specific indicator. In LCA, indicators aim at quantifying po-
+tential environmental impacts of human interventions (such as
+water use or consumption) ultimately affecting three areas of
+protection: human health, ecosystem quality, and resource de-
+pletion (Jolliet et al.2004). Preliminary discussions within this
+working group identified the relevant question from an LCA
+perspective regarding potential impacts of water consumption
+at the midpoint level to be BWhat is the potential to deprive
+another freshwater user (human or ecosystem) by consuming
+freshwater in this region? ^ (Boulay et al. 2015a). Note that
+potential deprivation from water degradation, as assessed in
+Boulay et al. ( 2011d) was not included in this indicator in
+order to avoid risks of double counting with water quality
+indicators when applied systematically.
+3.2 From withdrawal-to-availability
+to demand-to-availability and beyond
+When potential impacts from water use started to be integrated
+in LCA, indices based on the ratio of water withdrawal-to-
+availability (WTA) were used as characterization factors
+(Frischknecht et al. 2008; Pfister et al. 2009). Note that the
+term availability in this paper is used in the hydrological sense
+of precipitation minus evapotranspiration and hence does not
+include water quality aspects as specified in ISO 14046
+(2014). While water withdrawal comprises the total water in-
+put into a product system, water consumption is defined as the
+fraction of water withdrawal which has become unavailable
+for the originating river basin users due to evapo(transpi)ra-
+tion, product integration, or discharge into other basins and the
+sea. Hence, subsequently, methods based on water
+consumption-to-availability (CTA) ratio were developed, with
+the reasoning that water withdrawn from the environment and
+released in the same watershed (for cooling purposes for ex-
+ample) does not generally contribute to local water scarcity
+(Boulay et al. 2011c; Hoekstra et al. 2012; Berger et al. 2014)
+(even if local impacts may occur between the withdrawal and
+release points (Loubet et al. 2013)). Outcomes from expert
+discussions within WULCA (Boulay et al. 2015a) first iden-
+tified the need to transition from WTA and CTA towards a
+demand-to-availability ratio (DTA), in order to better answer
+the overarching question identified above (Boulay et al.2014)
+since both ecosystem water demand and human consumption
+are considered in Bdemand.^ The proposal was accepted by a
+panel of 48 LCA experts from academia, industry, and gov-
+ernmental institutions (Boulay et al. 2015a) with, however,
+one main limitation identified, in addition to the challenge
+associated with quantifying ecosystem water demand. The
+DTA ratio (similarly to CTA and WTA) fails to represent the
+absolute water availability (per unit of surface). It only focuses
+on a metric relative to the use, resulting in loss of information.
+For example, a DTA ratio of 0.5 describes that half of the
+water is required by current users, but whether this amount
+of water is 10 or 1,000,000 m
+3 for the same area is unknown.
+This sometimes leads to arid areas showing less scarcity than
+known water-abundant regions (Berger and Finkbeiner 2013)
+and the relevance of this for LCA application can be question-
+able (Boulay et al. 2015a). Three proposals emerged during
+the workshops, as described in Boulay et al. (2015a) that could
+overcome this limitation, called DTA
+A, DTAx, and 1/AMD.
+DTAA is based on a demand-to-availability (DTA) ratio but
+includes a filter for arid regions. DTA X is the product of two
+parameters: one representing the relative availability (DTA)
+and one representing absolute availability (AAv) per unit of
+surface (see supplementary material for complete description).
+The last one, 1/AMD, the inverse of availability minus de-
+mand, was retained through consensus following the criteria
+described below.
+3.3 WULCA’s process for scarcity method selection
+First, a pre-selection criterion was used to evaluate the rele-
+vance of each proposal with respect to the question to be
+answered, followed by four main criteria: 1. Stakeholder ac-
+ceptability, 2. Robustness with closed basins, 3.Influence of
+normative choice, and 4. Physical meaning.
+The pre-selection criterion of relevance led to the elimina-
+tion of the first model DTA
+A, which includes a filter for arid
+region using the maximal value (e.g., all regions with evapo-
+transpiration higher than five times the local precipitation are
+set to the maximum value of the indicator). This choice
+showed a relatively high influence (17% of the world ’sl a n d
+surface, corresponding to 16% of the world’s water consump-
+tion) and actually corresponded to transforming the model into
+an aridity index for these areas, and the relevance of this
+choice in relation to the question to answer was judged too
+370 Int J Life Cycle Assess (2018) 23:368–378
+===== PAGE 4 =====
+low based on the unanimous expert ’s judgment of the co-au-
+thors. Hence, the DTAA method was not further investigated.
+Second, the four main criteria, which are further described
+in the SI, were used to guide the decision as shown in Table1.
+The result of the criteria analysis showed a preference
+towards a characterization factor based on 1/AMD: (1)
+stakeholder ’s acceptability was higher for 1/AMD and
+included a larger diversity of stakeholders (consultants,
+industry, and government) and (2) 9 of the 13 closed or
+closing watersheds (identified as already showing signs
+of water scarcity related issues, see ESM) showed higher
+values (based on ranking and value percentile of maxi-
+mum) in comparison to one for DTAx. Of the remaining
+three, the Orange watershed (not included in the table
+above) and two sub-watersheds of the Ganges and of
+the Indus showed higher ranking with DTAx but higher
+value percentile with 1/AMD. (3) The main normative
+choice of the 1/AMD method was judged as more ac-
+ceptable to justify. One can understand intuitively that
+when demand is equal to or larger than availability
+(D ≥ A) (situation observed in 12% of the global area
+as per Tables S2 and S3 in SI), the potential to deprive
+other users is maximal as there is already deprivation
+occurring (i.e., users not having their water needs satis-
+fied). Hence, the entire inventory of water consumed will
+cause deprivation. It is, however, more difficult to justify
+the normative choice in DTAx (which affects all values)
+and which arbitrarily sets absolute availability and rela-
+tive availability to contribute equally to the potential of
+deprivation. Lastly, (4) the intrinsic meaning of both
+methods were discussed in the group. The meaning of
+DTAx is a combination of absolute and relative availabil-
+ity, with both parameters being equally correlated to the
+results on a global level, and the meaning of 1/AMD is
+the inverse of the remaining water available after demand
+has been met. The approach based on 1/AMD conserves
+a physical meaning with simple and clear units up for
+demand ≤ availability (on 87% of world surface), where-
+as DTAx units could not be identified meaningfully.
+Details on quantitative criteria assessment (1 and 2) are
+given in SI. Qualitative criteria were assessed through
+discussion among the co-authors and consensus, although
+not necessarily unanimity, was achieved when a large
+majority of the co-authors agreed, and dissenting points
+of view were noted and reported.
+The recommended method is therefore based on 1/
+AMD; however, a minority of the co-authors would
+have preferred to recommend both methods due to the
+underlying conceptual differences between them.
+Although the group reached consensus on 1/AMD, it
+was also recommended to use a conceptually different
+method in parallel for sensitivity studies to test and
+improve the robustness of the conclusion.
+4 Method description
+4.1 Approach selected
+The recommended method, based on 1/AMD, is based
+on the inverse of the difference between availability per
+area and demand per area instead of the ratio (Eq. ( 1)
+and Eq. ( 2)). It quantifies the potential of water depri-
+vation, to either humans or ecosystems, and serves in
+calculating the impact score of water consumption at
+midpoint in LCA or to calculate a water scarcity foot-
+print as per ISO 14046. It is based on the available
+water remaining (AW ARE) per unit of surface in a giv-
+en watershed relative to the world average, after human
+and aquatic ecosystem demands have been met. This
+method builds on the assumption that the potential to
+deprive another user of water (resulting from the multi-
+plication of the inventory with the characterization fac-
+tor, CF
+AWARE,E q .( 5)) is directly proportional to the
+amount of water consumed (inventory) and inversely
+proportional to the available water remaining per unit
+of surface and time in a region (watershed) (cf.
+Eq. ( 5) and Fig. 1). Additional discussion and justifica-
+tion on this assumption can be found in the following
+publications: the first one justifying the use of the avail-
+able water minus environmental demand in the denom-
+inator (Hoekstra 2016)a n dt h ea n s w e rt ot h i sp a p e r
+explaining the reason for including the human demand
+as well (Pfister et al. 2017). When the value of the
+demand is equal to or larger than the availability (neg-
+ative AMD), the characterization factor (CF) is set to be
+maximal since the equation would no longer be contin-
+uous nor hold the same meaning (Eq. ( 4a)). The CF is
+normalized (Eq. ( 3)) and cutoffs are applied (Eq. ( 4a)
+and Eq. ( 4b)). This is further described below.
+AMD
+i ¼ Availability −HWC−EWRðÞ
+Area ð1Þ
+STei ¼ 1
+AMDi
+ð2Þ
+CFAWARE ¼ STei
+STeworld avg
+¼ AMDi
+AMDi
+¼ AMDworld avg
+AMDi
+; for Demand < Availability ð3Þ
+CFAWARE ¼ Max
+¼ 100; for Demand ≥ Availability or AMDi
+< 0:01 /C2 AMDworld avg ð4aÞ
+Int J Life Cycle Assess (2018) 23:368–378 371
+===== PAGE 5 =====
+CFAWARE ¼ Min ¼ 0:1 for AMD i
+> 10 /C2 AMDworld avg ð4bÞ
+where demand refers to the sum of human water consumption
+(HWC) and environmental water requirements (EWR) and avail-
+ability is the actual runoff (including human impacts on flow
+regulation), all calculated in m3/month and area in m2.A M Di is
+calculated in m3/m2·month and the remaining volume of water
+available for use once demand has been met, per unit area and
+time (m
+3/m2·month). Since this factor is expressed relative to the
+area, comparability across region is ensured. Its inverse, STei,i s
+expressed in m2·month/m3, can be interpreted as the surface-time
+equivalent required to generate one cubic meter of unused water
+in this region. The value of AMD worldavg is the consumption-
+weighted average of AMDi over the whole world (0.0136 m3/
+m2·month). Units of the CF are dimensionless, expressed in
+m3
+world eq./m3
+i(Eq. (3)).
+Ta bl e 1 Evaluation criteria and results for DTAx and 1/AMD
+Criteria DTA A DTAx 1/AMD
+Description
+DTAA ¼ Demand
+Availability
+/C16/C17
+DTAx ¼ Demand
+Availability
+/C16/C17
+/C2 Demand
+Availability
+/C16/C170:34 1=AMD ¼ Area
+Availability−Demand
+for Demand < Availability
+1/AMD = Max
+for Demand ≥ Availability
+Pre-selection criteria of
+relevance regarding
+the question to be
+answered
+Poor Good Good
+Stakeholders
+acceptance
+Option eliminated by the
+working group in the
+pre-selection process and not
+further investigated
+Low (3/33)
+Only academics
+Good (26/33)
+Academics, industry, consultants, and
+government
+Robustness with closed
+basins
+Limpopo shows higher scarcity (ranking
+and absolute value percentile)
+Ganges, Y ellow river, Murray, Darling,
+Colorado, Nile, Jordan, Indus, Syr Darya and
+Amu Darya, and Cauvery show higher
+scarcity (ranking and absolute value
+percentile)
+Main normative choice Absolute and relative availability have
+equal contribution to impacts
+(x = 0.34)
+Regions where demand ≥ availability are set as
+maximal
+(equation is discontinuous)
+Physical meaning Two physical quantities, empirically
+combined in an index with no
+physical units
+(physical meaning for 0% of world
+surface)
+Express a physical meaning up to the point where
+demand ≥ availability
+(physical meaning for 88% of world surface,
+monthly)
+User depriva/g415on poten/g415al
+AMDi = 1.36 x 10-1 m3/m2-month
+AMDi = 1.36 x 10-4 m3/m2-month
+100
+0.1
+Maximum 
+depriva/g415on 
+poten/g415al
+Minimum 
+depriva/g415on 
+poten/g415al
+CF
+AMDiAMDi<0.01 AMDworld avg
+AMDi=10 AMDworld avg
+Fig. 1 Relationship between
+deprivation potential and AMD in
+region i, as described by AW ARE
+CFs
+372 Int J Life Cycle Assess (2018) 23:368–378
+===== PAGE 6 =====
+4.1.1 Availability
+Actual water availability was obtained from the
+WaterGAP2.2(Müller Schmied et al. 2014)m o d e lf o r
+>11,000 watersheds in the world (with the 34 largest
+watersheds subdivided into sub-watersheds) using climatic
+data over the period 1960 –2010 to model runoff based on
+precipitation and evapotranspiration. Data are available on a
+monthly time step and include infrastructure such as dams.
+4.1.2 Human demand
+Current human water consumption (the fraction of water with-
+drawal that does not return into the watershed after use) is used
+to represent human demand, with data obtained from the
+WaterGAP model (which is based on statistical data for con-
+sumption of freshwater withdrawals (Florke et al. 2013). This
+includes domestic, industrial, agricultural, livestock, and en-
+ergy production sectors modeled for the year 2010. The
+WaterGAP consumption data is provided on a scale of
+0.5 × 0.5°, worldwide, on an annual time step except for
+agricultural use which is on a monthly time step.
+4.1.3 Ecosystem demand
+Environmental water requirements (EWR) for freshwater eco-
+systems were used as a proxy to represent ecosystem demand.
+The monthly model from Pastor et al. (2013) is chosen, which
+was validated with local study cases in five major habitat types
+encompassing the main freshwater ecoregions. It evaluates
+minimum water requirements as a fraction of the available
+flow to maintain freshwater ecosystems in Bfair^ conditions,
+with respect to pristine flow (i.e., flow with no human influ-
+ence), and whereBfair^ refers to an ecological state of the river
+between poor and good conditions. The EWR for fair-
+condition freshwater ecosystems ranges between 30 and
+60% of the pristine flow as a function of the seasonal flow
+patterns (60, 45, and 30% during low flow, intermediate, high
+flow season, respectively); hence, the underlying assumption
+is that Bfair condition with respect to pristine conditions ^ al-
+ready corresponds to the current state of ecosystems, since
+most rivers are already somewhat degraded when compared
+without human influence (Smakhtin et al. 2004).
+Environmental flow requirements were calculated with the
+monthly natural flow values from WaterGAP , which models
+the flow without consideration of any human intervention or
+land use change (i.e., natural vegetation cover). Water require-
+ments of terrestrial and groundwater-dependent ecosystems
+were not included since the link between blue water consump-
+tion (i.e., water abstracted from water bodies, for which
+AW ARE is used) and water deprivation of terrestrial ecosys-
+tems is unclear at this time, except for specific cases such as
+groundwater table lowering or wetlands (van Zelm et al.2011;
+Ve r o ne s e t a l .2013). Similarly, green water, or the soil mois-
+ture from precipitation, was excluded with a recommendation
+that it be addressed by a separate indicator assessing green
+water consumption, linked with land use (Boulay et al.
+2015a).
+4.2 Modeling choices
+Additional modeling choices arerelevant to the design of this
+method, namely, (1) span and use of thresholds, (2) normaliza-
+tion with a reference flow, and (3) scaling modeling. The first
+describes the setting of thresholds, below and above which the
+value will be set as minimal and maximal. This choice limits
+the span of the CF to a maximal range that sets the difference
+between the lowest and highest value to three orders of magni-
+tude, eliminating the tailing values where the meaning of the
+CF would be lost. Here, cutoff values of 0.1 and 100 are applied
+(Eq. (4a)a n dE q .(4b), see ESM for details). The second choice
+is the normalization to a refer ence flow such as the potential
+impact of world average consumption, or a specific region,
+following similar reasoning as in global warming potential
+where CO
+2 is taken as a reference flow. Although both differ
+in the type of reference (a region versus a substance), the role of
+the reference is to translate an inventory of different flows into
+an equivalent reference flow. While this choice changes the
+absolute value of the CF, it does not change the relative results
+and may enhance the communicability, for example, by provid-
+ing units of m
+3-equivalent, i.e., water consumption that are
+equivalent to the selected reference flow. Normalized CFs fa-
+cilitate communication on a scale where the value of 1 corre-
+spond to the potential impact of the reference flow; values
+below and above 1 are respectively better and worse than the
+reference flow. Here, the world average is used as a reference
+flow (Eq. (3)). The third choice is the use of a scaling function
+to fit the obtained values within a defined range, such as a
+logistic curve ranging betw e e n0a n d1u s e di np r e v i o u s
+methods (Pfister et al.2009;B o u l a ye ta l .2011c). This provided
+a distribution of values with the hypothesis that impacts have a
+logistic relationships with the o riginal fraction calculated
+(WTA, CTA, etc.) and can prevent the use of cutoffs.
+However, such modeling implies normative choices for the
+curve tuning parameters and little information is available to
+support this. For this reason, unlike previous methods, no such
+additional modeling was performed on the designed method in
+addition to the choice of cutoffs.
+5R e s u l t s
+Results are available at www.wulca-waterlca.organd shown
+in Fig. 2 at the annual level. Curves describing the behavior of
+the CF in specific watersheds over the year are shown in the
+Electronic Supplementary Material (ESM; Fig. S5).
+Int J Life Cycle Assess (2018) 23:368–378 373
+===== PAGE 7 =====
+Water Scarcity Footprint
+¼ Water consumption inventoryðÞ /C2 CF AWARE ð5Þ
+Similar to Global Warming Potential (GWP) from IPCC
+(Myhre et al. 2013), the CF represents a relative value of the
+impact score of a water consumption in comparison with a
+reference expressed in terms of m3world eq. per m3 consumed
+in region i (see Eq. (3)). For the purpose of comparing water
+consumptions in different regions and months, the units m 2·
+month are considered equivalent everywhere. This assumes
+that consuming water in two regions with the same amount
+of regional remaining water per m
+2·month after human and
+aquatic ecosystem demands were met is considered equal, as
+no other regional specification is included.
+The CF is limited to a range from 0.1 to 100, with a value of
+1 corresponding to a region with the same amount of remain-
+ing water per area within a certain period of time as the world
+average, values <1 for regions with less problems of scarcity
+than the world average and a value of 10, for example,
+representing a region where there is 10 times less water re-
+maining per area within a certain period of time as the world
+average, or that it takes 10 times more surface time to generate
+an amount of unused water in this region than the world av-
+erage, assuming a given level of water demand. The effect of
+the upper and lower limits chosen as cutoffs is documented in
+Table S2 and S3 in ESM in terms of the fraction of the world
+water consumption or world area which is affected by the
+choices, respectively. The upper cutoff of 100 affects regions
+where demand is higher than availability (representing 33% of
+world consumption at monthly level) and regions with AMD
+i
+smaller than a 100 times AMD worldavg (representing 5% of
+world water consumption). Together (38%), these values are
+comparable to the maximal values attributed in Boulay et al.
+(2011b) (also affecting 38% of world water consumption) and
+Pfister et al. ( 2009) (30% of world water consumption, for
+>0.99 of max). The lower cutoff of 0.1 has a negligible effect
+of less than 1% of world water consumption.
+The CF is calculated at the sub-watershed level and month-
+ly time step and available on that scale (see the ESM, Fig.S11
+for monthly maps). V alues are also aggregated to country level
+and/or annual time step for use with current inventory data at
+the respective resolutions. This aggregation can be done in
+different ways to better represent the time of year and location
+within the country of an agricultural use or a domestic/
+industrial use. Country annual average characterization factors
+for agricultural and non-agricultural use are therefore provid-
+ed, based on water consumption-weighted averages at month-
+ly and watershed level. The rationale for using country annual
+averages for agriculture vs non-agricultural users is only rele-
+vant when monthly and watershed values cannot be used be-
+cause of lack of inventory information on the exact month or
+location of the water consumption. In order to aggregate from
+a smaller scale (month or sub-watershed) to a larger one (year
+or country), we need the time and space distribution of the
+water consumption (available from WaterGAP on the
+WULCA website). Agricultural water use (for irrigation) will
+occur more in certain regions and certain months (for exam-
+ple, in summer months for Mediterranean areas), so it is pos-
+sible to aggregate the values to better represent agricultural
+use. The same is true for non-agricultural water consumption,
+although more evenly distributed. It is therefore simply a way
+to reduce the error from spatial and temporal variability when
+using large scale aggregated factors.
+The resulting characterization factors of the three options
+discussed above (DTA
+A,D T AX,1 / A M D )a r es h o w ni n
+Figs. S1–S3 in the ESM.
+6D i s c u s s i o n
+6.1 Modeling
+The format and interpretation of this method differ from pre-
+vious scarcity methods used in LCA (see methods compari-
+son, section V in the ESM). It presents a concept similar to a
+previous ecosystem assessment characterization method
+(Pfister et al. 2009), and which is also used in a recently de-
+veloped scarcity method for water footprint (Y ano et al.2015).
+However, the previous methods did not account for the water
+available after deducting current demand. These similarities
+demonstrate that water use impact assessment methods have
+evolved in the same direction.
+While the AW ARE modeling requires an intrinsic cut-off, it
+does not include additional modeling, such as a logistic curve
+as done previously in other methods (Pfister et al. 2009;
+Boulay et al. 2011b; Berger et al. 2014). This avoids the ad-
+ditional arbitrary choice of curve fitting and thresholds (dif-
+ferent than cutoffs, discussed below), which were originally
+used to define water scarcity or stress, based on WTA
+(Alcamo et al. 2000; V orosmarty et al.2000). Since the mean-
+ing of this method is chosen to answer an LCA-oriented ques-
+tion BWhat is the potential to deprive another user when using
+water in this region? ^, no reliable thresholds or definitions
+exist to justify such modeling with a logistic, or other, func-
+tion. In addition, when modeling from the original fraction
+results to an index, the physical meaning is lost and rather
+adjusted to a perception of what is believed the results should
+look like. Here, since no such adjustment is performed, a value
+of 10 directly represents a region where 10 times less water is
+remaining per unit of surface in comparison to the reference
+flow, i.e., the world average. It can also be interpreted as a
+region where 10 times more area time is required to generate
+the same amount of unused water in comparison to the refer-
+ence flow. These interpretations are taken as representative of
+the potential of users to be deprived, once multiplied with the
+374 Int J Life Cycle Assess (2018) 23:368–378
+===== PAGE 8 =====
+inventory. In the context of water scarcity footprints which are
+reported in the public domain (e.g., in relation to products or
+organizational performance), the result has a relatively simple
+intuitive meaning. Since water scarcity affects some regions
+more so than others, the results are reported relative to water
+consumption at the global average location of water
+consumption.
+The CF results present a larger distribution above one than
+below one (see Fig. 2). This is because the world average is
+calculated on the AMD
+i, whereas the CF is based on the in-
+verse (1/AMDi), resulting in mathematically more weight be-
+ing given to smaller values of AMD i (i.e., larger CF). This
+results in a larger discriminatory power for regions where
+AMD
+i is lower than AMDworldavg (and where conversely CFi
+is larger), which can be considered desirable since it is in the
+distinction of most scarce regions that the method is the most
+useful. These regions are also where the method is the most
+sensitive to data uncertainty, as discussed below.
+6.2 Span
+The span of this new CF is chosen to be three orders of mag-
+nitude, between 0.1 and 100. In previous midpoint methods,
+this varied from two orders of magnitude (0.01 –1) for Pfister
+et al. ( 2009) and Berger et al. ( 2014), and up to 5, 7, and 9
+orders of magnitude for Boulay et al. ( 2011b), Hoekstra et al.
+(2012), and Swiss Eco-Scarcity method (Frischknecht et al.
+2008), respectively, excluding the zero values. This was an
+important choice which was made with the thresholds placed
+along the distribution curve in order to keep as much of the
+natural distribution as possible yet fix the tailing values to the
+maximum and minimum (see Fig. S4 in ESM). This norma-
+tive choice of a maximal range of three orders of magnitude
+was based on expert judgment. The analysis of the preliminary
+results revealed that three orders of magnitude was compara-
+ble to the variation within inventories and therefore meaning-
+ful for a balance between LCI and LCIA. Moreover, this range
+allowed for both the choice of geographical location (i.e., the
+water scarcity) and the improvement in water efficiency (i.e.,
+the inventory) to play a significant role in the impact score and
+hence be improved for reducing impacts. This was not the
+case with a method spreading over four orders of magnitude,
+as initially considered. Reducing it to two orders of magnitude
+(cutoff of 10) was also considered but the cutoff affected an
+additional 17% of the world water consumption, and up to
+43% of the world area for at least 1 month (compared to
+values in the ESM, Tables S2 and S3). This was judged too
+influential and resulting in too large of a loss of discriminatory
+power for regions with less than 10 times remaining water
+than the world average.
+6.3 Limitations
+The quantification of ecosystem demand involves some
+choices and uncertainty which are inherent to the method cho-
+sen (Pastor et al. 2013). State of the art, monthly assessment
+was used in this method which is based on a fraction of the
+available flow being reserved for freshwater ecosystems. This
+approach was thought to be the most robust because it is the
+only global method that evaluates EWR on a monthly basis
+validated with several case studies across five different fresh-
+water ecoregions (Pastor et al. 2013). However, there are also
+some limitations. The EWRs used vary monthly as a function
+of flow patterns but not as a function of other environmental
+aspects and the algorithm calculating EWR at global scale
+does not account for specific local aspects due to limited data
+access at global scale (river width, global aquatic fauna, etc.).
+Moreover, although the underpinning data includes
+NA 
+Fig. 2 AW ARE characterization factors for water scarcity footprint in m3 world eq./m3 consumed in region i (represented at annual level for non-
+agricultural use, i.e., equal contribution of each month)
+Int J Life Cycle Assess (2018) 23:368–378 375
+===== PAGE 9 =====
+information about the location of dams, there is variation and
+uncertainty about the ways in which these infrastructures are
+managed. In some cases, the management of dams includes
+specific water releases to meet environmental flow
+requirements.
+6.4 Sensitivity to EWR
+Considering the points mentioned above, the sensitivity of the
+method is tested using 150% of the value of EWR. The
+resulting values of the factors (of AW ARE_EWR150%) show
+a 97.8% ranking consistency with the original values, using
+the rank correlation coefficient as in Boulay et al. ( 2015c).
+Only 3% of the world area passes beyond point of
+Bdemand > availability ^ on an annual level, corresponding
+to 10% of the world water consumption when an upper value
+of EWR150% is used (see Tables S2 and S3 in the ESM).
+If another method was selected for the assessment of EWR,
+such as Richter et al.( 2012) allocating 80% of natural flows
+for environmental requirements at all times, the fraction of the
+world consumption occurring in regions where
+Bdemand > availability ^ would be 21% (5% of world area)
+on an annual scale (compared to 3.8 and 0.8%, respectively,
+with current method) and 50% on a monthly scale (25.5% of
+area) for at least 1 month (compared to 33 and 12%, respec-
+tively with current method). This difference is explained by
+the fact that the current method does take into account flow
+seasonality in EWR, which will indeed lower the demand for
+some months and when compared to an assessment using a
+constant and maximal fraction of the flow all year round like
+Richter et al. ( 2012). Moreover, Richter et al. ( 2012) only
+allows 20% of daily flow to be used, which is limited in
+comparison to actual consumption levels in some regions of
+the world. As per the authors, this is based on a precautionary
+approach which is not the reference normally used in LCA.
+The annual average of Pastor et al. (2013) amounts to approx-
+imately half of the 80% value of Richter et al. ( 2012). This
+choice was made not only because it is the most recent method
+but also it introduces the monthly variation of flow require-
+ment and allows a higher discrimination power due to the
+lower EWR share. This choice of water requirements, describ-
+ing Bfair conditions of ecosystems with respect to pristine
+environment^ (taken as proxy for current state), is, however,
+different in different methods and based on expert assessment.
+AW ARE therefore sets this proxy for current aquatic ecosys-
+tem demand as being equivalent in terms of the definition of
+demand, to current human water consumption. In reality,
+humans need more water than just consumption, to make up
+for withdrawals and uses that are not consumptive, and eco-
+systems may also use more water if it is available. This choice
+may be debatable and other approaches could have been used
+(assessing only essential human water consumption for exam-
+ple, or defining all water availability to ecosystem
+requirements), but it was judged to be the best considering
+existing models and data.
+6.5 Aggregation of CFs
+Another important new aspect introduced with this method is
+the choice of different values at the country and/or annual
+level, representing different types of aggregation for different
+uses. This provides an additional level of information in order
+to better bridge the gap between the spatial and temporal res-
+olutions of the inventory in LCA with the relevant resolutions
+for water use impact assessment. While data on exact location
+within a country or exact timing during the year may not be
+known, the choice of selecting whether the water use is for
+agricultural purpose or not is already valuable information
+which can be used to enhance the representativeness of the
+aggregated CF.
+6.6 Variability
+6.6.1 Temporal
+At the watershed level, the difference between monthly and
+annual values has shown a rank correlation 65 –97% (when
+compared to annual non-agri average) and 67 –87% (when
+compared to agri average), with July being the lowest corre-
+lated month, and non-agri year average showing in general a
+higher correlation. The largest difference between monthly
+and annual are shown in Figs. S5 and S6 (ESM). About
+50% of the world consumption is located in regions where
+the variation between the most different month (high or low)
+and the annual value is larger than 50, enforcing the impor-
+tance of temporal resolution. Differences are especially seen
+in central Asia, Spain, North and South Africa, Western
+Australia, Middle East, and parts of China.
+6.6.2 Spatial
+Spatial variability was analyzed by comparing annual values
+for
+each watershed with the annual value for this country.
+Maps illustrating this difference are shown in the ESM
+(Figs. S7 and S8). Here, differences are seen in Sub-Saharan
+Africa, Australia, Central Asia, and USA (specifically for agri
+CF). Lastly, the rank correlation between agri and non-agri
+annual values at the annual watershed level showed a rank
+correlation of 97% and is shown in Fig. S9 (ESM), meaning
+that although absolute values may differ significantly, the
+ranking of the watersheds is relatively well maintained.
+Largest differences are observed in central USA, Chile,
+Spain, North Africa, and Central Asia.
+376 Int J Life Cycle Assess (2018) 23:368–378
+===== PAGE 10 =====
+6.7 Uncertainty
+Global hydrological models are uncertain, especially at the
+monthly level (Scherer et al. 2015) and this is propagated to
+water scarcity measures (Pfister and Hellweg 2011; Núñez
+et al. 2015; Boulay et al. 2015c). This is mainly affecting
+not only water availability but also the demand side. Human
+demand is mainly estimated using model estimates and proxy
+data, until complete and consistent water consumption data is
+available worldwide. The point at which demand is higher
+than renewable availability, and hence the resulting value
+reaches the limit at which the factor is set to maximal (i.e.,
+100), is linked to EWR which is the most uncertain value. Due
+to the nature of the method, the largest differences in absolute
+terms are seen in regions where demand is close to availability
+(and the CF is large). For these regions, the relative signifi-
+cance of uncertainty in EWR increases (see example in the
+ESM, Fig. S13).
+No analytical uncertainty propagation is possible due to the
+discrete steps in the function but stochastic uncertainty assess-
+ment should be done in the future. The model relies on inputs
+which are in turn outputs of models for which uncertainty
+distributions are not yet provided.
+6.8 Applicability
+As per standard LCA practices, the AW ARE factors are meant
+for use in LCA under the assumption of the marginality of the
+intervention (i.e., water consumption) in comparison to the
+background. Further discussion on this can be found in
+ESM. Regionalized assessment is still a challenge with the
+current databases and software, but is nonetheless possible.
+A Simapro-compatible csv file with AW ARE CFs at the coun-
+try level can be downloaded from the WULCA website, and
+OpenLCA is working on the applicability of regionalized im-
+pact assessment with AW ARE. Furthermore, while inventory
+databases do not yet provide completely regionalized data,
+referring to aBglobal^ region when no geographic information
+is specified, ecoinvent already focused on introducing the
+possibility of regionalization of water use flows into version
+3( P f i s t e re ta l .2016).
+7C o n c l u s i o n s
+After 8 years of development, and 2 years of consensus build-
+ing, AW ARE is the new recommended method for assessing
+impacts from water consumption because of the following:
+i— it assesses both human and ecosystems users potential dep-
+rivation, at the midpoint level; ii — it is based on consensus
+from LCA and hydrology experts and is recommended by the
+Life Cycle Initiative, and iii — it is compliant with the LCA-
+based water footprint standard ISO 14046 to perform a water
+Int J Life Cycle Assess (2018) 23:368–378 377
+scarcity footprint (to be complemented with water quality in-
+dicators for a comprehensive water footprint). Since not only
+the nature and model hypothesis are different in AW ARE than
+in previous methods but also the meaning of this method is
+specifically developed to answer the LCA-oriented question
+BWhat is the potential to deprive another user when using
+water in this region? ^, uptake and application of the method
+by users may reveal different conclusions in future case stud-
+ies. Although the group reached consensus on this recommen-
+dation, it is recommended to use a conceptually different
+method in parallel for sensitivity studies to test and improve
+the robustness of the conclusion. There is still a need for fur-
+ther testing on a wider range of case studies.
+Acknowledgements We acknowledge the financial support of the in-
+dustrial sponsors supporting WULCA during this work: Hydro-Québec,
+V eolia Environnement, Danone, Exxon Mobile, Cascades, Unilever,
+Cottons Inc., Engie, L’Oréal, and Mitacs, the Canadian funding agency.
+In addition, we acknowledge the c ontribution of the co-authors ’
+institutions. The authors would l ike to express sincere thanks to
+Stephanie Eisner from University of Kassel for providing the
+underlying hydrological data from the WaterGAP 2.2 model and for her
+support throughout the development of this work as well as Prof. Petra
+Döll and Luca Zampori for their input and review of this paper, and Laure
+Patouillard for her support in the aggregation of the factors. M. Núñez
+acknowledges the support from ANR (grant no. 13-CHIN-0005-01),
+SUEZ, BRL, SCP , EVEA, Compagnie Fruitières, and VINADEIS.
+The views expressed in this article are those of the authors and do not
+necessarily represent the views or policies of the US Environmental
+Protection Agency and European Commission.
+Open Access This article is distributed under the terms of the Creative
+Commons Attribution 4.0 International License (http://
+creativecommons.org/licenses/by/4.0/), which permits unrestricted use,
+distribution, and reproduction in any medium, provided you give
+appropriate credit to the original author(s) and the source, provide a link
+to the Creative Commons license, and indicate if changes were made.
+References
+Alcamo J, Henrichs T, Rosch T (2000) World water in 2025. Global
+modeling and scenario analysis for the World Commission on
+Water for the 21st century. Kassel World Water Ser
+Alcamo J, Doll P , Henrichs T et al (2003) Development and testing of the
+WaterGAP 2 global model of water use and availability. Hydrol Sci J
+48:317–337
+Bayart J-B, Margni M, Bulle C et al (2010) Framework for assessment of
+off-stream freshwater use within LCA. Int J Life Cycle Assess 15:
+439
+Berger M, Finkbeiner M (2013) Methodological challenges in volumetric
+and impact-oriented water footprints. J Ind Ecol 17:79–89
+Berger M, van der Ent R, Eisner S et al (2014) Water accounting and
+vulnerability evaluation (W A VE): considering atmospheric evapora-
+tion recycling and the risk of freshwater depletion in water
+footprinting. Environ Sci Technol 48:4521–4528
+Bondeau A, Smith P , Zaehle S et al (2007) Modelling the role of agricul-
+ture for the 20th century global terrestrial carbon balance. Glob
+Chang Biol 13:679–706
+===== PAGE 11 =====
+Boulay A-M, Bouchard C, Bulle C et al (2011a) Categorizing water for
+LCA inventory. Int J Life Cycle Assess 16:639–651
+Boulay A-M, Bulle C, Deschenes L, Margni M (2011b) LCA character-
+isation of freshwater use on human health and through compensa-
+tion. In: Towards life cycle Sustainability management.
+SpringerLink, pp 193–204
+Boulay A-M, Bulle C, Deschenes L, Margni M (2011c) LCA character-
+isation of freshwater use on human health and through compensa-
+tion. LCM
+Boulay A-M, Bulle C, Bayart J-B, Deschenes L, Margni M (2011d)
+Regional characterization of freshwater use in LCA: modeling direct
+impacts on human health. Environ Sci Technol 45(20):8948–8957
+Boulay A-M, Bare J, Benini L et al (2014) Building consensus on a
+generic water scarcity indicator for LCA-based water footprint :
+preliminary results from WULCA. LCA Food, San Francisco
+Boulay A-M, Bare J, De Camillis C et al (2015a) Consensus building on
+the development of a stress-based indicator for LCA-based impact
+assessment of water consumption: outcome of the expert work-
+shops. Int J Life Cycle Assess 20:577–583
+Boulay A-M, Motoshita M, Pfister S et al (2015b) Water use impact
+assessment methods (part a): methodological and quantitative com-
+parison of scarcity and human health impacts models. Int J Life
+Cycle Assess 20:139–160
+Boulay A-M, Motoshita M, Pfister S et al (2015c) Analysis of water use
+impact assessment methods (part a): evaluation of modeling choices
+based on a quantitative comparison of scarcity and human health
+indicators. Int J Life Cycle Assess 20:139–160
+Florke M, Kynast E, Bärlund I et al (2013) Domestic and industrial water
+uses of the past 60 years as a mirror of socio-economic development:
+a global simulation study. Glob Environ Chang 23:146–156
+Frischknecht R, Steiner R, Braunschweig A et al (2008) Swiss ecological
+scarcity method: the new version 2006
+Galatola M, Pant R (2014) Reply to the editorial Bproduct environmental
+footprint - breakthrough or breakdown for policy implementation of
+life cycle assessment?^ written by Prof. Finkbeiner (Int J Life Cycle
+Assess 19(2):266-271). Int J Life Cycle Assess 19:1356–1360
+Gassert F, Landis M, Luck M et al (2013) AQUEDUCT global maps 2.0.
+Washington, DC
+Hanasaki N (2010) A brief review of development and application of
+H08, a global water resources model. J Res Eng Technol 7:79–90
+Hellweg S, Milà i Canals L (2014) Emerging approaches, challenges and
+opportunities in life cycle assessment. Science 344:1109–1113
+Hoekstra AY (2016) A critique on the water-scarcity weighted water
+footprint in LCA. Ecol Indic 66:564–573
+Hoekstra A Y , Mekonnen MM, Chapagain AK et al (2012) Global month-
+ly water scarcity: blue water footprints versus blue water availability.
+PLoS One. doi:10.1371/journal.pone.0032688
+ISO 14040 (2006) Environmental management-life cycle assessment-
+principles and framework. 12
+ISO 14046 (2014) Water footprint— principles, requirements and guidelines
+ISO 14073 (2016) Environmental management— water footprint— illus-
+trative examples on how to apply ISO 14046
+Jolliet O, Müller-wenk R, Bare J et al (2004) UNEP/SETAC life cycle
+initiative UNEP/SETAC life cycle initiative the LCIA midpoint-
+damage framework of the UNEP/SETAC life cycle initiative. Int J
+Life Cycle Assess 9:394–404
+Jolliet O, Frischknecht R, Bare J et al (2014) Global guidance on envi-
+ronmental life cycle impact assessment indicators: findings of the
+scoping phase. Int J Life Cycle Assess 19:962–967
+Kounina A, Margni M, Bayart J-B et al (2013) Review of methods ad-
+dressing freshwater use in life cycle inventory and impact assess-
+ment. Int J Life Cycle Assess 18:707–721
+Loubet P , Roux P , Belaud G, Accepted J (2013) Assessing water depri-
+vation at the sub-river basin scale in LCA integrating downstream
+cascade effects. Environ Sci Technol 47:14242–14249
+Müller Schmied H, Eisner S, Franz D et al (2014) Sensitivity of simulated
+global-scale freshwater fluxes and storages to input data, hydrolog-
+i
+cal model structure, human water use and calibration. Hydrol Earth
+Syst Sci 18:3511–3538
+Myhre G, Shindell D, Bréon F-M et al (2013) Anthropogenic and natural
+radiative forcing. In: Climate change 2013: the physical science
+basis. Contribution of working group I to the fifth assessment report
+of the intergovernmental panel on climate change. Cambridge
+University Press, Cambridge, UK, pp 659–740
+Núñez M, Pfister S, V argas M, Antón A (2015) Spatial and temporal
+specific characterisation factors for water use impact assessment in
+Spain. Int J Life Cycle Assess 20:128–138
+Pastor A V , Ludwig F, Biemans H et al (2013) Accounting for environ-
+mental flow requirements in global water assessments. Hydrol Earth
+Syst Sci Discuss 10:14987–15032
+Pfister S, Hellweg S (2011) Surface water use — human health impacts.
+Report of the LC-IMP ACT project (EC: FP7)
+Pfister S, Koehler A, Hellweg S (2009) Assessing the environmental
+impacts of freshwater consumption in LCA. Environ Sci Technol
+43:4098–4104
+Pfister S, Vionnet S, Levova T, Humbert S (2016) Ecoinvent 3: assessing
+water use in LCA and facilitating water footprinting. Int J Life Cycle
+Assess 21:1349–1360
+Pfister S, Boulay A-M, Berger M et al (2017) Understanding the LCA
+and ISO water footprint: a response to Hoekstra (2016) a critique on
+the water-scarcity weighted water footprint in LCA. Ecol Indic 72:
+352–359
+Richter BD, Davis MM, Apse C, Konrad C (2012) A presumptive stan-
+dard for environmental flow protection. River Res Appl 28:1312 –
+1321
+Scherer L, V enkatesh A, Karuppiah R, Pfister S (2015) Large-scale hy-
+drological modeling for calculating water stress indices: implica-
+tions of improved spatiotemporal resolution, surface-groundwater
+differentiation, and uncertainty characterization. Environ Sci
+Technol 49:4971–4979
+Schyns JF , Hoekstra A Y , Booij MJ (2015) Review and classification of
+indicators of green water availability and scarcity. Hydrol Earth Syst
+Sci 19:4581–4608
+Smakhtin V , Iwra M, Water I (2004) A pilot global assessment of envi-
+ronmental water requirements and scarcity. Water Int 29:307–317
+UNEP-SET AC, Life Cycle Initiative (2017) Global Guidance for Life
+Cycle Impact Assessment Indicators (V ol 1). Edited by: Rolf
+Frischknecht and Olivier Jolliet. Retrieved from http://www.
+lifecycleinitiative.org/applying-lca/lcia-cf/
+V erones F, Saner D, Stephan P et al (2013) Effects of consumptive water
+use on biodiversity in wetlands of international importance. Environ
+Sci Technol 47:12248–12257
+V orosmarty CJ, Green P , Salisbury J, Lammers RB (2000) Global water
+resources: vulnerability from climate change and population growth.
+Science 289:284–288
+Y ano S, Hanasaki N, Itsubo N, Oki T (2015) Water scarcity footprints by
+considering the differences in water sources. Sustainability 7:9753–
+9772
+van Zelm R, Schipper AM, Rombouts M et al (2011) Implementing
+groundwater extraction in life cycle impact assessment: characteri-
+zation factors based on plant species richness for The Netherlands.
+Environ Sci Technol 45:629–635
+378 Int J Life Cycle Assess (2018) 23:368–378

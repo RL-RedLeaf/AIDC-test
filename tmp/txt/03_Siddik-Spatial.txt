@@ -1,0 +1,1062 @@
+
+===== PAGE 1 =====
+             
+LETTER • OPEN ACCESS
+The environmental footprint of data centers in the
+United States
+To cite this article: Md Abu Bakar Siddik et al 2021 Environ. Res. Lett. 16 064017
+ 
+View the article online for updates and enhancements.
+You may also like
+Historical values of water and carbon
+intensity of global electricity production
+Rebecca A M Peer and Christopher M
+Chini
+-
+A regional assessment of the water
+embedded in the US electricity system
+Rebecca A M Peer, Emily Grubert and
+Kelly T Sanders
+-
+Power system costs and emissions from
+data center and cryptocurrency mining
+expansion in the United States
+Jeremiah X Johnson, Cameron Wade,
+Michael Blackhurst et al.
+-
+This content was downloaded from IP address 59.78.171.162 on 20/11/2026 at 00:05
+===== PAGE 2 =====
+Environ. Res. Lett. 16 (2021) 064017 https://doi.org/10.1088/1748-9326/abfba1
+OPEN ACCESS
+RECEIVED
+21 January 2021
+REVISED
+20 April 2021
+ACCEPTED FOR PUBLICATION
+26 April 2021
+PUBLISHED
+21 May 2021
+Original Content from
+this work may be used
+under the terms of the
+Creative Commons
+Attribution 4.0 licence.
+Any further distribution
+of this work must
+maintain attribution to
+the author(s) and the title
+of the work, journal
+citation and DOI.
+LETTER
+The environmental footprint of data centers in the United States
+Md Abu Bakar Siddik1, Arman Shehabi2 and Landon Marston1,∗
+1 Department of Civil & Environmental Engineering, Virginia T ech, Blacksburg, V A, United States of America
+2 Energy T echnologies Area, Lawrence Berkeley National Laboratory, Berkeley, CA, United States of America
+∗ Author to whom any correspondence should be addressed.
+E-mail:lmarston@vt.edu
+Keywords: water scarcity, data center, water footprint, carbon footprint, water-energy nexus
+Supplementary material for this article is available online
+Abstract
+Much of the world’s data are stored, managed, and distributed by data centers. Data centers require
+a tremendous amount of energy to operate, accounting for around 1.8% of electricity use in the
+United States. Large amounts of water are also required to operate data centers, both directly for
+liquid cooling and indirectly to produce electricity. For the first time, we calculate spatially-detailed
+carbon and water footprints of data centers operating within the United States, which is home to
+around one-quarter of all data center servers globally. Our bottom-up approach reveals one-fifth of
+data center servers direct water footprint comes from moderately to highly water stressed
+watersheds, while nearly half of servers are fully or partially powered by power plants located
+within water stressed regions. Approximately 0.5% of total US greenhouse gas emissions are
+attributed to data centers. W e investigate tradeoffs and synergies between data center’s water and
+energy utilization by strategically locating data centers in areas of the country that will minimize
+one or more environmental footprints. Our study quantifies the environmental implications
+behind our data creation and storage and shows a path to decrease the environmental footprint of
+our increasing digital footprint.
+1.Introduction
+Data centers underpin our digital lives. Though
+relatively obscure just a couple of decades prior,
+data centers are now critical to nearly every busi-
+ness, university, and government, as well as those
+that rely on these organizations. Data centers sup-
+port servers, digital storage equipment, and net-
+work infrastructure for the purpose of large-scale
+data processing and data storage [ 1]. Increasing
+demand for data creation, processing, and stor-
+age from existing and emerging technologies, such
+as online platforms/social media, video streaming,
+smart and connected infrastructure, autonomous
+vehicles, and artificial intelligence, has led to expo-
+nential growth in data center workloads and compute
+instances [2].
+The global electricity demand of data centers
+was 205 TWh in 2018, which represents about 1%
+of total global electricity demand [ 3]. The United
+States houses nearly 30% of data center servers,
+more than any other country [ 3–5]. In 2014, 1.8%
+of US electricity consumption was attributable to
+data centers, roughly equivalent to the electricity
+consumption of New Jersey [ 1]. Previous studies
+found power densities per floor area of traditional
+data centers almost 15–100 times as large as those
+of typical commercial buildings [ 6], and data cen-
+ter power density has increased with the prolifer-
+ation of compute-intensive workloads [ 7]. Though
+the amount of data center computing workloads has
+increased nearly 550% between 2010 and 2018, data
+center electricity consumption has only risen by 6%
+due to dramatic improvements in energy efficiency
+and storage-drive density across the industry [ 1, 3].
+However, it is unclear whether energy efficiency
+improvements can continue to offset the energy
+demand of data centers as the industry is expec-
+ted to continue its rapid expansion over the next
+decade [8].
+The growing energy demand of data centers
+has attracted the attention of researchers and poli-
+cymakers not only due to scale of the industry’s
+energy use but because the implications the industry’s
+© 2021 The Author(s). Published by IOP Publishing Ltd
+===== PAGE 3 =====
+Environ. Res. Lett. 16 (2021) 064017 M Abu Bakar Siddik et al
+Figure1. The system boundaries and interlinkages defining the operational water and carbon footprints of data centers. Specific
+power plants, water utilities, and wastewater treatment (WWT) utilities are connected to each data center through their
+provisioning of electricity and water. Power plants emit GHGs and consume water in the production of electricity. These
+environmental impacts are attributed to data centers in proportion to how much electricity the data center uses (red and blue
+dashed lines connecting facilities). The GHG emissions and water consumption associated with the provisioning of treated water
+and disposal of wastewater, including the GHGs and water consumed in the generation of the electricity supplied to these
+facilities, are also attributed to data centers in proportion to their use of these utilities. Data centers do not directly emit GHGs but
+they do directly consume water to dissipate heat. All these facilities work together to keep data centers operational and contribute
+to the water and carbon footprint of data centers.
+energy consumption has on greenhouse gas (GHG)
+emissions and water use. Data centers directly and
+indirectly consume water and emit GHG in their
+operation. Most data centers’ energy demands are
+supplied by the electricity grid, which distributes elec-
+tricity from connected power plants. Electricity gen-
+eration is the second largest water consumer [ 9] and
+the second largest emitter of GHGs in the US [ 10].
+These environmental externalities can be attributed
+to the place of energy demand using several existing
+approaches [11, 12].
+In addition to the electricity consumed directly by
+data centers, electricity is used to supply treated water
+to data centers and treat the wastewater discharged by
+data centers. Like data centers, water and wastewater
+facilities are major electricity consumers, responsible
+for almost 1.8% of total electricity consumption in
+the US in 2013 [ 13]. The electricity required in the
+provisioning and treatment of water and treatment
+of discharged wastewater also emits GHGs that can
+be attributed to data centers. Likewise, water used to
+generate the electricity used by water and wastewa-
+ter utilities in their service of data centers contributes
+to the water footprint of these data centers. Water is
+also used directly within a data center to dissipate the
+immense amount of heat that is produced during its
+operation.
+The geographic location [ 14, 15] and the local
+electricity mix [ 16] are strong determinants of a
+data center’s carbon footprint, though these spa-
+tial details are often excluded in data center stud-
+ies. A preliminary water footprint assessment of data
+centers by Ristic et al [17] provided a range of
+water footprints associated with data center opera-
+tion. Although Ristic et al provided general estim-
+ates based on global average water intensity factors,
+their study highlights the importance of considering
+both direct and indirect water consumption associ-
+ated with data center operation. Moreover, Risticet al
+highlights the importance of considering the type of
+power plants supplying electricity to a data center and
+the type/size of a data center, as each of these factors
+can significantly impact energy use and indirect water
+footprint estimates.
+In this study we utilize spatially-detailed records
+of data center operations to provide the first sub-
+national estimates of data center water and carbon
+footprints. Here, water footprint is defined as the
+consumptive blue water use (i.e. surface water and
+groundwater). The carbon footprint of a data cen-
+ter, expressed as equivalent CO 2, is used to represent
+its global warming potential. Our assessment focuses
+on the operational environmental footprint of data
+centers (figure 1), which includes the power plant(s),
+water supplier, and wastewater treatment plant ser-
+vicing the data center. The non-operational stages
+of a data center’s life cycle (e.g. manufacturing of
+servers) consume relatively much less energy [18] and
+2
+===== PAGE 4 =====
+Environ. Res. Lett. 16 (2021) 064017 M Abu Bakar Siddik et al
+are excluded in this study. The spatial detail afforded
+by our approach enables more accurate estimates of
+water consumption and GHG emissions associated
+with data centers than previous studies. Moreover, we
+evaluate the impact of data center operation on the
+local water balance and identify data centers located
+in, or indirectly reliant upon, already water stressed
+watersheds. W e investigate the following questions:
+(i) What is the direct and indirect operational water
+footprint of US data centers? (ii) Which watersheds
+support each data center’s water demand and what
+portion of these watersheds are water stressed? (iii)
+How much GHG emissions are associated with the
+operation of data centers? (iv) T o what degree can
+strategic placement of future data centers within the
+US reduce the industry’s operational water and car-
+bon footprints?
+2.Methods
+W e utilize spatially detailed records on data cen-
+ters, electricity generation, GHG emissions, and water
+consumption to determine the carbon footprint and
+water footprint of data centers in the US. Our
+approach connects specific power plants, water utilit-
+ies, and wastewater treatment plants to each data cen-
+ter within the US. All data used in this study are for
+the year 2018, the most recent year where all data are
+publicly available. A visual summary of our methods
+is shown in supplementary figure S1 (available online
+at stacks.iop.org/ERL/16/064017/mmedia).
+2.1.Datacenterlocationandenergyuse
+Information availability on data center location
+and size varies depending on its type and owner.
+Ganeshalingam et al [4] reports likely locations of in-
+house small and midsize data centers, which house
+approximately 40% of US servers. Detailed inform-
+ation on colocation and hyperscale data centers is
+derived from commercial compilations [ 19–21] that
+get direct support and input from data center service
+providers.
+W e classified data centers based on the Interna-
+tional Data Corporation classification system (sum-
+marized in table S1) and estimated the electricity use
+based on data center floor space. W e used IT load
+intensity values ( ITs in watt/ft 2) for different data
+center types ( s) from Shehabi et al [22] to estimate
+the total energy requirements (DC_Etotal; in MWh) of
+colocation and hyperscale data centers as follows:
+DC_Etotal = ITs × PUEs × A (1)
+where PUEs is the power usage effectiveness of space
+type s, and A is the floor area of data center in ft 2.
+W e account for potential overstatement of data cen-
+ter capacity [ 4], a lack of distinction between gross
+and raised floor area, and unfilled rack capacity by
+scaling our server counts to match the 2018 estimate
+of servers by data center type [ 3], as shown in table 1
+and figure S2. Scaled server estimates are then spa-
+tially distributed in proportion to the current spatial
+distribution of installed server bases. The number of
+servers by state is shown in figure S2.
+Power usage effectiveness (PUE) is a key met-
+ric of data center energy efficiency [ 23]. A value of
+1.0 is ideal as it indicates all energy consumed by
+a data center is used to power computing devices.
+Energy used for non-computing components, such
+as lighting and cooling, increases the PUE above 1.0
+(see equation ( 2)). Generally, a data center’s PUE is
+inversely proportionate to its size since larger data
+centers are better able to optimize their energy usage.
+Average PUE values and energy use by data center
+type were taken from Masanet et al [3] and shown in
+table 1 and table S1.
+PUE = T otal power supplied to the data center
+Power consumed by the IT equipment .
+(2)
+2.2.Electricitygeneration,waterconsumption,and
+GHGemissions
+Power plant-specific electricity generation and water
+consumption data come from the US Energy Inform-
+ation Administration (EIA) [ 24]. Of the approxim-
+ately 9000 US power plants, the EIA requires nearly
+all power plants report electricity generation. How-
+ever, only power plants with generation capacity
+greater than 100 MW (representing three-fourths of
+total generation) must report water consumption.
+W e assigned national average values of water con-
+sumption per unit of electricity generation by fuel
+type (i.e. water intensity; m 3 MW h −1) to all power
+plants with unspecified water consumption. Opera-
+tional water footprints of solar and wind power were
+taken from Macknick et al [25]. Following Grubert
+[26], we assign all reservoir evaporation to the dam’s
+primary purpose (e.g. hydropower). W e connected
+hydroelectric dams with their respective power plants
+using data from Grubert [27]. Reservoir specific evap-
+oration comes from Reitz et al [28].
+The U.S. Environmental Protection Agency’s
+eGRID database [29] provided GHG emissions asso-
+ciated with each power plant. GHG emissions are
+converted to an equivalent amount of carbon dioxide
+(CO2)-eq with the same global warming potential so
+to derive a single carbon footprint metric [ 30]. Dir-
+ect GHG emission during the operation of data cen-
+ters are negligible [ 18] and therefore not considered
+in this study.
+Data centers, water suppliers, and wastewater
+treatment plants typically utilize electricity gener-
+ated from a mix of power plants connected to the
+electrical grid. Within the electrical grid, electricity
+supply matches electricity demand by balancing elec-
+tricity generation within and transferred into/out of
+a power control area (PCA). Though it is infeasible
+to trace an electron generated by a particular power
+3
+===== PAGE 5 =====
+Environ. Res. Lett. 16 (2021) 064017 M Abu Bakar Siddik et al
+Table1. Combined direct and indirect water consumption and GHG emissions (carbon equivalence) by data center type. Water
+intensity and carbon intensity are reported per MWh of electricity used and per computing workload. Better energy utilization, more
+efficient cooling systems, and increased workloads per deployed server has increased the water efficiency of larger data centers.
+Computing workloads in hyperscale data centers are almost six times more water efficient compared to internal data centers. W orkload
+estimates are based on traditional and cloud workloads from [ 2, 3].
+Category
+Energy use
+(million
+MWh)
+Computing
+workloads
+(million)
+Water intensity
+(m3 MWh−1)
+Carbon
+intensity
+(ton CO2-eq
+MWh−1)
+Water intensity
+(m3/workload)
+Carbon
+intensity
+(ton CO2-eq/
+workload)
+Internal 26.90 16 7.20 0.45 12.15 0.75
+Colocation 22.40 41 7.00 0.42 3.85 0.25
+Hyperscale 22.85 76 7.00 0.44 2.10 0.15
+plant to the final electricity consumer, there are sev-
+eral approaches to relate electricity generation to elec-
+tricity consumption (Siddik et al [31] summarizes the
+most common approaches).
+Here, we primarily rely on the approach used by
+Colett et al [32] and Chini et al [33] to identify the
+generative source of electricity supplied to any given
+data center. This approach assesses electricity gen-
+eration and distribution at the PCA level where it
+is primarily managed. PCA boundaries are derived
+from the Homeland Infrastructure Foundation level
+data [ 34] and crosschecked against Form EIA-861
+[35], which identifies the PCAs operating in each
+state. Annual inter-PCA electricity transfers repor-
+ted by the Federal Energy Regulatory Commission
+[36] are also represented within this approach. A
+data center (as well as water and wastewater utilit-
+ies) draws on electricity produced within its PCA,
+unless the total demand of all energy consumers
+within the PCA exceeds local generation, in which
+case electricity imports from other PCAs are utilized.
+If a PCA ’s electricity production equals or exceeds
+the PCA ’s electricity demand, it is assumed all elec-
+tricity imports pass through the PCA and are re-
+exported for utilization in other PCAs. Siddik et al
+[31] notes that water and carbon footprints are sens-
+itive to the attribution method used to connect power
+plants to energy consumers. Therefore, we conduct
+a sensitivity analysis (see the supporting inform-
+ation for additional details) to test the degree to
+which our electricity attribution method affects our
+results. Additionally, we also test different assump-
+tions regarding the water footprint of hydropower
+generation, as this too is a key source of uncertainty.
+W e focus on the annual temporal resolution and
+assume an average electricity mix proportional to the
+relative annual generation of each contributing power
+plant. Though the electricity mix within a PCA can
+fluctuate hourly depending on balancing measures,
+these intra-annual variations will not significantly
+impact our annual-level results. While it is infeasible
+to determine the precise amount of electricity each
+power plant provides to each data center, water utility,
+and wastewater treatment plant, our approach will
+enable us to estimate where each facility is most likely
+to draw its electricity. The dependency of a data cen-
+ter on local and imported electricity from other PCAs
+was calculated using equations ( 3) and (4).
+DC_Ep,l = DC_Ep ×
+(
+1 −
+∑
+i
+ri
+)
+. (3)
+DC_Ep,im = DC_Ep ×
+∑
+i
+ri (4)
+where DC_Ep,l and DC_Ep,i are the local ( l) and
+imported ( im) electricity (MWh) to a data center
+from PCA p, respectively. DC_Ep is the total elec-
+tricity consumption of the data center, whereas ri
+represents the electricity contribution of each PCA i
+to PCA p as follows:
+ri =
+
+
+
+Importcon
+Generationp + ∑ Importp − ∑ Exportp
+, if PCA p is net importer
+0, if PCA p is net exporter
+where Importcon is defined as the electricity from a
+linked PCA i that was consumed within PCA p. Any
+imported electricity not consumed with PCA p is
+re-exported.
+Adjusted electricity consumption from the PCAs
+were assigned to the power plants using equation (5).
+DC_Ep,k = DC_Ep,adj × PPk∑n
+k=1 PPk
+(5)
+where DC_Ep,k is the total energy directly consumed
+[MWh/y] by data centers from power plant k that is
+attributed to PCA p, DC_Ep,adj is the total electricity
+4
+===== PAGE 6 =====
+Environ. Res. Lett. 16 (2021) 064017 M Abu Bakar Siddik et al
+consumption of the data center from PCA p after
+adjusting for the inter-PCA electricity transfers, PPk
+is the net generation by a specific power plant in
+MWh/y, and n is the number of power plants within
+PCA p. A similar approach was taken to connect
+power plants to water and wastewater utilities, with
+their electricity usage (and associated environmental
+footprints) then linked to the data center they service.
+Boiler feed pumps require an insignificant amount of
+electricity to provide water to power plants. There-
+fore, we truncate our analysis at this point.
+2.3.WaterconsumptionandGHGemissions
+associatedwithdatacenters
+The indirect water and carbon footprint of each
+data center consists of water consumption or GHG
+emissions associated with the generation of (i) elec-
+tricity utilized during data center operation, (ii)
+electricity used by water treatment plants for treat-
+ment and supply of cooling water to data cen-
+ters, and (iii) electricity used by wastewater treat-
+ment plants to treat the wastewater generated by
+a data center. The GHG emissions or water con-
+sumption of a power plant supplying electricity to
+a data center is attributed to the data center as
+follows:
+DC_IFk = DC_Ek × Fk (6)
+where DC_IFk is the indirect footprint (water or car-
+bon) associated with electricity used during the oper-
+ation of a data center from power plantk and DC_Ek is
+the total energy used [MWh/y] by a data center from
+power plant k (from equation (5)). When calculating
+the indirect water footprint, Fk is the water consump-
+tion per unit of electricity generated by power plant k
+in m3 MWh−1. When calculating the indirect carbon
+footprint, Fk is the GHG emitted per unit of generated
+electricity by power plant k (tons CO2-eq MWh−1).
+Although the IPCC does not consider water treat-
+ment a notable emitter of GHGs [ 37], wastewater
+treatment plants are a major source of GHG emis-
+sion [38, 39]. In 2017, total GHG gas emission from
+wastewater treatment plants was estimated to be
+20 million metric tons, with a direct emission rate of
+0.3 kg CO2-eq/y per m3 of wastewater treated [38, 39].
+In absence of facility specific emission data, we have
+used the average emission rate for treating wastewater
+for all wastewater generated from data center oper-
+ation [ 39]. No direct GHG emissions are assumed
+to be associated with data center operation at the
+facility [18].
+The EPA Safe Drinking Water Information Sys-
+tem contains information on the location, system
+type, and source of water for each public water and
+wastewater utility [ 40, 41]. W e assumed the nearest
+non-transient water treatment plant and wastewater
+treatment plant services a data center’s water demand
+and wastewater management, respectively. After cal-
+culating the water supply requirement of a data center
+(discussed later in this section), the electricity needed
+for treatment and distribution of cooling water can
+be calculated using the data from Pabi et al [13] (see
+table S2). Water and wastewater treatment plants were
+linked to power plants (as described previously) to
+estimate the indirect water footprint associated with
+electricity required to distribute and treat water and
+wastewater used by a data center. W e then sum the
+water consumed by each power plant to directly or
+indirectly service a data center to determine the total
+indirect water footprint of that data center. The indir-
+ect water footprint associated with each power plant
+was also aggregated within watershed boundaries to
+determine which water sources each data center was
+reliant upon.
+Direct water consumption of a data center can be
+estimated from the heat generation capacity of a data
+center [42], which is related to the amount of electri-
+city used [ 43]. Estimates of data center specific elec-
+tricity demand were multiplied by the typical water
+cooling requirement [1]—1.8 m3 MWh−1—to estim-
+ate the direct water footprint of each data center. The
+direct water consumption is assigned to the watershed
+where the water utility supplying the data center with-
+draws its water.
+Data center wastewater is largely comprised of
+blowdown; that is, the portion of cooling water
+removed from circulation and replaced with freshwa-
+ter to prevent excessive concentration of undesirable
+components [44]. W e assume all data centers utilize
+potable water supplies and cycle this water until the
+concentration of dissolved solids is roughly five times
+the supplied water [44]. W e calculate blowdown from
+data center cooling towers using the following com-
+monly employed approach [45]:
+RBlowdown = 1
+C − 1 × REvaporation (7)
+where RBlowdown is the blowdown rate required for a
+cooling tower (m3 MWh−1), C is the cycle of concen-
+tration for dissolved solids (assumed here as 5), and
+REvaporation is the rate of evaporation (m 3 MWh−1).
+2.4.Waterscarcityfootprint
+The water scarcity footprint ( WSF; as defined by ISO
+14046 and Boulay et al [46]) indicates the pressure
+exerted by consumptive water use on available fresh-
+water within a river basin and determines the poten-
+tial to deprive other societal and environmental water
+users from meeting their water demands. W e quan-
+tified the WSF of data centers using the A W ARE
+method set forth by Boulay et al [46] (see the Sup-
+portive Information for more details). Other societal
+and environmental water use data, as well as data on
+natural water availability within each US watershed,
+come from [47–49].
+5
+===== PAGE 7 =====
+Environ. Res. Lett. 16 (2021) 064017 M Abu Bakar Siddik et al
+Figure2. The blue water footprint (m 3) of US data centers in 2018, resolved to each subbasin (8-digit Hydrologic Unit Code).
+(A) Direct water footprint of data centers, (B) indirect water footprints associated with electricity utilization by data center
+equipment, and (C) indirect water footprints associated with treatment of supplied cooling water and treatment of generated
+wastewater.
+3.Results
+3.1.Thewaterfootprintofdatacenters
+The total annual operational water footprint of US
+data centers in 2018 is estimated at 5.13 × 108 m3.
+Data center water consumption is comprised of three
+components: (i) water consumed directly by the data
+center for cooling and other purposes (figure 2(A)),
+(ii) water consumed indirectly through electricity
+generation (figure 2(B)), and (iii) water consumed
+indirectly via the water embedded with the electricity
+consumption of water and wastewater utilities servi-
+cing the data center (figure 2(C)). The data center
+industry directly or indirectly draws water from 90%
+of US watersheds, as shown in figure 3(A).
+Roughly three-fourths of US data centers’ opera-
+tional water footprint is from indirect water depend-
+encies. The indirect water footprint of data cen-
+ters in 2018 due to their electricity demands is
+3.83 × 108 m3, while the indirect water footprint
+attributed to water and wastewater utilities serving
+data centers is several orders of magnitude smaller
+(4.50 × 105 m3). Nationally, we estimate that 1 MWh
+of energy consumption by a data center requires 7.1
+m3 of water. However, this national average masks the
+large spatial variation (range 1.8–105.9 m 3) in water
+demand associated with a data center’s energy con-
+sumption. Data centers are indirectly dependent on
+water from every state in the contiguous US, much
+of which is sourced from power plants drawing water
+from subbasins in the eastern and western coastal
+states. Less than one-fifth of the industry’s total elec-
+tricity demand is from data centers in the W est and
+Southwest US (regions as defined by NOAA [ 50]; see
+outlined areas in figures 2–5, and figure S4 for region
+identification), yet nearly one-third of the industry’s
+indirect water footprint is attributed to data centers
+in these regions. Indirect water consumption asso-
+ciated with energy production in Southwest subbas-
+ins is particularly high, despite relatively low elec-
+tricity supplied from this region, due to the dispro-
+portionate amount of electricity from water-intensive
+hydroelectricity facilities and the high evaporative
+potential in this arid region. Conversely, the South-
+eastern region consumes one-quarter of the electri-
+city used by the industry but only one-fifth of the
+indirect water since data centers in this region source
+their electricity from less water-intensive sources.
+On-site, direct water consumption of US data
+centers in 2018 is estimated at 1.30 × 108 m3. Col-
+lectively, data centers are among the top-ten water
+consuming industrial or commercial industries in the
+US [47]. Approximately 1.70 × 107 m3 of water dir-
+ectly consumed by data centers are sourced from a
+different subbasin than the location of the installed
+servers. Large direct water consumption in the North-
+east, Southeast, and Southwest regions indicate clus-
+tering of servers in these regions. Combined direct
+and indirect water and carbon intensities are broken
+down by data center type in table 1.
+3.2.Relianceofdatacentersonscarcewater
+supplies
+The WSF of data centers in 2018 is 1.29 × 109 m3
+of US equivalent water consumption, which is more
+than twice that of the volumetric water footprint
+reported in the previous section. The WSF (includ-
+ing both direct and indirect water requirements)
+per unit of energy consumption is 17.9 m 3 US-eq
+water MWh−1, more than double the nationally aver-
+aged water intensity (7.1 m 3 MWh−1) that does not
+account for water scarcity. WSFs that are larger than
+volumetric water footprints suggest that data cen-
+ters disproportionately utilize water resources from
+watersheds experiencing greater water scarcity than
+average.
+Only one-fourth of the volumetric water foot-
+print of data centers resulted from onsite water use.
+Y et, more than 40% of the WSF is attributed to
+direct water consumption. This indicates that dir-
+ect water consumption of data centers, which occurs
+close to where the data center is located, is skewed
+toward water stressed subbasins compared to its
+indirect water consumption, which is distributed
+6
+===== PAGE 8 =====
+Environ. Res. Lett. 16 (2021) 064017 M Abu Bakar Siddik et al
+Figure3. The subbasin or state of direct and indirect environmental impact associated with data center operation. (A) Water
+footprint (m3). (B) WSF (m 3 US-eq water). (C) Carbon footprint (tons CO 2-eq/y).
+Figure4. A data center’s environmental footprint is highly contingent on where it is located. The (A) water intensity
+(m3 MWh−1), (B) water scarcity intensity (m 3 US-eq MWh−1), and (C) GHG emissions intensity (tons CO 2-eq MWh−1) of a
+hypothetical 1 MW data center placed in each of the 2110 subbasins of the continental United States.
+more broadly geographically. W e find that most of the
+watersheds that data centers draw from, particularly
+those in the Eastern US, face little to no water
+stress on average. In contrast, many of the water-
+sheds in the W estern US exhibit high levels of water
+stress, which is exacerbated by data centers direct and
+indirect water demands. Combined, the W est and
+Southwestern watersheds supply only 20% of dir-
+ect water and and 30% indirect water to data cen-
+ters, while hosting approximately 20% of the nation’s
+servers. Y et, 70% of the overall WSF occurs in these
+two regions (figure 3(B)), which indicates a dis-
+proportionate dependency on scarce waters in the
+western US.
+3.3.GHGemissionsattributedtodatacenters
+T otal GHG emissions attributed to data centers in
+2018 was 3.15 × 107 tons CO 2-eq, which is almost
+0.5% of total GHG emissions in the US [ 10]. A little
+over half (52%) of the total emissions of data center
+operations are attributed to the Northeast, Southeast,
+and Central US, which have a high concentration of
+thermoelectric power plants, along with large number
+of data centers (figure 3(C)). Almost 30% of the data
+center industry’s emissions occur within the Cent-
+ral US, which relies heavily on coal and natural gas
+to meet its electricity demand. Y et, only 10% the
+industry’s energy demand comes from the Central
+US, and just 9% of the water consumption associated
+with data centers operation occurs in this region.
+Moreover, the Central region is a net exporter of
+electricity to other regions, providing electricity for
+data centers located in the Northeast and Southeast
+regions, which houses almost one-third of servers.
+Y et, the generation of less carbon intensive electri-
+city in the Northeast (hydroelectricity) and Southeast
+(wind/solar) regions means that while their electricity
+consumption comprises 34% of data centers’ national
+electricity demand, these regions only constitute 23%
+of the industry’s GHG emissions. The GHG emis-
+sions from treating the wastewater generated from
+data centers is around 550 tons/y (0.002% of total
+GHG emissions associated with data centers).
+3.4.Wheretolocatedatacenterstominimizewater
+andcarbonfootprints
+Our results indicate significant variability of environ-
+mental impacts depending on where a data center
+is located. Here we explore how the geographic
+placement of a data center can lead to improved
+environmental outcomes. W e find that the total
+water intensity of a data center can range from
+1.8–106 m3 MWh−1, the water scarcity intensity
+from 0.5 to 305 m 3 US-eq MWh −1, and the carbon
+intensity from 0.02 to 1 ton CO2-eq MWh−1 depend-
+ing on where the data center is placed (figure 4).
+Data center placement decisions are complicated by
+7
+===== PAGE 9 =====
+Environ. Res. Lett. 16 (2021) 064017 M Abu Bakar Siddik et al
+Figure5. The (A) water footprint, (B) WSF , and (C) carbon footprint of data centers can be reduced by placing them in subbasins
+with the smallest footprint (top quartile of all subbasins), as denoted by the shaded subbasins in each panel. The bar graphs
+represent the percent reduction/increase of each environmental footprint within the shaded subbains compared to the national
+average data center environmental footprint. Hatched areas indicate subbasin that are among the most (top quartile)
+environmentally favorable locations for both water scarcity and GHG emissions.
+Figure6. Percent change in environmental footprints associated with new data center servers compared to the ‘business-as-usual’
+scenario. While the business-as-usual scenario assumes new servers will be placed in proportion to historical server locations,
+alternative scenarios explicitly consider the environmental implications of data center placement. Scenario A places data center
+servers in subbasins within the top quartile of all subbasins in environmental performance for both carbon (CF) and water
+scarcity (WSF) footprints. Scenario B represents server placement within subbasins in the top quartile for carbon footprints,
+while scenario C and D represent the best (top 25%) subbasins to place data center servers with respect to minimizing WSFs and
+water footprints (WF), respectively.
+the electricity grid, which displaces environmental
+impacts from the physical location of a data center.
+Figure 5 depicts subbasins in the top quartile
+of environmental performance as it relates to water
+footprint ( 5(A)), WSF ( 5(B)), and carbon footprint
+(5(C)) per MWh of electricity used by a hypothetical
+data center located within each subbasin. Less than
+5% of subbasins are in the top quartile of environ-
+mental performance for both WSF and carbon foot-
+print (hatched areas in figures 5(B) and (C), meaning
+that 40% of subbasins will require making a trade-off
+between reducing WSFs and carbon footprints. The
+remaining 55% of subbasins (white areas shared by
+figures 5(B) and (C) are not among the best locations
+to place a data center for either water or GHG reduc-
+tion. Though the water footprint and WSF are related
+concepts, we show that nearly one-fifth of subbasins
+that were in the top quartile with respect to the water
+footprint are in the bottom quartile for WSF . In other
+words, a data center placed in these basins would use
+less water than 75% of potential sites, but it would
+draw that water from subbasins facing higher levels
+of water scarcity. In general, locating a data center
+within the Northeast, Northwest, and Southwest will
+reduce the facilities carbon footprint, while locating a
+data center in the Midwest and portions of the South-
+east, Northeast, and Northwest will reduce its WSF .
+In the coming years, cloud and hyperscale data
+centers will replace many smaller data centers [ 3].
+This shift will lower the environmental footprint in
+some instances but introduce new environmental
+stress in other areas. Assuming added servers employ
+similar technology as existing servers and are placed
+in cloud and hyperscale data centers in proportion to
+the current spatial distribution of data centers (i.e.
+business-as-usual scenario), these new data center
+servers will have a collective water footprint of 77.77
+× 106 m3 (15% of the current industry total), WSF
+of 170.56 × 106 m3 US-eq (9%), and 4.36 × 106
+tons CO2-eq (14%). However, if these new servers are
+8
+===== PAGE 10 =====
+Environ. Res. Lett. 16 (2021) 064017 M Abu Bakar Siddik et al
+strategically placed in areas identified to have a lower
+environmental footprint, their water and carbon bur-
+den could be significantly reduced.
+The WSF and carbon footprint of new data cen-
+ters can be reduced by 153.00 × 106 m3 US-eq (90%
+less than business-as-usual expansion) and 2.34 ×
+106 tons CO 2-eq (55%), respectively (figure 6(A)) if
+they are placed in areas with the lowest carbon and
+WSFs (hatched areas in figure 5). However, placing
+all new data centers within a small area may strain
+local energy and water infrastructure due to their col-
+lective water and energy demands. Data centers can
+be dispersed more broadly in areas that are favorable
+with respect to water footprint (figure 5(A)), WSF
+(figure 5(B)), or carbon footprint (figure5(C)). How-
+ever, only considering one environmental character-
+istic can lead to environmental trade-offs (figure 6).
+4.Discussionandconclusion
+The amount of data created and stored glob-
+ally is expected to reach 175 Zettabytes by 2025,
+representing nearly a six-fold increase from 2018
+[51]. The role of data centers in storing, managing,
+and distributing data has remained largely out of
+view of those dependent on their services. Similarly,
+the environmental implications of data centers have
+been obscured from public view. Here, for the first
+time, we estimate the water and carbon footprints
+of the US data center industry using infrastructure
+and facility-level data. Data centers heavy reliance on
+water scarce basins to supply their direct and indirect
+water requirements not only highlight the industry’s
+role in local water scarcity, but also exposes poten-
+tial risk since water stress is expected to increase in
+many watersheds due to increases in water demands
+and more intense, prolonged droughts due to climate
+change [ 52–54]. For these reasons, environmental
+considerations may warrant attention alongside typ-
+ical infrastructure, regulatory, workforce, customer-
+/client proximity, economic, and tax considerations
+when locating new data centers.
+The data center industry can take several meas-
+ures to reduce its environmental footprint, as well as
+minimize its water scarcity risks. First, the industry
+can continue its energy efficiency improvements. The
+ongoing shift to more efficient hyperscale and co-
+location data centers will lower the energy require-
+ments per compute instance. Software and hardware
+advances, as well as further PUE improvements, can
+continue to reduce energy requirements, and thus
+environmental externalities. For instance, quarterly
+PUE of as low as 1.07 has been reported by Google
+for some of their data centers [55]. Liquid immersion
+cooling technologies show promise of further reduc-
+tions in PUE, with one study reporting a PUE below
+1.04 [56]. The prospect of recovering low-grade heat
+(i.e. low temperature or unstable source of heat) from
+data centers for space or water heating is limited;
+however, approaches such as absorption cooling and
+organic Rankine cycle are promising technologies for
+generating electricity from waste heat [ 57].
+Second, the data center industry can make invest-
+ments in solar and wind energy. Directly connecting
+data center facilities to wind and solar energy sources
+ensures that water and carbon footprints are minim-
+ized. Purchasing renewable energy certificates from
+electricity providers does not necessarily reduce the
+water or carbon footprints of a data center. However,
+these investments gradually shift the electrical grid
+toward renewable energy sources, thus lowering the
+overall environmental impact of all energy users. Data
+center workloads can be migrated between data cen-
+ters to align with the portion of the grid where renew-
+able electricity supplies exceed instantaneous demand
+[58].
+Third, as we show in this study, strategically
+locating new data centers can significantly reduce
+their environmental footprint. Climatic factors can
+make some areas more favorable due to lower ambi-
+ent temperatures, thereby reducing cooling require-
+ments. Lower cooling requirements reduces both
+direct and indirect water consumption, as well as
+GHG emissions, associated with data center opera-
+tion. Since most data centers meet their electricity
+demands from the grid, the composition of power
+plants supplying electricity to a data center plays a
+significant role in a data center’s environmental foot-
+print. For an industry that is centered on technolo-
+gical innovation, we show that real estate decisions
+may play a similar role as technological advances
+in reducing the environmental footprint of data
+centers.
+Dataavailabilitystatement
+Data center locations come from [ 4, 19–21]. Power
+plant electricity generation, water consumption, and
+GHG emission data come from [ 35, 59, 60]. Loca-
+tion of public water utility and wastewater treatment
+data comes from [ 40, 41]. Study data and code can
+be found in the Supporting Information, as well as at
+https://doi.org/10.7294/14504913. The DOI contains
+relevant shapefiles, tabular data, and scripts to help
+replicate and extend our work. All data that support
+the findings of this study are included within the art-
+icle (and any supplementary files).
+Acknowledgments
+L M acknowledges support by the National Science
+Foundation Grant No. ACI-1639529 (INFEWS/T1:
+Mesoscale Data Fusion to Map and Model the US
+Food, Energy, and Water (FEW) system). Any opin-
+ions, findings, and conclusions or recommenda-
+tions expressed in this material are those of the
+author(s) and do not necessarily reflect the views of
+9
+===== PAGE 11 =====
+Environ. Res. Lett. 16 (2021) 064017 M Abu Bakar Siddik et al
+the National Science Foundation. Lawrence Berke-
+ley National Laboratory is supported by the Office of
+Science of the United States Department of Energy
+and operated under Contract Grant No. DE-AC02-
+05CH11231.
+Authorcontributions
+L M conceived and designed the study. M A B S con-
+ducted the analysis. A S provided data and funda-
+mental concepts regarding the analysis. All authors
+contributed to the writing of the manuscript.
+Conflictofinterest
+The authors declare that they have no competing fin-
+ancial interests.
+ORCIDiDs
+Arman Shehabi  https://orcid.org/0000-0002-
+1735-6973
+Landon Marston  https://orcid.org/0000-0001-
+9116-1691
+References
+[1] Shehabi A et al 2016 United states data center energy usage
+report Tech. Rep. (Berkeley, CA: Lawrence Berkeley National
+Lab. (LBNL))
+[2] Cisco 2020 Cisco global cloud index: forecast and
+methodology 2016–2021 White Paper
+[3] Masanet E, Shehabi A, Lei N, Smith S and Koomey J 2020
+Recalibrating global data center energy-use estimates Science
+367 984–6
+[4] Ganeshalingam M, Shehabi A and Desroches L-B 2017
+Shining a light on small data centers in the US
+LBNL-2001025 Lawrence Berkeley National Laboratory
+[5] V an Heddeghem Wet al 2014 T rends in worldwide ICT
+electricity consumption from 2007 to 2012 Comput.
+Commun.50 64–76
+[6] Greenberg S, Mills E, T schudi B, Rumsey P and Myatt B 2006
+Best practices for data centers: lessons learned from
+benchmarking 22 data centers Proc. ACEEE Summer Study
+on Energy Efficiency in Buildings in Asilomar, CA. ACEEE
+(August) vol 3 pp 76–87
+[7] Lawrence A 2020 Rack density is rising (available at: https://
+journal.uptimeinstitute.com/rack-density-is-rising/)
+[8] Shehabi A, Smith S J, Masanet E and Koomey J 2018 Data
+center growth in the United States: decoupling the demand
+for services from electricity use Environ. Res. Lett.13 124030
+[9] Dieter C A et al 2018 Estimated use of water in the United
+States in 2015 U.S. Geol. Surv. Circ.1441 65
+[10] U.S. Environmental Protection Agency Inventory of U.S.
+Greenhouse Gas Emissions and Sinks 1990-2018 EPA
+430-R-20-002 2020
+[11] Colett J S, Kelly J C and Keoleian G A 2015 Using nested
+average electricity allocation protocols to characterize
+electrical grids in life cycle assessment J. Ind. Ecol.20 29–41
+[12] Chini C M, Konar M and Stillwell A S 2017 Direct and
+indirect urban water footprints of the United States Water
+Resour. Res.53 316–27
+[13] Pabi S, Amarnath A, Goldstein R and Reekie L 2013
+Electricity use and management in the municipal water
+supply and wastewater industries (Palo Alto: Electric Power
+Research Institute) p 194
+[14] Depoorter V , Oró E and Salom J 2015 The location as an
+energy efficiency and renewable energy supply measure for
+data centres in Europe Appl. Energy140 338–49
+[15] Goiri I, Le K, Guitart J, T orres J and Bianchini R 2011
+Intelligent placement of datacenters for internet services
+2011 31st Int. Conf. on Distributed Computing Systems (IEEE)
+pp 131–42
+[16] Maurice E et al 2014 Modelling of electricity mix in temporal
+differentiated life-cycle-assessment to minimize carbon
+footprint of a cloud computing service ICT for Sustainability
+2014 (ICT4S-14) (Atlantis Press)
+[17] Ristic B, Madani K and Makuch Z 2015 The water footprint
+of data centers Sustainability7 11260–84
+[18] Belkhir L and Assessing E, A 2018 ICT global emissions
+footprint: trends to 2040 and recommendations J. Cleaner
+Prod.177 448–63
+[19] Colocation Data Center Statistics, USA (data center map
+2018) (available at: www.datacentermap.com/usa/)
+[20] Data Center Providers Data Center Hawk 2018 (available at:
+www.datacenterhawk.com/providers)
+[21] Baxtel: United States Data Center Market (available at:
+https://baxtel.com/data-center/united-states)
+[22] Shehabi A, Masanet E, Price H, Horvath A and
+Nazaroff W W 2011 Data center design and location:
+consequences for electricity use and greenhouse-gas
+emissions Build. Environ.46 990–8
+[23] Steinbrecher R and Schmidt R 2011 Data center
+environments ASHRAE J.53 42–9
+[24] Thermoelectric cooling water data (U.S. Energy Information
+Administration 2019 (available at: www.eia.gov/electricity/
+data/water/)
+[25] Macknick J, Newmark R, Heath G and Hallett K 2011Review
+of operational water consumption and withdrawal factors
+for electricity generating technologies Tech. Rep. (Golden,
+CO: National Renewable Energy Lab. (NREL))
+[26] Grubert E A 2016 Water consumption from hydroelectricity
+in the United States Adv. Water Resour.96 88–94
+[27] Grubert E 2020 Conventional hydroelectricity and the future
+of energy: linking national inventory of dams and energy
+information administration data to facilitate analysis of
+hydroelectricity Electr. J.33 106692
+[28] Reitz M, Sanford W E, Senay G and Cazenas J 2017 Annual
+estimates of recharge, quick-flow runoff and
+evapotranspiration for the contiguous US using empirical
+regression equations JA WRA J. Am. Water Res. Assoc.
+53 961–83
+[29] Emissions and Generation Resource Integrated Database
+(eGRID) 2017 (available at: www.epa.gov/energy/emissions-
+generation-resource-integrated-database-egrid)
+[30] Ridoutt B G and Pfister S 2010 A revised approach to water
+footprinting to make transparent the impacts of
+consumption and production on global freshwater scarcity
+Glob. Environ. Change20 113–20
+[31] Siddik M A, Chini C M and Marston L 2020 Water and
+carbon footprints of electricity are sensitive to geographical
+attribution method Environ. Sci. Technol.12 7533–41
+[32] Colett J S, Kelly J C and Keoleian G A 2016 Using nested
+average electricity allocation protocols to characterize
+electrical grids in life cycle assessment J. Ind. Ecol.
+20 29–41
+[33] Chini C M, Djehdian L A, Lubega W N and Stillwell A S 2018
+Virtual water transfers of the US electric grid Nat. Energy
+3 1115–23
+[34] Control Areas (Homeland Infrastructure Foundation level
+data (HIFLD) 2017 (available at: https://hifld-geoplat
+form.opendata.arcgis.com/datasets/02602aecc68d4e0a90bf6
+5e818155f60_0)
+[35] Annual Electric Power Industry Report, Form EIA-861
+detailed data files 2017 (available at: www.eia.gov/electricity/
+data/eia861/)
+[36] Form No. 714 - Annual Electric Balancing Authority Area
+and Planning Area Report 2017 ( www.ferc.gov/docs-filing/
+forms/form-714/data.asp)
+10
+===== PAGE 12 =====
+Environ. Res. Lett. 16 (2021) 064017 M Abu Bakar Siddik et al
+[37] Eggleston S et al 2006 IPCC guidelines for national
+greenhouse gas inventories
+[38] Hockstad L and Hanel L 2018 Inventory of US greenhouse
+gas emissions and sink Tech. Rep. (Environmental
+System Science Data Infrastructure for a Virtual
+Ecosystem)
+[39] Campos J L et al 2016 Greenhouse gases emissions from
+wastewater treatment plants: minimization, treatment and
+prevention J. Chem.2016 3796352
+[40] Ground Water and Drinking Water 2020 (available at:
+www.epa.gov/ground-water-and-drinking-water)
+[41] Facility Registry Service (FRS) 2020 (available at:
+www.epa.gov/frs)
+[42] Fisenko S, Brin A and Petruchik A 2004 Evaporative cooling
+of water in a mechanical draft cooling tower Int. J. Heat Mass
+Transfer47 165–77
+[43] Capozzoli A and Primiceri G 2015 Cooling systems in data
+centers: state of art and emerging technologies Energy
+Procedia83 484–93
+[44] Maulbetsch J S and DiFilippo M N 2010 Performance, Cost,
+and Environmental Effects of Saltwater Cooling Towers: PIER
+Final Project Report (California Energy Commission)
+[45] Hensley J C 2006 Cooling Tower Fundamentals 2nd
+(Overland Park, KS: SPX Cooling T echnologies, Inc.) p 116
+[46] Boulay A-M et al 2018 The WULCA consensus
+characterization model for water scarcity footprints:
+assessing impacts of water consumption based on
+available water remaining (A W ARE)Int. J. Life Cycle Assess.
+23 368–78
+[47] Marston L, Ao Y , Konar M, Mekonnen M M and
+Hoekstra A Y 2018 High-resolution water footprints of
+production of the United States Water Resour. Res.
+54 2288–16
+[48] Marston L T et al 2020 Reducing water scarcity by improving
+water productivity in the United States Environ. Res. Lett.
+15 094033
+[49] Richter B D et al 2020 Water scarcity and fish imperilment
+driven by beef production Nat. Sustain.3 319–28
+[50] U.S. Climate Regions (available at: www.ncdc.noaa.gov/
+monitoring-references/maps/us-climate-regions.php)
+[51] Reinsel D, Gantz J and Rydning J 2018 The digitization of the
+world from edge to core Framingham: Int. Data Corporation
+[52] Strzepek K, Y ohe G, Neumann J and Boehlert B 2010
+Characterizing changes in drought risk for the United States
+from climate change Environ. Res. Lett.5 044012
+[53] Macknick J, Sattler S, Averyt K, Clemmer S and Rogers J
+2012 The water implications of generating electricity: water
+use across the United States based on different electricity
+pathways through 2050 Environ. Res. Lett.7 045803
+[54] Averyt K et al 2013 Sectoral contributions to surface water
+stress in the coterminous United States Environ. Res. Lett.
+8 035046
+[55] Gao J 2014 Machine learning applications for data center
+optimization Tech. Rep. (Google Research)
+[56] Matsuoka M, Matsuda K and Kubo H 2017 Liquid
+immersion cooling technology with natural convection in
+data center 2017 IEEE 6th Int. Conf. on Cloud Networking
+(CloudNet) (IEEE) pp 1–7
+[57] Ebrahimi K, Jones G F and Fleischer A S 2014 A review of
+data center cooling technology, operating conditions and the
+corresponding low-grade waste heat recovery opportunities
+Renew. Sustain. Energy Rev.31 622–38
+[58] Zheng J, Chien A A and Suh S 2020 Mitigating curtailment
+and carbon emissions through load migration between data
+centers Joule4 2208–22
+[59] Form EIA-923 detailed data with previous form data
+(Thermoelectric cooling water data 2019) (available at:
+www.eia.gov/electricity/data/eia923/)
+[60] Emissions & Generation Resource Integrated Database
+(eGRID) (Environmental Protection Agency, 2019) 2019
+(available at: www.epa.gov/energy/emissions-generation-
+resource-integrated-database-egrid)
+11
