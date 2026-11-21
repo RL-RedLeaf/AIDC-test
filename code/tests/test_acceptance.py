@@ -9,11 +9,18 @@ from scipy.optimize import linprog
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from immc_power_capacity.calculator import combined_battery, grid_only, hydro, solar, thermal, wind
-from immc_power_capacity.cli import main, run
-from immc_power_capacity.exceptions import ValidationError
-from immc_power_capacity.model import total_capacity
-from immc_power_capacity.solver import solve_storage_capacity
+from immc_power_capacity.app import main, run
+from immc_power_capacity.core import (
+    ValidationError,
+    combined_battery,
+    grid_only,
+    hydro,
+    solar,
+    solve_storage_capacity,
+    thermal,
+    total_capacity,
+    wind,
+)
 
 
 def test_grid_only():

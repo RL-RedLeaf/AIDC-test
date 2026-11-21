@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import run as run_module
-from immc_power_capacity.interactive import run_interactive
+from immc_power_capacity.app import run_interactive
 
 
 def _site_config():

@@ -472,10 +472,20 @@ P_{\max}=\max_{x\in\mathcal X_y}\min\{P_E(x),P_W(x),P_L(x)\}.
 代码位置：
 
 - `code/run.py`：命令和 Python 函数入口。
-- `code/immc_power_capacity/site.py`：Q1 的电力、水、土地集成。
-- `code/immc_power_capacity/calculator.py`：各类电源和光储计算。
-- `code/immc_power_capacity/solver.py`：光储逐时 LP。
-- `code/immc_power_capacity/interactive.py`：控制台输入向导。
+- `code/immc_power_capacity/app.py`：命令行、YAML/JSON 读写和输入向导。
+- `code/immc_power_capacity/core.py`：电源公式、水/土地子模型、Q1 集成和光储 LP。
+- `code/immc_power_capacity/__init__.py`：包级函数导出。
+- `code/immc_power_capacity/__main__.py`：`python -m immc_power_capacity` 入口。
+
+运行时结构只有：
+
+```text
+code/run.py
+code/immc_power_capacity/app.py
+code/immc_power_capacity/core.py
+code/immc_power_capacity/__init__.py
+code/immc_power_capacity/__main__.py
+```
 
 ## 测试
 

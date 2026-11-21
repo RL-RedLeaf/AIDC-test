@@ -8,9 +8,8 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from immc_power_capacity.cli import run
-from immc_power_capacity.exceptions import ValidationError
-from immc_power_capacity.site import assess_site, land_capacity, water_budget
+from immc_power_capacity.app import run
+from immc_power_capacity.core import ValidationError, assess_site, land_capacity, water_budget
 
 
 @pytest.fixture
