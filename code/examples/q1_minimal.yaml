@@ -1,0 +1,23 @@
+# 最小联合模型示例。所有数值均为演示数据，不是场址实测值。
+model: q1
+site: 示例场址
+assessment_year: 2028
+period_note: 单个设计日
+service_level: 正常运营，持续满载
+
+P_grid_mw: 120
+k_factor: 1.20
+
+water:
+  basis: consumption
+  policy_m3_h: 180
+  wue_l_per_kwh_it: 1.50
+
+land:
+  effective_ha: 160
+  ha_per_mw_it: 1.0
+
+scenarios:
+  - name: 纯电网
+    type: grid
+    online_year: 2028

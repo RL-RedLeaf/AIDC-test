@@ -114,7 +114,7 @@ def _resource_row(data, spec, grid, budget):
     wue = spec.get("wue_l_per_kwh_it", data["water"].get("wue_l_per_kwh_it"))
     _nonnegative("wue_l_per_kwh_it", wue)
     water_limit = budget["design_equivalent_m3_h"] / wue if wue > 0 else None
-    share = spec.get("generation_share", data["land"].get("generation_share"))
+    share = spec.get("generation_share", data["land"].get("generation_share", 0))
     land = land_capacity(data["land"], share)
     limits = {"电力": electric, "土地": land["P_L_mw_it"]}
     if water_limit is not None:

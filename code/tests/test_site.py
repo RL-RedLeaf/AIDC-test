@@ -35,6 +35,15 @@ def test_demo_and_sensitivity(tmp_path):
     assert upgraded["scenarios"][0]["binding"] == ["电力", "水"]
 
 
+def test_minimal_config_defaults_generation_share():
+    data = yaml.safe_load((ROOT / "examples/q1_minimal.yaml").read_text(encoding="utf-8"))
+    report = assess_site(data)
+    assert report["P_max_mw_it"] == 100
+    assert report["scenarios"][0]["P_W_mw_it"] == 120
+    assert report["scenarios"][0]["P_L_mw_it"] == 160
+    assert report["scenarios"][0]["land"]["reserved_generation_ha"] == 0
+
+
 def test_grid_conversion_and_tied_winners(site):
     del site["P_grid_mw"]
     site.update(P_grid_mva=120, power_factor=0.9)
