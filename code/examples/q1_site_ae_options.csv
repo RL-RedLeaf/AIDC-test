@@ -1,0 +1,2 @@
+site,assessment_year,period_note,service_level,P_grid_mw,k_factor,water_basis,water_policy_m3_h,water_wue_l_per_kwh_it,generation_water_gas_l_per_kwh,land_effective_ha,land_fixed_it_ha,land_generation_land_options_ha,land_ha_per_mw_it,scenario_name,scenario_type,online_year,units,unit_net_mw,gas_supply_adequate
+演示场址,2028,枯水期设计工况,正常运营且持续满载,108,1.2,withdrawal,500,1.5,0.78,160,10,10;20,1,燃气配湿冷园区,gas,2028,1,60,true

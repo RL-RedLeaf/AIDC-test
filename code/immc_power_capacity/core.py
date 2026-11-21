@@ -765,6 +765,7 @@ def land_capacity(land, generation_land=None):
         "effective_ha",
         "fixed_it_ha",
         "generation_land_ha",
+        "generation_land_options_ha",
         "ha_per_mw_it",
     }
     if unknown := set(land) - allowed:
@@ -785,6 +786,40 @@ def land_capacity(land, generation_land=None):
         "optimistic_zero_fixed": fixed == 0,
         "P_L_mw_it": max(0.0, area - fixed - generation_land) / intensity,
     }
+
+
+def _generation_land_options(land, spec):
+    """解析 A_e 的固定值或候选值列表。
+
+    返回:
+        (候选值列表, 来源)。来源为 ``fixed``、``options`` 或 ``default``。
+    """
+    spec_fixed = spec.get("generation_land_ha")
+    spec_options = spec.get("generation_land_options_ha")
+    land_fixed = land.get("generation_land_ha")
+    land_options = land.get("generation_land_options_ha")
+    fixed = spec_fixed if spec_fixed is not None else (
+        None if spec_options is not None else land_fixed
+    )
+    options = spec_options if spec_options is not None else (
+        None if spec_fixed is not None else land_options
+    )
+    if fixed is not None and options is not None:
+        raise ValidationError(
+            "generation_land_ha 与 generation_land_options_ha 不能同时提供。"
+        )
+    if fixed is not None:
+        _nonnegative("generation_land_ha", fixed)
+        return [fixed], "fixed"
+    if options is not None:
+        if not isinstance(options, (list, tuple)) or not options:
+            raise ValidationError("generation_land_options_ha 必须是非空列表。")
+        values = []
+        for value in options:
+            _nonnegative("generation_land_options_ha", value)
+            values.append(value)
+        return values, "options"
+    return [0.0], "default"
 
 
 def _grid(data):
@@ -846,12 +881,6 @@ def _resource_row(data, spec, grid, budget):
     generation_water = breakdown["self_generation_mw"] * generation_water_coefficient
     net_water = max(0.0, budget["Q_max_m3_h"] - generation_water)
     water_limit = net_water / wue if wue > 0 else None
-    generation_land = spec.get(
-        "generation_land_ha",
-        data["land"].get("generation_land_ha", 0),
-    )
-    land = land_capacity(data["land"], generation_land)
-
     value_source = {"P_E": "derived", "P_W": "derived", "P_L": "derived"}
     direct_power = spec.get("direct_P_E_mw_it")
     if direct_power is not None:
@@ -865,17 +894,75 @@ def _resource_row(data, spec, grid, budget):
         _nonnegative("direct_P_W_mw_it", direct_water)
         water_limit = direct_water
         value_source["P_W"] = "direct"
+
     direct_land = spec.get("direct_P_L_mw_it")
+    land_options, land_source = _generation_land_options(data["land"], spec)
+    land_candidates = []
+    selected = None
+    for generation_land in land_options:
+        candidate_land = land_capacity(data["land"], generation_land)
+        candidate_limits = {"电力": electric, "土地": candidate_land["P_L_mw_it"]}
+        if water_limit is not None:
+            candidate_limits["水"] = water_limit
+        candidate_capacity = min(candidate_limits.values())
+        candidate_binding = [
+            key
+            for key, value in candidate_limits.items()
+            if isclose(value, candidate_capacity, abs_tol=1e-9)
+        ]
+        candidate = {
+            "generation_land_ha": generation_land,
+            "P_L_mw_it": candidate_land["P_L_mw_it"],
+            "P_mw_it": candidate_capacity,
+            "binding": candidate_binding,
+        }
+        land_candidates.append(candidate)
+        if selected is None or (
+            candidate_capacity,
+            -generation_land,
+        ) > (
+            selected["P_mw_it"],
+            -selected["generation_land_ha"],
+        ):
+            selected = candidate
+
+    land = land_capacity(data["land"], selected["generation_land_ha"])
     if direct_land is not None:
         _nonnegative("direct_P_L_mw_it", direct_land)
         land["P_L_mw_it"] = direct_land
         land["value_source"] = "direct"
         value_source["P_L"] = "direct"
+        land_source = "direct"
+        direct_limits = {"电力": electric, "土地": direct_land}
+        if water_limit is not None:
+            direct_limits["水"] = water_limit
+        direct_capacity = min(direct_limits.values())
+        land_candidates = [{
+            "generation_land_ha": land["generation_land_ha"],
+            "P_L_mw_it": direct_land,
+            "P_mw_it": direct_capacity,
+            "binding": [
+                key
+                for key, value in direct_limits.items()
+                if isclose(value, direct_capacity, abs_tol=1e-9)
+            ],
+        }]
+        selected = land_candidates[0]
+    elif land_source == "options":
+        value_source["P_L"] = "optimized"
+    land["generation_land_source"] = land_source
 
     limits = {"电力": electric, "土地": land["P_L_mw_it"]}
     if water_limit is not None:
         limits["水"] = water_limit
     capacity = min(limits.values())
+    if direct_land is not None:
+        land_candidates[0]["binding"] = [
+            key
+            for key, value in limits.items()
+            if isclose(value, capacity, abs_tol=1e-9)
+        ]
+        land_candidates[0]["P_mw_it"] = capacity
     row.update(
         name=spec["name"],
         online_year=spec["online_year"],
@@ -887,6 +974,9 @@ def _resource_row(data, spec, grid, budget):
         Q_net_m3_h=net_water,
         P_L_mw_it=land["P_L_mw_it"],
         P_mw_it=capacity,
+        generation_land_ha=selected["generation_land_ha"],
+        generation_land_source=land_source,
+        generation_land_candidates=land_candidates,
         value_source=value_source,
         binding=[
             key

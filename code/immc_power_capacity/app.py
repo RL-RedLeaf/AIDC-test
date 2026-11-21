@@ -200,10 +200,10 @@ def _load_csv(path):
         "generation_water_gas_l_per_kwh", "generation_water_wind_l_per_kwh",
         "generation_water_solar_l_per_kwh", "generation_water_combined_battery_l_per_kwh",
         "land_effective_ha", "land_fixed_it_ha", "land_generation_land_ha",
-        "land_ha_per_mw_it",
+        "land_generation_land_options_ha", "land_ha_per_mw_it",
         "scenario_name", "scenario_type", "online_year", "scenario_k_factor",
         "scenario_wue_l_per_kwh_it", "scenario_generation_water_l_per_kwh",
-        "scenario_generation_land_ha",
+        "scenario_generation_land_ha", "scenario_generation_land_options_ha",
         "direct_P_E_mw_it", "direct_P_W_mw_it", "direct_P_L_mw_it",
         "units", "unit_net_mw", "net_efficiency", "gas_supply_adequate",
         "area_km2", "density_mw_per_km2", "installed_mw", "alpha",
@@ -271,6 +271,12 @@ def _load_csv(path):
         value = _csv_common(rows, csv_field)
         if value is not None:
             land[field] = _csv_number(value, csv_field)
+    land_options = _csv_series(
+        _csv_common(rows, "land_generation_land_options_ha"),
+        "land_generation_land_options_ha",
+    )
+    if land_options is not None:
+        land["generation_land_options_ha"] = land_options
     common["land"] = land
 
     scenarios = []
@@ -318,6 +324,12 @@ def _load_csv(path):
             value = _csv_series(row.get(csv_field), csv_field)
             if value is not None:
                 spec[field] = value
+        scenario_land_options = _csv_series(
+            row.get("scenario_generation_land_options_ha"),
+            "scenario_generation_land_options_ha",
+        )
+        if scenario_land_options is not None:
+            spec["generation_land_options_ha"] = scenario_land_options
         gas_ok = _csv_bool(row.get("gas_supply_adequate"), "gas_supply_adequate")
         if gas_ok is not None:
             spec["gas_supply_adequate"] = gas_ok

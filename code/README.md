@@ -162,6 +162,9 @@ report = calculate(
 
 CSV 适合把每套候选方案写成一行，尤其是同时比较多个电源、冷却和电池配置时。示例：
 
+- 固定 \(A_e\)：[q1_site.csv](examples/q1_site.csv)
+- \(A_e\) 候选优化：[q1_site_ae_options.csv](examples/q1_site_ae_options.csv)
+
 ```text
 site,assessment_year,period_note,service_level,P_grid_mw,k_factor,...
 演示场址,2028,枯水期设计工况,正常运营且持续满载,108,1.2,...
@@ -172,7 +175,7 @@ CSV 规则：
 - 第 1 行必须是表头，列名固定。
 - 公共场址、水量、土地和电网字段可以在任意一行填写，但同一列只能有一个非空值；不同行写入不同公共值会报错。
 - `scenario_name`、`scenario_type`、`online_year` 是每行必填字段。
-- `scenario_k_factor`、`scenario_wue_l_per_kwh_it`、`scenario_generation_water_l_per_kwh`、`scenario_generation_land_ha` 是方案级覆盖值。
+- `scenario_k_factor`、`scenario_wue_l_per_kwh_it`、`scenario_generation_water_l_per_kwh`、`scenario_generation_land_ha`、`scenario_generation_land_options_ha` 是方案级覆盖值。
 - 电池字段使用 `battery_C_max_mw`、`battery_D_max_mw`、`battery_E_usable_mwh`、`battery_charge_efficiency`、`battery_discharge_efficiency`。
 - 时间序列用分号、竖线或逗号分隔，例如 `net_output_mw = 20;0`。
 - 直接覆盖结果的可选字段为 `direct_P_E_mw_it`、`direct_P_W_mw_it`、`direct_P_L_mw_it`；对应结果会记录 `value_source: direct`。
@@ -216,6 +219,7 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | `effective_ha` | \(A_{\mathrm{eff}}\) | 必填 | 无缺省；用于 \(P_L=(A_{\mathrm{eff}}-A_0-A_e)/a_{\mathrm{site}}\) |
 | `fixed_it_ha` | \(A_0^{\mathrm{IT}}\) | 可选 | 默认 0，表示忽略 IT 侧固定用地，属于乐观上界 |
 | `generation_land_ha` | \(A_e\) | 可选 | 园区内自建发电站及专属配套用地，默认 0；仅使用电网时填 0 |
+| `generation_land_options_ha` | \(A_e^{(k)}\) | 可选 | 发电站用地候选列表；与固定 `generation_land_ha` 二选一，程序选择联合容量最大的候选 |
 | `ha_per_mw_it` | \(a_{\mathrm{site}}\) | 必填 | 单位 ha/MW IT，必须为正数 |
 | `scenarios` | \(x\in\mathcal X\) | 必填 | 至少一项 |
 | `name`、`type`、`online_year` | \(x\)、投运年份决定 \(x\in\mathcal X_y\) | 每方案必填 | `type` 取 `grid`、`coal`、`gas`、`wind`、`hydro`、`solar` 或 `combined_battery` |
@@ -259,7 +263,9 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | `land.fixed_it_ha` | \(A_0^{\mathrm{IT}}\) | ha | IT 侧固定用地 |
 | `land.generation_land_ha` | \(A_e\) | ha | 园区内自建发电站及专属配套用地 |
 | `land.P_L_mw_it` | \(P_{\mathrm{land}}(x)\) | MW IT | 土地上限 |
-| `value_source` | — | 对象 | 分别记录 \(P_E\)、\(P_W\)、\(P_L\) 是 `derived` 还是 `direct` |
+| `generation_land_source` | — | 字符串 | \(A_e\) 来自 `fixed`、`options` 或直接覆盖 |
+| `generation_land_candidates` | — | 数组 | \(A_e\) 候选值对应的 \(P_L\)、\(P\) 和 binding |
+| `value_source` | — | 对象 | 分别记录 \(P_E\)、\(P_W\)、\(P_L\) 是 `derived`、`direct` 还是候选优化结果 |
 | `method.charge_mw` 等 | \(L,c_t,d_t,e_t\) | MW/MWh | 光储逐时负荷、充电、放电、荷电量和弃电调度 |
 
 ## YAML 输入详解
@@ -396,6 +402,42 @@ a_{\mathrm{site}}
 \]
 
 分子小于等于 0 时返回 0 MW IT，表示在当前设计下没有可建设的正容量。
+
+#### A_e 候选优化
+
+如果暂时没有确定的 \(A_e\)，可以给出一个可行候选集合：
+
+```yaml
+land:
+  effective_ha: 160
+  fixed_it_ha: 10
+  generation_land_options_ha: [10, 20]
+  ha_per_mw_it: 1.0
+```
+
+也可以在单个方案内用 `generation_land_options_ha` 覆盖。程序对每个候选
+\(A_e^{(k)}\) 计算
+
+\[
+P_L^{(k)}
+=
+\frac{
+A_{\mathrm{eff}}-A_0^{\mathrm{IT}}-A_e^{(k)}
+}{
+a_{\mathrm{site}}
+},
+\qquad
+P^{(k)}=\min(P_E,P_W,P_L^{(k)}),
+\]
+
+然后选择 \(P^{(k)}\) 最大的候选；若并列，选择较小的 \(A_e\)。结果会保存：
+
+- `generation_land_ha`：选中的 \(A_e\)；
+- `generation_land_source`：`fixed`、`options` 或 `direct`；
+- `generation_land_candidates`：每个候选的 \(A_e\)、\(P_L\)、\(P\) 和 binding；
+- `value_source.P_L = "optimized"`。
+
+这个选项只做**离散候选枚举**，不把 \(A_e\) 作为无约束连续变量。没有工程下限、成本或最低用地约束时，连续优化会退化为选择最小 \(A_e\)。
 
 ### `scenarios` 字段
 

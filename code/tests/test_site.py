@@ -55,6 +55,15 @@ def test_csv_input_matches_yaml_example():
     assert wet_gas["generation_water_m3_h"] == pytest.approx(46.8)
 
 
+def test_csv_can_choose_generation_land_option():
+    report = run(ROOT / "examples/q1_site_ae_options.csv")
+    row = report["scenarios"][0]
+    assert report["P_max_mw_it"] == 140
+    assert row["generation_land_ha"] == 10
+    assert row["generation_land_source"] == "options"
+    assert len(row["generation_land_candidates"]) == 2
+
+
 def test_direct_limit_overrides_are_marked(site):
     site["scenarios"] = [{
         "name": "直接结果",
