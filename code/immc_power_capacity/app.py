@@ -1,6 +1,7 @@
 """命令行、配置读写和控制台输入向导。"""
 
 import argparse
+import csv
 import json
 import re
 import sys
@@ -30,16 +31,29 @@ WRONG_UNIT_KEYS = {
     "power_ratios_mwh": "归一化出力应使用 power_ratios，单位为 MWh/MWh，无量纲。",
 }
 
+DEFAULT_OUTPUT_DIR = (
+    Path(__file__).resolve().parents[2] / "正稿" / "Q1-v1" / "output"
+)
+
 
 def build_parser():
     """构造命令行参数解析器。"""
     parser = argparse.ArgumentParser(
         description="IMMC 2027 A 题第一问：计算场址电、水、土地联合容量。"
     )
-    parser.add_argument("config", nargs="?", help="YAML 配置路径；省略时进入中文输入向导。")
+    parser.add_argument("config", nargs="?", help="YAML/CSV 配置路径；省略时进入中文输入向导。")
     parser.add_argument("--json", default=None, help="同时写出 JSON 结果文件。")
     parser.add_argument("--interactive", action="store_true", help="强制进入中文输入向导。")
     return parser
+
+
+def _default_output_path(config):
+    """为一次 CLI 运行生成默认 JSON 输出路径。"""
+    if isinstance(config, (str, Path)):
+        stem = Path(config).stem
+    else:
+        stem = "interactive"
+    return DEFAULT_OUTPUT_DIR / f"{stem}_result.json"
 
 
 def calculate(config, json_path=None):
@@ -70,6 +84,7 @@ def calculate(config, json_path=None):
     if json_path:
         output = Path(json_path)
         try:
+            output.parent.mkdir(parents=True, exist_ok=True)
             output.write_text(
                 json.dumps(
                     report,
@@ -90,10 +105,12 @@ def run(config_path, json_path=None):
 
 
 def _load_config(config_path):
-    """读取 UTF-8 YAML 配置文件，并确认顶层是对象。"""
+    """读取 UTF-8 YAML 或 CSV 配置文件，并返回配置字典。"""
     path = Path(config_path)
     if not path.exists():
         raise CapacityModelError(f"配置文件不存在：{path}")
+    if path.suffix.lower() == ".csv":
+        return _load_csv(path)
     try:
         with path.open("r", encoding="utf-8") as handle:
             data = yaml.safe_load(handle)
@@ -102,6 +119,222 @@ def _load_config(config_path):
     if not isinstance(data, dict):
         raise CapacityModelError("YAML 顶层必须是对象。")
     return data
+
+
+def _csv_common(rows, field):
+    """读取所有行中唯一且非空的公共字段值。"""
+    values = {
+        row.get(field, "").strip()
+        for row in rows
+        if row.get(field, "").strip()
+    }
+    if len(values) > 1:
+        raise CapacityModelError(f"CSV 公共字段 {field} 在各行中不一致。")
+    return next(iter(values), None)
+
+
+def _csv_number(value, field, integer=False):
+    """解析 CSV 数值单元；空单元返回 None。"""
+    if value is None or not value.strip():
+        return None
+    try:
+        return int(value) if integer else float(value)
+    except ValueError as exc:
+        raise CapacityModelError(f"CSV 字段 {field} 必须是数值：{value!r}") from exc
+
+
+def _csv_bool(value, field):
+    """解析 CSV 布尔单元。"""
+    if value is None or not value.strip():
+        return None
+    normalized = value.strip().lower()
+    if normalized in {"true", "1", "yes", "y", "是"}:
+        return True
+    if normalized in {"false", "0", "no", "n", "否"}:
+        return False
+    raise CapacityModelError(f"CSV 字段 {field} 必须是布尔值：{value!r}")
+
+
+def _csv_series(value, field):
+    """解析用分号、竖线或逗号分隔的逐时序列。"""
+    if value is None or not value.strip():
+        return None
+    parts = [part.strip() for part in re.split(r"[;|,]", value) if part.strip()]
+    try:
+        return [float(part) for part in parts]
+    except ValueError as exc:
+        raise CapacityModelError(f"CSV 序列字段 {field} 含非数值：{value!r}") from exc
+
+
+def _load_csv(path):
+    """读取一行一个候选方案的 CSV，并转换为 Q1 配置字典。
+
+    CSV 的公共场址字段可以在任意一行填写，但同一列只能有一个非空值。
+    方案字段使用 ``scenario_`` 前缀，设备字段使用扁平列名。序列单元格
+    用分号、竖线或逗号分隔。
+    """
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames is None:
+            raise CapacityModelError(f"CSV 没有表头：{path}")
+        rows = []
+        for raw in reader:
+            row = {
+                (key or "").strip(): (value or "").strip()
+                for key, value in raw.items()
+            }
+            if any(row.values()):
+                rows.append(row)
+    if not rows:
+        raise CapacityModelError(f"CSV 没有数据行：{path}")
+
+    allowed = {
+        "model", "site", "assessment_year", "period_note", "service_level",
+        "P_grid_mw", "P_grid_mva", "power_factor", "k_factor",
+        "water_basis", "water_source_m3_h", "water_stress_m3_h",
+        "water_policy_m3_h", "water_river_m3_h", "water_eco_m3_h",
+        "water_other_m3_h", "water_stress_fraction",
+        "water_wue_l_per_kwh_it", "water_wue_summer_l_per_kwh_it",
+        "water_wue_winter_l_per_kwh_it", "water_summer_hours",
+        "water_winter_hours", "generation_water_coal_l_per_kwh",
+        "generation_water_gas_l_per_kwh", "generation_water_wind_l_per_kwh",
+        "generation_water_solar_l_per_kwh", "generation_water_combined_battery_l_per_kwh",
+        "land_effective_ha", "land_fixed_it_ha", "land_ha_per_mw_it",
+        "scenario_name", "scenario_type", "online_year", "scenario_k_factor",
+        "scenario_wue_l_per_kwh_it", "scenario_generation_water_l_per_kwh",
+        "direct_P_E_mw_it", "direct_P_W_mw_it", "direct_P_L_mw_it",
+        "units", "unit_net_mw", "net_efficiency", "gas_supply_adequate",
+        "area_km2", "density_mw_per_km2", "installed_mw", "alpha",
+        "power_ratios", "net_output_mw", "supply_ratios", "dt_hours",
+        "supply_series_mw", "flow_m3_per_s", "net_head_m", "efficiency",
+        "battery_C_max_mw", "battery_D_max_mw", "battery_E_usable_mwh",
+        "battery_charge_efficiency", "battery_discharge_efficiency", "notes",
+    }
+    unknown = sorted({key for row in rows for key in row if key not in allowed and row.get(key)})
+    if unknown:
+        raise CapacityModelError(f"CSV 含未识别列：{', '.join(unknown)}")
+
+    common = {}
+    for field in ("site", "period_note", "service_level"):
+        value = _csv_common(rows, field)
+        if value is not None:
+            common[field] = value
+    for field, integer in (("assessment_year", True), ("P_grid_mw", False),
+                           ("P_grid_mva", False), ("power_factor", False),
+                           ("k_factor", False)):
+        value = _csv_common(rows, field)
+        if value is not None:
+            common[field] = _csv_number(value, field, integer=integer)
+    common["model"] = "q1"
+
+    water_fields = {
+        "water_source_m3_h": "source_m3_h",
+        "water_stress_m3_h": "stress_m3_h",
+        "water_policy_m3_h": "policy_m3_h",
+        "water_river_m3_h": "river_m3_h",
+        "water_eco_m3_h": "eco_m3_h",
+        "water_other_m3_h": "other_m3_h",
+        "water_stress_fraction": "stress_fraction",
+        "water_wue_l_per_kwh_it": "wue_l_per_kwh_it",
+        "water_wue_summer_l_per_kwh_it": "wue_summer_l_per_kwh_it",
+        "water_wue_winter_l_per_kwh_it": "wue_winter_l_per_kwh_it",
+        "water_summer_hours": "summer_hours",
+        "water_winter_hours": "winter_hours",
+    }
+    water = {}
+    basis = _csv_common(rows, "water_basis")
+    if basis is not None:
+        water["basis"] = basis
+    for csv_field, field in water_fields.items():
+        value = _csv_common(rows, csv_field)
+        if value is not None:
+            water[field] = _csv_number(value, csv_field)
+    generation_water = {}
+    for technology in ("coal", "gas", "wind", "solar", "combined_battery"):
+        csv_field = f"generation_water_{technology}_l_per_kwh"
+        value = _csv_common(rows, csv_field)
+        if value is not None:
+            generation_water[technology] = _csv_number(value, csv_field)
+    if generation_water:
+        water["generation_water_l_per_kwh"] = generation_water
+    common["water"] = water
+
+    land = {}
+    for csv_field, field in (
+        ("land_effective_ha", "effective_ha"),
+        ("land_fixed_it_ha", "fixed_it_ha"),
+        ("land_ha_per_mw_it", "ha_per_mw_it"),
+    ):
+        value = _csv_common(rows, csv_field)
+        if value is not None:
+            land[field] = _csv_number(value, csv_field)
+    common["land"] = land
+
+    scenarios = []
+    for index, row in enumerate(rows, start=1):
+        spec = {}
+        name = row.get("scenario_name", "")
+        kind = row.get("scenario_type", "")
+        if not name or not kind:
+            raise CapacityModelError(f"CSV 第 {index} 行缺少 scenario_name 或 scenario_type。")
+        spec["name"] = name
+        spec["type"] = kind
+        online_year = _csv_number(row.get("online_year"), "online_year", integer=True)
+        if online_year is None:
+            raise CapacityModelError(f"CSV 第 {index} 行缺少 online_year。")
+        spec["online_year"] = online_year
+        for csv_field, field in (
+            ("scenario_k_factor", "k_factor"),
+            ("scenario_wue_l_per_kwh_it", "wue_l_per_kwh_it"),
+            ("scenario_generation_water_l_per_kwh", "generation_water_l_per_kwh"),
+            ("direct_P_E_mw_it", "direct_P_E_mw_it"),
+            ("direct_P_W_mw_it", "direct_P_W_mw_it"),
+            ("direct_P_L_mw_it", "direct_P_L_mw_it"),
+            ("units", "units"),
+            ("unit_net_mw", "unit_net_mw"),
+            ("net_efficiency", "net_efficiency"),
+            ("area_km2", "area_km2"),
+            ("density_mw_per_km2", "density_mw_per_km2"),
+            ("installed_mw", "installed_mw"),
+            ("alpha", "alpha"),
+            ("dt_hours", "dt_hours"),
+            ("flow_m3_per_s", "flow_m3_per_s"),
+            ("net_head_m", "net_head_m"),
+            ("efficiency", "efficiency"),
+        ):
+            value = _csv_number(row.get(csv_field), csv_field)
+            if value is not None:
+                spec[field] = value
+        for csv_field, field in (
+            ("power_ratios", "power_ratios"),
+            ("net_output_mw", "net_output_mw"),
+            ("supply_ratios", "supply_ratios"),
+            ("supply_series_mw", "supply_series_mw"),
+        ):
+            value = _csv_series(row.get(csv_field), csv_field)
+            if value is not None:
+                spec[field] = value
+        gas_ok = _csv_bool(row.get("gas_supply_adequate"), "gas_supply_adequate")
+        if gas_ok is not None:
+            spec["gas_supply_adequate"] = gas_ok
+
+        battery = {}
+        for csv_field, field in (
+            ("battery_C_max_mw", "C_max_mw"),
+            ("battery_D_max_mw", "D_max_mw"),
+            ("battery_E_usable_mwh", "E_usable_mwh"),
+            ("battery_charge_efficiency", "charge_efficiency"),
+            ("battery_discharge_efficiency", "discharge_efficiency"),
+        ):
+            value = _csv_number(row.get(csv_field), csv_field)
+            if value is not None:
+                battery[field] = value
+        if battery:
+            spec["battery"] = battery
+        scenarios.append(spec)
+
+    common["scenarios"] = scenarios
+    return common
 
 
 def _power_report(data):
@@ -522,10 +755,13 @@ def main(argv=None):
     args = build_parser().parse_args(argv)
     try:
         if args.interactive or args.config is None:
-            return run_interactive(default_json=args.json)
-        report = calculate(args.config, args.json)
+            output_path = args.json or _default_output_path("interactive")
+            return run_interactive(default_json=output_path)
+        output_path = args.json or _default_output_path(args.config)
+        report = calculate(args.config, output_path)
     except CapacityModelError as exc:
         print(f"[输入或模型错误] {exc}", file=sys.stderr)
         return 2
     _print(report)
+    print(f"JSON 已写入：{output_path}")
     return 0

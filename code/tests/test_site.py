@@ -41,6 +41,39 @@ def test_minimal_config():
     assert report["scenarios"][0]["P_L_mw_it"] == 160
 
 
+def test_csv_input_matches_yaml_example():
+    report = run(ROOT / "examples/q1_site.csv")
+    assert report["P_max_mw_it"] == 140
+    assert [row["name"] for row in report["scenarios"]] == [
+        "纯电网",
+        "光储",
+        "燃气配湿冷园区",
+        "燃气配干冷园区",
+    ]
+    wet_gas = report["scenarios"][2]
+    assert wet_gas["P_W_mw_it"] == pytest.approx(88.8)
+    assert wet_gas["generation_water_m3_h"] == pytest.approx(46.8)
+
+
+def test_direct_limit_overrides_are_marked(site):
+    site["scenarios"] = [{
+        "name": "直接结果",
+        "type": "grid",
+        "online_year": 2028,
+        "direct_P_E_mw_it": 100,
+        "direct_P_W_mw_it": 80,
+        "direct_P_L_mw_it": 70,
+    }]
+    row = assess_site(site)["scenarios"][0]
+    assert row["P_mw_it"] == 70
+    assert row["binding"] == ["土地"]
+    assert row["value_source"] == {
+        "P_E": "direct",
+        "P_W": "direct",
+        "P_L": "direct",
+    }
+
+
 def test_seasonal_wue_weighting():
     water = {
         "basis": "withdrawal",

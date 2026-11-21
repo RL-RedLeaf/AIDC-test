@@ -1,0 +1,6 @@
+site,assessment_year,period_note,service_level,P_grid_mw,k_factor,water_basis,water_policy_m3_h,water_wue_l_per_kwh_it,generation_water_coal_l_per_kwh,generation_water_gas_l_per_kwh,generation_water_wind_l_per_kwh,generation_water_solar_l_per_kwh,land_effective_ha,land_fixed_it_ha,land_ha_per_mw_it,scenario_name,scenario_type,online_year,scenario_wue_l_per_kwh_it,scenario_generation_water_l_per_kwh,units,unit_net_mw,gas_supply_adequate,area_km2,density_mw_per_km2,net_output_mw,dt_hours,battery_C_max_mw,battery_D_max_mw,battery_E_usable_mwh
+演示场址,2028,枯水期设计工况,正常运营且持续满载,108,1.2,withdrawal,180,1.5,2.6,0.78,0,0,160,10,1,纯电网,grid,2026
+演示场址,2028,枯水期设计工况,正常运营且持续满载,108,1.2,withdrawal,180,1.5,2.6,0.78,0,0,160,10,1,光储,solar,2028,,,,,,0.2,100,20;0,1,10,10,10
+演示场址,2028,枯水期设计工况,正常运营且持续满载,108,1.2,withdrawal,180,1.5,2.6,0.78,0,0,160,10,1,燃气配湿冷园区,gas,2028,,,1,60,true
+演示场址,2028,枯水期设计工况,正常运营且持续满载,108,1.2,withdrawal,180,1.5,2.6,0.78,0,0,160,10,1,燃气配干冷园区,gas,2028,0.75,0.0076,1,60,true
+演示场址,2028,枯水期设计工况,正常运营且持续满载,108,1.2,withdrawal,180,1.5,2.6,0.78,0,0,160,10,1,后续煤电,coal,2030,,,2,80

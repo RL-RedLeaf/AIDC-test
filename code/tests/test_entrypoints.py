@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import run as run_module
+import immc_power_capacity.app as app_module
 from immc_power_capacity.app import _print, run_interactive
 
 
@@ -50,3 +51,11 @@ def test_console_output_uses_readable_sections():
     assert "电力上限 P_E" in text
     assert "联合容量 P" in text
     assert " | " not in text
+
+
+def test_cli_writes_default_output_directory(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(app_module, "DEFAULT_OUTPUT_DIR", tmp_path)
+    code = app_module.main([str(ROOT / "examples/q1_minimal.yaml")])
+    assert code == 0
+    assert (tmp_path / "q1_minimal_result.json").exists()
+    capsys.readouterr()

@@ -837,6 +837,27 @@ def _resource_row(data, spec, grid, budget):
     net_water = max(0.0, budget["Q_max_m3_h"] - generation_water)
     water_limit = net_water / wue if wue > 0 else None
     land = land_capacity(data["land"])
+
+    value_source = {"P_E": "derived", "P_W": "derived", "P_L": "derived"}
+    direct_power = spec.get("direct_P_E_mw_it")
+    if direct_power is not None:
+        _nonnegative("direct_P_E_mw_it", direct_power)
+        electric = direct_power
+        breakdown["it_mw"] = electric
+        breakdown["value_source"] = "direct"
+        value_source["P_E"] = "direct"
+    direct_water = spec.get("direct_P_W_mw_it")
+    if direct_water is not None:
+        _nonnegative("direct_P_W_mw_it", direct_water)
+        water_limit = direct_water
+        value_source["P_W"] = "direct"
+    direct_land = spec.get("direct_P_L_mw_it")
+    if direct_land is not None:
+        _nonnegative("direct_P_L_mw_it", direct_land)
+        land["P_L_mw_it"] = direct_land
+        land["value_source"] = "direct"
+        value_source["P_L"] = "direct"
+
     limits = {"电力": electric, "土地": land["P_L_mw_it"]}
     if water_limit is not None:
         limits["水"] = water_limit
@@ -852,6 +873,7 @@ def _resource_row(data, spec, grid, budget):
         Q_net_m3_h=net_water,
         P_L_mw_it=land["P_L_mw_it"],
         P_mw_it=capacity,
+        value_source=value_source,
         binding=[
             key
             for key, value in limits.items()

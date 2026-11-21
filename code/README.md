@@ -7,7 +7,7 @@
 在仓库根目录运行最小示例：
 
 ```powershell
-python code/run.py code/examples/q1_minimal.yaml --json code/examples/q1_minimal_result.json
+python code/run.py code/examples/q1_minimal.yaml
 ```
 
 输出应包含：
@@ -33,10 +33,19 @@ python code/run.py code/examples/q1_minimal.yaml --json code/examples/q1_minimal
 
 ### 1. YAML 文件入口
 
-YAML 保存场址和方案输入。命令中的 `--json` 指定结果文件，路径相对于当前工作目录：
+YAML 保存场址和方案输入。省略 `--json` 时，结果自动写入
+`正稿/Q1-v1/output/<配置文件名>_result.json`：
 
 ```powershell
-python code/run.py code/examples/q1_site.yaml --json code/examples/q1_site_result.json
+python code/run.py code/examples/q1_site.yaml
+```
+
+不指定 `--json` 时，CLI 默认将结果写入
+`正稿/Q1-v1/output/<配置文件名>_result.json`。完整 CSV 示例见
+[q1_site.csv](examples/q1_site.csv)：
+
+```powershell
+python code/run.py code/examples/q1_site.csv
 ```
 
 YAML 顶层采用以下结构：
@@ -149,6 +158,27 @@ report = calculate(
 )
 ```
 
+## CSV 输入
+
+CSV 适合把每套候选方案写成一行，尤其是同时比较多个电源、冷却和电池配置时。示例：
+
+```text
+site,assessment_year,period_note,service_level,P_grid_mw,k_factor,...
+演示场址,2028,枯水期设计工况,正常运营且持续满载,108,1.2,...
+```
+
+CSV 规则：
+
+- 第 1 行必须是表头，列名固定。
+- 公共场址、水量、土地和电网字段可以在任意一行填写，但同一列只能有一个非空值；不同行写入不同公共值会报错。
+- `scenario_name`、`scenario_type`、`online_year` 是每行必填字段。
+- `scenario_k_factor`、`scenario_wue_l_per_kwh_it`、`scenario_generation_water_l_per_kwh` 是方案级覆盖值。
+- 电池字段使用 `battery_C_max_mw`、`battery_D_max_mw`、`battery_E_usable_mwh`、`battery_charge_efficiency`、`battery_discharge_efficiency`。
+- 时间序列用分号、竖线或逗号分隔，例如 `net_output_mw = 20;0`。
+- 直接覆盖结果的可选字段为 `direct_P_E_mw_it`、`direct_P_W_mw_it`、`direct_P_L_mw_it`；对应结果会记录 `value_source: direct`。
+
+CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见下文“输入/输出总览”。
+
 ## 输入/输出总览
 
 ### 输入分类
@@ -199,6 +229,7 @@ report = calculate(
 | `supply_ratios` 或 `net_output_mw` | \(r_t/X_{\mathrm{光}}\)、\(r_t\) | 光伏二选一 | `net_output_mw` 是逐时净功率；`supply_ratios` 是逐时净功率/装机 |
 | `battery` | \(C_{\max},D_{\max},E_{\mathrm{可用}}\) | 光伏可选、共用电池必填 | 光伏省略按无电池处理；共用电池必须提供 |
 | 电池 `charge_efficiency`、`discharge_efficiency` | \(\eta_c,\eta_d\) | 电池内可选 | 默认 1.0 |
+| `direct_P_E_mw_it`、`direct_P_W_mw_it`、`direct_P_L_mw_it` | \(P_E,P_W,P_L\) | 可选 | 已拿到最终上限时直接覆盖对应推导值，并在结果中标记 `value_source: direct` |
 | `C_PCC_mw`、`generation_share`、`period_budget`、`sensitivity` | — | 不接受 | 会明确报错；不属于当前 Q1-v1 口径 |
 
 ### 输出分类
@@ -226,6 +257,7 @@ report = calculate(
 | `land.site_ha` | \(A_{\mathrm{eff}}\) | ha | 参与土地计算的有效用地 |
 | `land.fixed_it_ha` | \(A_0^{\mathrm{IT}}\) | ha | IT 侧固定用地 |
 | `land.P_L_mw_it` | \(P_{\mathrm{land}}(x)\) | MW IT | 土地上限 |
+| `value_source` | — | 对象 | 分别记录 \(P_E\)、\(P_W\)、\(P_L\) 是 `derived` 还是 `direct` |
 | `method.charge_mw` 等 | \(L,c_t,d_t,e_t\) | MW/MWh | 光储逐时负荷、充电、放电、荷电量和弃电调度 |
 
 ## YAML 输入详解
