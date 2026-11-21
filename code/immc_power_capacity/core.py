@@ -177,14 +177,14 @@ def grid_only(grid_mw, k_factor):
     _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     return _breakdown(grid_mw, 0.0, k_factor, "grid_only", {
-        "equation": "v2 式(1)(6)",
+        "equation": "正文式(2)、(7)",
         "assumption": "P_self = 0，作为所有候选方案的基准。",
     })
 
 
 def thermal(name, grid_mw, k_factor, units, unit_net_mw,
             net_efficiency=None, gas_supply_adequate=None):
-    """煤电或燃气：可同时运行台数 × 单机持续净功率，v2 式(2)."""
+    """煤电或燃气：P_j=N_j p_j^net，正文式(3)。"""
     _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     key = str(name).strip().lower()
@@ -207,7 +207,7 @@ def thermal(name, grid_mw, k_factor, units, unit_net_mw,
     else:
         gas_note = None
     return _breakdown(grid_mw, self_generation, k_factor, key, {
-        "equation": "v2 式(2)",
+        "equation": "正文式(3)",
         "units": int(units),
         "unit_net_mw": unit_net_mw,
         "fuel_heat_needed_mw": (
@@ -219,7 +219,7 @@ def thermal(name, grid_mw, k_factor, units, unit_net_mw,
 
 def wind(name, grid_mw, k_factor, area_km2=None, density_mw_per_km2=None,
          alpha=None, power_ratios=None, net_output_mw=None, installed_mw=None):
-    """风电：v2 式(3).
+    """风电：P_wind=alpha_wind X_wind，正文式(4)。
 
     alpha、归一化序列或原始 MW 序列三选一。年度容量因子不进入本式。
     """
@@ -259,7 +259,7 @@ def wind(name, grid_mw, k_factor, area_km2=None, density_mw_per_km2=None,
         )
     capacity = installed_mw * alpha_value
     return _breakdown(grid_mw, capacity, k_factor, "wind", {
-        "equation": "v2 式(3)",
+        "equation": "正文式(4)",
         "installed_mw": installed_mw,
         "alpha": alpha_value,
         "alpha_source": source,
@@ -267,7 +267,7 @@ def wind(name, grid_mw, k_factor, area_km2=None, density_mw_per_km2=None,
 
 
 def hydro(name, grid_mw, k_factor, installed_mw, flow_m3_per_s, net_head_m, efficiency):
-    """水电：v2 式(4)，流量与落差必须采用同一约束期口径."""
+    """水电：正文式(5)，流量与落差必须采用同一约束期口径。"""
     _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     _nonnegative("installed_mw", installed_mw)
@@ -277,7 +277,7 @@ def hydro(name, grid_mw, k_factor, installed_mw, flow_m3_per_s, net_head_m, effi
     water_power = 0.00981 * efficiency * flow_m3_per_s * net_head_m
     capacity = min(installed_mw, water_power)
     return _breakdown(grid_mw, capacity, k_factor, "hydro", {
-        "equation": "v2 式(4)",
+        "equation": "正文式(5)",
         "installed_mw": installed_mw,
         "water_power_mw": water_power,
     })
@@ -285,7 +285,7 @@ def hydro(name, grid_mw, k_factor, installed_mw, flow_m3_per_s, net_head_m, effi
 
 def solar(name, grid_mw, k_factor, area_km2, density_mw_per_km2,
           supply_ratios=None, dt_hours=None, battery=None, net_output_mw=None):
-    """光伏无电池、光储或参与共用电池的逐时容量：v2 式(5)、附录 A.
+    """光伏与光储的逐时容量：正文式(6)，附录 B 给出 LP。
 
     supply_ratios 的单位为 MWh/MWh（净电功率/装机），net_output_mw 为 MW。
     """
@@ -315,7 +315,7 @@ def solar(name, grid_mw, k_factor, area_km2, density_mw_per_km2,
         grid_mw, self_generation, k_factor,
         "solar_storage" if has_battery else "solar",
         {
-            "equation": "v2 式(5)；附录 A" if has_battery else "v2 式(5) 无电池退化（周期最小净功率）",
+            "equation": "正文式(6)；附录 B 光储 LP" if has_battery else "正文式(6) 无电池退化（周期最小净功率）",
             "installed_mw": installed_mw,
             "dt_hours": dt_hours,
             "input_series": input_unit,
@@ -340,7 +340,7 @@ def combined_battery(name, grid_mw, k_factor, supply_series_mw, installed_mw,
         settings["charge_efficiency"], settings["discharge_efficiency"],
     )
     return _breakdown(grid_mw, self_generation, k_factor, "combined_renewables", {
-        "equation": "v2 式(5)；附录 A（风光合并后一次求解）",
+        "equation": "旧版风光共用电池（非 Q1）；正文式(6) 的扩展",
         "installed_mw": installed_mw,
         "dt_hours": dt_hours,
         "input_series": "supply_series_mw",

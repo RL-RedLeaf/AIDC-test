@@ -34,7 +34,7 @@ WRONG_UNIT_KEYS = {
 
 def build_parser():
     parser = argparse.ArgumentParser(
-        description="IMMC 2027 A 题第一问：计算场址联合容量或电力分项容量。"
+        description="IMMC 2027 A 题第一问：计算场址电、水、土地联合容量。"
     )
     parser.add_argument("config", nargs="?", help="YAML 配置路径；省略时进入中文输入向导。")
     parser.add_argument("--json", default=None, help="同时写出 JSON 结果文件。")
@@ -248,14 +248,14 @@ def _ask_battery(asker, default=True):
     if not _ask_yes_no(asker, "是否配置电池", default):
         return None
     return {
-        "C_max_mw": _ask_number(asker, "最大充电功率 C_max_mw", 10, allow_zero=False),
-        "D_max_mw": _ask_number(asker, "最大放电功率 D_max_mw", 10, allow_zero=False),
-        "E_usable_mwh": _ask_number(asker, "可用电量 E_usable_mwh", 10, allow_zero=False),
+        "C_max_mw": _ask_number(asker, "最大充电功率 C_max_mw（C_max）", 10, allow_zero=False),
+        "D_max_mw": _ask_number(asker, "最大放电功率 D_max_mw（D_max）", 10, allow_zero=False),
+        "E_usable_mwh": _ask_number(asker, "可用电量 E_usable_mwh（E_usable）", 10, allow_zero=False),
         "charge_efficiency": _ask_number(
-            asker, "充电效率", 1, minimum=0.000001, maximum=1, allow_zero=False
+            asker, "充电效率（η_c）", 1, minimum=0.000001, maximum=1, allow_zero=False
         ),
         "discharge_efficiency": _ask_number(
-            asker, "放电效率", 1, minimum=0.000001, maximum=1, allow_zero=False
+            asker, "放电效率（η_d）", 1, minimum=0.000001, maximum=1, allow_zero=False
         ),
     }
 
@@ -273,29 +273,29 @@ def _ask_power_inputs(asker):
     mode = _ask_choice(asker, "电网输入方式", ["MW", "MVA"], "MW")
     config = {}
     if mode == "MVA":
-        config["P_grid_mva"] = _ask_number(asker, "电网视在功率 P_grid_mva", 120, minimum=0, allow_zero=False)
+        config["P_grid_mva"] = _ask_number(asker, "电网视在功率 P_grid_mva（S_grid）", 120, minimum=0, allow_zero=False)
         config["power_factor"] = _ask_number(
-            asker, "功率因数", 0.9, minimum=0.000001, maximum=1, allow_zero=False
+            asker, "功率因数（cos φ）", 0.9, minimum=0.000001, maximum=1, allow_zero=False
         )
     else:
-        config["P_grid_mw"] = _ask_number(asker, "电网可持续有功 P_grid_mw", 108, minimum=0)
-    pcc = _ask_optional_number(asker, "共享关口容量 C_PCC_mw（留空表示专用接线）")
+        config["P_grid_mw"] = _ask_number(asker, "电网可持续有功 P_grid_mw（P_grid）", 108, minimum=0)
+    pcc = _ask_optional_number(asker, "共享关口容量 C_PCC_mw（C_PCC；留空表示专用接线）")
     if pcc is not None:
         config["C_PCC_mw"] = pcc
-    config["k_factor"] = _ask_number(asker, "满载设施/IT 倍率 k", 1.2, minimum=1, allow_zero=False)
+    config["k_factor"] = _ask_number(asker, "满载设施/IT 倍率 k_factor（k）", 1.2, minimum=1, allow_zero=False)
     return config
 
 
 def _ask_water(asker):
     basis = _ask_choice(asker, "水量口径", ["consumption", "withdrawal"], "consumption")
-    wue = _ask_number(asker, "WUE（L/kWh IT）", 1.5, minimum=0)
+    wue = _ask_number(asker, "WUE（L/kWh IT；P_W=Q_max/WUE）", 1.5, minimum=0)
     limits = {}
     while not limits:
         print("请至少填写 source、stress、policy 中的一项水量上限，单位 m³/h。")
         for key, label in (
-            ("source", "水源可用上限 source_m3_h"),
-            ("stress", "水压力允许上限 stress_m3_h"),
-            ("policy", "许可或合同上限 policy_m3_h"),
+            ("source", "水源可用上限 source_m3_h（Q_source）"),
+            ("stress", "水压力允许上限 stress_m3_h（Q_stress）"),
+            ("policy", "许可或合同上限 policy_m3_h（Q_policy）"),
         ):
             value = _ask_optional_number(asker, f"{label}（可留空）")
             if value is not None:
@@ -309,10 +309,10 @@ def _ask_water(asker):
 
 def _ask_land(asker):
     return {
-        "effective_ha": _ask_number(asker, "场址有效用地 ha", 160, minimum=0, allow_zero=False),
-        "fixed_it_ha": _ask_number(asker, "IT 侧固定用地 ha", 10, minimum=0),
-        "ha_per_mw_it": _ask_number(asker, "园区边际用地强度 ha/MW IT", 1, minimum=0.000001, allow_zero=False),
-        "generation_share": _ask_number(asker, "本地发电及配套用地份额", 0, minimum=0, maximum=1),
+        "effective_ha": _ask_number(asker, "场址有效用地 ha（A_eff）", 160, minimum=0, allow_zero=False),
+        "fixed_it_ha": _ask_number(asker, "IT 侧固定用地 ha（A_0^IT）", 10, minimum=0),
+        "ha_per_mw_it": _ask_number(asker, "园区边际用地强度 ha/MW IT（a_site）", 1, minimum=0.000001, allow_zero=False),
+        "generation_share": _ask_number(asker, "本地发电及配套用地份额（κ）", 0, minimum=0, maximum=1),
     }
 
 
@@ -326,7 +326,7 @@ def _ask_scenario(asker, number, grid_mw):
     spec = {
         "name": _ask_text(asker, "方案名称", f"{kind}-{number}"),
         "type": kind,
-        "online_year": _ask_number(asker, "投运年份", 2028, minimum=1, integer=True, allow_zero=False),
+        "online_year": _ask_number(asker, "投运年份（用于筛选可行集合）", 2028, minimum=1, integer=True, allow_zero=False),
     }
     generation_share = _ask_optional_number(asker, "本方案发电用地份额（留空沿用场址值）")
     if generation_share is not None:
@@ -336,9 +336,9 @@ def _ask_scenario(asker, number, grid_mw):
         spec["wue_l_per_kwh_it"] = wue
 
     if kind in {"coal", "gas"}:
-        spec["units"] = _ask_number(asker, "可同时运行机组台数", 2 if kind == "coal" else 1,
+        spec["units"] = _ask_number(asker, "可同时运行机组台数（N_j）", 2 if kind == "coal" else 1,
                                     minimum=1, integer=True, allow_zero=False)
-        spec["unit_net_mw"] = _ask_number(asker, "单机持续净功率 MW", 80 if kind == "coal" else 60,
+        spec["unit_net_mw"] = _ask_number(asker, "单机持续净功率 MW（p_j^net）", 80 if kind == "coal" else 60,
                                           minimum=0.000001, allow_zero=False)
         efficiency = _ask_optional_number(asker, "净效率（可留空）")
         if efficiency is not None:
@@ -346,28 +346,28 @@ def _ask_scenario(asker, number, grid_mw):
         if kind == "gas":
             spec["gas_supply_adequate"] = _ask_yes_no(asker, "供气是否充足", True)
     elif kind == "wind":
-        installed = _ask_optional_number(asker, "风电装机 MW（留空则用面积×密度）")
+        installed = _ask_optional_number(asker, "风电装机 MW（X_wind；留空则用 A_wind×ρ_wind）")
         if installed is None:
-            spec["area_km2"] = _ask_number(asker, "风电合格面积 km²", 10, minimum=0.000001, allow_zero=False)
-            spec["density_mw_per_km2"] = _ask_number(asker, "风电装机密度 MW/km²", 8, minimum=0.000001, allow_zero=False)
+            spec["area_km2"] = _ask_number(asker, "风电合格面积 km²（A_wind）", 10, minimum=0.000001, allow_zero=False)
+            spec["density_mw_per_km2"] = _ask_number(asker, "风电装机密度 MW/km²（ρ_wind）", 8, minimum=0.000001, allow_zero=False)
         else:
             spec["installed_mw"] = installed
         if grid_mw > 0:
-            spec["net_output_mw"] = _ask_series(asker, "同期风电净出力 MW（逗号分隔）")
+            spec["net_output_mw"] = _ask_series(asker, "同期风电净出力 net_output_mw（逐时 r_t）")
         elif _ask_yes_no(asker, "是否输入同期净出力序列", True):
-            spec["net_output_mw"] = _ask_series(asker, "同期风电净出力 MW（逗号分隔）")
+            spec["net_output_mw"] = _ask_series(asker, "同期风电净出力 net_output_mw（逐时 r_t）")
         else:
-            spec["alpha"] = _ask_number(asker, "考察期保障比例 alpha", 0.2, minimum=0, maximum=1)
+            spec["alpha"] = _ask_number(asker, "考察期最低净出力/装机 alpha_wind", 0.2, minimum=0, maximum=1)
     elif kind == "hydro":
-        spec["installed_mw"] = _ask_number(asker, "水电装机 MW", 80, minimum=0.000001, allow_zero=False)
-        spec["flow_m3_per_s"] = _ask_number(asker, "可用流量 m³/s", 100, minimum=0.000001, allow_zero=False)
-        spec["net_head_m"] = _ask_number(asker, "净落差 m", 100, minimum=0.000001, allow_zero=False)
-        spec["efficiency"] = _ask_number(asker, "综合效率", 0.9, minimum=0.000001, maximum=1, allow_zero=False)
+        spec["installed_mw"] = _ask_number(asker, "水电装机 MW（X_hydro）", 80, minimum=0.000001, allow_zero=False)
+        spec["flow_m3_per_s"] = _ask_number(asker, "可用流量 m³/s（Q）", 100, minimum=0.000001, allow_zero=False)
+        spec["net_head_m"] = _ask_number(asker, "净落差 m（H）", 100, minimum=0.000001, allow_zero=False)
+        spec["efficiency"] = _ask_number(asker, "综合效率（η_hydro）", 0.9, minimum=0.000001, maximum=1, allow_zero=False)
     elif kind == "solar":
-        spec["area_km2"] = _ask_number(asker, "光伏合格面积 km²", 5, minimum=0.000001, allow_zero=False)
-        spec["density_mw_per_km2"] = _ask_number(asker, "光伏装机密度 MW/km²", 100, minimum=0.000001, allow_zero=False)
-        spec["dt_hours"] = _ask_number(asker, "时段长度 dt_hours", 1, minimum=0.000001, allow_zero=False)
-        spec["net_output_mw"] = _ask_series(asker, "光伏逐时净功率 MW（逗号分隔）")
+        spec["area_km2"] = _ask_number(asker, "光伏合格面积 km²（A_PV）", 5, minimum=0.000001, allow_zero=False)
+        spec["density_mw_per_km2"] = _ask_number(asker, "光伏装机密度 MW/km²（ρ_PV）", 100, minimum=0.000001, allow_zero=False)
+        spec["dt_hours"] = _ask_number(asker, "时段长度 dt_hours（Delta t）", 1, minimum=0.000001, allow_zero=False)
+        spec["net_output_mw"] = _ask_series(asker, "光伏逐时净功率 net_output_mw（r_t）")
         battery = _ask_battery(asker, True)
         if battery is not None:
             spec["battery"] = battery
