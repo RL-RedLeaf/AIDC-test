@@ -61,21 +61,6 @@ def test_csv_online_year_is_optional(tmp_path):
     assert report["excluded"] == []
 
 
-def test_csv_fixed_water_site_and_scenario_override(tmp_path):
-    path = tmp_path / "fixed_water.csv"
-    path.write_text(
-        "site,assessment_year,period_note,service_level,P_grid_mw,k_factor,"
-        "water_basis,water_source_m3_h,water_wue_l_per_kwh_it,water_fixed_water_m3_h,"
-        "land_effective_ha,land_ha_per_mw_it,scenario_name,scenario_type,scenario_fixed_water_m3_h\n"
-        "site,2028,design hour,normal,120,1.2,withdrawal,90,1,20,160,1,base,grid,\n"
-        ",,,,,,,,,,,,override,grid,30\n",
-        encoding="utf-8",
-    )
-    report = run(path)
-    assert [row["P_W_mw_it"] for row in report["scenarios"]] == [70, 60]
-    assert [row["fixed_water_m3_h"] for row in report["scenarios"]] == [20, 30]
-
-
 def test_csv_input_matches_yaml_example():
     report = run(ROOT / "examples/q1_site.csv")
     assert report["P_max_mw_it"] == 130
@@ -227,68 +212,6 @@ def test_zero_cooling_wue_still_charges_for_generation(site, budget, capacity, w
     assert row["P_mw_it"] == capacity
     assert row["P_W_mw_it"] == water_limit
     assert row["generation_water_m3_h"] == capacity
-
-
-def test_fixed_water_reduces_capacity_and_is_counted_once(site):
-    site["scenarios"] = [site["scenarios"][0]]
-    site["water"] = dict(basis="withdrawal", source_m3_h=100,
-                         wue_l_per_kwh_it=1, fixed_water_m3_h=20)
-    row = assess_site(site)["scenarios"][0]
-    assert row["P_W_mw_it"] == 80
-    assert row["P_mw_it"] == 80
-    assert row["water_checks"][0]["water_used_m3_h"] == 100
-    assert row["Q_net_m3_h"] == 80
-
-
-def test_fixed_water_with_generation_uses_remaining_budget(site):
-    site["scenarios"] = [{"name": "gas", "type": "gas", "units": 1, "unit_net_mw": 60,
-                          "generation_water_l_per_kwh": 0.78}]
-    site["water"] = dict(basis="withdrawal", source_m3_h=150,
-                         wue_l_per_kwh_it=1.5, fixed_water_m3_h=10)
-    row = assess_site(site)["scenarios"][0]
-    expected = (140 + 0.78 * 108) / (1.5 + 0.78 * 1.2)
-    assert row["P_mw_it"] == pytest.approx(expected)
-    assert row["water_checks"][0]["water_used_m3_h"] == pytest.approx(150)
-
-
-def test_zero_variable_water_checks_fixed_demand_without_finite_cap(site):
-    site["scenarios"] = [site["scenarios"][0]]
-    site["water"] = dict(basis="withdrawal", source_m3_h=10,
-                         wue_l_per_kwh_it=0, fixed_water_m3_h=5)
-    row = assess_site(site)["scenarios"][0]
-    assert row["P_W_mw_it"] is None
-    assert row["P_mw_it"] == 90
-    assert row["water_checks"][0]["water_used_m3_h"] == 5
-
-
-def test_fixed_water_over_budget_excludes_only_infeasible_option(site):
-    site["water"] = dict(basis="withdrawal", source_m3_h=10,
-                         wue_l_per_kwh_it=0, fixed_water_m3_h=12)
-    site["scenarios"] = [dict(site["scenarios"][0], name="too much water"),
-                         dict(site["scenarios"][0], name="feasible", fixed_water_m3_h=5)]
-    report = assess_site(site)
-    assert report["winners"] == ["feasible"]
-    assert report["excluded"][0]["name"] == "too much water"
-    assert "固定用水" in report["excluded"][0]["reason"]
-    with pytest.raises(ValidationError, match="资源可行"):
-        assess_site(dict(site, scenarios=site["scenarios"][:1]))
-
-
-def test_fixed_water_counts_in_seasonal_and_total_budgets(site):
-    site["scenarios"] = [site["scenarios"][0]]
-    site["water"] = dict(basis="withdrawal", wue_summer_l_per_kwh_it=2,
-                         wue_winter_l_per_kwh_it=0.5, summer_hours=6, winter_hours=6,
-                         summer_limit_m3_h=100, winter_limit_m3_h=20,
-                         period_budget_m3=360, fixed_water_m3_h=10)
-    row = assess_site(site)["scenarios"][0]
-    assert row["P_W_mw_it"] == 16  # (360/12 - 10) / ((2 + 0.5)/2)
-    assert [check["water_used_m3_h"] for check in row["water_checks"]] == [42, 18, 30]
-
-
-def test_fixed_water_must_be_nonnegative(site):
-    site["water"]["fixed_water_m3_h"] = -1
-    with pytest.raises(ValidationError, match="fixed_water_m3_h"):
-        assess_site(site)
 
 
 def test_grid_conversion_and_tied_winners(site):
