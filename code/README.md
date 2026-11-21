@@ -131,7 +131,7 @@ report = calculate({
 print(report["P_max_mw_it"])  # 100.0
 ```
 
-第二个参数可以指定 JSON 路径，父目录必须已经存在：
+第二个参数可以指定 JSON 路径，父目录不存在时会自动创建：
 
 ```python
 report = calculate(
@@ -396,6 +396,10 @@ P_W=\frac{Q_{\mathrm{net}}}{WUE}.
 | `effective_ha` | \(A_{\mathrm{eff}}\) | 必填 | ha | 场址筛选后的总有效用地。 |
 | `fixed_it_ha` | \(A_0^{\mathrm{IT}}\) | 可选 | ha | IT 侧固定用地，默认 0。填 0 是乐观上界。 |
 | `generation_land_ha` | \(A_e\) | 可选 | ha | 园区内自建发电站及专属配套用地，默认 0；仅使用电网时为 0。 |
+| `generation_land_options_ha` | \(A_e^{(k)}\) | 可选 | ha | 发电站用地候选列表，与固定 `generation_land_ha` 二选一。 |
+| `generation_land_in_site` | — | 可选 | 布尔 | 发电设施是否在园区边界内，默认 `true`；外部设施不扣园区土地。 |
+| `unit_land_ha` | \(a_{\mathrm{unit},j}\) | 火电可选 | ha/台 | 单台火电机组厂区用地，用于按 \(A_e\) 限制机组台数。 |
+| `generation_land_required_ha` | \(A_{\mathrm{gen}}\) | 可选 | ha | 显式给出方案实际需要的发电设施用地。 |
 | `ha_per_mw_it` | \(a_{\mathrm{site}}\) | 必填 | ha/MW IT | 园区本体、变配电和冷却设施的边际用地强度。 |
 
 土地上限按权威稿的土地一次函数模型计算：
@@ -487,6 +491,11 @@ A_gen <= A_e
 | `k_factor` | \(k(x)\) | 可选 | 覆盖该方案的设施倍率。 |
 | `wue_l_per_kwh_it` | \(WUE(x)\) | 可选 | 覆盖该方案的现场 WUE。 |
 | `generation_water_l_per_kwh` | \(c_i(x)\) | 可选 | 覆盖该方案自发电耗水系数，L/kWh。 |
+| `generation_land_ha` | \(A_e\) | 可选 | 覆盖园区内发电站用地。 |
+| `generation_land_options_ha` | \(A_e^{(k)}\) | 可选 | 覆盖发电站用地候选列表。 |
+| `generation_land_in_site` | — | 可选 | 发电设施是否位于园区边界内。 |
+| `unit_land_ha` | \(a_{\mathrm{unit},j}\) | 火电可选 | 单台机组厂区用地。 |
+| `generation_land_required_ha` | \(A_{\mathrm{gen}}\) | 可选 | 显式覆盖发电设施用地需求。 |
 
 各类型的专属字段：
 
@@ -584,7 +593,7 @@ scenarios:
 python code/run.py code/examples/q1_site.yaml --json code/examples/q1_site_result.json
 ```
 
-程序只在计算成功后写文件。父目录必须已经存在，重复运行会覆盖同名文件。
+程序只在计算成功后写文件，并自动创建缺失的父目录；重复运行会覆盖同名文件。
 
 ### 顶层结构
 
@@ -655,6 +664,11 @@ python code/run.py code/examples/q1_site.yaml --json code/examples/q1_site_resul
 |---|---|---|
 | `site_ha` | ha | 参与土地容量计算的园区有效用地 \(A_{\mathrm{eff}}\)。 |
 | `fixed_it_ha` | ha | IT 侧固定用地。 |
+| `generation_land_ha` | ha | 选中的发电设施用地 \(A_e\)。 |
+| `generation_land_source` | 字符串 | `fixed`、`options`、`external` 或 `direct`。 |
+| `generation_land_required_ha` | ha | 方案实际需要的发电设施用地 \(A_{\mathrm{gen}}\)。 |
+| `generation_land_capacity_capped` | 布尔 | 设备容量是否因 \(A_e\) 不足而缩减。 |
+| `generation_land_candidates` | 数组 | 各 \(A_e\) 候选的 \(P_L\)、\(P\) 和 binding。 |
 | `optimistic_zero_fixed` | 布尔 | 固定用地是否按 0 处理。 |
 | `P_L_mw_it` | MW IT | 该方案的土地上限。 |
 
