@@ -100,7 +100,9 @@ def _resource_row(data, spec, grid, budget):
     multiplier = spec.get("k_factor", data.get("k_factor"))
     row = _build_scenario(kind, spec, grid, multiplier, spec["name"])
     pcc = spec.get("C_PCC_mw", data.get("C_PCC_mw"))
-    if pcc != "dedicated":
+    if pcc is None or pcc == "dedicated":
+        pcc = "dedicated"
+    else:
         _nonnegative("C_PCC_mw（专用接线填 dedicated）", pcc)
     breakdown = row["breakdown"]
     electric, facility = total_capacity(grid, breakdown["self_generation_mw"], multiplier,

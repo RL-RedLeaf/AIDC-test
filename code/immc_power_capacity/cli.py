@@ -1,6 +1,7 @@
 import argparse
 import json
 import sys
+from collections.abc import Mapping
 from pathlib import Path
 
 import yaml
@@ -26,22 +27,18 @@ def build_parser():
     parser = argparse.ArgumentParser(
         description="IMMC 2027 A 题第一问：计算场址联合容量或电力分项容量。"
     )
-    parser.add_argument("config", help="YAML 配置路径。")
+    parser.add_argument("config", nargs="?", help="YAML 配置路径；省略时进入中文输入向导。")
     parser.add_argument("--json", default=None, help="同时写出 JSON 结果文件。")
+    parser.add_argument("--interactive", action="store_true", help="强制进入中文输入向导。")
     return parser
 
 
-def run(config_path, json_path=None):
-    path = Path(config_path)
-    if not path.exists():
-        raise CapacityModelError(f"配置文件不存在：{path}")
-    try:
-        with path.open("r", encoding="utf-8") as handle:
-            data = yaml.safe_load(handle)
-    except yaml.YAMLError as exc:
-        raise CapacityModelError(f"YAML 解析失败：{exc}") from exc
-    if not isinstance(data, dict):
-        raise CapacityModelError("YAML 顶层必须是对象。")
+def calculate(config, json_path=None):
+    """直接接收配置字典或 YAML 路径，供 Python 脚本调用。"""
+    if isinstance(config, Mapping):
+        data = dict(config)
+    else:
+        data = _load_config(config)
 
     if data.get("model") == "q1":
         report = assess_site(data)
@@ -57,6 +54,25 @@ def run(config_path, json_path=None):
         except OSError as exc:
             raise CapacityModelError(f"无法写入 JSON 结果：{exc}") from exc
     return report
+
+
+def run(config_path, json_path=None):
+    """兼容原命令行调用，等价于 calculate(config_path, json_path)."""
+    return calculate(config_path, json_path)
+
+
+def _load_config(config_path):
+    path = Path(config_path)
+    if not path.exists():
+        raise CapacityModelError(f"配置文件不存在：{path}")
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            data = yaml.safe_load(handle)
+    except yaml.YAMLError as exc:
+        raise CapacityModelError(f"YAML 解析失败：{exc}") from exc
+    if not isinstance(data, dict):
+        raise CapacityModelError("YAML 顶层必须是对象。")
+    return data
 
 
 def _power_report(data):
@@ -115,7 +131,10 @@ def main(argv=None):
     parser = build_parser()
     args = parser.parse_args(argv)
     try:
-        report = run(args.config, args.json)
+        if args.interactive or args.config is None:
+            from .interactive import run_interactive
+            return run_interactive(default_json=args.json)
+        report = calculate(args.config, args.json)
     except CapacityModelError as exc:
         print(f"[输入或模型错误] {exc}", file=sys.stderr)
         return 2
@@ -133,37 +152,37 @@ def _reject_wrong_units(mapping, label="配置"):
             raise CapacityModelError(f"{label}.{key} 单位错误：{message}")
 
 
-def _print(report):
+def _print(report, say=print):
     if "P_max_mw_it" in report:
-        print(f"{report['site']} | {report['assessment_year']} | {report['period_note']} | {report['service_level']}")
+        say(f"{report['site']} | {report['assessment_year']} | {report['period_note']} | {report['service_level']}")
         water = report["water"]
         basis = "取水上界" if water["basis"] == "withdrawal" else "耗水上限"
-        print(f"{basis} {water['Q_max_m3_h']:.6g} m³/h；未纳入水量项：{', '.join(water['omitted']) or '无'}")
-        print("配置 | 电网 MW | 自建 MW | 进线 MW | k | P_E | P_W | P_L | 联合容量 (MW IT) | 触顶约束")
+        say(f"{basis} {water['Q_max_m3_h']:.6g} m³/h；未纳入水量项：{', '.join(water['omitted']) or '无'}")
+        say("配置 | 电网 MW | 自建 MW | 进线 MW | k | P_E | P_W | P_L | 联合容量 (MW IT) | 触顶约束")
         for row in report["scenarios"]:
             power = row["breakdown"]
             water_text = "无现场用水需求" if row["P_W_mw_it"] is None else f"{row['P_W_mw_it']:.6g}"
-            print(f"{row['name']} | {power['grid_mw']:g} | {power['self_generation_mw']:g} | "
-                  f"{power['facility_mw']:g} | {power['k']:g} | {row['P_E_mw_it']:.6g} | "
-                  f"{water_text} | {row['P_L_mw_it']:.6g} | {row['P_mw_it']:.6g} | {'、'.join(row['binding'])}")
+            say(f"{row['name']} | {power['grid_mw']:g} | {power['self_generation_mw']:g} | "
+                f"{power['facility_mw']:g} | {power['k']:g} | {row['P_E_mw_it']:.6g} | "
+                f"{water_text} | {row['P_L_mw_it']:.6g} | {row['P_mw_it']:.6g} | {'、'.join(row['binding'])}")
         for item in report["excluded"]:
-            print(f"排除：{item['name']}（{item['reason']}，投运年 {item['online_year']}）")
-        print(f"P_max = {report['P_max_mw_it']:.6g} MW IT，最优配置：{'、'.join(report['winners'])}")
+            say(f"排除：{item['name']}（{item['reason']}，投运年 {item['online_year']}）")
+        say(f"P_max = {report['P_max_mw_it']:.6g} MW IT，最优配置：{'、'.join(report['winners'])}")
         return
-    print("电网 MW | 方案 | 自发电可靠 MW | 设施总 MW | k | 最大 IT MW")
+    say("电网 MW | 方案 | 自发电可靠 MW | 设施总 MW | k | 最大 IT MW")
     for item in report["scenarios"]:
         row = item["breakdown"]
-        print(
+        say(
             f"{row['grid_mw']:.6g} | {item['name']} | "
             f"{row['self_generation_mw']:.6g} | {row['facility_mw']:.6g} | "
             f"{row['k']:.6g} | {row['it_mw']:.6g}"
         )
     optimum = report["optimum"]
-    print(
+    say(
         f"\n最优方案：{optimum['name']}，"
         f"P_E={optimum['breakdown']['it_mw']:.6g} MW IT"
     )
-    print(f"考察期说明：{report['assumptions']['period_note']}")
+    say(f"考察期说明：{report['assumptions']['period_note']}")
 
 
 if __name__ == "__main__":

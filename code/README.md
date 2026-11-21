@@ -6,6 +6,62 @@
 python code/run.py code/examples/q1_site.yaml --json code/examples/q1_site_result.json
 ```
 
+## 三种入口
+
+### 1. YAML 文件入口
+
+适合保存场址参数、批量比较和复现实验。示例见 [q1_site.yaml](examples/q1_site.yaml)。
+
+```powershell
+python code/run.py code/examples/q1_site.yaml --json code/examples/q1_site_result.json
+```
+
+### 2. 控制台输入向导
+
+不提供配置文件时自动进入中文向导。也可以显式使用 `--interactive`：
+
+```powershell
+python code/run.py
+python code/run.py --interactive
+```
+
+向导支持联合模型（电、水、土地）和仅电力分项两种模式，会逐步询问场址、电网、
+水电土地参数以及一套或多套供电方案。直接回车采用方括号中的默认值。最后的 JSON
+路径留空时只在终端显示结果。
+
+### 3. Python 函数入口
+
+`run.py` 现在是可导入模块，`calculate()` 和 `run()` 都同时接受配置字典和 YAML 路径：
+
+```python
+import sys
+sys.path.insert(0, "code")
+from run import calculate
+
+report = calculate({
+    "P_grid_mw": 120,
+    "k_factor": 1.2,
+    "scenarios": [{"type": "grid", "name": "纯电网"}],
+})
+print(report["scenarios"][0]["breakdown"]["it_mw"])  # 100.0
+```
+
+第二个参数可写 JSON 路径：
+
+```python
+report = calculate({"P_grid_mw": 120, "k_factor": 1.2,
+                    "scenarios": [{"type": "grid", "name": "纯电网"}]},
+                   "result.json")
+```
+
+交互入口同样可以传入自定义的输入函数，便于在其他程序中复用：
+
+```python
+from immc_power_capacity.interactive import run_interactive
+
+run_interactive(asker=input, say=print)
+```
+
 [可替换的完整配置](examples/q1_site.yaml) 使用合成数据。每份配置代表一个场址、一个设计期和一种服务要求。
 以 `online_year <= assessment_year` 为已投运，先逐配置取电、水、土地容量的最小值，再在当年候选集中选最大值。
 输出保留并列瓶颈、并列最优、被工期排除的方案、输入参数和逐时电池调度。演示得到 110 MW IT（燃气配干冷园区，土地先触顶）。
