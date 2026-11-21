@@ -69,6 +69,8 @@ python code/run.py --interactive
 
 向导只构建 Q1 联合模型，按以下顺序询问：
 
+每个问题同时给出正稿符号、单位和物理含义，避免把 MVA 当成 MW、把 MWh 当成 MW，或把年度容量因子当成考察期保障比例。
+
 1. 场址名称、评估年份、设计期说明和服务水平。方括号中的值是默认值，直接回车即可采用。
 2. 电网输入方式。选择 MW 时填写 `P_grid_mw`（\(P_{\mathrm{grid}}\)）；选择 MVA 时填写 `P_grid_mva`（\(S_{\mathrm{grid}}\)）和功率因数 \(\cos\varphi\)。
 3. 共享关口容量 `C_PCC_mw`（\(C_{\mathrm{PCC}}\)）。留空表示专用接线，不设置共享关口上限。
