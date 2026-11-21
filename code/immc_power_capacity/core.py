@@ -822,6 +822,29 @@ def _generation_land_options(land, spec):
     return [0.0], "default"
 
 
+def _generation_area_km2(kind, spec):
+    """返回风电或光伏的资源面积，单位为 km²。
+
+    光伏必须显式提供 ``area_km2``；风电可以显式提供面积，也可以用
+    ``installed_mw / density_mw_per_km2`` 反推。无法确定面积时返回
+    ``None``，此时只能依赖 ``generation_land_required_ha`` 显式约束。
+    """
+    if kind not in {"wind", "solar"}:
+        return None
+    area = spec.get("area_km2")
+    if area is not None:
+        _nonnegative("area_km2", area)
+        return float(area)
+    if kind == "wind":
+        installed = spec.get("installed_mw")
+        density = spec.get("density_mw_per_km2")
+        if installed is not None and density is not None:
+            _nonnegative("installed_mw", installed)
+            _positive("density_mw_per_km2", density)
+            return float(installed) / density
+    return None
+
+
 def _generation_land_required(kind, spec):
     """估算方案自身的发电设施用地 A_gen。
 
@@ -841,11 +864,8 @@ def _generation_land_required(kind, spec):
         _nonnegative("units", units)
         return units * unit_land
     if kind in {"wind", "solar"}:
-        area = spec.get("area_km2")
-        if area is None:
-            return 0.0
-        _nonnegative("area_km2", area)
-        return area * 100.0
+        area = _generation_area_km2(kind, spec)
+        return 0.0 if area is None else area * 100.0
     return 0.0
 
 
@@ -858,7 +878,7 @@ def _cap_generation_by_land(kind, spec, generation_land):
     """
     limited = dict(spec)
     if spec.get("generation_land_in_site", True) is False:
-        return limited, 0.0, False
+        return limited, _generation_land_required(kind, spec), False
     explicit = spec.get("generation_land_required_ha")
     if explicit is not None:
         _nonnegative("generation_land_required_ha", explicit)
@@ -876,21 +896,25 @@ def _cap_generation_by_land(kind, spec, generation_land):
             limited["units"] = min(requested_units, max_units)
             required = limited["units"] * unit_land
             return limited, required, limited["units"] != requested_units
-    if kind in {"wind", "solar"} and spec.get("area_km2") is not None:
-        area = spec["area_km2"]
-        _nonnegative("area_km2", area)
-        available_area = generation_land / 100.0
-        if available_area <= 0:
-            return None
-        effective_area = min(area, available_area)
-        ratio = effective_area / area if area > 0 else 1.0
-        limited["area_km2"] = effective_area
-        if isinstance(spec.get("net_output_mw"), (list, tuple)):
-            limited["net_output_mw"] = [
-                value * ratio for value in spec["net_output_mw"]
-            ]
-        required = effective_area * 100.0
-        return limited, required, effective_area != area
+    if kind in {"wind", "solar"}:
+        area = _generation_area_km2(kind, spec)
+        if area is not None:
+            available_area = generation_land / 100.0
+            if available_area <= 0:
+                return None
+            if area <= 0:
+                return limited, 0.0, False
+            effective_area = min(area, available_area)
+            ratio = effective_area / area
+            limited["area_km2"] = effective_area
+            if spec.get("installed_mw") is not None:
+                limited["installed_mw"] = spec["installed_mw"] * ratio
+            if isinstance(spec.get("net_output_mw"), (list, tuple)):
+                limited["net_output_mw"] = [
+                    value * ratio for value in spec["net_output_mw"]
+                ]
+            required = effective_area * 100.0
+            return limited, required, effective_area != area
     required = spec.get("generation_land_required_ha", 0.0)
     _nonnegative("generation_land_required_ha", required)
     if required > generation_land + 1e-9:
@@ -973,15 +997,20 @@ def _resource_row_single(data, spec, grid, budget):
 
     direct_land = spec.get("direct_P_L_mw_it")
     required_generation_land = _generation_land_required(kind, spec)
-    land_options, land_source = _generation_land_options(data["land"], spec)
+    if spec.get("generation_land_in_site", True) is False:
+        land_options, land_source = [0.0], "external"
+        site_land_required = 0.0
+    else:
+        land_options, land_source = _generation_land_options(data["land"], spec)
+        site_land_required = required_generation_land
     feasible_land_options = [
         value
         for value in land_options
-        if value + 1e-9 >= required_generation_land
+        if value + 1e-9 >= site_land_required
     ]
     if not feasible_land_options:
         raise ValidationError(
-            f"{spec['name']} 的自建发电站用地不足：需要 {required_generation_land:g} ha，"
+            f"{spec['name']} 的自建发电站用地不足：需要 {site_land_required:g} ha，"
             f"候选只有 {', '.join(f'{value:g}' for value in land_options)} ha。"
         )
     land_options = feasible_land_options

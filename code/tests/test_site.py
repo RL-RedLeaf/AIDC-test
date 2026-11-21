@@ -113,6 +113,44 @@ def test_external_generation_land_is_not_deducted(site):
     assert row["P_L_mw_it"] == 150
 
 
+def test_external_wind_land_is_not_deducted(site):
+    site["P_grid_mw"] = 0
+    site["scenarios"] = [{
+        "name": "外部风电",
+        "type": "wind",
+        "online_year": 2028,
+        "generation_land_in_site": False,
+        "area_km2": 1,
+        "density_mw_per_km2": 100,
+        "alpha": 0.2,
+    }]
+    row = assess_site(site)["scenarios"][0]
+    assert row["generation_land_ha"] == 0
+    assert row["generation_land_source"] == "external"
+    assert row["generation_land_required_ha"] == 100
+    assert row["P_L_mw_it"] == 150
+    assert row["P_E_mw_it"] == pytest.approx(100 / 6)
+
+
+def test_wind_installed_capacity_scales_with_land(site):
+    site["P_grid_mw"] = 0
+    site["scenarios"] = [{
+        "name": "受限风电",
+        "type": "wind",
+        "online_year": 2028,
+        "installed_mw": 100,
+        "area_km2": 1,
+        "density_mw_per_km2": 100,
+        "alpha": 0.2,
+        "generation_land_options_ha": [10],
+    }]
+    row = assess_site(site)["scenarios"][0]
+    assert row["generation_land_ha"] == 10
+    assert row["generation_land_required_ha"] == 10
+    assert row["generation_land_capacity_capped"] is True
+    assert row["P_E_mw_it"] == pytest.approx(10 / 6)
+
+
 def test_direct_limit_overrides_are_marked(site):
     site["scenarios"] = [{
         "name": "直接结果",
