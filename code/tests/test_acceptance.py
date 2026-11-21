@@ -78,8 +78,8 @@ def test_storage_with_non_unit_dt():
         ([8, 1, 0, 4], 2, 3, 3, 6, 0.95, 0.9),
     ],
 )
-def test_milp_matches_independent_lp_relaxation(supply, dt, c_max, d_max, energy, eta_c, eta_d):
-    milp_load, _ = solve_storage_capacity(supply, dt, c_max, d_max, energy, eta_c, eta_d)
+def test_dispatch_attains_independent_lp_bound(supply, dt, c_max, d_max, energy, eta_c, eta_d):
+    load, dispatch = solve_storage_capacity(supply, dt, c_max, d_max, energy, eta_c, eta_d)
     periods = len(supply)
     objective = [0.0] * (1 + 3 * periods)
     objective[0] = -1
@@ -109,7 +109,17 @@ def test_milp_matches_independent_lp_relaxation(supply, dt, c_max, d_max, energy
         method="highs",
     )
     assert result.success
-    assert milp_load == pytest.approx(result.x[0], abs=1e-6)
+    assert load == pytest.approx(result.x[0], abs=1e-6)
+    for index, available in enumerate(supply):
+        charge = dispatch["charge_mw"][index]
+        discharge = dispatch["discharge_mw"][index]
+        stored = dispatch["energy_start_mwh"][index]
+        assert 0 <= charge <= c_max + 1e-8 and 0 <= discharge <= d_max + 1e-8
+        assert 0 <= stored <= energy + 1e-8
+        assert min(charge, discharge) == 0
+        assert available + discharge == pytest.approx(load + charge + dispatch["curtailment_mw"][index])
+        assert dispatch["energy_start_mwh"][(index + 1) % periods] == pytest.approx(
+            stored + dt * (eta_c * charge - discharge / eta_d), abs=1e-8)
 
 
 def test_combined_wind_solar_battery():
@@ -139,7 +149,7 @@ def test_wind_hydro_and_fuel_heat():
 
 def test_invalid_inputs():
     with pytest.raises(ValidationError):
-        total_capacity(120, 0, 1.0)
+        total_capacity(120, 0, 0.99)
     with pytest.raises(ValidationError):
         wind("wind", 120, 1.2, area_km2=-1, density_mw_per_km2=6, alpha=0.2)
     with pytest.raises(ValidationError):

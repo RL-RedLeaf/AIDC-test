@@ -44,8 +44,8 @@ def _positive_integer(field, value):
 
 def _k_factor(value):
     _number("k_factor", value)
-    if value <= 1:
-        raise ValidationError("k_factor 必须大于 1（必须扣除冷却和配电功率）。")
+    if value < 1:
+        raise ValidationError("k_factor 不能小于 1。")
 
 
 def _finite_nonnegative(values, field):

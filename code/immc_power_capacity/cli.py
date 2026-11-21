@@ -1,12 +1,12 @@
 import argparse
-import importlib
 import json
 import sys
 from pathlib import Path
 
 import yaml
 
-from .calculator import combined_battery, grid_only, hydro, solar, thermal, wind
+from .supply import _build_scenario, _number
+from .site import assess_site, sensitivity_cases
 from .exceptions import CapacityModelError, ValidationError
 from .validators import _k_factor, _positive
 
@@ -24,7 +24,7 @@ WRONG_UNIT_KEYS = {
 
 def build_parser():
     parser = argparse.ArgumentParser(
-        description="IMMC 2027 A 题第一问：计算候选供电方案的最大额定 IT 容量。"
+        description="IMMC 2027 A 题第一问：计算场址联合容量或电力分项容量。"
     )
     parser.add_argument("config", help="YAML 配置路径。")
     parser.add_argument("--json", default=None, help="同时写出 JSON 结果文件。")
@@ -43,6 +43,23 @@ def run(config_path, json_path=None):
     if not isinstance(data, dict):
         raise CapacityModelError("YAML 顶层必须是对象。")
 
+    if data.get("model") == "q1":
+        report = assess_site(data)
+        report["sensitivity"] = sensitivity_cases(data)
+    else:
+        if "model" in data or any(key in data for key in ("water", "land", "C_PCC_mw", "assessment_year")):
+            raise CapacityModelError("正稿联合评估配置需声明 model: q1。")
+        report = _power_report(data)
+    if json_path:
+        output = Path(json_path)
+        try:
+            output.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
+        except OSError as exc:
+            raise CapacityModelError(f"无法写入 JSON 结果：{exc}") from exc
+    return report
+
+
+def _power_report(data):
     _reject_wrong_units(data)
     grid_value = _number(data, "P_grid_mw")
     k_value = _number(data, "k_factor")
@@ -86,12 +103,6 @@ def run(config_path, json_path=None):
         "scenarios": results,
         "optimum": optimal,
     }
-    if json_path:
-        output = Path(json_path)
-        try:
-            output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-        except OSError as exc:
-            raise CapacityModelError(f"无法写入 JSON 结果：{exc}") from exc
     return report
 
 
@@ -112,112 +123,6 @@ def main(argv=None):
     return 0
 
 
-def _build_scenario(kind, spec, grid_value, k_value, name):
-    if kind == "grid":
-        return grid_only(grid_value, k_value)
-    if kind == "coal":
-        return thermal(
-            "coal", grid_value, k_value,
-            _number(spec, "units"), _number(spec, "unit_net_mw"),
-            _optional(spec, "net_efficiency"),
-        )
-    if kind == "gas":
-        return thermal(
-            "gas", grid_value, k_value,
-            _number(spec, "units"), _number(spec, "unit_net_mw"),
-            _optional(spec, "net_efficiency"), spec.get("gas_supply_adequate"),
-        )
-    if kind == "wind":
-        return _wind_result(spec, grid_value, k_value)
-    if kind == "hydro":
-        return hydro(
-            name, grid_value, k_value,
-            _number(spec, "installed_mw"), _number(spec, "flow_m3_per_s"),
-            _number(spec, "net_head_m"), _number(spec, "efficiency"),
-        )
-    if kind == "solar":
-        return _solar_result(spec, grid_value, k_value)
-    if kind == "combined_battery":
-        return combined_battery(
-            name, grid_value, k_value,
-            _series(spec, "supply_series_mw", required=True),
-            _number(spec, "installed_mw"), _number(spec, "dt_hours"),
-            spec.get("battery"),
-        )
-    raise CapacityModelError(
-        f"不支持的方案类型：{kind}。可选值：grid, coal, gas, wind, hydro, solar, combined_battery。"
-    )
-
-
-def _wind_result(spec, grid_value, k_value):
-    provided = [
-        field for field in ("alpha", "power_ratios", "net_output_mw")
-        if spec.get(field) is not None
-    ]
-    if len(provided) != 1:
-        raise CapacityModelError("风电方案必须在 alpha、power_ratios、net_output_mw 中提供且只提供一个。")
-    source = provided[0]
-    series = _series(spec, source, required=False) if source != "alpha" else None
-    return wind(
-        "wind", grid_value, k_value,
-        area_km2=spec.get("area_km2"),
-        density_mw_per_km2=spec.get("density_mw_per_km2"),
-        installed_mw=spec.get("installed_mw"),
-        alpha=spec.get("alpha"),
-        power_ratios=series if source == "power_ratios" else None,
-        net_output_mw=series if source == "net_output_mw" else None,
-    )
-
-
-def _solar_result(spec, grid_value, k_value):
-    provided = [
-        field for field in ("supply_ratios", "net_output_mw")
-        if spec.get(field) is not None
-    ]
-    if len(provided) != 1:
-        raise CapacityModelError("光伏方案必须在 supply_ratios 与 net_output_mw 中提供且只提供一个。")
-    source = provided[0]
-    return solar(
-        "solar", grid_value, k_value,
-        _number(spec, "area_km2"), _number(spec, "density_mw_per_km2"),
-        supply_ratios=_series(spec, source, required=True) if source == "supply_ratios" else None,
-        net_output_mw=_series(spec, source, required=True) if source == "net_output_mw" else None,
-        dt_hours=_number(spec, "dt_hours"),
-        battery=spec.get("battery"),
-    )
-
-
-def _series(spec, field, required):
-    if field not in spec or spec[field] is None:
-        if required:
-            raise CapacityModelError(f"{field} 不能缺失。")
-        return None
-    path = spec[field]
-    if not isinstance(path, str):
-        return path
-    if "::" not in path:
-        raise CapacityModelError(
-            f"{field} 若是外部序列，请写成 'module::variable'；否则请直接给 YAML/JSON 数组。"
-        )
-    module_name, attr = path.split("::", 1)
-    try:
-        module = importlib.import_module(module_name)
-        return getattr(module, attr)
-    except (ImportError, AttributeError) as exc:
-        raise CapacityModelError(f"无法加载 {field} 的外部序列 {path}：{exc}") from exc
-
-
-def _number(spec, field):
-    if field not in spec or spec[field] is None:
-        raise CapacityModelError(f"{field} 不能缺失。")
-    value = spec[field]
-    if not isinstance(value, (int, float)) or isinstance(value, bool):
-        raise CapacityModelError(f"{field} 必须是数值。")
-    return value
-
-
-def _optional(spec, field):
-    return None if field not in spec or spec[field] is None else _number(spec, field)
 
 
 def _reject_wrong_units(mapping, label="配置"):
@@ -229,6 +134,22 @@ def _reject_wrong_units(mapping, label="配置"):
 
 
 def _print(report):
+    if "P_max_mw_it" in report:
+        print(f"{report['site']} | {report['assessment_year']} | {report['period_note']} | {report['service_level']}")
+        water = report["water"]
+        basis = "取水上界" if water["basis"] == "withdrawal" else "耗水上限"
+        print(f"{basis} {water['Q_max_m3_h']:.6g} m³/h；未纳入水量项：{', '.join(water['omitted']) or '无'}")
+        print("配置 | 电网 MW | 自建 MW | 进线 MW | k | P_E | P_W | P_L | 联合容量 (MW IT) | 触顶约束")
+        for row in report["scenarios"]:
+            power = row["breakdown"]
+            water_text = "无现场用水需求" if row["P_W_mw_it"] is None else f"{row['P_W_mw_it']:.6g}"
+            print(f"{row['name']} | {power['grid_mw']:g} | {power['self_generation_mw']:g} | "
+                  f"{power['facility_mw']:g} | {power['k']:g} | {row['P_E_mw_it']:.6g} | "
+                  f"{water_text} | {row['P_L_mw_it']:.6g} | {row['P_mw_it']:.6g} | {'、'.join(row['binding'])}")
+        for item in report["excluded"]:
+            print(f"排除：{item['name']}（{item['reason']}，投运年 {item['online_year']}）")
+        print(f"P_max = {report['P_max_mw_it']:.6g} MW IT，最优配置：{'、'.join(report['winners'])}")
+        return
     print("电网 MW | 方案 | 自发电可靠 MW | 设施总 MW | k | 最大 IT MW")
     for item in report["scenarios"]:
         row = item["breakdown"]

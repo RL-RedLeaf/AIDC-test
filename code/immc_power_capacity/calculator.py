@@ -14,7 +14,7 @@ from .validators import (
 
 def grid_only(grid_mw, k_factor):
     """纯电网方案：P_self=0."""
-    _positive("P_grid", grid_mw)
+    _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     return _breakdown(grid_mw, 0.0, k_factor, "grid_only", {
         "equation": "v2 式(1)(6)",
@@ -25,7 +25,7 @@ def grid_only(grid_mw, k_factor):
 def thermal(name, grid_mw, k_factor, units, unit_net_mw,
             net_efficiency=None, gas_supply_adequate=None):
     """煤电或燃气：可同时运行台数 × 单机持续净功率，v2 式(2)."""
-    _positive("P_grid", grid_mw)
+    _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     key = str(name).strip().lower()
     if key not in {"coal", "gas"}:
@@ -63,7 +63,7 @@ def wind(name, grid_mw, k_factor, area_km2=None, density_mw_per_km2=None,
 
     alpha、归一化序列或原始 MW 序列三选一。年度容量因子不进入本式。
     """
-    _positive("P_grid", grid_mw)
+    _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     if sum(item is not None for item in (alpha, power_ratios, net_output_mw)) != 1:
         raise ValidationError("风电的 alpha、power_ratios、net_output_mw 必须且只能提供一个。")
@@ -108,7 +108,7 @@ def wind(name, grid_mw, k_factor, area_km2=None, density_mw_per_km2=None,
 
 def hydro(name, grid_mw, k_factor, installed_mw, flow_m3_per_s, net_head_m, efficiency):
     """水电：v2 式(4)，流量与落差必须采用同一约束期口径."""
-    _positive("P_grid", grid_mw)
+    _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     _nonnegative("installed_mw", installed_mw)
     _nonnegative("flow_m3_per_s", flow_m3_per_s)
@@ -129,7 +129,7 @@ def solar(name, grid_mw, k_factor, area_km2, density_mw_per_km2,
 
     supply_ratios 的单位为 MWh/MWh（净电功率/装机），net_output_mw 为 MW。
     """
-    _positive("P_grid", grid_mw)
+    _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     _positive("area_km2", area_km2)
     _positive("density_mw_per_km2", density_mw_per_km2)
@@ -168,7 +168,7 @@ def solar(name, grid_mw, k_factor, area_km2, density_mw_per_km2,
 def combined_battery(name, grid_mw, k_factor, supply_series_mw, installed_mw,
                      dt_hours, battery):
     """风光共用电池：先合并同一时段的可用净功率，再求解一次附录 A."""
-    _positive("P_grid", grid_mw)
+    _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     _positive("combined_installed_mw", installed_mw)
     _positive("dt_hours", dt_hours)

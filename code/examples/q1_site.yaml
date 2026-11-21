@@ -1,0 +1,57 @@
+# 合成验收数据。所有方案共用同一场址、设计时段与服务要求。
+model: q1
+site: 演示场址
+assessment_year: 2028
+period_note: 枯水期设计工况，光伏用两个各一小时的合成时段循环校核
+service_level: 正常运营，持续满载
+P_grid_mw: 108
+C_PCC_mw: 156
+k_factor: 1.20
+water:
+  basis: withdrawal
+  river_m3_h: 600
+  eco_m3_h: 100
+  other_m3_h: 100
+  stress_fraction: 0.50
+  policy_m3_h: 180
+  wue_l_per_kwh_it: 1.50
+land:
+  effective_ha: 160
+  fixed_it_ha: 10
+  ha_per_mw_it: 1
+  generation_share: 0
+scenarios:
+  - {name: 纯电网, type: grid, online_year: 2026}
+  - name: 光储
+    type: solar
+    online_year: 2028
+    generation_share: 0.125
+    area_km2: 0.2
+    local_generation_required_ha: 20
+    density_mw_per_km2: 100
+    net_output_mw: [20, 0]
+    dt_hours: 1
+    battery: {C_max_mw: 10, D_max_mw: 10, E_usable_mwh: 10}
+  - name: 燃气配湿冷园区
+    type: gas
+    online_year: 2028
+    units: 1
+    unit_net_mw: 60
+    gas_supply_adequate: true
+    generation_share: 0.125
+  - name: 燃气配干冷园区
+    type: gas
+    online_year: 2028
+    units: 1
+    unit_net_mw: 60
+    gas_supply_adequate: true
+    wue_l_per_kwh_it: 0.75
+    generation_share: 0.25
+  - {name: 后续煤电, type: coal, online_year: 2030, units: 2, unit_net_mw: 80, generation_share: 0.3}
+sensitivity:
+  P_grid_mw: [96, 120]
+  k_factor: [1.3, 1.4]
+  water.wue_l_per_kwh_it: [1, 2]
+  water.stress_fraction: [0.4, 0.6]
+  land.ha_per_mw_it: [0.8, 1.2]
+  land.effective_ha: [140, 180]
