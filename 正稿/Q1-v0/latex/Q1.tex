@@ -1,0 +1,472 @@
+\documentclass{mcmthesis}
+\mcmsetup{CTeX=false, tcn=2027, problem=A, sheet=true, titleinsheet=true, keywordsinsheet=true, titlepage=false, abstract=true}
+
+\usepackage[UTF8,fontset=fandol]{ctex}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{geometry}
+\geometry{a4paper,margin=1in}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+\renewcommand{\keywordsname}{关键词}
+\renewcommand{\abstractname}{摘要}
+\renewcommand{\headset}{2027\\IMMC\\Summary Sheet}
+
+\title{给定场址下集中式 AI 数据中心的可持续规模}
+\author{\small Team 2027}
+\date{\today}
+
+\begin{document}
+
+\begin{abstract}
+本文估计给定场址下集中式 AI 数据中心的可持续规模。我们把电力、水和土地三类约束统一换算为 IT 容量 \(P_{\mathrm{IT}}\)（MW），并定义场址上限为
+\[
+P_{\max}=\max_{x\in\mathcal X}\min\{P_E(x),P_W(x),P_L(x)\}.
+\]
+其中 \(x\) 为供电、储能与园区供配电方案，\(P_E,P_W,P_L\) 分别为电力、水和土地约束下的 IT 容量。模型强调三个“同一”：同一配置、同一设计时段、同一服务水平，从而避免把额定容量与年均容量直接混用。
+
+在【场址】的算例中，我们得到 \(P_{\max}=\)【待填】MW，最先触顶的是【电力/水/土地】；与 950 MW、2,263 MW、5 GW 的参照相比，模型结果【偏高/偏低】，主要原因是【口径/异地发电/电网升级/取水许可/负载率】。敏感性分析表明，【参数】在【范围】内变化时结论稳健；当【参数】超过【阈值】时，binding constraint 从【A】转为【B】。
+
+本文的贡献在于：把三类资源约束放到同一个 IT MW 口径下比较；把园区土地强度与供电方案解耦；用“最先触顶的约束”而不是单一数字回答规模问题。该方法可直接推广到其他场址，并为第二问的分布式算力网络提供单站基准。
+
+\begin{keywords}
+AI 数据中心；承载容量；电力约束；水资源；土地约束；可持续规模
+\end{keywords}
+\end{abstract}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{问题与判据}
+
+5 GW 的 AI 园区常被描述成一个“供电问题”。但对具体场址而言，它更是一个联合资源分配问题：同一份 IT 负载需要可靠的电力、冷却水和土地，而三者的需求量又由电源与冷却技术共同决定。因此，本节不回答“世界上最大的数据中心有多大”，而回答“在这个场址上，数据中心能建多大，才会先耗尽三类资源预算中的某一项”。
+
+本文沿用题面对 AI 数据中心（AIDC）的定义，并将集中式 AIDC 界定为主要 IT 设备集中部署于单一场址或地理相邻园区、由相应供配电和冷却基础设施支持运行的设施整体。
+
+本文以额定 IT 负载容量 \(P_{\mathrm{IT}}\)（MW）衡量规模，即在给定场址、技术方案和考察期内，设施能够持续支撑的 IT 负载。它不同于设备标称功率的简单加总，也不同于设施总功率或年耗电量；供配电损耗和冷却等辅助需求在设施侧另行核算。
+
+设 \(x\) 为一套候选配置，包含供电来源、储能和园区供配电方案。对每套配置，分别计算其可支撑的电力、水和土地上限 \(P_E(x)\)、\(P_W(x)\)、\(P_L(x)\)。场址的可持续规模定义为
+\begin{equation}
+P_{\max}=\max_{x\in\mathcal X}\min\{P_E(x),P_W(x),P_L(x)\}.
+\tag{1}
+\end{equation}
+
+式（1）中的最小值不是建模便利，而是可行性条件：同一套配置必须同时满足三类资源预算，任何一项不足都会使该配置不可行。最大值则表示场址容量是“最好的可行配置”，而不是三个单独最大值的拼接。为使式（1）成立，三个上限必须在同一配置、同一设计时段和同一服务水平下计算；这一要求贯穿后文。
+
+本文的处理有三个特点：第一，把电力、水和土地统一换算成同一个 IT MW，而不是分别报告三套互不可比的容量；第二，把园区土地强度与供电方案解耦，避免改变电源方案时同时改变土地参数；第三，用“最先触顶的约束”和敏感性分析回答规模问题，而不是只给一个孤立的数字。
+
+后文安排如下：第~\ref{sec:assumptions}~节给出三条总假设；第~\ref{sec:power}--\ref{sec:land}~节分别建立电力、水和土地子模型；第~\ref{sec:integration}~节说明三者如何合成；第~\ref{sec:results}~节给出案例结果与讨论；第~\ref{sec:limits}~节总结局限与结论。各子模型特有的技术假设随相应小节给出，不再在总假设中重复。
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox[c][4.2cm][c]{0.84\textwidth}{\centering
+\textbf{图 1 位置：系统边界与归因}\\[2mm]
+园区居中，左侧为公共电网与自建电源，下方为水源与流域，右侧为土地与生态；\\
+实线表示能量/水流的物理路径，虚线表示归因关系。}}
+\caption{系统边界与归因（占位）}
+\label{fig:boundary}
+\end{figure}
+
+\section{模型假设}
+\label{sec:assumptions}
+
+本文采用以下三条贯穿全文的假设。
+
+\noindent\textbf{1. 固定场址与建成配置：}本文考察某一给定场址在考察期内的建成状态，不模拟逐年扩建、设备退役或电网规划的动态过程；其中允许出现正常的日夜、季节性波动等，但不考虑长期大范围变更。候选设施视为已经建成并处于设计运行状态。建设工期只用来判断某一方案在哪一年具备投运条件，不改变其建成后的容量上限。
+
+\noindent\textbf{2. 正常运营：}本文报告的是正常运营条件下的可持续容量，不涉及事故备用或可靠性评估。所有容量均以公共电网正常供电、设备按设计工况运行、不发生电网瘫痪或燃料中断等特殊事故为前提；设计工况内的枯水、高温和风光低出力视为正常波动并纳入校核，极端灾害另作敏感性情景。地质灾害、洪泛区和生态敏感区在选址阶段排除。基准结果不包含 N-1 或概率可靠性要求。
+
+\noindent\textbf{3. 同口径比较：}本文的所有候选方案都在同一场址、同一考察期、同样的可用土地与水资源上限和同一服务要求下评估。园区在考察期内须能支撑额定 IT 负载，实际负载可随时间变化；电力、水和土地三个上限按同一设计工况计算。各子模型中的关键效率和出力参数取设计值，配套的变电、配电和取输水设施按设计容量配置，不作为额外瓶颈。
+
+\section{电力子模型}
+\label{sec:power}
+
+\subsection{电网接入}
+
+电网项采用供电方核定的项目可交付容量，而不是变电站铭牌或排队容量~\cite{eirgrid2019}。若只能取得变电站可开放的视在功率（MVA），则按显式功率因数折算为 MW，并作为初筛上界。自建电源与电网共用进线或主变时，园区总进线功率还受该关口的持续输送容量限制：
+\begin{equation}
+P_{\mathrm{total}}(x)=\min\left\{P_{\mathrm{grid}}+P_{\mathrm{self}}(x),\;C_{\mathrm{PCC}}\right\}.
+\tag{2}
+\end{equation}
+其中 \(P_{\mathrm{grid}}\) 为电网在接入点可持续交付的净有功，\(P_{\mathrm{self}}(x)\) 为自建电源在电网已承担相应负荷时仍能提供的净功率，\(C_{\mathrm{PCC}}\) 为园区关口的持续输送容量。两项均按园区进线处计量。若自建电源配置专用接线，则 \(C_{\mathrm{PCC}}\) 取足够大的值，并在假设中说明。
+
+\subsection{自建电源}
+
+自建电源按“当地能布置多少设备”和“这些设备能持续送出多少功率”两步计算。四类技术的容量关系如下。
+
+\paragraph{火电。}
+设 \(N_j\) 为可同时投入正常运行的同型号机组数，\(p_j^{\mathrm{net}}\) 为单台机组在本地设计条件下持续送达园区的净功率，则
+\begin{equation}
+P_j=N_jp_j^{\mathrm{net}},\qquad j\in\{\text{煤电},\text{燃气}\}.
+\tag{3}
+\end{equation}
+单机净功率取自项目或机型的设计资料，已扣除厂用电~\cite{netl2025}；若当地河流在枯水期难以满足湿冷机组的冷却需求，则按该期流量与水温修正~\cite{jones2025}。燃气方案假设燃料供应充足，报告的是该条件下的容量上界。
+
+\paragraph{风电。}
+设 \(A_{\mathrm{wind}}\) 为分配给风电的合格面积，\(\rho_{\mathrm{wind}}\) 为当地布置条件下的装机密度，\(\alpha_{\mathrm{wind}}\) 为考察期最低净出力与装机之比~\cite{parzen2023,atlite2021}，则
+\begin{equation}
+X_{\mathrm{wind}}=A_{\mathrm{wind}}\rho_{\mathrm{wind}},\qquad
+P_{\mathrm{wind}}=\alpha_{\mathrm{wind}}X_{\mathrm{wind}}.
+\tag{4}
+\end{equation}
+这里 \(\alpha_{\mathrm{wind}}\) 只在“孤立站点、恒定负荷、无其他电源补位”的口径下作为保障比例；它不等于并网系统的 ELCC（有效负荷承载能力）。若场址与公共电网相连，应另用逐时功率平衡或 ELCC 评估风电的容量信用，相关方法见附录 B。
+
+\paragraph{水电。}
+在适宜开发水电的场址，设 \(Q\) 为扣除生态下泄并满足其他用水要求后可持续通过机组的流量，\(H\) 为同一条件下的净落差，\(\eta_{\mathrm{hydro}}\) 为综合转换效率，则
+\begin{equation}
+P_{\mathrm{hydro}}=\min\left\{X_{\mathrm{hydro}},\;0.00981\,\eta_{\mathrm{hydro}}QH\right\}.
+\tag{5}
+\end{equation}
+系数 0.00981 来自淡水密度、重力加速度及 W 到 MW 的单位换算~\cite{doe1983}。若需保障枯水期运行，应采用枯水期可利用流量及对应落差。公共电网中水电机组的供电已计入式（2）的电网项，不重复计算。
+
+\paragraph{光伏与储能。}
+设 \(A_{\mathrm{PV}}\) 与 \(\rho_{\mathrm{PV}}\) 分别为光伏可用面积与装机密度，则充分布置后的光伏装机为 \(X_{\mathrm{PV}}=A_{\mathrm{PV}}\rho_{\mathrm{PV}}\)。光伏与储能的可保障容量取决于白天可存储的电量、电池的充放电功率与效率，以及夜间负荷：
+\begin{equation}
+P_{\mathrm{PV+st}}=
+f_{\mathrm{PV+st}}\left(X_{\mathrm{PV}},\,\mathcal W,\,C_{\max},\,D_{\max},\,E_{\mathrm{usable}},\,\eta_c,\,\eta_d\right).
+\tag{6}
+\end{equation}
+其中 \(\mathcal W\) 包含考察期内当地的日照与气温；\(C_{\max}\)、\(D_{\max}\) 为电池最大充、放电功率；\(E_{\mathrm{usable}}\) 为扣除应急预留后可动用的电量；\(\eta_c\)、\(\eta_d\) 为充、放电效率。附录 B 给出按时段校核的完整线性规划~\cite{goiri2013}，正文只保留其物理含义：一个白天能充满、但夜间放不完的方案，其容量受夜间供电限制。
+
+\subsection{从设施功率到 IT 功率}
+
+园区进线功率既供给服务器、存储和网络设备，也维持冷却与配电。设 \(k(x)\) 为设计满载时设施总功率与同一工况 IT 功率之比，则
+\begin{equation}
+P_E(x)=\frac{P_{\mathrm{total}}(x)}{k(x)},\qquad
+k(x)=\frac{\text{设计满载设施功率}}{\text{同一工况 IT 功率}}.
+\tag{7}
+\end{equation}
+\(k\) 是设计工况倍率，不是年度 PUE。年度 PUE 衡量全年设施总电量与 IT 电量之比，只有缺少设计数据时才作为 \(k\) 的近似，并应注明设施类型与统计周期~\cite{itu2014}。我们用 Epoch AI 的公开数据中心时间线~\cite{epoch2026} 对 \(k\) 做量级校验：在同时给出 IT 功率与总功率的 96 个站点中，最新记录的中位数约为 1.30，范围约为 1.00--1.74。因此主结果采用 1.2--1.4 的情景带，而不是单一 PUE 值。
+
+\subsection{建设工期与可再生波动性}
+
+建设工期不改变建成后的物理容量，但决定某一方案在评估年份是否已经可用。本文将工期作为可行方案集合的筛选条件：若 \(y\) 为评估年份，则 \(\mathcal X_y\) 只包含该年之前能够投运的供电方案。题面提到的燃机长交付期、并网排队和变压器交付时间，均通过这一筛选进入模型，而不是在容量公式中直接乘一个折减系数。
+
+可再生电源的波动性分两种口径处理。对孤立站点、恒定负荷、无其他电源补位的场景，式（4）的 \(\alpha_{\mathrm{wind}}\) 给出保守的最低出力比例；对与公共电网相连的场景，则用同一时间序列的功率平衡或 ELCC 评估其在系统可靠性目标下的容量信用。两种口径不能混用，正文结果会注明所用口径。
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox[c][4.0cm][c]{0.84\textwidth}{\centering
+\textbf{图 2 位置：电力容量链}\\[2mm]
+接入点合同容量 + 本地土地与气象 + 设备参数 \(\rightarrow P_{\mathrm{total}}\)\\
+\(\rightarrow P_E=P_{\mathrm{total}}/k\)}}
+\caption{从场址资源到额定 IT 容量的电力链（占位）}
+\label{fig:power}
+\end{figure}
+
+\section{水子模型}
+\label{sec:water}
+
+\subsection{三个水量上限}
+
+水约束由三个独立上限共同决定：
+\begin{equation}
+Q_{\max}=\min\left\{Q_{\mathrm{source}},\;Q_{\mathrm{stress}},\;Q_{\mathrm{policy}}\right\}.
+\tag{8}
+\end{equation}
+其中 \(Q_{\mathrm{source}}\) 为水源在扣除生态保留和既有取水后还能提供的新增流量；\(Q_{\mathrm{stress}}\) 为按本地水压力阈值允许的新增流量；\(Q_{\mathrm{policy}}\) 为项目适用的取水许可或合同上限。只有数据可得、口径一致且构成独立上限时，才把相应项放入最小值；缺失项应注明“未纳入”，不能把缺失当作无穷大。
+
+\(Q_{\mathrm{source}}\) 的简化估计为
+\begin{equation}
+Q_{\mathrm{source}}=\max\left\{0,\;Q_{\mathrm{river}}-Q_{\mathrm{eco}}-Q_{\mathrm{other}}\right\},
+\tag{9}
+\end{equation}
+其中 \(Q_{\mathrm{river}}\) 为同一时段、同一河段的基准流量，\(Q_{\mathrm{eco}}\) 为生态保留流量，\(Q_{\mathrm{other}}\) 为同一水源和同一时段内生活、工业、农业等已有取水。若实测流量已经反映上游取水，则不能再扣一次。
+
+水压力上限由本地取水压力阈值 \(S_{\max}\) 给出：
+\begin{equation}
+Q_{\mathrm{stress}}=\max\left\{0,\;S_{\max}\left(Q_{\mathrm{river}}-Q_{\mathrm{eco}}\right)-Q_{\mathrm{other}}\right\}.
+\tag{10}
+\end{equation}
+\(S_{\max}\) 是本研究设定的情景参数，不是 Aqueduct 已公布的风险评分，也不是法定取水线。改变 \(S_{\max}\) 时，应报告其对 \(P_W\) 和最终 binding constraint 的影响。
+
+\subsection{WUE 换算与取水/耗水口径}
+
+现场 WUE 将同期用水量与 IT 用电量联系起来~\cite{mytton2021}。以下用 \(WUE\) 表示与 \(Q_{\max}\) 同口径的 WUE：若采用可持续耗水约束，则 \(Q_{\max}\) 与 \(WUE\) 都取耗水口径；若只能取得取水数据，则两者都取取水口径，并在结果中注明。给定水量上限，水约束对应的 IT 功率为
+\begin{equation}
+P_W=\frac{Q_{\max}}{WUE}.
+\tag{11}
+\end{equation}
+使用该式时必须同时说明三件事：\(Q_{\max}\) 是取水还是耗水；WUE 的分母是 IT 电量还是设施电量；时间窗口是年均还是枯水期。三者必须匹配。若用一段时期的总水量 \(V\)（m\(^3\)）、时长 \(t\)（h）和 IT 平均负载率 \(u\)，则 \(P_W=V/(WUE\cdot t\cdot u)\)（单位换算后）；\(u=1\) 时得到该时段的平均实际 IT 功率，不等于额定容量。
+
+可持续性约束采用耗水口径：取水可能在使用后回流，耗水才是流域净减少的部分。若只有取水数据，则结果应写成“取水上界”，不能称为可持续耗水上限。枯水期与年均分别核算，不用年平均 WUE 代替枯水期设计值。
+
+我们用 Epoch AI 数据中心的公开用水记录（数据快照见附录 E）做量级校验：在同时给出用水量与 IT 功率的少量样本中，现场 WUE 的中位数约为 0.18 L/kWh，最大值约为 6.8 L/kWh。该样本量小且口径不完全一致，只能作量级校验；它说明 WUE 必须按冷却方式分档，而不能取全球平均。
+
+\subsection{发电侧水耗与技术差异}
+
+煤、气、风、光的水耗差异主要来自冷却方式和燃料链~\cite{macknick2012}。主文只给出范围，并把“取水/耗水”“湿冷/干冷”分开标注；全表放在附录 C。对自建火电，若冷却水受限会降低净出力，则在电力子模型中修正 \(p_j^{\mathrm{net}}\)；对电网购电，发电侧水耗按供电结构单独核算，不重复计入园区现场 WUE。
+
+\begin{table}[H]
+\centering
+\caption{发电技术水系数范围（占位，待填）}
+\label{tab:water}
+\small
+\begin{tabularx}{\textwidth}{@{}l c c l X@{}}
+\toprule
+技术 & 取水范围 & 耗水范围 & 冷却方式 & 口径来源 \\
+\midrule
+煤电 & 【待填】 & 【待填】 & 湿冷/干冷 & Macknick 等 \\
+燃气 & 【待填】 & 【待填】 & 湿冷/干冷 & Macknick 等 \\
+风电 & 近似为 0 & 近似为 0 & 运行期 & 文献范围 \\
+光伏 & 近似为 0 & 近似为 0 & 运行期 & 文献范围 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox[c][4.0cm][c]{0.84\textwidth}{\centering
+\textbf{图 3 位置：水预算瀑布图}\\[2mm]
+河流流量 \(-\) 生态保留 \(-\) 其他取水 \(-\) 政策/压力上限\\
+\(\rightarrow\) 项目可用流量 \(\rightarrow P_W\)}}
+\caption{本地水预算与 \(P_W\)（占位）}
+\label{fig:water}
+\end{figure}
+
+\section{土地子模型}
+\label{sec:land}
+
+\subsection{场址筛选与双边界}
+
+集中式园区以同一连续可批复地块为空间边界，不采用固定 10 km 半径作为普适定义。对候选地块，先按规划禁建、地形灾害、生态保护区和必要缓冲距离筛选，得到场址总有效用地 \(A_{\mathrm{eff}}\)。可能使场址不适合建设的地质灾害、洪泛区和生态敏感区，在选址阶段即予排除。
+
+土地核算采用双边界。记发电及专属配套用地占场址总有效用地的份额为 \(\kappa\)，则园区 IT 可用地为
+\begin{equation}
+A_{\mathrm{site}}=A_{\mathrm{eff}}(1-\kappa).
+\tag{12}
+\end{equation}
+\(A_{\mathrm{site}}\) 只计 IT 机房、园区内变配电、冷却设施、道路、安全间距和必要预留，不含发电厂；异地发电用地 \(A_{\mathrm{gen}}\) 单独核算。这样处理有两个原因：一是题面要求区分数据中心本体与配套电力基础设施；二是避免土地强度与供电方案循环定义。白板与讨论中的土地分配比例 \(k\) 在正文记作 \(\kappa\)，以免与设施功率倍率 \(k\) 冲突。
+
+特别地，本文将边际用地强度 \(a_{\mathrm{site}}\) 定义为 \(A_{\mathrm{site}}\) 的边际用地强度，即“园区本体 + 园区内供配电/冷却设施”的用地强度，不含发电厂。若采用自建电源，发电用地作为独立约束进入比较；若园区从公共电网购电，则没有本地发电用地。这样，\(a_{\mathrm{site}}\) 不会因为改变电源方案而同时改变，土地上限与电力方案得以解耦。
+
+对多数接入公共电网的园区（包括我国常见的并网供电模式），\(\kappa=0\)（即 \(A_{\mathrm{gen}}=0\)）；自建电源只在有明确项目时作为独立约束，此时 \(\kappa>0\)。若把发电厂用地也放进 \(a_{\mathrm{site}}\)，改变供电方案会同时改变 \(a_{\mathrm{site}}\) 和 \(k\)，土地上限与电力上限就无法独立比较。上述处理是缺少园区详细总平面图时的近似；若已有完整设计，可进一步把 \(A_{\mathrm{site}}\) 拆成 IT、变电、冷却、道路等分项。
+
+\subsection{线性需地关系}
+
+在评估容量区间内，假设机柜功率密度、建筑层数、冷却方式和供配电配置保持相近，则园区 IT 需地可用 IT 容量的一次函数近似：
+\begin{equation}
+A_{\mathrm{req}}(P)=A_0^{\mathrm{IT}}+a_{\mathrm{site}}P,\qquad P>0,
+\tag{13}
+\end{equation}
+其中 \(A_0^{\mathrm{IT}}\) 为道路、管理区等 IT 侧固定用地，\(a_{\mathrm{site}}\) 为边际用地强度（ha/MW IT）。给定 IT 可用面积 \(A_{\mathrm{site}}\)，土地上限为
+\begin{equation}
+P_L=\frac{A_{\mathrm{site}}-A_0^{\mathrm{IT}}}{a_{\mathrm{site}}},\qquad A_{\mathrm{site}}>A_0^{\mathrm{IT}}.
+\tag{14}
+\end{equation}
+
+若扩建跨越新增变电站、改变建筑层数等明显设计节点，则应分段更换系数，而不是继续使用同一条直线。\(a_{\mathrm{site}}\) 对建筑/机柜密度、层数、冷却和变电布局很敏感，现有园区样本可能相差一个数量级，因此主结果应给出范围并做敏感性，而不是只报一个点值。
+
+\(a_{\mathrm{site}}\) 的标定以已建成园区的设计和排布为参照，而不是从芯片/机架级重新做布局。这样既保留了“每 MW IT 需要多少园区用地”的可比性，又不必在正文展开机房内部的详细建筑模型。
+
+若缺少园区固定用地数据，可令 \(A_0^{\mathrm{IT}}=0\)，得到
+\begin{equation}
+P_L=\frac{A_{\mathrm{site}}}{a_{\mathrm{site}}}
+=\frac{A_{\mathrm{eff}}(1-\kappa)}{a_{\mathrm{site}}}.
+\tag{15}
+\end{equation}
+这正是白板上的简化式。它忽略道路、管理区等固定用地，是土地容量的乐观上界，需在结果中明确标注。若已有园区数据把 \(A_0\) 定义为含发电设施的固定用地，不能直接把该 \(A_0\) 从 \(A_{\mathrm{site}}\) 中再减一次；应先拆出 IT 侧固定用地 \(A_0^{\mathrm{IT}}\)，或采用式（15）的简化式。
+
+\subsection{技术比较口径}
+
+比较煤、气、风、光、核等技术的用地时，必须区分 direct footprint 与 total/spacing，并注明是按园区存量还是按年发电量分摊~\cite{lovering2022,nrel2009,nrel2013}。风电的 footprint 与 spacing 可相差数量级，不能只报一个口径。园区用地与异地发电用地也不能无条件相加；若两者都属于项目总足迹，应分别列示并说明是否重复计算。
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox[c][4.0cm][c]{0.84\textwidth}{\centering
+\textbf{图 4 位置：需地--容量直线}\\[2mm]
+横轴 \(P_{\mathrm{IT}}\)，纵轴 \(A_{\mathrm{req}}\)；\\
+标出 \(A_{\mathrm{eff}}\)、\(\kappa\)、\(A_{\mathrm{site}}\)、\(A_0^{\mathrm{IT}}\)、\(a_{\mathrm{site}}\)、\(P_L\)}}
+\caption{园区需地与 IT 容量（占位）}
+\label{fig:land}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{土地强度范围（占位，待填）}
+\label{tab:land}
+\small
+\begin{tabularx}{\textwidth}{@{}l l l l X@{}}
+\toprule
+技术 & direct/total & footprint/spacing & 强度（ha/MW 或 ha/TWh/年） & 来源 \\
+\midrule
+煤电 & total & -- & 【待填】 & Lovering 等 \\
+燃气 & total & -- & 【待填】 & Lovering 等 \\
+风电 & 两种 & footprint/spacing & 【待填】 & NREL \\
+光伏 & 两种 & -- & 【待填】 & NREL \\
+核电 & total & -- & 【待填】 & Lovering 等 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{集成与求解}
+\label{sec:integration}
+
+对每个候选配置 \(x\)，在同一设计工况下计算 \(P_E(x)\)、\(P_W(x)\)、\(P_L(x)\)，再取
+\begin{equation}
+P(x)=\min\left\{P_E(x),P_W(x),P_L(x)\right\}.
+\tag{16}
+\end{equation}
+场址上限为 \(P_{\max}=\max_{x\in\mathcal X_y}P(x)\)，其中 \(\mathcal X_y\) 为评估年份 \(y\) 时已经可投运的候选方案集合。每个方案必须使用同一场址、同一设计时段和同一服务水平；否则最小值没有意义。
+
+若水或土地约束会改变最优电源配置，则式（16）只是筛选判据，不是严格最优证明。此时应在同一组约束下联合求解，或至少说明“逐方案取 min”是上界/近似。计算流程如下：
+
+\begin{lstlisting}[basicstyle=\ttfamily\small, frame=single, columns=fullflexible]
+for each site s, assessment year y, configuration x available by y:
+    compute P_E(x), P_W(x), P_L(x) under the same design condition
+    P(x) = min(P_E, P_W, P_L)
+    record the binding constraint
+P_max(s,y) = max_x P(x)
+\end{lstlisting}
+
+每个方案保存 \(P_{\max}\)、binding constraint、对应配置和关键参数。这些输出直接供第二问的分布式网络模型使用。
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox[c][4.0cm][c]{0.84\textwidth}{\centering
+\textbf{图 5 位置：binding constraint 图}\\[2mm]
+横轴电网可用容量，纵轴水预算或有效土地面积；\\
+颜色表示电力、水或土地先触顶；标出案例场址}}
+\caption{不同场址的 binding constraint（占位）}
+\label{fig:binding}
+\end{figure}
+
+\section{案例与结果}
+\label{sec:results}
+
+\subsection{数据与口径}
+
+在给出数值结果前，先对齐题面三个参照的口径。公开数据中心时间线（Epoch AI~\cite{epoch2026}，数据快照见附录 E）显示，三者并不是同一种“MW”：
+
+\begin{table}[H]
+\centering
+\caption{题面参照规模的口径对齐}
+\label{tab:reference}
+\small
+\begin{tabularx}{\textwidth}{@{}l r l r X@{}}
+\toprule
+参照 & 报告规模 & 口径 & 对应 IT 功率 & 说明 \\
+\midrule
+Colossus 2 & 约 950 MW & 当前 IT 功率 & 946 MW & 同一时点总功率约 1,276 MW \\
+Microsoft Fairwater Wisconsin & 2,263 MW & 2028 年规划 IT 功率 & 2,263 MW & 同一时点总功率约 2,715 MW \\
+Meta Hyperion & 5 GW & 规划总电力需求 & 约 3.6--4.2 GW & 按 \(k=1.2\)--1.4 折算，不是当前 IT \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+因此，直接比较“950 MW、2,263 MW、5 GW”会混用当前/规划、IT/总功率两种口径。本文先把三者换算成可比的 IT MW，再与模型结果比较；差异的其他可能来源包括异地发电、电网升级、取水许可、实际负载率、N-1 备用和 PUE 口径。
+
+\subsection{主结果}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox[c][4.6cm][c]{0.84\textwidth}{\centering
+\textbf{图 6 位置：主结果与 binding constraint}\\[2mm]
+每个配置一组三根柱（电/水/土）+ \(P_{\max}\) 标记；\\
+横向虚线标出 950 MW、2,263 MW、5 GW 的参照}}
+\caption{不同配置下的三类上限与 \(P_{\max}\)（占位）}
+\label{fig:main}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{主结果（占位，待填）}
+\label{tab:main}
+\small
+\begin{tabularx}{\textwidth}{@{}l l c c c c l X@{}}
+\toprule
+场址 & 配置 & \(P_E\) & \(P_W\) & \(P_L\) & \(P_{\max}\) & binding & 与参照的关系 \\
+\midrule
+【待填】 & 纯电网 & -- & -- & -- & -- & -- & -- \\
+【待填】 & 电网+气 & -- & -- & -- & -- & -- & -- \\
+【待填】 & 电网+风 & -- & -- & -- & -- & -- & -- \\
+【待填】 & 电网+光储 & -- & -- & -- & -- & -- & -- \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox[c][4.2cm][c]{0.84\textwidth}{\centering
+\textbf{图 7 位置：水--土权衡}\\[2mm]
+每个点一个配置；非支配点菱形；\\
+标出“最低水”“最低土”“最低电”三个方案}}
+\caption{技术组合的水--土权衡（占位）}
+\label{fig:tradeoff}
+\end{figure}
+
+\subsection{结果解读}
+
+\noindent\textbf{【待填】} 在案例计算完成后，用 3 条 bullet 回答：
+\begin{itemize}
+\item 在哪个场址、哪个配置下，什么约束先触顶；
+\item 与 950 MW、2,263 MW、5 GW 相比，模型结果是偏高还是偏低，最可能的原因是什么；
+\item 哪个技术替换或参数变化能解除该约束（例如干冷、更多自发电、提高机柜密度）。
+\end{itemize}
+
+\subsection{敏感性}
+
+选 6--8 个会改变 binding constraint 的参数：\(k\)、\(P_{\mathrm{grid}}\)、WUE、\(S_{\max}\)、\(a_{\mathrm{site}}\)、\(A_{\mathrm{site}}\)、\(\kappa\)、\(\alpha_{\mathrm{wind}}\)、储能时长。用 tornado 图或“binding constraint 切换表”报告：
+\begin{itemize}
+\item 哪些参数只改变 \(P_{\max}\) 的大小，不改变排序；
+\item 哪些参数会使 binding constraint 从电力转为水或土地；
+\item 在什么阈值下，技术组合的排序发生翻转。
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\fbox{\parbox[c][4.0cm][c]{0.84\textwidth}{\centering
+\textbf{图 8 位置：敏感性 tornado 图}\\[2mm]
+只放前 6 个参数；全表放附录 G}}
+\caption{关键参数对 \(P_{\max}\) 与 binding constraint 的影响（占位）}
+\label{fig:sensitivity}
+\end{figure}
+
+\section{局限与结论}
+\label{sec:limits}
+
+本文是一个静态、正常运营条件下的筛选模型。它不模拟逐年扩建、设备退役、市场电价或动态规划，也不承诺 N-1 或概率可靠性；这些内容需要另设情景。土地模型采用线性近似，\(a_{\mathrm{site}}\) 对设计细节敏感；水模型采用设计工况 WUE，未展开冷却系统的逐时热力学；电力模型以接入点合同容量为基准，未做完整潮流。上述限制决定了本文结果只能用于比较场址与方案，不能替代许可、并网研究或工程初步设计。
+
+在这些边界内，本文给出的不是“世界最大数据中心有多大”的单一答案，而是“在给定场址上，哪一类资源会先限制规模、以及在什么条件下可以解除该限制”的诊断。对决策者而言，这比一个孤立的 MW 数字更有用：如果水先触顶，优先考虑干冷或替代水源；如果土地先触顶，优先提高机柜密度或从电网输入；如果电力先触顶，优先自发电、分期建设或调整评估年份。
+
+\begin{thebibliography}{99}
+\bibitem{eirgrid2019} EirGrid, SONI. \emph{All-Island Ten Year Transmission Forecast Statement 2019}. 2019.
+\bibitem{netl2025} National Energy Technology Laboratory. \emph{Cost and Performance Baseline for Fossil Energy Plants, Volume 1}. DOE/NETL-2025/5313, 2025.
+\bibitem{jones2025} Jones E R, et al. A multi-model assessment of global freshwater temperature and thermoelectric power supply under climate change. \emph{Environmental Research: Water}, 2025, 1, 025002.
+\bibitem{parzen2023} Parzen M, et al. PyPSA-Earth: A new global open energy system optimization model demonstrated in Africa. \emph{Applied Energy}, 2023, 341, 121096.
+\bibitem{atlite2021} Hofmann F, et al. atlite: A lightweight Python package for calculating renewable power potentials and time series. \emph{Journal of Open Source Software}, 2021, 6(62), 3294.
+\bibitem{doe1983} U.S. Department of Energy. \emph{Microhydropower Handbook}. 1983.
+\bibitem{goiri2013} Goiri I, et al. Parasol and GreenSwitch: Managing datacenters powered by renewable energy. \emph{ASPLOS}, 2013.
+\bibitem{itu2014} International Telecommunication Union. \emph{Best practices for green data centres}. ITU-T L.1300, 2014.
+\bibitem{macknick2012} Macknick J, et al. Operational water consumption and withdrawal factors for electricity generating technologies. \emph{Environmental Research Letters}, 2012.
+\bibitem{mytton2021} Mytton D. Data centre water consumption. \emph{npj Clean Water}, 2021, 4, 11.
+\bibitem{awares2018} Boulay A M, et al. The WULCA consensus characterization model for water scarcity footprints (AWARE). \emph{International Journal of Life Cycle Assessment}, 2018.
+\bibitem{lovering2022} Lovering J, et al. Land-use intensity of electricity production and tomorrow's energy landscape. \emph{PLOS ONE}, 2022, 17(7), e0270155.
+\bibitem{nrel2009} NREL. \emph{Wind land use}. 2009.
+\bibitem{nrel2013} NREL. \emph{Solar land use}. 2013.
+\bibitem{epoch2026} Epoch AI. \emph{AI Data Centers} database. \url{https://epoch.ai/data/ai-data-centers}.
+\end{thebibliography}
+
+\appendix
+
+\section{附录占位}
+\begin{itemize}
+\item \textbf{A 符号、单位与三条总假设：}完整符号表、单位换算，以及三条总假设与各子模型小假设的对应关系。
+\item \textbf{B 电力子模型细节：}MIC/MEC、N-1、ELCC、火电降额、风电功率曲线、水电、光储线性规划。
+\item \textbf{C 水子模型细节：}水源数据路径 A/B/C、WAM/WRAP、AWARE、单位换算、季节 WUE。
+\item \textbf{D 土地子模型细节：}GIS 筛选、\(\kappa\) 与 \(A_{\mathrm{site}}\) 的确定、\(a_{\mathrm{site}}\) 标定、direct/total、footprint/spacing。
+\item \textbf{E 参数表与来源：}全量参数、取值范围、来源与适用边界。
+\item \textbf{F 全量结果：}所有场址、所有配置的 \(P_E\)、\(P_W\)、\(P_L\)、\(P_{\max}\) 与 binding constraint。
+\item \textbf{G 敏感性分析：}单因素扫描、tornado 数据、binding constraint 切换表。
+\item \textbf{H 代码与计算流程：}计算脚本、求解器设置、复现步骤。
+\item \textbf{I AI 使用披露：}按赛制要求列出使用的 AI 工具、用途与人工核验过程。
+\end{itemize}
+
+\end{document}

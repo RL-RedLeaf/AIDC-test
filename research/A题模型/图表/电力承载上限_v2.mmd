@@ -1,0 +1,17 @@
+flowchart TD
+    site["场址资源与候选配置 x"] --> thermal["煤电或燃气 · Pⱼ = Nⱼ × pⱼⁿᵉᵗ"]
+    site --> wind["风电 · X风 = A风 × ρ风，P风 = α风 × X风"]
+    site --> hydro["适宜场址的水电 · P水 = min(X水, 0.00981 η Q H)"]
+    site --> solar["光储 · X光 = A光 × ρ光，P光储由天气与电池规格求得（附录 A）"]
+    thermal --> self["所选方案的自发电可靠容量 P自发电(x)"]
+    wind --> self
+    hydro --> self
+    solar --> self
+    grid["接入点持续可购功率 P电网"] --> sum["园区可靠总功率 P总(x) = P电网 + P自发电(x)"]
+    self --> sum
+    sum --> it["额定 IT 容量 P_E(x) = P总(x) / k(x)"]
+    it --> best["比较可行配置，取最大的 P_E(x)"]
+    classDef input fill:#e9f3fa,stroke:#54809b,color:#18384b
+    classDef result fill:#e3f3eb,stroke:#478168,color:#144431
+    class site,grid input
+    class self,it,best result

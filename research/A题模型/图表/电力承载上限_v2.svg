@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1020" height="724" viewBox="0 0 1020 724" font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif"><title>固定电网与园区自建电源的电力承载上限</title><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#526c79"/></marker></defs><rect width="100%" height="100%" fill="white"/>
+<text x="26" y="42" font-size="25" fill="#204454" font-weight="700">电力能支撑多大的 AI 数据中心？</text>
+<text x="26" y="71" font-size="15" fill="#204454" font-weight="400">固定公共电网　｜　各供电分支代表候选方案；共用储能的组合须联合校核。</text>
+<polyline points="250,274 274,274 274,129 300,129" fill="none" stroke="#526c79" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="654,129 682,129 682,274 716,274" fill="none" stroke="#526c79" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="250,274 274,274 274,227 300,227" fill="none" stroke="#526c79" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="654,227 682,227 682,274 716,274" fill="none" stroke="#526c79" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="250,274 274,274 274,325 300,325" fill="none" stroke="#526c79" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="654,325 682,325 682,274 716,274" fill="none" stroke="#526c79" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="250,274 274,274 274,423 300,423" fill="none" stroke="#526c79" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="654,423 682,423 682,274 716,274" fill="none" stroke="#526c79" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="250,553 343,553" fill="none" stroke="#526c79" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="855,316 855,483 490.5,483 490.5,511" fill="none" stroke="#526c79" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="638,553 716,553" fill="none" stroke="#526c79" stroke-width="1.8" marker-end="url(#arrow)"/>
+<polyline points="855,595 855,632" fill="none" stroke="#526c79" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="26" y="232" width="224" height="84" rx="9" fill="#e9f3fa" stroke="#54809b"/>
+<text x="138" y="261" text-anchor="middle" font-size="16" font-weight="700" fill="#1c3542">场址与候选配置 x</text>
+<text x="138" y="283" text-anchor="middle" font-size="15" font-weight="400" fill="#1c3542">配套用地、气象与可用资源</text>
+<text x="138" y="305" text-anchor="middle" font-size="12" font-weight="400" fill="#42616b">水电限具备开发条件的场址</text>
+<rect x="300" y="91" width="354" height="76" rx="9" fill="#f7f9fb" stroke="#879aa5"/>
+<text x="477" y="116" text-anchor="middle" font-size="16" font-weight="700" fill="#1c3542">煤电或燃气　·　式（2）</text>
+<text x="477" y="138" text-anchor="middle" font-size="15" font-weight="400" fill="#1c3542">Pⱼ = Nⱼ × pⱼⁿᵉᵗ</text>
+<text x="477" y="160" text-anchor="middle" font-size="12" font-weight="400" fill="#42616b">机组台数 × 单机持续净功率</text>
+<rect x="300" y="189" width="354" height="76" rx="9" fill="#f7f9fb" stroke="#879aa5"/>
+<text x="477" y="214" text-anchor="middle" font-size="16" font-weight="700" fill="#1c3542">风电　·　式（3）</text>
+<text x="477" y="236" text-anchor="middle" font-size="15" font-weight="400" fill="#1c3542">X风 = A风 × ρ风；P风 = α风 × X风</text>
+<text x="477" y="258" text-anchor="middle" font-size="12" font-weight="400" fill="#42616b">合格面积 → 装机 → 可持续功率</text>
+<rect x="300" y="287" width="354" height="76" rx="9" fill="#f7f9fb" stroke="#879aa5"/>
+<text x="477" y="312" text-anchor="middle" font-size="16" font-weight="700" fill="#1c3542">水电　·　式（4）</text>
+<text x="477" y="334" text-anchor="middle" font-size="15" font-weight="400" fill="#1c3542">P水 = min(X水, 0.00981 η Q H)</text>
+<text x="477" y="356" text-anchor="middle" font-size="12" font-weight="400" fill="#42616b">可用流量 Q 与净落差 H 决定水能</text>
+<rect x="300" y="385" width="354" height="76" rx="9" fill="#f7f9fb" stroke="#879aa5"/>
+<text x="477" y="410" text-anchor="middle" font-size="16" font-weight="700" fill="#1c3542">光伏与储能　·　式（5）</text>
+<text x="477" y="432" text-anchor="middle" font-size="15" font-weight="400" fill="#1c3542">X光 = A光 × ρ光；P光储 = f光储(…)</text>
+<text x="477" y="454" text-anchor="middle" font-size="12" font-weight="400" fill="#42616b">输入天气、电池功率与电量；见附录 A</text>
+<rect x="716" y="232" width="278" height="84" rx="9" fill="#e3f3eb" stroke="#478168"/>
+<text x="855" y="261" text-anchor="middle" font-size="16" font-weight="700" fill="#1c3542">方案 x 的自发电可靠容量</text>
+<text x="855" y="283" text-anchor="middle" font-size="15" font-weight="400" fill="#1c3542">P自发电(x)  ·  MW</text>
+<text x="855" y="305" text-anchor="middle" font-size="12" font-weight="400" fill="#42616b">同一考察期内可持续补充的净功率</text>
+<rect x="26" y="511" width="224" height="84" rx="9" fill="#e9f3fa" stroke="#54809b"/>
+<text x="138" y="540" text-anchor="middle" font-size="16" font-weight="700" fill="#1c3542">固定公共电网</text>
+<text x="138" y="562" text-anchor="middle" font-size="15" font-weight="400" fill="#1c3542">P电网  ·  MW</text>
+<text x="138" y="584" text-anchor="middle" font-size="12" font-weight="400" fill="#42616b">接入点正常运行时可持续购电</text>
+<rect x="343" y="511" width="295" height="84" rx="9" fill="#fff3d9" stroke="#a98236"/>
+<text x="490.5" y="540" text-anchor="middle" font-size="16" font-weight="700" fill="#1c3542">园区可靠总功率　·　式（1）</text>
+<text x="490.5" y="562" text-anchor="middle" font-size="15" font-weight="400" fill="#1c3542">P总(x) = P电网 + P自发电(x)</text>
+<text x="490.5" y="584" text-anchor="middle" font-size="12" font-weight="400" fill="#42616b">两路功率须能同时送达</text>
+<rect x="716" y="511" width="278" height="84" rx="9" fill="#e3f3eb" stroke="#478168"/>
+<text x="855" y="540" text-anchor="middle" font-size="16" font-weight="700" fill="#1c3542">额定 IT 容量　·　式（6）</text>
+<text x="855" y="562" text-anchor="middle" font-size="15" font-weight="400" fill="#1c3542">P_E(x) = P总(x) / k(x)</text>
+<text x="855" y="584" text-anchor="middle" font-size="12" font-weight="400" fill="#42616b">k 为满载设施总功率与 IT 功率之比</text>
+<rect x="716" y="632" width="278" height="56" rx="9" fill="#e3f3eb" stroke="#478168"/>
+<text x="855" y="657" text-anchor="middle" font-size="16" font-weight="700" fill="#1c3542">电力分项上限</text>
+<text x="855" y="679" text-anchor="middle" font-size="15" font-weight="400" fill="#1c3542">P_E = maxₓ P_E(x)  ·  MW IT</text>
+</svg>

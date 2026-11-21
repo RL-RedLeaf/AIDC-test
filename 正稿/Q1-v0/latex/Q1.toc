@@ -1,0 +1,35 @@
+\contentsline {section}{\numberline {1}问题与判据}{3}{section.1}%
+\contentsline {section}{\numberline {2}模型假设}{3}{section.2}%
+\contentsline {section}{\numberline {3}电力子模型}{4}{section.3}%
+\contentsline {subsection}{\numberline {3.1}电网接入}{4}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}自建电源}{4}{subsection.3.2}%
+\contentsline {paragraph}{火电。}{4}{section*.3}%
+\contentsline {paragraph}{风电。}{4}{section*.5}%
+\contentsline {paragraph}{水电。}{5}{section*.7}%
+\contentsline {paragraph}{光伏与储能。}{5}{section*.9}%
+\contentsline {subsection}{\numberline {3.3}从设施功率到 IT 功率}{5}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}建设工期与可再生波动性}{5}{subsection.3.4}%
+\contentsline {section}{\numberline {4}水子模型}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}三个水量上限}{6}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}WUE 换算与取水/耗水口径}{6}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}发电侧水耗与技术差异}{7}{subsection.4.3}%
+\contentsline {section}{\numberline {5}土地子模型}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.1}场址筛选与双边界}{7}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}线性需地关系}{8}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}技术比较口径}{8}{subsection.5.3}%
+\contentsline {section}{\numberline {6}集成与求解}{9}{section.6}%
+\contentsline {section}{\numberline {7}案例与结果}{10}{section.7}%
+\contentsline {subsection}{\numberline {7.1}数据与口径}{10}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}主结果}{10}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}结果解读}{11}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}敏感性}{11}{subsection.7.4}%
+\contentsline {section}{\numberline {8}局限与结论}{12}{section.8}%
+\contentsline {section}{\numberline {A}符号、单位与三条总假设}{13}{appendix.A}%
+\contentsline {section}{\numberline {B}电力子模型细节}{13}{appendix.B}%
+\contentsline {section}{\numberline {C}水子模型细节}{13}{appendix.C}%
+\contentsline {section}{\numberline {D}土地子模型细节}{13}{appendix.D}%
+\contentsline {section}{\numberline {E}参数表与来源}{13}{appendix.E}%
+\contentsline {section}{\numberline {F}全量结果}{13}{appendix.F}%
+\contentsline {section}{\numberline {G}敏感性分析}{13}{appendix.G}%
+\contentsline {section}{\numberline {H}代码与计算流程}{13}{appendix.H}%
+\contentsline {section}{\numberline {I}AI 使用披露}{14}{appendix.I}%
