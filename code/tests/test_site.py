@@ -78,6 +78,16 @@ def test_q1_rejects_unknown_type(site):
         assess_site(site)
 
 
+def test_removed_fields_are_not_silently_ignored(site):
+    site["C_PCC_mw"] = 150
+    with pytest.raises(ValidationError, match="C_PCC_mw"):
+        assess_site(site)
+    del site["C_PCC_mw"]
+    site["land"]["generation_share"] = 0.1
+    with pytest.raises(ValidationError, match="generation_share"):
+        assess_site(site)
+
+
 def test_q1_combined_battery(site):
     site["scenarios"] = [{
         "name": "风光共用电池",

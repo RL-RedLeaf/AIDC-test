@@ -550,6 +550,9 @@ def water_budget(water):
 
 def land_capacity(land):
     """权威稿土地式：P_land=(A_eff-A_0)/a_site。"""
+    allowed = {"effective_ha", "fixed_it_ha", "ha_per_mw_it"}
+    if unknown := set(land) - allowed:
+        raise ValidationError(f"land 含权威稿未使用字段：{', '.join(sorted(unknown))}")
     area = land.get("effective_ha")
     fixed = land.get("fixed_it_ha", 0)
     intensity = land.get("ha_per_mw_it")
@@ -578,6 +581,9 @@ def _resource_row(data, spec, grid, budget):
     kind_value = spec.get("type")
     if not isinstance(kind_value, str):
         raise ValidationError("每套配置需要 type。")
+    for field in ("C_PCC_mw", "generation_share"):
+        if field in spec:
+            raise ValidationError(f"权威稿 Q1 不使用字段 {field}，请删除后重算。")
     kind = kind_value.strip().lower()
     if kind not in Q1_TYPES:
         raise ValidationError(
@@ -609,6 +615,9 @@ def _resource_row(data, spec, grid, budget):
 
 
 def assess_site(data):
+    for field in ("C_PCC_mw", "sensitivity"):
+        if field in data:
+            raise ValidationError(f"权威稿 Q1 不使用字段 {field}，请删除后重算。")
     for key in ("site", "period_note", "service_level"):
         if not isinstance(data.get(key), str) or not data[key].strip():
             raise ValidationError(f"场址评估需填写 {key}。")

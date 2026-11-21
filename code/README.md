@@ -337,6 +337,7 @@ scenarios:
 | 光伏没有 `net_output_mw` 或 `supply_ratios` | 报错。补充同期出力序列。 |
 | 并网风电只写 `alpha` | 报错。并网场景需提供同期 `net_output_mw`。 |
 | `online_year` 晚于 `assessment_year` | 不报错，方案进入 `excluded`。 |
+| 旧版 `C_PCC_mw`、`generation_share`、`period_budget` 或 `sensitivity` | 报错。这些字段不属于当前权威稿口径，删除后重算。 |
 
 ## JSON 输出详解
 
