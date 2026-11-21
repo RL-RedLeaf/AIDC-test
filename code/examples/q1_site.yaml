@@ -14,6 +14,11 @@ water:
   stress_fraction: 0.50
   policy_m3_h: 180
   wue_l_per_kwh_it: 1.50
+  generation_water_l_per_kwh:
+    coal: 2.6
+    gas: 0.78
+    wind: 0
+    solar: 0
 land:
   effective_ha: 160
   fixed_it_ha: 10
@@ -41,4 +46,5 @@ scenarios:
     unit_net_mw: 60
     gas_supply_adequate: true
     wue_l_per_kwh_it: 0.75
+    generation_water_l_per_kwh: 0.0076
   - {name: 后续煤电, type: coal, online_year: 2030, units: 2, unit_net_mw: 80}

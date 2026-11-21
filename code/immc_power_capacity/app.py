@@ -161,7 +161,9 @@ def _print(report, say=print):
             if row["P_W_mw_it"] is None:
                 say("  水上限 P_W = 无现场用水需求")
             else:
-                say(f"  水上限 P_W = {row['P_W_mw_it']:.6g} MW IT（Q_max / WUE）")
+                say(f"  水上限 P_W = {row['P_W_mw_it']:.6g} MW IT（Q_net / WUE）")
+                say(f"    Q_gen = {row['generation_water_m3_h']:.6g} m³/h，"
+                    f"Q_net = {row['Q_net_m3_h']:.6g} m³/h")
             say(f"  土地上限 P_L = {row['P_L_mw_it']:.6g} MW IT")
             say(f"  联合容量 P = {row['P_mw_it']:.6g} MW IT；触顶约束：{'、'.join(row['binding'])}")
             say("")

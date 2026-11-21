@@ -191,7 +191,7 @@ YAML 字段名是程序接口，正稿符号用于论文和结果解释；两者
 | `P_grid_mw` | \(P_{\mathrm{grid}}\) | 与 MVA 二选一 | MW | 接入点可持续交付的净有功。 |
 | `P_grid_mva`、`power_factor` | \(S_{\mathrm{grid}},\cos\varphi\) | 与 MW 二选一 | MVA、无量纲 | 按 \(P_{\mathrm{grid}}=S_{\mathrm{grid}}\cos\varphi\) 换算，结果标为初筛上界。 |
 | `k_factor` | \(k(x)\) | 必填 | 无量纲，\(\ge 1\) | 设计满载设施总功率除以同一工况 IT 功率。方案内可覆盖。 |
-| `water` | \(Q_{\max},WUE\) | 必填 | 对象 | 水量上限和同口径 WUE。 |
+| `water` | \(Q_{\max},WUE,Q_{\mathrm{发电耗水}}\) | 必填 | 对象 | 水量上限、同口径 WUE 和自发电耗水系数。 |
 | `land` | \(A_{\mathrm{eff}},A_0^{\mathrm{IT}},a_{\mathrm{site}}\) | 必填 | 对象 | 有效用地和园区 IT 侧边际用地关系。 |
 | `scenarios` | \(x\in\mathcal X\) | 必填 | 非空列表 | 至少一套供电与冷却配置，每项必须有 `name` 和 `type`。 |
 
@@ -204,14 +204,19 @@ YAML 字段名是程序接口，正稿符号用于论文和结果解释；两者
 | 字段 | 正稿符号 | 是否必填 | 单位 | 说明 |
 |---|---|---|---|---|
 | `basis` | — | 必填 | 枚举 | `consumption`（耗水）或 `withdrawal`（取水）。 |
-| `wue_l_per_kwh_it` | \(WUE\) | 必填 | L/kWh IT | 可按方案覆盖。填 0 表示现场没有该类用水需求，JSON 的 \(P_W\) 为 `null`。 |
+| `wue_l_per_kwh_it` | \(WUE\) | 直接 WUE 时必填 | L/kWh IT | 可按方案覆盖。填 0 表示现场没有该类用水需求，JSON 的 \(P_W\) 为 `null`。 |
 | `source_m3_h` | \(Q_{\mathrm{source}}\) | 至少一项水量上限 | m³/h | 水源扣除生态保留和既有取水后的新增可用上限。 |
 | `stress_m3_h` | \(Q_{\mathrm{stress}}\) | 至少一项水量上限 | m³/h | 按本地水压力阈值允许的新增取水上限。 |
 | `policy_m3_h` | \(Q_{\mathrm{policy}}\) | 至少一项水量上限 | m³/h | 许可、合同或政策允许的上限。 |
 | `river_m3_h`、`eco_m3_h`、`other_m3_h` | \(Q_{\mathrm{river}},Q_{\mathrm{eco}},Q_{\mathrm{other}}\) | 可选 | m³/h | 仅用于按水模型的水源余量公式推算 \(Q_{\mathrm{source}}\)，三项需一起提供。 |
 | `stress_fraction` | \(S_{\max}\) | 可选 | [0,1] | 仅用于按水模型的压力阈值公式推算 \(Q_{\mathrm{stress}}\)。 |
+| `wue_summer_l_per_kwh_it`、`wue_winter_l_per_kwh_it` | \(WUE_{\mathrm{夏}},WUE_{\mathrm{冬}}\) | 季节 WUE 时必填 | L/kWh IT | 与夏季、冬季运行小时数一起按小时加权。 |
+| `summer_hours`、`winter_hours` | \(t_{\mathrm{夏}},t_{\mathrm{冬}}\) | 季节 WUE 时必填 | h | 两个代表时段的运行时长。 |
+| `generation_water_l_per_kwh` | \(c_{\mathrm{煤}},c_{\mathrm{气}},c_{\mathrm{风}},c_{\mathrm{光}}\) | 可选 | L/kWh | 对象，可填 `coal`、`gas`、`wind`、`solar` 的运行期耗水系数。 |
 
 至少填写一个独立水量上限。没有资料的项会出现在 JSON 的 `omitted` 中，不能把缺失项当成无穷大。
+
+`source_m3_h` 也可以直接填入流域部门发布的剩余可分配水量，或供水单位对项目确认的新增可交付量；此时不要再同时用河流、生态和其他取水字段重复扣减。
 
 水源简化估计为：
 
@@ -224,6 +229,34 @@ Q_{\mathrm{source}}=\max\{0,Q_{\mathrm{river}}-Q_{\mathrm{eco}}-Q_{\mathrm{other
 \[
 Q_{\mathrm{stress}}=\max\{0,S_{\max}(Q_{\mathrm{river}}-Q_{\mathrm{eco}})-Q_{\mathrm{other}}\}.
 \]
+
+若提供夏、冬两季的 WUE，程序按权威稿的时长加权式计算：
+
+\[
+WUE_{\mathrm{全年}}
+=\frac{t_{\mathrm{夏}}WUE_{\mathrm{夏}}+t_{\mathrm{冬}}WUE_{\mathrm{冬}}}
+{t_{\mathrm{夏}}+t_{\mathrm{冬}}}.
+\]
+
+自发电耗水流量为：
+
+\[
+Q_{\mathrm{发电耗水}}=P_{\mathrm{煤}}c_{\mathrm{煤}}
++P_{\mathrm{气}}c_{\mathrm{气}}
++P_{\mathrm{风}}c_{\mathrm{风}}
++P_{\mathrm{光}}c_{\mathrm{光}}.
+\]
+
+这里功率用 MW、系数用 L/kWh 时，计算结果的数值直接对应 m³/h。程序在当前方案内先计算
+\(Q_{\mathrm{DC,max}}\)，再令
+
+\[
+Q_{\mathrm{net}}=\max\{0,Q_{\mathrm{DC,max}}-Q_{\mathrm{发电耗水}}\},
+\qquad
+P_W=\frac{Q_{\mathrm{net}}}{WUE}.
+\]
+
+当前实现用方案设计工况下的可靠自发电功率 `self_generation_mw` 作为 \(P_i\)。如果后续有完整的逐时发电曲线，应将 \(P_i\) 的时间序列代入同一耗水公式，而不是只用单点可靠容量。
 
 ### `land` 字段
 
@@ -252,6 +285,7 @@ P_L=\frac{A_{\mathrm{eff}}-A_0^{\mathrm{IT}}}{a_{\mathrm{site}}}.
 | `online_year` | — | 必填 | 方案投运年份；大于评估年份 \(y\) 时进入 `excluded`。 |
 | `k_factor` | \(k(x)\) | 可选 | 覆盖该方案的设施倍率。 |
 | `wue_l_per_kwh_it` | \(WUE(x)\) | 可选 | 覆盖该方案的现场 WUE。 |
+| `generation_water_l_per_kwh` | \(c_i(x)\) | 可选 | 覆盖该方案自发电耗水系数，L/kWh。 |
 
 各类型的专属字段：
 
@@ -386,6 +420,8 @@ python code/run.py code/examples/q1_site.yaml --json code/examples/q1_site_resul
 |---|---|---|---|
 | `limits_m3_h` | \(Q_{\mathrm{source}},Q_{\mathrm{stress}},Q_{\mathrm{policy}}\) | m³/h | 实际参与最小值的各项独立上限。 |
 | `Q_max_m3_h` | \(Q_{\max}\) | m³/h | 各项上限的最小值。 |
+| `wue_l_per_kwh_it` | \(WUE\) | L/kWh IT | 直接值或按季节运行时长加权后的 WUE。 |
+| `generation_water_l_per_kwh` | \(c_i\) | L/kWh | 该场址可用的自发电耗水系数。 |
 | `omitted` | — | 字符串数组 | 没有提供的独立上限项。 |
 
 ### 单方案结果
@@ -399,6 +435,8 @@ python code/run.py code/examples/q1_site.yaml --json code/examples/q1_site_resul
 | `P_L_mw_it` | MW IT | 土地子模型上限。 |
 | `P_mw_it` | MW IT | \(\min(P_E,P_W,P_L)\)。 |
 | `binding` | 字符串数组 | 达到最小值的约束，多个值表示并列瓶颈。 |
+| `generation_water_m3_h` | m³/h | 该方案自发电耗水流量 \(Q_{\mathrm{发电耗水}}\)。 |
+| `Q_net_m3_h` | m³/h | 扣除发电耗水后的净可用流量 \(Q_{\mathrm{net}}\)。 |
 
 `breakdown` 保存电力链中间量：
 

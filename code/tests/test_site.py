@@ -26,6 +26,10 @@ def test_demo(tmp_path):
     assert report["excluded"][0]["online_year"] == 2030
     assert [row["binding"] for row in report["scenarios"]] == [["电力"], ["电力"], ["水"], ["电力"]]
     assert report["scenarios"][-1]["breakdown"]["facility_mw"] == 168
+    wet_gas = report["scenarios"][2]
+    assert wet_gas["generation_water_m3_h"] == pytest.approx(46.8)
+    assert wet_gas["Q_net_m3_h"] == pytest.approx(103.2)
+    assert wet_gas["P_W_mw_it"] == pytest.approx(68.8)
     assert report["water"]["limits_m3_h"] == {"source": 400, "stress": 150, "policy": 180}
 
 
@@ -35,6 +39,18 @@ def test_minimal_config():
     assert report["P_max_mw_it"] == 100
     assert report["scenarios"][0]["P_W_mw_it"] == 120
     assert report["scenarios"][0]["P_L_mw_it"] == 160
+
+
+def test_seasonal_wue_weighting():
+    water = {
+        "basis": "withdrawal",
+        "source_m3_h": 100,
+        "wue_summer_l_per_kwh_it": 2,
+        "wue_winter_l_per_kwh_it": 1,
+        "summer_hours": 6,
+        "winter_hours": 6,
+    }
+    assert water_budget(water)["wue_l_per_kwh_it"] == pytest.approx(1.5)
 
 
 def test_grid_conversion_and_tied_winners(site):

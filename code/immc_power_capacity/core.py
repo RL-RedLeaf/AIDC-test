@@ -510,15 +510,47 @@ def _solar_result(spec, grid_value, k_value):
 Q1_TYPES = frozenset({"grid", "coal", "gas", "wind", "hydro", "solar", "combined_battery"})
 
 
+def _resolve_wue(water):
+    direct = water.get("wue_l_per_kwh_it")
+    seasonal_keys = (
+        "wue_summer_l_per_kwh_it",
+        "wue_winter_l_per_kwh_it",
+        "summer_hours",
+        "winter_hours",
+    )
+    provided = [key for key in seasonal_keys if key in water]
+    if direct is not None and provided:
+        raise ValidationError("WUE 应使用直接值或季节加权值中的一种。")
+    if direct is not None:
+        _nonnegative("wue_l_per_kwh_it", direct)
+        return direct
+    if len(provided) != len(seasonal_keys):
+        raise ValidationError("季节 WUE 需要同时提供夏季/冬季 WUE 与运行小时数。")
+    for key in seasonal_keys[:2]:
+        _nonnegative(key, water[key])
+    for key in seasonal_keys[2:]:
+        _positive(key, water[key])
+    total_hours = water["summer_hours"] + water["winter_hours"]
+    return (
+        water["summer_hours"] * water["wue_summer_l_per_kwh_it"]
+        + water["winter_hours"] * water["wue_winter_l_per_kwh_it"]
+    ) / total_hours
+
+
 def water_budget(water):
-    """式 (8)–(10)，流量统一为 m³/h。"""
+    """水资源模型，流量统一为 m³/h；WUE 为 L/kWh IT。"""
     basis = water.get("basis")
     if basis not in ("withdrawal", "consumption"):
         raise ValidationError("water.basis 应为 withdrawal（取水）或 consumption（耗水）。")
-    allowed = {"basis", "source_m3_h", "stress_m3_h", "policy_m3_h", "river_m3_h",
-               "eco_m3_h", "other_m3_h", "stress_fraction", "wue_l_per_kwh_it"}
+    allowed = {
+        "basis", "source_m3_h", "stress_m3_h", "policy_m3_h", "river_m3_h",
+        "eco_m3_h", "other_m3_h", "stress_fraction", "wue_l_per_kwh_it",
+        "wue_summer_l_per_kwh_it", "wue_winter_l_per_kwh_it",
+        "summer_hours", "winter_hours", "generation_water_l_per_kwh",
+    }
     if unknown := water.keys() - allowed:
         raise ValidationError(f"water 含未识别字段：{', '.join(map(str, unknown))}")
+    wue = _resolve_wue(water)
     limits = {}
     for key in ("source", "stress", "policy"):
         field = f"{key}_m3_h"
@@ -542,8 +574,21 @@ def water_budget(water):
             limits["stress"] = max(0.0, water["stress_fraction"] * available - water["other_m3_h"])
     if not limits:
         raise ValidationError("水量资料不足，source、stress、policy 至少需一个可用上限。")
+    coefficients = water.get("generation_water_l_per_kwh", {})
+    if not isinstance(coefficients, dict):
+        raise ValidationError("generation_water_l_per_kwh 必须是对象。")
+    allowed_coefficients = {"coal", "gas", "wind", "solar", "combined_battery"}
+    unknown_coefficients = set(coefficients) - allowed_coefficients
+    if unknown_coefficients:
+        raise ValidationError(
+            f"generation_water_l_per_kwh 含未知电源：{', '.join(sorted(unknown_coefficients))}"
+        )
+    for name, value in coefficients.items():
+        _nonnegative(f"generation_water_l_per_kwh.{name}", value)
     return {
         "basis": basis, "limits_m3_h": limits, "Q_max_m3_h": min(limits.values()),
+        "wue_l_per_kwh_it": wue,
+        "generation_water_l_per_kwh": coefficients,
         "omitted": [key for key in ("source", "stress", "policy") if key not in limits],
     }
 
@@ -599,9 +644,16 @@ def _resource_row(data, spec, grid, budget):
     if kind == "wind":
         row["method"]["capacity_basis"] = "恒定可交付电网与风电的逐时平衡" if grid else "孤立恒载最低出力"
 
-    wue = spec.get("wue_l_per_kwh_it", data["water"].get("wue_l_per_kwh_it"))
+    wue = spec.get("wue_l_per_kwh_it", budget["wue_l_per_kwh_it"])
     _nonnegative("wue_l_per_kwh_it", wue)
-    water_limit = budget["Q_max_m3_h"] / wue if wue > 0 else None
+    generation_water_coefficient = spec.get(
+        "generation_water_l_per_kwh",
+        budget["generation_water_l_per_kwh"].get(kind, 0.0),
+    )
+    _nonnegative("generation_water_l_per_kwh", generation_water_coefficient)
+    generation_water = breakdown["self_generation_mw"] * generation_water_coefficient
+    net_water = max(0.0, budget["Q_max_m3_h"] - generation_water)
+    water_limit = net_water / wue if wue > 0 else None
     land = land_capacity(data["land"])
     limits = {"电力": electric, "土地": land["P_L_mw_it"]}
     if water_limit is not None:
@@ -609,6 +661,7 @@ def _resource_row(data, spec, grid, budget):
     capacity = min(limits.values())
     row.update(name=spec["name"], online_year=spec["online_year"], land=land,
                wue_l_per_kwh_it=wue, P_E_mw_it=electric, P_W_mw_it=water_limit,
+               generation_water_m3_h=generation_water, Q_net_m3_h=net_water,
                P_L_mw_it=land["P_L_mw_it"], P_mw_it=capacity,
                binding=[key for key, value in limits.items() if isclose(value, capacity, abs_tol=1e-9)])
     return row
