@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.6)  21 NOV 2026 12:06
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.6)  21 NOV 2026 12:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1175,29 +1175,7 @@ LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
 (Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 25.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 25.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 43.
-
-
-(d:/Program Files/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 43.
-
-
-(d:/Program Files/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 43
-.
-
-(d:/Program Files/texlive/2026/texmf-dist/tex/latex/jknapltx/ursfs.fd
-File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-)
-
-LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <10.53937> not available
-(Font)              size <10.95> substituted on input line 43.
-
-[1
+ [1
 
 ]
 
@@ -1223,11 +1201,32 @@ Package fontspec Info:
 (fontspec)             - 'bold' (b/n) with NFSS spec.:
 (fontspec)             <->"[FandolHei-Bold.otf]/OT:script=hani;language=dflt;"
 
- (./Q1.toc [1])
+ (./Q1.toc
+LaTeX Font Info:    Trying to load font information for U+msa on input line 4.
+
+(d:/Program Files/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 4.
+
+(d:/Program Files/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 4.
+
+
+(d:/Program Files/texlive/2026/texmf-dist/tex/latex/jknapltx/ursfs.fd
+File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
+)
+
+LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <10.53937> not available
+(Font)              size <10.95> substituted on input line 4.
+
+)
 \tf@toc=\write5
 \openout5 = `Q1.toc'.
 
- [2] [3] [4] [5] [6] [7] [8]
+ [1] [2] [3] [4] [5] [6] [7]
 
 Package fontspec Info: 
 (fontspec)             Script 'CJK' not explicitly supported within font
@@ -1248,17 +1247,7 @@ Package fontspec Info:
 (fontspec)             <->"[FandolFang-Regular.otf]/OT:script=hani;language=dfl
 t;"
 
- [9]
-Underfull \hbox (badness 10000) in paragraph at lines 361--361
-[]|\TU/FandolSong-Regular(0)/m/n/9.03374 同 一 时 点 总 功 率 约
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 361--361
-[]|\TU/FandolSong-Regular(0)/m/n/9.03374 同 一 时 点 总 功 率 约
- []
-
-[10] [11] [12] [13] [14]
+ [8] [9] [10] [11] [12]
 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./Q1.aux)
@@ -1271,19 +1260,16 @@ L3 programming layer <2022/07/14>
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.41063pt have occurred.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package rerunfilecheck Info: File `Q1.out' has not changed.
-(rerunfilecheck)             Checksum: 37E624D60986D4632A357DBBF5DFA0E8;3088.
+(rerunfilecheck)             Checksum: E59481213231AC8265EB7F17CF02C52F;2376.
  ) 
 Here is how much of TeX's memory you used:
- 20106 strings out of 468168
- 425813 string characters out of 5430043
- 978193 words of memory out of 5000000
- 48413 multiletter control sequences out of 15000+600000
+ 20032 strings out of 468168
+ 420013 string characters out of 5430043
+ 987329 words of memory out of 5000000
+ 48339 multiletter control sequences out of 15000+600000
  645651 words of font info for 138 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  93i,13n,112p,539b,1057s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on Q1.pdf (15 pages).
+Output written on Q1.pdf (13 pages).

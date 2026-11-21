@@ -1,0 +1,29 @@
+model: q1
+site: Anthropic-Amazon New Carlisle
+assessment_year: 2028
+period_note: Full 32-building campus; normal-operation design period
+service_level: Continuous rated IT load; emergency generators excluded
+P_grid_mw: 2200
+k_factor: 1.20
+
+water:
+  basis: consumption
+  period_budget_m3: 68137
+  period_hours: 8760
+  wue_l_per_kwh_it: 0.004041
+
+land:
+  effective_ha: 485.6228
+  fixed_it_ha: 0
+  generation_land_ha: 0
+  ha_per_mw_it: 0.252272
+
+scenarios:
+  - name: Full campus grid supply
+    type: grid
+    online_year: 2028
+    notes: >-
+      Facility power is 2310 MW from the expansion permit and Epoch timeline.
+      The 2200 MW public figure is an upper limit on full-site grid draw.
+      Water uses a 40 gpm design draw derived from the public 18 million
+      gallon/year full-campus figure; the 1.58 MGD permit value is discharge.

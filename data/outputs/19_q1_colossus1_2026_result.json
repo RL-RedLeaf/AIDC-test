@@ -1,0 +1,140 @@
+{
+  "site": "Colossus 1 Memphis",
+  "assessment_year": 2026,
+  "period_note": "Current operating site; normal-operation design period",
+  "inputs": {
+    "model": "q1",
+    "site": "Colossus 1 Memphis",
+    "assessment_year": 2026,
+    "period_note": "Current operating site; normal-operation design period",
+    "service_level": "Continuous rated IT load; grid and operating gas turbines",
+    "P_grid_mw": 150,
+    "k_factor": 1.25,
+    "water": {
+      "basis": "withdrawal",
+      "policy_m3_h": 473.177,
+      "wue_l_per_kwh_it": 0.371,
+      "generation_water_l_per_kwh": {
+        "gas": 0.78
+      }
+    },
+    "land": {
+      "effective_ha": 87.8168,
+      "fixed_it_ha": 0,
+      "generation_land_ha": 0,
+      "ha_per_mw_it": 0.258285
+    },
+    "scenarios": [
+      {
+        "name": "Grid plus operating gas turbines",
+        "type": "gas",
+        "online_year": 2025,
+        "units": 1,
+        "unit_net_mw": 422,
+        "unit_land_ha": 0,
+        "generation_land_in_site": true,
+        "gas_supply_adequate": true,
+        "notes": "The 422 MW aggregate represents about 35 observed gas turbines. The 150 MW grid value is delivered utility power, not IT capacity. WUE is derived from the reported early 0.8 MGD actual water use at about 340 MW IT; the 3 MGD design draw is used as the water limit."
+      }
+    ]
+  },
+  "service_level": "Continuous rated IT load; grid and operating gas turbines",
+  "grid_basis": "接入点持续净有功",
+  "water": {
+    "basis": "withdrawal",
+    "limits_m3_h": {
+      "policy": 473.177
+    },
+    "Q_max_m3_h": 473.177,
+    "periods": [
+      {
+        "period": "design",
+        "limit_m3_h": 473.177,
+        "wue_l_per_kwh_it": 0.371
+      }
+    ],
+    "wue_l_per_kwh_it": 0.371,
+    "generation_water_l_per_kwh": {
+      "gas": 0.78
+    },
+    "omitted": [
+      "source",
+      "stress"
+    ]
+  },
+  "scenarios": [
+    {
+      "name": "Grid plus operating gas turbines",
+      "power_type": "gas",
+      "breakdown": {
+        "grid_mw": 150,
+        "self_generation_mw": 422,
+        "facility_mw": 572,
+        "k": 1.25,
+        "it_mw": 457.6
+      },
+      "method": {
+        "equation": "正文式(2)",
+        "units": 1,
+        "unit_net_mw": 422,
+        "fuel_heat_needed_mw": null,
+        "gas_supply": "declared adequate"
+      },
+      "online_year": 2025,
+      "land": {
+        "site_ha": 87.8168,
+        "fixed_it_ha": 0,
+        "generation_land_ha": 0,
+        "optimistic_zero_fixed": true,
+        "P_L_mw_it": 339.9996128307877,
+        "generation_land_source": "fixed"
+      },
+      "wue_l_per_kwh_it": 0.371,
+      "P_E_mw_it": 457.6,
+      "P_W_mw_it": 438.4673105497771,
+      "water_checks": [
+        {
+          "period": "design",
+          "limit_m3_h": 473.177,
+          "wue_l_per_kwh_it": 0.371,
+          "P_W_mw_it": 438.4673105497771,
+          "water_used_m3_h": 340.6394788702403
+        }
+      ],
+      "self_generation_used_mw": 274.99951603848467,
+      "generation_water_m3_h": 214.49962251001804,
+      "Q_net_m3_h": 258.67737748998195,
+      "P_L_mw_it": 339.9996128307877,
+      "P_mw_it": 339.9996128307877,
+      "generation_land_ha": 0,
+      "generation_land_source": "fixed",
+      "generation_land_required_ha": 0.0,
+      "generation_land_candidates": [
+        {
+          "generation_land_ha": 0,
+          "generation_land_required_ha": 0.0,
+          "generation_land_capacity_capped": false,
+          "P_L_mw_it": 339.9996128307877,
+          "P_mw_it": 339.9996128307877,
+          "binding": [
+            "土地"
+          ]
+        }
+      ],
+      "value_source": {
+        "P_E": "derived",
+        "P_W": "derived",
+        "P_L": "derived"
+      },
+      "binding": [
+        "土地"
+      ],
+      "generation_land_capacity_capped": false
+    }
+  ],
+  "excluded": [],
+  "P_max_mw_it": 339.9996128307877,
+  "winners": [
+    "Grid plus operating gas turbines"
+  ]
+}

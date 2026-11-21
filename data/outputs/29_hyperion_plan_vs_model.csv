@@ -1,0 +1,8 @@
+scenario,capacity_basis,input_mw,it_conversion_low,it_conversion_high,model_it_low_mw,model_it_high_mw,comparison_mw,interpretation
+Current site in 2026-11,Epoch current IT,0,1.30,1.40,0,0,0,"Under construction; no operating IT capacity is reported yet"
+First-phase Epoch projection,Epoch projected IT,1632,1.00,1.00,1632,1632,0,"This is the published reference, not a model prediction"
+First-phase grid budget,MISO spot-load request,1800,1.40,1.30,1286,1385,1632,"The normal grid case is 247-346 MW below the 1632 MW phase projection"
+First-phase facility power,Epoch projected facility power,2203,1.40,1.30,1574,1695,1632,"Using an independent 1.30-1.40 conversion closely brackets the 1632 MW estimate"
+Long-term new gas capacity,"Seven 754 MW units in Entergy testimony",5278,1.40,1.30,3770,4060,5000,"Generation-side bottom-up range; deliverability and fuel constraints are not yet proven"
+Long-term transformer nameplate,"Four 1500 MVA transformers at 0.95 power factor",5700,1.40,1.30,4071,4385,5000,"Normal-operation nameplate upper bound; not an N-1 firm capacity"
+Long-term Meta statement,Meta 5 GW campus or compute label,5000,1.40,1.30,3571,3846,5000,"If 5000 MW is facility power, IT is about 3.57-3.85 GW; if 5 GW already means IT, a different facility-power input is required"

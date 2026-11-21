@@ -1,0 +1,29 @@
+model: q1
+site: Stargate Abilene - independent public-parameter case
+assessment_year: 2026
+period_note: 2026 public-parameter estimate independent of Epoch's Abilene IT target
+service_level: Continuous rated IT load; normal operation; backup generation excluded
+P_grid_mw: 1200
+k_factor: 1.30
+
+water:
+  basis: consumption
+  period_budget_m3: 382.326590184
+  period_hours: 8760
+  wue_l_per_kwh_it: 0.0000472816369139332
+
+land:
+  effective_ha: 445.1542
+  fixed_it_ha: 0
+  generation_land_ha: 0
+  ha_per_mw_it: 0.2523
+
+scenarios:
+  - name: Public grid and closed-loop cooling
+    type: grid
+    online_year: 2026
+    notes: >-
+      Uses the public 1200 MW interconnection, 1100-acre campus, eight-building
+      annual cooling-water allowance, and a common 1.30 facility-to-IT ratio
+      rather than Abilene's Epoch-specific ratio or IT target. The land
+      coefficient is the cross-site median from unrelated comparable campuses.

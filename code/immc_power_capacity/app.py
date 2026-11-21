@@ -197,6 +197,8 @@ def _load_csv(path):
         "water_wue_l_per_kwh_it", "water_wue_summer_l_per_kwh_it",
         "water_wue_winter_l_per_kwh_it", "water_summer_hours",
         "water_winter_hours", "generation_water_coal_l_per_kwh",
+        "water_summer_limit_m3_h", "water_winter_limit_m3_h",
+        "water_period_budget_m3", "water_period_hours",
         "generation_water_gas_l_per_kwh", "generation_water_wind_l_per_kwh",
         "generation_water_solar_l_per_kwh", "generation_water_combined_battery_l_per_kwh",
         "land_effective_ha", "land_fixed_it_ha", "land_generation_land_ha",
@@ -243,6 +245,10 @@ def _load_csv(path):
         "water_wue_winter_l_per_kwh_it": "wue_winter_l_per_kwh_it",
         "water_summer_hours": "summer_hours",
         "water_winter_hours": "winter_hours",
+        "water_summer_limit_m3_h": "summer_limit_m3_h",
+        "water_winter_limit_m3_h": "winter_limit_m3_h",
+        "water_period_budget_m3": "period_budget_m3",
+        "water_period_hours": "period_hours",
     }
     water = {}
     basis = _csv_common(rows, "water_basis")
@@ -428,7 +434,8 @@ def _print(report, say=print):
         say("")
         say("水量约束")
         say(f"  口径：{basis}")
-        say(f"  Q_max = {water['Q_max_m3_h']:.6g} m³/h")
+        if water["Q_max_m3_h"] is not None:
+            say(f"  公共流量上限 Q_max = {water['Q_max_m3_h']:.6g} m³/h")
         say(f"  未纳入的水量项：{', '.join(water['omitted']) or '无'}")
         say("")
         say("候选方案")
@@ -443,11 +450,16 @@ def _print(report, say=print):
                 f"k = {power['k']:.6g}"
             )
             if row["P_W_mw_it"] is None:
-                say("  水上限 P_W = 无现场用水需求")
+                say("  水量可支持全部可用供电容量")
             else:
-                say(f"  水上限 P_W = {row['P_W_mw_it']:.6g} MW IT（Q_net / WUE）")
-                say(f"    Q_gen = {row['generation_water_m3_h']:.6g} m³/h，"
-                    f"Q_net = {row['Q_net_m3_h']:.6g} m³/h")
+                say(f"  水上限 P_W = {row['P_W_mw_it']:.6g} MW IT")
+            say(f"    联合容量下调用自发电 {row['self_generation_used_mw']:.6g} MW，"
+                f"发电用水 {row['generation_water_m3_h']:.6g} m³/h")
+            period_labels = {"design": "设计期", "summer": "夏季", "winter": "冬季",
+                             "period_total": "总量折算的期间均值"}
+            for check in row["water_checks"]:
+                say(f"    {period_labels[check['period']]}用水 {check['water_used_m3_h']:.6g}"
+                    f" / {check['limit_m3_h']:.6g} m³/h")
             say(
                 f"  土地上限 P_L = {row['P_L_mw_it']:.6g} MW IT"
                 f"（A_0 = {row['land']['fixed_it_ha']:.6g} ha，"
@@ -612,7 +624,7 @@ def _ask_water(asker):
     """询问水量口径、WUE 和至少一项独立水量上限。"""
     basis = _ask_choice(asker, "水量口径（耗水或取水；Q_max 与 WUE 必须同口径）",
                          ["consumption", "withdrawal"], "consumption")
-    wue = _ask_number(asker, "WUE（每 kWh IT 的取水/耗水量，L/kWh IT；P_W=Q_max/WUE）", 1.5, minimum=0)
+    wue = _ask_number(asker, "设计工况的现场 WUE（L/kWh IT）", 1.5, minimum=0)
     limits = {}
     while not limits:
         print("请至少提供 Q_source、Q_stress、Q_policy 中的一项，作为式(8)的独立水量上限，单位 m³/h。")
@@ -679,6 +691,9 @@ def _ask_scenario(asker, number, grid_mw, assessment_year):
         spec["generation_land_ha"] = generation_land
 
     if kind in {"coal", "gas"}:
+        coefficient = _ask_optional_number(asker, "每 kWh 净供电对应的本地发电用水（L/kWh；留空取 0）")
+        if coefficient is not None:
+            spec["generation_water_l_per_kwh"] = coefficient
         spec["units"] = _ask_number(asker, "可同时运行机组台数 N_j", 2 if kind == "coal" else 1,
                                     minimum=1, integer=True, allow_zero=False)
         spec["unit_net_mw"] = _ask_number(asker, "单机持续净功率 p_j^net（MW，已扣厂用电）",

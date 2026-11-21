@@ -1,0 +1,127 @@
+{
+  "site": "Microsoft Fairwater Atlanta",
+  "assessment_year": 2026,
+  "period_note": "Public site data as of 2026-11-21; normal-operation design period",
+  "inputs": {
+    "model": "q1",
+    "site": "Microsoft Fairwater Atlanta",
+    "assessment_year": 2026,
+    "period_note": "Public site data as of 2026-11-21; normal-operation design period",
+    "service_level": "Continuous rated IT load; backup equipment excluded",
+    "P_grid_mw": 1500,
+    "k_factor": 1.35063,
+    "water": {
+      "basis": "consumption",
+      "policy_m3_h": 1.577,
+      "wue_l_per_kwh_it": 1e-05
+    },
+    "land": {
+      "effective_ha": 248.8844,
+      "fixed_it_ha": 0,
+      "generation_land_ha": 0,
+      "ha_per_mw_it": 0.22412
+    },
+    "scenarios": [
+      {
+        "name": "Grid-only Fairwater Atlanta",
+        "type": "grid",
+        "online_year": 2025,
+        "notes": "1500 MW is the planned campus power reported by Georgia Power planning testimony as summarized by Compute Atlas. Water flow and WUE are conservative model assumptions because only a one-time fill and a qualitative almost-zero operating water statement are public."
+      }
+    ]
+  },
+  "service_level": "Continuous rated IT load; backup equipment excluded",
+  "grid_basis": "接入点持续净有功",
+  "water": {
+    "basis": "consumption",
+    "limits_m3_h": {
+      "policy": 1.577
+    },
+    "Q_max_m3_h": 1.577,
+    "periods": [
+      {
+        "period": "design",
+        "limit_m3_h": 1.577,
+        "wue_l_per_kwh_it": 1e-05
+      }
+    ],
+    "wue_l_per_kwh_it": 1e-05,
+    "generation_water_l_per_kwh": {},
+    "omitted": [
+      "source",
+      "stress"
+    ]
+  },
+  "scenarios": [
+    {
+      "name": "Grid-only Fairwater Atlanta",
+      "power_type": "grid_only",
+      "breakdown": {
+        "grid_mw": 1500,
+        "self_generation_mw": 0.0,
+        "facility_mw": 1500.0,
+        "k": 1.35063,
+        "it_mw": 1110.592834455032
+      },
+      "method": {
+        "equation": "正文式(1)、(6)",
+        "assumption": "P_self = 0，作为所有候选方案的基准。"
+      },
+      "online_year": 2025,
+      "land": {
+        "site_ha": 248.8844,
+        "fixed_it_ha": 0,
+        "generation_land_ha": 0,
+        "optimistic_zero_fixed": true,
+        "P_L_mw_it": 1110.4961627699447,
+        "generation_land_source": "fixed"
+      },
+      "wue_l_per_kwh_it": 1e-05,
+      "P_E_mw_it": 1110.592834455032,
+      "P_W_mw_it": 157699.99999999997,
+      "water_checks": [
+        {
+          "period": "design",
+          "limit_m3_h": 1.577,
+          "wue_l_per_kwh_it": 1e-05,
+          "P_W_mw_it": 157699.99999999997,
+          "water_used_m3_h": 0.011104961627699448
+        }
+      ],
+      "self_generation_used_mw": 0.0,
+      "generation_water_m3_h": 0.0,
+      "Q_net_m3_h": 1.577,
+      "P_L_mw_it": 1110.4961627699447,
+      "P_mw_it": 1110.4961627699447,
+      "generation_land_ha": 0,
+      "generation_land_source": "fixed",
+      "generation_land_required_ha": 0.0,
+      "generation_land_candidates": [
+        {
+          "generation_land_ha": 0,
+          "generation_land_required_ha": 0.0,
+          "generation_land_capacity_capped": false,
+          "P_L_mw_it": 1110.4961627699447,
+          "P_mw_it": 1110.4961627699447,
+          "binding": [
+            "土地"
+          ]
+        }
+      ],
+      "value_source": {
+        "P_E": "derived",
+        "P_W": "derived",
+        "P_L": "derived"
+      },
+      "binding": [
+        "土地"
+      ],
+      "generation_land_capacity_capped": false
+    }
+  ],
+  "excluded": [],
+  "P_max_mw_it": 1110.4961627699447,
+  "winners": [
+    "Grid-only Fairwater Atlanta"
+  ]
+}

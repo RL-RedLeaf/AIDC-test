@@ -1,0 +1,8 @@
+site_id,site_name,longitude,latitude,country,state,basin_pfaf_id,aquifer_id,bws_raw,bws_percent,bws_score,bws_category,bws_label,groundwater_decline_cm_per_year,groundwater_label,drought_raw,drought_label
+fairwater_atlanta,Microsoft Fairwater Atlanta,-84.455,33.449,United States,Georgia,732604,1414,0.1121394110836469,11.2139411083647,1.1652933984148754,1,Low - Medium (10-20%),1.0702,Insignificant Trend,0.386956793533336,Low - Medium (0.2-0.4)
+fairwater_wisconsin,Microsoft Fairwater Wisconsin,-87.902,42.721,United States,Wisconsin,725870,1280,0.3184811613933631,31.8481161393363,2.671208037573646,2,Medium - High (20-40%),4.5971,High (4-8 cm/y),0.422167146978008,Medium (0.4-0.6)
+new_carlisle,Anthropic-Amazon New Carlisle,-86.512,41.698,United States,Indiana,742829,844,0.7122676208177752,71.2267620817775,3.8324194078821785,3,High (40-80%),-0.430512,Insignificant Trend,0.516483461176794,Medium (0.4-0.6)
+meta_hyperion,Meta Hyperion,-91.491,32.444,United States,Louisiana,742224,1400,0.002752534187089,0.2752534187089,0.0,0,Low (<10%),0.602974,Low - Medium (0-2 cm/y),0.398322580430562,Low - Medium (0.2-0.4)
+stargate_abilene,Stargate Abilene,-99.784,32.500,United States,Texas,751660,1363,0.4267526263977764,42.6752626397776,3.093400032173664,3,High (40-80%),0.328266,Insignificant Trend,0.458747871851978,Medium (0.4-0.6)
+colossus_1,Colossus 1,-90.153,35.059,United States,Tennessee,742550,1400,0.003367283564431,0.3367283564431,0.0,0,Low (<10%),0.602974,Low - Medium (0-2 cm/y),0.436596669949510,Medium (0.4-0.6)
+colossus_2,Colossus 2,-90.035,34.998,United States,Tennessee,742550,1400,0.003367283564431,0.3367283564431,0.0,0,Low (<10%),0.602974,Low - Medium (0-2 cm/y),0.436596669949510,Medium (0.4-0.6)

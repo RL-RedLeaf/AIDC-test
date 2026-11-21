@@ -1,0 +1,11 @@
+technology,cooling_or_boundary,water_metric,water_median,water_min,water_max,water_unit,water_source,land_median,land_low_or_q1,land_high_or_q3,land_unit,land_scope,land_source,notes
+Coal,wet recirculating cooling tower,consumption,687,480,1100,gal/MWh,Macknick 2012 Table 2,1000,1200,,ha/TWh/year,total direct plus fuel-cycle indirect,Lovering 2022 Table 1,"Coal generic tower values exclude cooling-system-specific subcritical and supercritical variants; LUIE includes mining and transport"
+Coal,wet recirculating cooling tower,withdrawal,1005,500,1200,gal/MWh,Macknick 2012 Table 3,,,,,,,"Use withdrawal only for intake and permit screening"
+Natural gas,combined-cycle wet cooling tower,consumption,205,130,300,gal/MWh,Macknick 2012 Table 2,410,210,,ha/TWh/year,direct footprint,Lovering 2022 Table 1,"Natural gas footprint excludes large fuel-field spacing"
+Natural gas,combined-cycle wet cooling tower,withdrawal,255,150,283,gal/MWh,Macknick 2012 Table 3,1900,2800,,ha/TWh/year,direct plus gas-field spacing,Lovering 2022 Table 1,"Spacing definition materially changes the land result"
+Natural gas,combined-cycle dry cooling,consumption,2,0,4,gal/MWh,Macknick 2012 Table 2,,,,,,"Water result depends strongly on cooling choice"
+Natural gas,combined-cycle dry cooling,withdrawal,2,0,4,gal/MWh,Macknick 2012 Table 3,,,,,,"Treat as a cooling technology scenario"
+Wind,none,consumption,0,0,0,gal/MWh,Macknick 2012 Table 1,130,120,,ha/TWh/year,direct footprint,Lovering 2022 Table 1,"Wind footprint is land physically occupied by turbines and roads"
+Wind,none,consumption,0,0,0,gal/MWh,Macknick 2012 Table 1,12000,12000,,ha/TWh/year,project spacing,Lovering 2022 Table 1,"Spacing is not equivalent to permanently disturbed habitat"
+Solar PV,utility scale,consumption,1,0,5,gal/MWh,Macknick 2012 Table 1,2000,860,,ha/TWh/year,ground-mounted direct plus indirect,Lovering 2022 Table 1,"Panel washing omitted by Macknick"
+Solar PV,large utility PV capacity basis,,,0,0,gal/MWh,Macknick 2012 Table 1,8.9,7.5,9.0,acres/MWac,capacity-weighted total and direct area,NREL 2013 Table ES-1,"Central estimate is total area; direct area is 7.3 acres/MWac overall and 7.2 for large PV"

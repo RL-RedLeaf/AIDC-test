@@ -1,0 +1,127 @@
+{
+  "site": "Microsoft Fairwater Wisconsin - Epoch expansion projection",
+  "assessment_year": 2028,
+  "period_note": "Epoch 2028 projection using the revised 11-building plan",
+  "inputs": {
+    "model": "q1",
+    "site": "Microsoft Fairwater Wisconsin - Epoch expansion projection",
+    "assessment_year": 2028,
+    "period_note": "Epoch 2028 projection using the revised 11-building plan",
+    "service_level": "Continuous rated IT load; normal operation",
+    "P_grid_mw": 2715,
+    "k_factor": 1.19973,
+    "water": {
+      "basis": "consumption",
+      "period_budget_m3": 31797,
+      "period_hours": 8760,
+      "wue_l_per_kwh_it": 0.001604
+    },
+    "land": {
+      "effective_ha": 637.38,
+      "fixed_it_ha": 0,
+      "generation_land_ha": 0,
+      "ha_per_mw_it": 0.15294
+    },
+    "scenarios": [
+      {
+        "name": "Epoch 11-building projection",
+        "type": "grid",
+        "online_year": 2028,
+        "notes": "Facility power is set to Epoch's 2715 MW projection so the electricity result reproduces the 2263 MW IT projection. This is a consistency scenario, not independent evidence that 2715 MW has been granted."
+      }
+    ]
+  },
+  "service_level": "Continuous rated IT load; normal operation",
+  "grid_basis": "接入点持续净有功",
+  "water": {
+    "basis": "consumption",
+    "limits_m3_h": {},
+    "Q_max_m3_h": null,
+    "periods": [
+      {
+        "period": "period_total",
+        "limit_m3_h": 3.629794520547945,
+        "wue_l_per_kwh_it": 0.001604
+      }
+    ],
+    "wue_l_per_kwh_it": 0.001604,
+    "generation_water_l_per_kwh": {},
+    "omitted": [
+      "source",
+      "stress",
+      "policy"
+    ]
+  },
+  "scenarios": [
+    {
+      "name": "Epoch 11-building projection",
+      "power_type": "grid_only",
+      "breakdown": {
+        "grid_mw": 2715,
+        "self_generation_mw": 0.0,
+        "facility_mw": 2715.0,
+        "k": 1.19973,
+        "it_mw": 2263.0091770648396
+      },
+      "method": {
+        "equation": "正文式(1)、(6)",
+        "assumption": "P_self = 0，作为所有候选方案的基准。"
+      },
+      "online_year": 2028,
+      "land": {
+        "site_ha": 637.38,
+        "fixed_it_ha": 0,
+        "generation_land_ha": 0,
+        "optimistic_zero_fixed": true,
+        "P_L_mw_it": 4167.516673205178,
+        "generation_land_source": "fixed"
+      },
+      "wue_l_per_kwh_it": 0.001604,
+      "P_E_mw_it": 2263.0091770648396,
+      "P_W_mw_it": 2262.96416493014,
+      "water_checks": [
+        {
+          "period": "period_total",
+          "limit_m3_h": 3.629794520547945,
+          "wue_l_per_kwh_it": 0.001604,
+          "P_W_mw_it": 2262.96416493014,
+          "water_used_m3_h": 3.6297945205479447
+        }
+      ],
+      "self_generation_used_mw": 0.0,
+      "generation_water_m3_h": 0.0,
+      "Q_net_m3_h": 3.629794520547945,
+      "P_L_mw_it": 4167.516673205178,
+      "P_mw_it": 2262.96416493014,
+      "generation_land_ha": 0,
+      "generation_land_source": "fixed",
+      "generation_land_required_ha": 0.0,
+      "generation_land_candidates": [
+        {
+          "generation_land_ha": 0,
+          "generation_land_required_ha": 0.0,
+          "generation_land_capacity_capped": false,
+          "P_L_mw_it": 4167.516673205178,
+          "P_mw_it": 2262.96416493014,
+          "binding": [
+            "水"
+          ]
+        }
+      ],
+      "value_source": {
+        "P_E": "derived",
+        "P_W": "derived",
+        "P_L": "derived"
+      },
+      "binding": [
+        "水"
+      ],
+      "generation_land_capacity_capped": false
+    }
+  ],
+  "excluded": [],
+  "P_max_mw_it": 2262.96416493014,
+  "winners": [
+    "Epoch 11-building projection"
+  ]
+}

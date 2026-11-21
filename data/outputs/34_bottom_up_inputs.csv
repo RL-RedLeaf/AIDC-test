@@ -1,0 +1,9 @@
+﻿case_id,site,area_ha,grid_mw,normal_onsite_mw,annual_water_m3,water_basis,wue_low,wue_base,wue_high,actual_current_it_mw,actual_planned_it_mw,comparison_note
+fairwater_atlanta_public,Microsoft Fairwater Atlanta,248.8844,1500,0,2763.3,withdrawal,2e-05,0.0005,0.001,636,,"1500 MW is campus power, not IT; current 636 MW is compared"
+fairwater_wisconsin_public,Microsoft Fairwater Wisconsin,637.38,1000,0,31797,withdrawal,0.001,0.005,0.1,369,2263,public 1000 MW scope versus Epoch 2263 MW expansion projection
+new_carlisle_2200,Anthropic-Amazon New Carlisle,485.6228,2200,0,68137,withdrawal,0.001,0.005,0.05,1037,1925,public 2200 MW grid bound
+abilene_1200,Stargate Abilene,445.1542,1200,0,382.326590184,consumption,1e-05,5e-05,0.001,824,824,1200 MW grid; 360.5 MW backup excluded
+hyperion_phase_1800,Meta Hyperion first phase,910.54,1800,0,1892706,consumption,0.03,0.1,0.15,0,1632,MISO 1800 MW spot load; backup turbines excluded
+hyperion_expansion_5278,Meta Hyperion long-term,1294.9941,0,5278,2271247,consumption,0.03,0.052,0.15,0,,seven 754 MW utility gas units; 5 GW is a different planning label
+colossus1_572,Colossus 1,87.8168,150,422,4145104.36,withdrawal,0.7,1.0,2.0,340,340,150 MW grid plus 422 MW operating gas turbines; 3 MGD design withdrawal
+colossus2_1200,Colossus 2,40.4686,0,1200,6907979.94,withdrawal,0.7,1.0,2.0,946,1531,1200 MW permitted Southaven turbine plant; land density may not transfer to vertical campus

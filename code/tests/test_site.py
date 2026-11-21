@@ -27,9 +27,12 @@ def test_demo(tmp_path):
     assert [row["binding"] for row in report["scenarios"]] == [["电力"], ["电力"], ["水"], ["土地"]]
     assert report["scenarios"][-1]["breakdown"]["facility_mw"] == 168
     wet_gas = report["scenarios"][2]
-    assert wet_gas["generation_water_m3_h"] == pytest.approx(46.8)
-    assert wet_gas["Q_net_m3_h"] == pytest.approx(103.2)
-    assert wet_gas["P_W_mw_it"] == pytest.approx(68.8)
+    expected = (150 + 0.78 * 108) / (1.5 + 0.78 * 1.2)
+    assert wet_gas["P_mw_it"] == pytest.approx(expected)
+    assert wet_gas["self_generation_used_mw"] == pytest.approx(1.2 * expected - 108)
+    assert wet_gas["generation_water_m3_h"] == pytest.approx(150 - 1.5 * expected)
+    assert wet_gas["Q_net_m3_h"] == pytest.approx(1.5 * expected)
+    assert report["scenarios"][-1]["self_generation_used_mw"] == pytest.approx(48)
     assert report["water"]["limits_m3_h"] == {"source": 400, "stress": 150, "policy": 180}
 
 
@@ -68,8 +71,9 @@ def test_csv_input_matches_yaml_example():
         "燃气配干冷园区",
     ]
     wet_gas = report["scenarios"][2]
-    assert wet_gas["P_W_mw_it"] == pytest.approx(88.8)
-    assert wet_gas["generation_water_m3_h"] == pytest.approx(46.8)
+    expected = (180 + 0.78 * 108) / (1.5 + 0.78 * 1.2)
+    assert wet_gas["P_W_mw_it"] == pytest.approx(expected)
+    assert wet_gas["generation_water_m3_h"] == pytest.approx(180 - 1.5 * expected)
 
 
 def test_csv_can_choose_generation_land_option():
@@ -180,6 +184,34 @@ def test_seasonal_wue_weighting():
         "winter_hours": 6,
     }
     assert water_budget(water)["wue_l_per_kwh_it"] == pytest.approx(1.5)
+
+
+@pytest.mark.parametrize(("budget", "capacity"), [
+    ({"source_m3_h": 100}, 50),
+    ({"period_budget_m3": 1200}, 80),
+    ({"period_budget_m3": 1200, "source_m3_h": 100}, 50),
+    ({"summer_limit_m3_h": 160, "winter_limit_m3_h": 25}, 50),
+])
+def test_constant_load_obeys_each_water_budget(site, budget, capacity):
+    site["scenarios"] = [site["scenarios"][0]]
+    site["water"] = dict(basis="withdrawal", wue_summer_l_per_kwh_it=2,
+                         wue_winter_l_per_kwh_it=0.5, summer_hours=6, winter_hours=6, **budget)
+    row = assess_site(site)["scenarios"][0]
+    assert row["P_mw_it"] == pytest.approx(capacity)
+    assert all(check["water_used_m3_h"] <= check["limit_m3_h"] for check in row["water_checks"])
+
+
+@pytest.mark.parametrize(("budget", "capacity", "water_limit"), [
+    (0, 0, 0), (10, 10, 10), (50, 50, None), (60, 50, None),
+])
+def test_zero_cooling_wue_still_charges_for_generation(site, budget, capacity, water_limit):
+    site.update(P_grid_mw=0, k_factor=1, scenarios=[
+        dict(type="gas", name="gas", units=1, unit_net_mw=50, generation_water_l_per_kwh=1)])
+    site["water"] = dict(basis="withdrawal", wue_l_per_kwh_it=0, source_m3_h=budget)
+    row = assess_site(site)["scenarios"][0]
+    assert row["P_mw_it"] == capacity
+    assert row["P_W_mw_it"] == water_limit
+    assert row["generation_water_m3_h"] == capacity
 
 
 def test_grid_conversion_and_tied_winners(site):

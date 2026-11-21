@@ -675,6 +675,39 @@ def _resolve_wue(water):
     ) / total_hours
 
 
+def _water_periods(water, limits, mean_wue):
+    """构造恒载须同时满足的流量约束和考察期总量约束。"""
+    common_rate = min(limits.values(), default=None)
+    periods = []
+    seasonal = "wue_summer_l_per_kwh_it" in water
+    if not seasonal and any(key in water for key in ("summer_limit_m3_h", "winter_limit_m3_h")):
+        raise ValidationError("分季流量需要夏冬 WUE 和运行小时数。")
+    seasons = ("summer", "winter") if seasonal else ("design",)
+    for season in seasons:
+        rate = common_rate
+        key = f"{season}_limit_m3_h"
+        if key in water:
+            _nonnegative(key, water[key])
+            rate = water[key] if rate is None else min(rate, water[key])
+        if rate is not None:
+            periods.append({"period": season, "limit_m3_h": rate,
+                            "wue_l_per_kwh_it": water.get(f"wue_{season}_l_per_kwh_it", mean_wue)})
+
+    if "period_hours" in water and (seasonal or "period_budget_m3" not in water):
+        raise ValidationError("period_hours 仅用于直接 WUE 的考察期总量；分季时用夏冬小时之和。")
+    if "period_budget_m3" in water:
+        _nonnegative("period_budget_m3", water["period_budget_m3"])
+        hours = water["summer_hours"] + water["winter_hours"] if seasonal else water.get("period_hours")
+        _positive("period_hours", hours)
+        periods.append({"period": "period_total", "limit_m3_h": water["period_budget_m3"] / hours,
+                        "wue_l_per_kwh_it": mean_wue})
+    elif seasonal and len(periods) == 1:
+        raise ValidationError("缺少另一季的水量预算；请补齐两季流量或提供公共上限。")
+    if not periods:
+        raise ValidationError("水量资料不足，请给出流量上限或 period_budget_m3。")
+    return periods
+
+
 def water_budget(water):
     """计算场址的最终可用水量上限。
 
@@ -686,8 +719,8 @@ def water_budget(water):
         包含各项水量上限、Q_max、WUE、发电耗水系数和 omitted 的字典。
 
     说明:
-        三项水量上限只有一项是必需的实际限制；未提供的项会列入
-        ``omitted``，不会被自动视为无穷大。
+        水源、压力和许可三项给出公共流量上限。分季流量与考察期
+        总量也可独立输入。periods 保留容量计算实际使用的各项预算。
     """
     basis = water.get("basis")
     if basis not in ("withdrawal", "consumption"):
@@ -697,6 +730,7 @@ def water_budget(water):
         "eco_m3_h", "other_m3_h", "stress_fraction", "wue_l_per_kwh_it",
         "wue_summer_l_per_kwh_it", "wue_winter_l_per_kwh_it",
         "summer_hours", "winter_hours", "generation_water_l_per_kwh",
+        "summer_limit_m3_h", "winter_limit_m3_h", "period_budget_m3", "period_hours",
     }
     if unknown := water.keys() - allowed:
         raise ValidationError(f"water 含未识别字段：{', '.join(map(str, unknown))}")
@@ -728,8 +762,7 @@ def water_budget(water):
                 raise ValidationError("水压力上限应选用直接给定或式 (10) 推算中的一种。")
             _ratio("stress_fraction", water["stress_fraction"])
             limits["stress"] = max(0.0, water["stress_fraction"] * available - water["other_m3_h"])
-    if not limits:
-        raise ValidationError("水量资料不足，source、stress、policy 至少需一个可用上限。")
+    periods = _water_periods(water, limits, wue)
     coefficients = water.get("generation_water_l_per_kwh", {})
     if not isinstance(coefficients, dict):
         raise ValidationError("generation_water_l_per_kwh 必须是对象。")
@@ -742,7 +775,8 @@ def water_budget(water):
     for name, value in coefficients.items():
         _nonnegative(f"generation_water_l_per_kwh.{name}", value)
     return {
-        "basis": basis, "limits_m3_h": limits, "Q_max_m3_h": min(limits.values()),
+        "basis": basis, "limits_m3_h": limits, "Q_max_m3_h": min(limits.values(), default=None),
+        "periods": periods,
         "wue_l_per_kwh_it": wue,
         "generation_water_l_per_kwh": coefficients,
         "omitted": [key for key in ("source", "stress", "policy") if key not in limits],
@@ -938,12 +972,24 @@ def _grid(data):
     return data["P_grid_mw"], "接入点持续净有功"
 
 
+def _water_capacity(rate, wue, coefficient, grid, self_capacity, multiplier):
+    """求 wue*P + c*min(P_self,max(0,k*P-P_grid)) <= Q 的水量上限。"""
+    full_generation_water = coefficient * self_capacity
+    if rate >= wue * (grid + self_capacity) / multiplier + full_generation_water:
+        # 水量足以支撑电力上限。独立的水上限可以更高。
+        return (rate - full_generation_water) / wue if wue else None
+    if wue and rate <= wue * grid / multiplier:
+        return rate / wue
+    # 电网已供满，自发电随 IT 负载增加。
+    return (rate + coefficient * grid) / (wue + coefficient * multiplier)
+
+
 def _resource_row_single(data, spec, grid, budget):
     """计算单个候选方案的三类上限和联合容量。
 
     这里是 Q1 的逐方案集成点：
         P_E = total_capacity(...)
-        P_W = max(0, Q_max - Q_gen) / WUE
+        WUE_t * P + c * G(P) <= Q_t，各时段及总量约束同时成立
         P_L = land_capacity(...)
         P = min(P_E, P_W, P_L)
 
@@ -977,10 +1023,17 @@ def _resource_row_single(data, spec, grid, budget):
         budget["generation_water_l_per_kwh"].get(kind, 0.0),
     )
     _nonnegative("generation_water_l_per_kwh", generation_water_coefficient)
-    # P_i 用 MW、c_i 用 L/kWh 时，乘积数值直接对应 m³/h。
-    generation_water = breakdown["self_generation_mw"] * generation_water_coefficient
-    net_water = max(0.0, budget["Q_max_m3_h"] - generation_water)
-    water_limit = net_water / wue if wue > 0 else None
+    self_capacity = breakdown["self_generation_mw"]
+    water_checks = []
+    for period in budget["periods"]:
+        period_wue = spec.get("wue_l_per_kwh_it", period["wue_l_per_kwh_it"])
+        bound = _water_capacity(period["limit_m3_h"], period_wue, generation_water_coefficient,
+                                grid, self_capacity, multiplier)
+        water_checks.append(dict(period, wue_l_per_kwh_it=period_wue, P_W_mw_it=bound))
+    finite_checks = [check for check in water_checks if check["P_W_mw_it"] is not None]
+    limiting_check = min(finite_checks, key=lambda check: check["P_W_mw_it"],
+                         default=water_checks[0])
+    water_limit = limiting_check["P_W_mw_it"]
     value_source = {"P_E": "derived", "P_W": "derived", "P_L": "derived"}
     direct_power = spec.get("direct_P_E_mw_it")
     if direct_power is not None:
@@ -1073,6 +1126,10 @@ def _resource_row_single(data, spec, grid, budget):
     if water_limit is not None:
         limits["水"] = water_limit
     capacity = min(limits.values())
+    dispatched = min(self_capacity, max(0.0, multiplier * capacity - grid))
+    generation_water = dispatched * generation_water_coefficient
+    for check in water_checks:
+        check["water_used_m3_h"] = check["wue_l_per_kwh_it"] * capacity + generation_water
     if direct_land is not None:
         land_candidates[0]["binding"] = [
             key
@@ -1087,8 +1144,10 @@ def _resource_row_single(data, spec, grid, budget):
         wue_l_per_kwh_it=wue,
         P_E_mw_it=electric,
         P_W_mw_it=water_limit,
+        water_checks=water_checks,
+        self_generation_used_mw=dispatched,
         generation_water_m3_h=generation_water,
-        Q_net_m3_h=net_water,
+        Q_net_m3_h=max(0.0, limiting_check["limit_m3_h"] - generation_water),
         P_L_mw_it=land["P_L_mw_it"],
         P_mw_it=capacity,
         generation_land_ha=selected["generation_land_ha"],

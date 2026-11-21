@@ -217,8 +217,8 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | `k_factor` | \(k(x)\) | 必填 | 无缺省；方案内可覆盖，要求 \(k(x)\ge 1\) |
 | `water.basis` | — | 必填 | 只能为 `consumption` 或 `withdrawal` |
 | `wue_l_per_kwh_it` | \(WUE\) | 直接口径时必填 | 可按方案覆盖；填 0 表示没有该类现场用水需求 |
-| `wue_summer_l_per_kwh_it`、`wue_winter_l_per_kwh_it`、`summer_hours`、`winter_hours` | \(WUE_{\mathrm{夏}},WUE_{\mathrm{冬}},t_{\mathrm{夏}},t_{\mathrm{冬}}\) | 季节口径时必填 | 四个字段必须同时提供，按运行小时加权 |
-| `source_m3_h`、`stress_m3_h`、`policy_m3_h` | \(Q_{\mathrm{DC,水源}},Q_{\mathrm{DC,压力上限}},Q_{\mathrm{DC,政策上限}}\) | 至少一项 | 作为独立水量上限；未提供项列入 `omitted`，不能当作无穷大 |
+| `wue_summer_l_per_kwh_it`、`wue_winter_l_per_kwh_it`、`summer_hours`、`winter_hours` | \(WUE_{\mathrm{夏}},WUE_{\mathrm{冬}},t_{\mathrm{夏}},t_{\mathrm{冬}}\) | 季节口径时必填 | 各季单独校核流量，按运行小时加权校核期间总量 |
+| `source_m3_h`、`stress_m3_h`、`policy_m3_h` | \(Q_{\mathrm{DC,水源}},Q_{\mathrm{DC,压力上限}},Q_{\mathrm{DC,政策上限}}\) | 可选 | 作为公共流量上限；未提供项列入 `omitted`，不能当作无穷大 |
 | `river_m3_h`、`eco_m3_h`、`other_m3_h` | \(Q_{\mathrm{河流}},Q_{\mathrm{生态}},Q_{\mathrm{其他取水}}\) | 可选但成组 | 用于水源余量公式；只有河流和生态流量时只能得到未核实水文余量，程序会报错 |
 | `stress_fraction` | \(S_{\max}\) | 可选 | 不提供则不计算水压力上限 |
 | `generation_water_l_per_kwh` | \(c_{\mathrm{煤}},c_{\mathrm{气}},c_{\mathrm{风}},c_{\mathrm{光}}\) | 可选 | 缺省视为空映射，即 \(Q_{\mathrm{发电耗水}}=0\)；实际使用时应显式填写 |
@@ -252,7 +252,7 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | 输出 | 正稿符号 | 单位 | 含义 |
 |---|---|---|---|
 | `P_E_mw_it` | \(P_E(x)\) | MW IT | 电力子模型上限 \(P_E=P_{\mathrm{total}}/k\) |
-| `P_W_mw_it` | \(P_W(x)\) | MW IT 或 null | 水子模型上限 `P_W=Qnet/WUE`；WUE 为 0 时为 null |
+| `P_W_mw_it` | \(P_W(x)\) | MW IT 或 null | 同时满足现场和自发电用水预算的上限 |
 | `P_L_mw_it` | \(P_{\mathrm{land}}(x)\) | MW IT | 土地子模型上限 \(P_L=(A_{\mathrm{eff}}-A_0-A_e)/a_{\mathrm{site}}\) |
 | `P_mw_it` | \(P(x)\) | MW IT | \(P=\min(P_E,P_W,P_L)\) |
 | `binding` | — | 字符串数组 | 达到该方案最小值的约束；可并列 |
@@ -265,8 +265,8 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | `breakdown.k` | \(k(x)\) | 无量纲 | 该方案使用的设施倍率 |
 | `breakdown.it_mw` | \(P_E(x)\) | MW IT | 与 `P_E_mw_it` 对应的电力结果 |
 | `generation_water_m3_h` | \(Q_{\mathrm{发电耗水}}\) | m³/h | 自发电耗水流量 |
-| `Q_net_m3_h` | \(Q_{\mathrm{net}}\) | m³/h | 扣除发电耗水后的净可用流量 |
-| `water.Q_max_m3_h` | \(Q_{\mathrm{DC,max}}\) | m³/h | 三项水量上限的最小值 |
+| `Q_net_m3_h` | \(Q_{\mathrm{net}}\) | m³/h | 按联合容量扣除发电用水后，最紧水量约束下的剩余流量 |
+| `water.Q_max_m3_h` | \(Q_{\mathrm{DC,max}}\) | m³/h | 已提供的公共流量上限中的最小值，仅有分季或总量预算时为 null |
 | `water.limits_m3_h` | \(Q_{\mathrm{DC,水源}},Q_{\mathrm{DC,压力上限}},Q_{\mathrm{DC,政策上限}}\) | m³/h | 实际参与最小值的各项独立上限 |
 | `water.omitted` | — | 字符串数组 | 未提供的水量上限项 |
 | `land.site_ha` | \(A_{\mathrm{eff}}\) | ha | 参与土地计算的有效用地 |
@@ -340,17 +340,17 @@ YAML 字段名是程序接口，正稿符号用于论文和结果解释；两者
 | 字段 | 正稿符号 | 是否必填 | 单位 | 说明 |
 |---|---|---|---|---|
 | `basis` | — | 必填 | 枚举 | `consumption`（耗水）或 `withdrawal`（取水）。 |
-| `wue_l_per_kwh_it` | \(WUE\) | 直接 WUE 时必填 | L/kWh IT | 可按方案覆盖。填 0 表示现场没有该类用水需求，JSON 的 \(P_W\) 为 `null`。 |
-| `source_m3_h` | \(Q_{\mathrm{DC,水源}}\) | 至少一项水量上限 | m³/h | 水源扣除生态保留和既有取水后的新增可用上限。 |
-| `stress_m3_h` | \(Q_{\mathrm{DC,压力上限}}\) | 至少一项水量上限 | m³/h | 按本地水压力阈值允许的新增取水上限。 |
-| `policy_m3_h` | \(Q_{\mathrm{DC,政策上限}}\) | 至少一项水量上限 | m³/h | 许可、合同或政策允许的上限。 |
+| `wue_l_per_kwh_it` | \(WUE\) | 直接 WUE 时必填 | L/kWh IT | 可按方案覆盖。填 0 表示这一口径下现场随负载增加的用水为零，自发电仍计水。 |
+| `source_m3_h` | \(Q_{\mathrm{DC,水源}}\) | 可选流量上限 | m³/h | 水源扣除生态保留和既有取水后的新增可用上限。 |
+| `stress_m3_h` | \(Q_{\mathrm{DC,压力上限}}\) | 可选流量上限 | m³/h | 按本地水压力阈值允许的新增取水上限。 |
+| `policy_m3_h` | \(Q_{\mathrm{DC,政策上限}}\) | 可选流量上限 | m³/h | 许可、合同或政策允许的上限。 |
 | `river_m3_h`、`eco_m3_h`、`other_m3_h` | \(Q_{\mathrm{河流}},Q_{\mathrm{生态}},Q_{\mathrm{其他取水}}\) | 可选 | m³/h | 仅用于按水模型的水源余量公式推算 \(Q_{\mathrm{DC,水源}}\)，三项需一起提供。 |
 | `stress_fraction` | \(S_{\max}\) | 可选 | [0,1] | 仅用于按水模型的压力阈值公式推算 \(Q_{\mathrm{DC,压力上限}}\)。 |
-| `wue_summer_l_per_kwh_it`、`wue_winter_l_per_kwh_it` | \(WUE_{\mathrm{夏}},WUE_{\mathrm{冬}}\) | 季节 WUE 时必填 | L/kWh IT | 与夏季、冬季运行小时数一起按小时加权。 |
+| `wue_summer_l_per_kwh_it`、`wue_winter_l_per_kwh_it` | \(WUE_{\mathrm{夏}},WUE_{\mathrm{冬}}\) | 季节 WUE 时必填 | L/kWh IT | 每季使用对应的 WUE 校核流量。计算期间总用水时按小时加权。 |
 | `summer_hours`、`winter_hours` | \(t_{\mathrm{夏}},t_{\mathrm{冬}}\) | 季节 WUE 时必填 | h | 两个代表时段的运行时长。 |
 | `generation_water_l_per_kwh` | \(c_{\mathrm{煤}},c_{\mathrm{气}},c_{\mathrm{风}},c_{\mathrm{光}}\) | 可选 | L/kWh | 对象，可填 `coal`、`gas`、`wind`、`solar` 的运行期耗水系数。 |
 
-至少填写一个独立水量上限。没有资料的项会出现在 JSON 的 `omitted` 中，不能把缺失项当成无穷大。
+流量（m³/h）限制每个时段，考察期总量（m³）限制累计用水，可同时提供。至少填写一个可用预算。没有资料的项会出现在 JSON 的 `omitted` 中，不能把缺失项当成无穷大。
 
 `source_m3_h` 也可以直接填入流域部门发布的剩余可分配水量，或供水单位对项目确认的新增可交付量；此时不要再同时用河流、生态和其他取水字段重复扣减。
 
@@ -370,7 +370,7 @@ Q_{\mathrm{DC,水源}}=\max\{0,Q_{\mathrm{河流}}-Q_{\mathrm{生态}}-Q_{\mathr
 Q_{\mathrm{DC,压力上限}}=\max\{0,S_{\max}(Q_{\mathrm{河流}}-Q_{\mathrm{生态}})-Q_{\mathrm{其他取水}}\}.
 \]
 
-若提供夏、冬两季的 WUE，程序按权威稿的时长加权式计算：
+若提供夏、冬两季的 WUE，持续满载的 IT 容量必须满足每一季的流量上限。期间总用水采用时长加权的 WUE。
 
 \[
 WUE_{\mathrm{全年}}
@@ -378,25 +378,18 @@ WUE_{\mathrm{全年}}
 {t_{\mathrm{夏}}+t_{\mathrm{冬}}}.
 \]
 
-自发电耗水流量为：
+电网优先供电。令 \(P\) 为 IT 负载，容量计算允许自建电源在零和可靠净容量之间调节。园区需要调用的净自发电功率为
 
 \[
-Q_{\mathrm{发电耗水}}=P_{\mathrm{煤}}c_{\mathrm{煤}}
-+P_{\mathrm{气}}c_{\mathrm{气}}
-+P_{\mathrm{风}}c_{\mathrm{风}}
-+P_{\mathrm{光}}c_{\mathrm{光}}.
+G(P)=\min\{P_{\mathrm{self}},\,\max(0,kP-P_{\mathrm{grid}})\}.
 \]
 
-这里功率用 MW、系数用 L/kWh 时，计算结果的数值直接对应 m³/h。程序在当前方案内先计算
-\(Q_{\mathrm{DC,max}}\)，再令
+若自发电系数为 \(c\) L/kWh，时段 \(t\) 的水量约束为 \(WUE_t P+cG(P)\le Q_t\)。在电力可行范围内，\(G(P)\) 正好填补园区功率缺口。计算联合容量后，`self_generation_used_mw` 和 `generation_water_m3_h` 分别记录该负载下的调用量和发电用水。`breakdown.self_generation_mw` 给出可靠供电容量。此计算假设自建电源可减载或停机。储能方案若有发电用水，系数按园区净受电量折算。校核峰值取水还需匹配充电时段的发电量。
 
-\[
-Q_{\mathrm{net}}=\max\{0,Q_{\mathrm{DC,max}}-Q_{\mathrm{发电耗水}}\},
-\qquad
-P_W=\frac{Q_{\mathrm{net}}}{WUE}.
-\]
-
-当前实现用方案设计工况下的可靠自发电功率 `self_generation_mw` 作为 \(P_i\)。如果后续有完整的逐时发电曲线，应将 \(P_i\) 的时间序列代入同一耗水公式，而不是只用单点可靠容量。
+- 公共的 `source_m3_h`、`stress_m3_h`、`policy_m3_h` 在两个季节均生效。`summer_limit_m3_h` 和 `winter_limit_m3_h` 可给出分季流量，并与公共上限同时校核。
+- `period_budget_m3` 是考察期累计可用水量。分季输入使用夏冬小时数之和。直接给定 WUE 时，用 `period_hours` 指定时长。只有期间总量时，结果适用于允许在季节之间调配水量的情景。
+- `water_checks` 记录各项预算、实际采用的 WUE、推导的容量上限和最终负载下的用水流量。期间总量在其中显示为平均 m³/h。方案级 WUE 覆盖值对所有时段生效。`direct_P_W_mw_it` 仍可覆盖推导的水上限。
+- 例：供水每小时最多 100 m³、两季 WUE 分别为 2 和 0.5 时，纯电网持续负载最多为 50 MW IT。若只有总量预算，夏冬各 6 小时合计可用 1200 m³，则可支撑 80 MW IT，此时夏季需 160 m³/h。
 
 ### `land` 字段
 
@@ -642,7 +635,7 @@ python code/run.py code/examples/q1_site.yaml --json code/examples/q1_site_resul
 | 字段 | 正稿符号 | 单位 | 说明 |
 |---|---|---|---|
 | `limits_m3_h` | \(Q_{\mathrm{DC,水源}},Q_{\mathrm{DC,压力上限}},Q_{\mathrm{DC,政策上限}}\) | m³/h | 实际参与最小值的各项独立上限。 |
-| `Q_max_m3_h` | \(Q_{\mathrm{DC,max}}\) | m³/h | 各项上限的最小值。 |
+| `Q_max_m3_h` | \(Q_{\mathrm{DC,max}}\) | m³/h | 公共流量上限中的最小值，仅有分季或总量预算时为 null。 |
 | `wue_l_per_kwh_it` | \(WUE\) | L/kWh IT | 直接值或按季节运行时长加权后的 WUE。 |
 | `generation_water_l_per_kwh` | \(c_i\) | L/kWh | 该场址可用的自发电耗水系数。 |
 | `omitted` | — | 字符串数组 | 没有提供的独立上限项。 |
@@ -654,12 +647,12 @@ python code/run.py code/examples/q1_site.yaml --json code/examples/q1_site_resul
 | 字段 | 单位 | 说明 |
 |---|---|---|
 | `P_E_mw_it` | MW IT | 电力子模型上限，已经除以 \(k\)。 |
-| `P_W_mw_it` | MW IT 或 null | 水子模型上限。WUE 为 0 时为 null。 |
+| `P_W_mw_it` | MW IT 或 null | 所有水量约束中最紧的容量上限。现场 WUE 为 0 且发电用水在预算内时为 null。 |
 | `P_L_mw_it` | MW IT | 土地子模型上限。 |
 | `P_mw_it` | MW IT | \(\min(P_E,P_W,P_L)\)。 |
 | `binding` | 字符串数组 | 达到最小值的约束，多个值表示并列瓶颈。 |
 | `generation_water_m3_h` | m³/h | 该方案自发电耗水流量 \(Q_{\mathrm{发电耗水}}\)。 |
-| `Q_net_m3_h` | m³/h | 扣除发电耗水后的净可用流量 \(Q_{\mathrm{net}}\)。 |
+| `Q_net_m3_h` | m³/h | 按联合容量扣除发电用水后，最紧水量约束下的剩余流量 \(Q_{\mathrm{net}}\)。 |
 
 `breakdown` 保存电力链中间量：
 

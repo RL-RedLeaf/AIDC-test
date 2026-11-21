@@ -1,0 +1,29 @@
+model: q1
+site: Meta Hyperion - first operational phase
+assessment_year: 2028
+period_note: Epoch first-phase projection; normal-operation design period
+service_level: Continuous rated IT load; backup turbines excluded
+P_grid_mw: 1800
+k_factor: 1.34988
+
+water:
+  basis: consumption
+  period_budget_m3: 1892706
+  period_hours: 8760
+  wue_l_per_kwh_it: 0.108
+
+land:
+  effective_ha: 910.54
+  fixed_it_ha: 0
+  generation_land_ha: 0
+  ha_per_mw_it: 0.68285
+
+scenarios:
+  - name: First phase utility supply
+    type: grid
+    online_year: 2028
+    notes: >-
+      Grid load follows the 1800 MW MISO spot-load request. The initial gas
+      turbines are reliability resources and are not added under the normal-
+      operation base case. Water uses the reported 500 million gal/year and a
+      WUE derived for the approximately 2 GW first phase.
