@@ -749,31 +749,41 @@ def water_budget(water):
     }
 
 
-def land_capacity(land):
+def land_capacity(land, generation_land=None):
     """计算园区土地允许的最大 IT 容量。
 
-    对应权威稿土地模型：
-        A_req = A_0 + a_site * P
-        P_land = max(0, (A_eff - A_0) / a_site)
+    对应权威稿 Q1-v2 土地模型:
+        A_req = A_0 + A_e + a_site * P
+        P_land = max(0, (A_eff - A_0 - A_e) / a_site)
 
     参数:
-        land: 含 effective_ha、fixed_it_ha、ha_per_mw_it 的字典。
-            effective_ha 和 fixed_it_ha 的单位为 ha，
-            ha_per_mw_it 的单位为 ha/MW IT。
+        land: 含 effective_ha、fixed_it_ha、generation_land_ha、
+            ha_per_mw_it 的字典。
+        generation_land: 可选的方案级 A_e 覆盖值；缺省使用 land 中的值。
     """
-    allowed = {"effective_ha", "fixed_it_ha", "ha_per_mw_it"}
+    allowed = {
+        "effective_ha",
+        "fixed_it_ha",
+        "generation_land_ha",
+        "ha_per_mw_it",
+    }
     if unknown := set(land) - allowed:
         raise ValidationError(f"land 含权威稿未使用字段：{', '.join(sorted(unknown))}")
     area = land.get("effective_ha")
     fixed = land.get("fixed_it_ha", 0)
+    if generation_land is None:
+        generation_land = land.get("generation_land_ha", 0)
     intensity = land.get("ha_per_mw_it")
     _nonnegative("effective_ha", area)
     _nonnegative("fixed_it_ha", fixed)
+    _nonnegative("generation_land_ha", generation_land)
     _positive("ha_per_mw_it", intensity)
     return {
         "site_ha": area,
-        "fixed_it_ha": fixed, "optimistic_zero_fixed": fixed == 0,
-        "P_L_mw_it": max(0.0, area - fixed) / intensity,
+        "fixed_it_ha": fixed,
+        "generation_land_ha": generation_land,
+        "optimistic_zero_fixed": fixed == 0,
+        "P_L_mw_it": max(0.0, area - fixed - generation_land) / intensity,
     }
 
 
@@ -836,7 +846,11 @@ def _resource_row(data, spec, grid, budget):
     generation_water = breakdown["self_generation_mw"] * generation_water_coefficient
     net_water = max(0.0, budget["Q_max_m3_h"] - generation_water)
     water_limit = net_water / wue if wue > 0 else None
-    land = land_capacity(data["land"])
+    generation_land = spec.get(
+        "generation_land_ha",
+        data["land"].get("generation_land_ha", 0),
+    )
+    land = land_capacity(data["land"], generation_land)
 
     value_source = {"P_E": "derived", "P_W": "derived", "P_L": "derived"}
     direct_power = spec.get("direct_P_E_mw_it")

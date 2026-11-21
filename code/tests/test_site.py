@@ -21,10 +21,10 @@ def test_demo(tmp_path):
     output = tmp_path / "result.json"
     report = run(ROOT / "examples/q1_site.yaml", output)
     assert json.loads(output.read_text(encoding="utf-8")) == report
-    assert report["P_max_mw_it"] == 140
+    assert report["P_max_mw_it"] == 130
     assert report["winners"] == ["燃气配干冷园区"]
     assert report["excluded"][0]["online_year"] == 2030
-    assert [row["binding"] for row in report["scenarios"]] == [["电力"], ["电力"], ["水"], ["电力"]]
+    assert [row["binding"] for row in report["scenarios"]] == [["电力"], ["电力"], ["水"], ["土地"]]
     assert report["scenarios"][-1]["breakdown"]["facility_mw"] == 168
     wet_gas = report["scenarios"][2]
     assert wet_gas["generation_water_m3_h"] == pytest.approx(46.8)
@@ -43,7 +43,7 @@ def test_minimal_config():
 
 def test_csv_input_matches_yaml_example():
     report = run(ROOT / "examples/q1_site.csv")
-    assert report["P_max_mw_it"] == 140
+    assert report["P_max_mw_it"] == 130
     assert [row["name"] for row in report["scenarios"]] == [
         "纯电网",
         "光储",

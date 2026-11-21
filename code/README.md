@@ -1,6 +1,6 @@
 # IMMC 2027 A 题第一问：给定场址的电、水、土地容量
 
-本目录实现 [权威稿 IMMC2027-Q1](../正稿/Q1-v1/IMMC2027-Q1/IMMC2027-Q1.md) 的电力式（1）–（6）、水模型和土地模型。程序先排除评估年份尚未投运的方案，再对每套方案计算电力、水和土地三个上限，取三者最小值，最后在当年候选集中取最大值。
+本目录实现 [权威稿 IMMC2027-Q1](../正稿/Q1-v2/IMMC2027-Q1/IMMC2027-Q1.md) 的电力式（1）–（6）、水模型和土地模型。程序先排除评估年份尚未投运的方案，再对每套方案计算电力、水和土地三个上限，取三者最小值，最后在当年候选集中取最大值。
 
 ## 快速开始
 
@@ -34,14 +34,14 @@ python code/run.py code/examples/q1_minimal.yaml
 ### 1. YAML 文件入口
 
 YAML 保存场址和方案输入。省略 `--json` 时，结果自动写入
-`正稿/Q1-v1/output/<配置文件名>_result.json`：
+`正稿/Q1-v2/output/<配置文件名>_result.json`：
 
 ```powershell
 python code/run.py code/examples/q1_site.yaml
 ```
 
 不指定 `--json` 时，CLI 默认将结果写入
-`正稿/Q1-v1/output/<配置文件名>_result.json`。完整 CSV 示例见
+`正稿/Q1-v2/output/<配置文件名>_result.json`。完整 CSV 示例见
 [q1_site.csv](examples/q1_site.csv)：
 
 ```powershell
@@ -93,7 +93,7 @@ python code/run.py --interactive
 1. 场址名称、评估年份、设计期说明和服务水平。方括号中的值是默认值，直接回车即可采用。
 2. 电网输入方式。选择 MW 时填写 `P_grid_mw`（\(P_{\mathrm{grid}}\)）；选择 MVA 时填写 `P_grid_mva`（\(S_{\mathrm{grid}}\)）和功率因数 \(\cos\varphi\)。
 3. 水量口径、WUE 和至少一项水量上限（\(Q_{\mathrm{DC,水源}},Q_{\mathrm{DC,压力上限}},Q_{\mathrm{DC,政策上限}}\)），至少一项不能为空。
-4. 有效用地 \(A_{\mathrm{eff}}\)、IT 侧固定用地 \(A_0^{\mathrm{IT}}\) 和边际用地强度 \(a_{\mathrm{site}}\)。
+4. 有效用地 \(A_{\mathrm{eff}}\)、IT 侧固定用地 \(A_0^{\mathrm{IT}}\)、园区内自建发电站用地 \(A_e\) 和边际用地强度 \(a_{\mathrm{site}}\)。
 5. 方案类型和设备参数。风电、光伏的逐时序列 \(r_t\) 用逗号或空格分隔，例如 `20, 0`。
 6. 是否继续添加方案。可以一次输入多套方案。
 7. JSON 输出路径。留空只在终端输出结果；填写路径则同时写出 JSON。
@@ -172,7 +172,7 @@ CSV 规则：
 - 第 1 行必须是表头，列名固定。
 - 公共场址、水量、土地和电网字段可以在任意一行填写，但同一列只能有一个非空值；不同行写入不同公共值会报错。
 - `scenario_name`、`scenario_type`、`online_year` 是每行必填字段。
-- `scenario_k_factor`、`scenario_wue_l_per_kwh_it`、`scenario_generation_water_l_per_kwh` 是方案级覆盖值。
+- `scenario_k_factor`、`scenario_wue_l_per_kwh_it`、`scenario_generation_water_l_per_kwh`、`scenario_generation_land_ha` 是方案级覆盖值。
 - 电池字段使用 `battery_C_max_mw`、`battery_D_max_mw`、`battery_E_usable_mwh`、`battery_charge_efficiency`、`battery_discharge_efficiency`。
 - 时间序列用分号、竖线或逗号分隔，例如 `net_output_mw = 20;0`。
 - 直接覆盖结果的可选字段为 `direct_P_E_mw_it`、`direct_P_W_mw_it`、`direct_P_L_mw_it`；对应结果会记录 `value_source: direct`。
@@ -191,7 +191,7 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | 地理条件：土地 | `effective_ha` | \(A_{\mathrm{eff}}\) | GIS、规划和生态筛选后的连续有效用地 |
 | 气象与资源 | `net_output_mw`、`supply_series_mw`、`flow_m3_per_s`、`net_head_m`、`area_km2` | \(r_t\)、\(Q\)、\(H\)、\(A_{\mathrm{风}}\)、\(A_{\mathrm{光}}\) | 风光逐时净功率、水电可用流量和落差、风光合格面积 |
 | 经验或情景参数 | `stress_fraction`、`wue_l_per_kwh_it`、`generation_water_l_per_kwh`、`alpha`、`k_factor`、`net_efficiency` | \(S_{\max}\)、\(WUE\)、\(c_i\)、\(\alpha_{\mathrm{风}}\)、\(k(x)\)、\(\eta_j^{\mathrm{net}}\) | 取水压力阈值、WUE、发电耗水系数、风电保障比例、设施倍率、机组净效率 |
-| 厂房/园区设施 | `fixed_it_ha`、`ha_per_mw_it`、`density_mw_per_km2` | \(A_0^{\mathrm{IT}}\)、\(a_{\mathrm{site}}\)、\(\rho_{\mathrm{风}},\rho_{\mathrm{光}}\) | IT 固定用地、边际用地强度、风光装机密度 |
+| 厂房/园区设施 | `fixed_it_ha`、`generation_land_ha`、`ha_per_mw_it`、`density_mw_per_km2` | \(A_0^{\mathrm{IT}}\)、\(A_e\)、\(a_{\mathrm{site}}\)、\(\rho_{\mathrm{风}},\rho_{\mathrm{光}}\) | IT 固定用地、园区内发电站用地、边际用地强度、风光装机密度 |
 | 机组/电源设备 | `units`、`unit_net_mw`、`installed_mw` | \(N_j\)、\(p_j^{\mathrm{net}}\)、\(X_{\mathrm{风}},X_{\mathrm{水}},X_{\mathrm{光}}\) | 火电台数和单机净功率、风电/水电/合计装机 |
 | 储能设备 | `C_max_mw`、`D_max_mw`、`E_usable_mwh`、`charge_efficiency`、`discharge_efficiency` | \(C_{\max}\)、\(D_{\max}\)、\(E_{\mathrm{可用}}\)、\(\eta_c\)、\(\eta_d\) | 电池最大充放电功率、可用电量、充放电效率 |
 | 方案控制 | `name`、`type`、`online_year` | \(x\) 对应 `name`；投运年份决定 \(x\in\mathcal X_y\) | 候选配置名称、电源类型、投运年份 |
@@ -213,8 +213,9 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | `river_m3_h`、`eco_m3_h`、`other_m3_h` | \(Q_{\mathrm{河流}},Q_{\mathrm{生态}},Q_{\mathrm{其他取水}}\) | 可选但成组 | 用于水源余量公式；只有河流和生态流量时只能得到未核实水文余量，程序会报错 |
 | `stress_fraction` | \(S_{\max}\) | 可选 | 不提供则不计算水压力上限 |
 | `generation_water_l_per_kwh` | \(c_{\mathrm{煤}},c_{\mathrm{气}},c_{\mathrm{风}},c_{\mathrm{光}}\) | 可选 | 缺省视为空映射，即 \(Q_{\mathrm{发电耗水}}=0\)；实际使用时应显式填写 |
-| `effective_ha` | \(A_{\mathrm{eff}}\) | 必填 | 无缺省；用于 \(P_L=(A_{\mathrm{eff}}-A_0)/a_{\mathrm{site}}\) |
+| `effective_ha` | \(A_{\mathrm{eff}}\) | 必填 | 无缺省；用于 \(P_L=(A_{\mathrm{eff}}-A_0-A_e)/a_{\mathrm{site}}\) |
 | `fixed_it_ha` | \(A_0^{\mathrm{IT}}\) | 可选 | 默认 0，表示忽略 IT 侧固定用地，属于乐观上界 |
+| `generation_land_ha` | \(A_e\) | 可选 | 园区内自建发电站及专属配套用地，默认 0；仅使用电网时填 0 |
 | `ha_per_mw_it` | \(a_{\mathrm{site}}\) | 必填 | 单位 ha/MW IT，必须为正数 |
 | `scenarios` | \(x\in\mathcal X\) | 必填 | 至少一项 |
 | `name`、`type`、`online_year` | \(x\)、投运年份决定 \(x\in\mathcal X_y\) | 每方案必填 | `type` 取 `grid`、`coal`、`gas`、`wind`、`hydro`、`solar` 或 `combined_battery` |
@@ -230,7 +231,7 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | `battery` | \(C_{\max},D_{\max},E_{\mathrm{可用}}\) | 光伏可选、共用电池必填 | 光伏省略按无电池处理；共用电池必须提供 |
 | 电池 `charge_efficiency`、`discharge_efficiency` | \(\eta_c,\eta_d\) | 电池内可选 | 默认 1.0 |
 | `direct_P_E_mw_it`、`direct_P_W_mw_it`、`direct_P_L_mw_it` | \(P_E,P_W,P_L\) | 可选 | 已拿到最终上限时直接覆盖对应推导值，并在结果中标记 `value_source: direct` |
-| `C_PCC_mw`、`generation_share`、`period_budget`、`sensitivity` | — | 不接受 | 会明确报错；不属于当前 Q1-v1 口径 |
+| `C_PCC_mw`、`generation_share`、`period_budget`、`sensitivity` | — | 不接受 | 会明确报错；不属于当前 Q1-v2 口径 |
 
 ### 输出分类
 
@@ -238,7 +239,7 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 |---|---|---|---|
 | `P_E_mw_it` | \(P_E(x)\) | MW IT | 电力子模型上限 \(P_E=P_{\mathrm{total}}/k\) |
 | `P_W_mw_it` | \(P_W(x)\) | MW IT 或 null | 水子模型上限 `P_W=Qnet/WUE`；WUE 为 0 时为 null |
-| `P_L_mw_it` | \(P_{\mathrm{land}}(x)\) | MW IT | 土地子模型上限 \(P_L=(A_{\mathrm{eff}}-A_0)/a_{\mathrm{site}}\) |
+| `P_L_mw_it` | \(P_{\mathrm{land}}(x)\) | MW IT | 土地子模型上限 \(P_L=(A_{\mathrm{eff}}-A_0-A_e)/a_{\mathrm{site}}\) |
 | `P_mw_it` | \(P(x)\) | MW IT | \(P=\min(P_E,P_W,P_L)\) |
 | `binding` | — | 字符串数组 | 达到该方案最小值的约束；可并列 |
 | `P_max_mw_it` | \(P_{\max}\) | MW IT | 所有当年可行方案中的最大 \(P\) |
@@ -256,6 +257,7 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | `water.omitted` | — | 字符串数组 | 未提供的水量上限项 |
 | `land.site_ha` | \(A_{\mathrm{eff}}\) | ha | 参与土地计算的有效用地 |
 | `land.fixed_it_ha` | \(A_0^{\mathrm{IT}}\) | ha | IT 侧固定用地 |
+| `land.generation_land_ha` | \(A_e\) | ha | 园区内自建发电站及专属配套用地 |
 | `land.P_L_mw_it` | \(P_{\mathrm{land}}(x)\) | MW IT | 土地上限 |
 | `value_source` | — | 对象 | 分别记录 \(P_E\)、\(P_W\)、\(P_L\) 是 `derived` 还是 `direct` |
 | `method.charge_mw` 等 | \(L,c_t,d_t,e_t\) | MW/MWh | 光储逐时负荷、充电、放电、荷电量和弃电调度 |
@@ -285,7 +287,7 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | \(S_{\max}\) | `stress_fraction` | 本地水压力情景比例 |
 | \(WUE\) | `wue_l_per_kwh_it` | 现场取水或耗水强度，L/kWh IT |
 | \(A_{\mathrm{eff}}\) | `effective_ha` | 场址筛选后的总有效用地，ha |
-| \(A_0^{\mathrm{IT}}\)、\(a_{\mathrm{site}}\) | `fixed_it_ha`、`ha_per_mw_it` | IT 侧固定用地 ha、园区边际用地强度 ha/MW IT |
+| \(A_0^{\mathrm{IT}}\)、\(A_e\)、\(a_{\mathrm{site}}\) | `fixed_it_ha`、`generation_land_ha`、`ha_per_mw_it` | IT 侧固定用地 ha、园区内自发电站用地 ha、边际用地强度 ha/MW IT |
 | \(P_{\max}\) | `P_max_mw_it` | 场址最大联合额定 IT 容量，MW IT |
 
 YAML 字段名是程序接口，正稿符号用于论文和结果解释；两者在下表中逐项对应。方案内部的 \(P_{\mathrm{self}}(x)\)、\(P_{\mathrm{total}}(x)\)、\(P_E(x)\)、\(P_W(x)\) 和 \(P_L(x)\) 是计算结果，不是额外的 YAML 输入。
@@ -303,7 +305,7 @@ YAML 字段名是程序接口，正稿符号用于论文和结果解释；两者
 | `P_grid_mva`、`power_factor` | \(S_{\mathrm{grid}},\cos\varphi\) | 与 MW 二选一 | MVA、无量纲 | 按 \(P_{\mathrm{grid}}=S_{\mathrm{grid}}\cos\varphi\) 换算，结果标为初筛上界。 |
 | `k_factor` | \(k(x)\) | 必填 | 无量纲，\(\ge 1\) | 设计满载设施总功率除以同一工况 IT 功率。方案内可覆盖。 |
 | `water` | \(Q_{\mathrm{DC,max}},WUE,Q_{\mathrm{发电耗水}}\) | 必填 | 对象 | 水量上限、同口径 WUE 和自发电耗水系数。 |
-| `land` | \(A_{\mathrm{eff}},A_0^{\mathrm{IT}},a_{\mathrm{site}}\) | 必填 | 对象 | 有效用地和园区 IT 侧边际用地关系。 |
+| `land` | \(A_{\mathrm{eff}},A_0^{\mathrm{IT}},A_e,a_{\mathrm{site}}\) | 必填 | 对象 | 有效用地、固定设施用地、园区内发电站用地和 IT 侧边际用地关系。 |
 | `scenarios` | \(x\in\mathcal X\) | 必填 | 非空列表 | 至少一套供电与冷却配置，每项必须有 `name` 和 `type`。 |
 
 `P_grid_mva` 和 `power_factor` 是电力子模型的初筛输入。所有数值按园区进线处计量。
@@ -379,12 +381,18 @@ P_W=\frac{Q_{\mathrm{net}}}{WUE}.
 |---|---|---|---|---|
 | `effective_ha` | \(A_{\mathrm{eff}}\) | 必填 | ha | 场址筛选后的总有效用地。 |
 | `fixed_it_ha` | \(A_0^{\mathrm{IT}}\) | 可选 | ha | IT 侧固定用地，默认 0。填 0 是乐观上界。 |
+| `generation_land_ha` | \(A_e\) | 可选 | ha | 园区内自建发电站及专属配套用地，默认 0；仅使用电网时为 0。 |
 | `ha_per_mw_it` | \(a_{\mathrm{site}}\) | 必填 | ha/MW IT | 园区本体、变配电和冷却设施的边际用地强度。 |
 
 土地上限按权威稿的土地一次函数模型计算：
 
 \[
-P_L=\frac{A_{\mathrm{eff}}-A_0^{\mathrm{IT}}}{a_{\mathrm{site}}}.
+P_L=
+\frac{
+A_{\mathrm{eff}}-A_0^{\mathrm{IT}}-A_e
+}{
+a_{\mathrm{site}}
+}.
 \]
 
 分子小于等于 0 时返回 0 MW IT，表示在当前设计下没有可建设的正容量。

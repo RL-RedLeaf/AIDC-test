@@ -22,12 +22,14 @@ water:
 land:
   effective_ha: 160
   fixed_it_ha: 10
+  generation_land_ha: 0
   ha_per_mw_it: 1
 scenarios:
   - {name: 纯电网, type: grid, online_year: 2026}
   - name: 光储
     type: solar
     online_year: 2028
+    generation_land_ha: 20
     area_km2: 0.2
     density_mw_per_km2: 100
     net_output_mw: [20, 0]
@@ -36,15 +38,17 @@ scenarios:
   - name: 燃气配湿冷园区
     type: gas
     online_year: 2028
+    generation_land_ha: 20
     units: 1
     unit_net_mw: 60
     gas_supply_adequate: true
   - name: 燃气配干冷园区
     type: gas
     online_year: 2028
+    generation_land_ha: 20
     units: 1
     unit_net_mw: 60
     gas_supply_adequate: true
     wue_l_per_kwh_it: 0.75
     generation_water_l_per_kwh: 0.0076
-  - {name: 后续煤电, type: coal, online_year: 2030, units: 2, unit_net_mw: 80}
+  - {name: 后续煤电, type: coal, online_year: 2030, generation_land_ha: 20, units: 2, unit_net_mw: 80}

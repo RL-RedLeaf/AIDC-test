@@ -32,7 +32,7 @@ WRONG_UNIT_KEYS = {
 }
 
 DEFAULT_OUTPUT_DIR = (
-    Path(__file__).resolve().parents[2] / "正稿" / "Q1-v1" / "output"
+    Path(__file__).resolve().parents[2] / "正稿" / "Q1-v2" / "output"
 )
 
 
@@ -199,9 +199,11 @@ def _load_csv(path):
         "water_winter_hours", "generation_water_coal_l_per_kwh",
         "generation_water_gas_l_per_kwh", "generation_water_wind_l_per_kwh",
         "generation_water_solar_l_per_kwh", "generation_water_combined_battery_l_per_kwh",
-        "land_effective_ha", "land_fixed_it_ha", "land_ha_per_mw_it",
+        "land_effective_ha", "land_fixed_it_ha", "land_generation_land_ha",
+        "land_ha_per_mw_it",
         "scenario_name", "scenario_type", "online_year", "scenario_k_factor",
         "scenario_wue_l_per_kwh_it", "scenario_generation_water_l_per_kwh",
+        "scenario_generation_land_ha",
         "direct_P_E_mw_it", "direct_P_W_mw_it", "direct_P_L_mw_it",
         "units", "unit_net_mw", "net_efficiency", "gas_supply_adequate",
         "area_km2", "density_mw_per_km2", "installed_mw", "alpha",
@@ -263,6 +265,7 @@ def _load_csv(path):
     for csv_field, field in (
         ("land_effective_ha", "effective_ha"),
         ("land_fixed_it_ha", "fixed_it_ha"),
+        ("land_generation_land_ha", "generation_land_ha"),
         ("land_ha_per_mw_it", "ha_per_mw_it"),
     ):
         value = _csv_common(rows, csv_field)
@@ -287,6 +290,7 @@ def _load_csv(path):
             ("scenario_k_factor", "k_factor"),
             ("scenario_wue_l_per_kwh_it", "wue_l_per_kwh_it"),
             ("scenario_generation_water_l_per_kwh", "generation_water_l_per_kwh"),
+            ("scenario_generation_land_ha", "generation_land_ha"),
             ("direct_P_E_mw_it", "direct_P_E_mw_it"),
             ("direct_P_W_mw_it", "direct_P_W_mw_it"),
             ("direct_P_L_mw_it", "direct_P_L_mw_it"),
@@ -612,6 +616,12 @@ def _ask_land(asker):
                                     minimum=0, allow_zero=False),
         "fixed_it_ha": _ask_number(asker, "IT 侧固定用地 A_0^IT（fixed_it_ha，ha；0 表示乐观上界）", 10,
                                    minimum=0),
+        "generation_land_ha": _ask_number(
+            asker,
+            "园区内自建发电站用地 A_e（generation_land_ha，ha；仅用电网填 0）",
+            0,
+            minimum=0,
+        ),
         "ha_per_mw_it": _ask_number(asker, "园区边际用地强度 a_site（ha/MW IT）", 1,
                                     minimum=0.000001, allow_zero=False),
     }
@@ -634,6 +644,11 @@ def _ask_scenario(asker, number, grid_mw):
     wue = _ask_optional_number(asker, "本方案 WUE(x) 覆盖（L/kWh IT，可留空）")
     if wue is not None:
         spec["wue_l_per_kwh_it"] = wue
+    generation_land = _ask_optional_number(
+        asker, "本方案自建发电站用地 A_e（ha，留空沿用场址值）"
+    )
+    if generation_land is not None:
+        spec["generation_land_ha"] = generation_land
 
     if kind in {"coal", "gas"}:
         spec["units"] = _ask_number(asker, "可同时运行机组台数 N_j", 2 if kind == "coal" else 1,
