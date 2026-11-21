@@ -194,7 +194,7 @@ def _load_csv(path):
         "water_basis", "water_source_m3_h", "water_stress_m3_h",
         "water_policy_m3_h", "water_river_m3_h", "water_eco_m3_h",
         "water_other_m3_h", "water_stress_fraction",
-        "water_wue_l_per_kwh_it", "water_wue_summer_l_per_kwh_it",
+        "water_wue_l_per_kwh_it", "water_fixed_water_m3_h", "water_wue_summer_l_per_kwh_it",
         "water_wue_winter_l_per_kwh_it", "water_summer_hours",
         "water_winter_hours", "generation_water_coal_l_per_kwh",
         "water_summer_limit_m3_h", "water_winter_limit_m3_h",
@@ -204,7 +204,7 @@ def _load_csv(path):
         "land_effective_ha", "land_fixed_it_ha", "land_generation_land_ha",
         "land_generation_land_options_ha", "land_ha_per_mw_it",
         "scenario_name", "scenario_type", "online_year", "scenario_k_factor",
-        "scenario_wue_l_per_kwh_it", "scenario_generation_water_l_per_kwh",
+        "scenario_wue_l_per_kwh_it", "scenario_fixed_water_m3_h", "scenario_generation_water_l_per_kwh",
         "scenario_generation_land_ha", "scenario_generation_land_options_ha",
         "direct_P_E_mw_it", "direct_P_W_mw_it", "direct_P_L_mw_it",
         "units", "unit_net_mw", "unit_land_ha", "generation_land_required_ha",
@@ -241,6 +241,7 @@ def _load_csv(path):
         "water_other_m3_h": "other_m3_h",
         "water_stress_fraction": "stress_fraction",
         "water_wue_l_per_kwh_it": "wue_l_per_kwh_it",
+        "water_fixed_water_m3_h": "fixed_water_m3_h",
         "water_wue_summer_l_per_kwh_it": "wue_summer_l_per_kwh_it",
         "water_wue_winter_l_per_kwh_it": "wue_winter_l_per_kwh_it",
         "water_summer_hours": "summer_hours",
@@ -301,6 +302,7 @@ def _load_csv(path):
         for csv_field, field in (
             ("scenario_k_factor", "k_factor"),
             ("scenario_wue_l_per_kwh_it", "wue_l_per_kwh_it"),
+            ("scenario_fixed_water_m3_h", "fixed_water_m3_h"),
             ("scenario_generation_water_l_per_kwh", "generation_water_l_per_kwh"),
             ("scenario_generation_land_ha", "generation_land_ha"),
             ("direct_P_E_mw_it", "direct_P_E_mw_it"),
@@ -453,6 +455,7 @@ def _print(report, say=print):
                 say("  水量可支持全部可用供电容量")
             else:
                 say(f"  水上限 P_W = {row['P_W_mw_it']:.6g} MW IT")
+            say(f"    固定用水 {row['fixed_water_m3_h']:.6g} m³/h")
             say(f"    联合容量下调用自发电 {row['self_generation_used_mw']:.6g} MW，"
                 f"发电用水 {row['generation_water_m3_h']:.6g} m³/h")
             period_labels = {"design": "设计期", "summer": "夏季", "winter": "冬季",
@@ -622,9 +625,12 @@ def _ask_power_inputs(asker):
 
 def _ask_water(asker):
     """询问水量口径、WUE 和至少一项独立水量上限。"""
-    basis = _ask_choice(asker, "水量口径（耗水或取水；Q_max 与 WUE 必须同口径）",
+    basis = _ask_choice(asker, "水量口径（耗水或取水；上限、固定项和可变强度须同口径）",
                          ["consumption", "withdrawal"], "consumption")
-    wue = _ask_number(asker, "设计工况的现场 WUE（L/kWh IT）", 1.5, minimum=0)
+    wue = _ask_number(asker, "设计工况随 IT 负载变化的现场用水强度（L/kWh IT）", 1.5, minimum=0)
+    fixed_water = _ask_number(
+        asker, "该建成配置在设计工况下的固定用水（m³/h；与水预算同口径）", 0, minimum=0
+    )
     limits = {}
     while not limits:
         print("请至少提供 Q_source、Q_stress、Q_policy 中的一项，作为式(8)的独立水量上限，单位 m³/h。")
@@ -639,6 +645,7 @@ def _ask_water(asker):
     return {
         "basis": basis,
         "wue_l_per_kwh_it": wue,
+        "fixed_water_m3_h": fixed_water,
         **{f"{key}_m3_h": value for key, value in limits.items()},
     }
 
@@ -681,9 +688,12 @@ def _ask_scenario(asker, number, grid_mw, assessment_year):
             allow_zero=False,
         ),
     }
-    wue = _ask_optional_number(asker, "本方案 WUE(x) 覆盖（L/kWh IT，可留空）")
+    wue = _ask_optional_number(asker, "本方案可变用水强度覆盖（L/kWh IT，可留空）")
     if wue is not None:
         spec["wue_l_per_kwh_it"] = wue
+    fixed_water = _ask_optional_number(asker, "本方案固定用水覆盖（m³/h，留空沿用场址值）")
+    if fixed_water is not None:
+        spec["fixed_water_m3_h"] = fixed_water
     generation_land = _ask_optional_number(
         asker, "本方案自建发电站用地 A_e（ha，留空沿用场址值）"
     )
