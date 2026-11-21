@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import run as run_module
-from immc_power_capacity.app import run_interactive
+from immc_power_capacity.app import _print, run_interactive
 
 
 def _site_config():
@@ -39,3 +39,14 @@ def test_interactive_wizard_collects_joint_configuration():
 
     assert code == 0, messages
     assert any("P_max = 90" in message for message in messages)
+
+
+def test_console_output_uses_readable_sections():
+    messages = []
+    _print(run_module.calculate(_site_config()), say=messages.append)
+    text = "\n".join(messages)
+    assert "评估设置" in text
+    assert "候选方案" in text
+    assert "电力上限 P_E" in text
+    assert "联合容量 P" in text
+    assert " | " not in text

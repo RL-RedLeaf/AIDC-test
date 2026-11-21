@@ -13,8 +13,18 @@ python code/run.py code/examples/q1_minimal.yaml --json code/examples/q1_minimal
 输出应包含：
 
 ```text
-纯电网 | ... | P_E=100 | P_W=120 | P_L=160 | 联合容量=100 | 触顶约束=电力
-P_max = 100 MW IT，最优配置：纯电网
+评估设置
+  场址：示例场址
+  评估年份 y：2028
+...
+[1] 纯电网（grid_only）
+  电力上限 P_E = 100 MW IT
+  水上限 P_W = 120 MW IT
+  土地上限 P_L = 160 MW IT
+  联合容量 P = 100 MW IT；触顶约束：电力
+结论
+  P_max = 100 MW IT
+  最优配置：纯电网
 ```
 
 这个结果来自演示数据，不是实际场址数据。完整的合成示例见 [q1_site.yaml](examples/q1_site.yaml)。

@@ -140,33 +140,51 @@ def _reject_wrong_units(mapping, label="配置"):
 
 def _print(report, say=print):
     if "P_max_mw_it" in report:
-        say(f"{report['site']} | {report['assessment_year']} | {report['period_note']} | {report['service_level']}")
+        say("评估设置")
+        say(f"  场址：{report['site']}")
+        say(f"  评估年份 y：{report['assessment_year']}")
+        say(f"  设计期：{report['period_note']}")
+        say(f"  服务水平：{report['service_level']}")
         water = report["water"]
         basis = "取水上界" if water["basis"] == "withdrawal" else "耗水上限"
-        say(f"{basis} {water['Q_max_m3_h']:.6g} m³/h；未纳入水量项：{', '.join(water['omitted']) or '无'}")
-        say("配置 | 电网 MW | 自建 MW | 进线 MW | k | P_E | P_W | P_L | 联合容量 (MW IT) | 触顶约束")
-        for row in report["scenarios"]:
+        say("")
+        say("水量约束")
+        say(f"  口径：{basis}")
+        say(f"  Q_max = {water['Q_max_m3_h']:.6g} m³/h")
+        say(f"  未纳入的水量项：{', '.join(water['omitted']) or '无'}")
+        say("")
+        say("候选方案")
+        for index, row in enumerate(report["scenarios"], start=1):
             power = row["breakdown"]
-            water_text = "无现场用水需求" if row["P_W_mw_it"] is None else f"{row['P_W_mw_it']:.6g}"
-            say(f"{row['name']} | {power['grid_mw']:g} | {power['self_generation_mw']:g} | "
-                f"{power['facility_mw']:g} | {power['k']:g} | {row['P_E_mw_it']:.6g} | "
-                f"{water_text} | {row['P_L_mw_it']:.6g} | {row['P_mw_it']:.6g} | {'、'.join(row['binding'])}")
+            say(f"[{index}] {row['name']}（{row['power_type']}）")
+            say(f"  电力上限 P_E = {row['P_E_mw_it']:.6g} MW IT")
+            say(f"    P_grid = {power['grid_mw']:.6g} MW，P_self = {power['self_generation_mw']:.6g} MW，"
+                f"P_total = {power['facility_mw']:.6g} MW，k = {power['k']:.6g}")
+            if row["P_W_mw_it"] is None:
+                say("  水上限 P_W = 无现场用水需求")
+            else:
+                say(f"  水上限 P_W = {row['P_W_mw_it']:.6g} MW IT（Q_max / WUE）")
+            say(f"  土地上限 P_L = {row['P_L_mw_it']:.6g} MW IT")
+            say(f"  联合容量 P = {row['P_mw_it']:.6g} MW IT；触顶约束：{'、'.join(row['binding'])}")
+            say("")
         for item in report["excluded"]:
-            say(f"排除：{item['name']}（{item['reason']}，投运年 {item['online_year']}）")
-        say(f"P_max = {report['P_max_mw_it']:.6g} MW IT，最优配置：{'、'.join(report['winners'])}")
+            say(f"未进入比较：{item['name']}（{item['reason']}，投运年 {item['online_year']}）")
+        say("结论")
+        say(f"  P_max = {report['P_max_mw_it']:.6g} MW IT")
+        say(f"  最优配置：{'、'.join(report['winners'])}")
         return
-    say("电网 MW | 方案 | 自发电可靠 MW | 设施总 MW | k | 最大 IT MW")
+    say("电力分项结果")
     for item in report["scenarios"]:
         row = item["breakdown"]
         say(
-            f"{row['grid_mw']:.6g} | {item['name']} | "
-            f"{row['self_generation_mw']:.6g} | {row['facility_mw']:.6g} | "
-            f"{row['k']:.6g} | {row['it_mw']:.6g}"
+            f"{item['name']}：P_grid = {row['grid_mw']:.6g} MW，"
+            f"P_self = {row['self_generation_mw']:.6g} MW，"
+            f"P_total = {row['facility_mw']:.6g} MW，"
+            f"k = {row['k']:.6g}，P_E = {row['it_mw']:.6g} MW IT"
         )
     optimum = report["optimum"]
     say(
-        f"\n最优方案：{optimum['name']}，"
-        f"P_E={optimum['breakdown']['it_mw']:.6g} MW IT"
+        f"\n最优方案：{optimum['name']}，P_E = {optimum['breakdown']['it_mw']:.6g} MW IT"
     )
     say(f"考察期说明：{report['assumptions']['period_note']}")
 
