@@ -27,7 +27,6 @@ scenarios:
     online_year: 2028
     generation_share: 0.125
     area_km2: 0.2
-    local_generation_required_ha: 20
     density_mw_per_km2: 100
     net_output_mw: [20, 0]
     dt_hours: 1

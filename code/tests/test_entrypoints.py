@@ -23,12 +23,11 @@ def test_run_module_accepts_config_mapping(tmp_path):
 
 def test_interactive_wizard_collects_joint_configuration():
     answers = iter([
-        "1",  # 联合模型
         "", "", "", "",  # 场址、年份、设计期、服务水平
         "1", "108", "", "",  # 电网 MW、PCC 留空、k
         "2", "1.5", "", "", "180",  # 取水口径、WUE、水量上限
         "", "", "", "",  # 土地四项
-        "1", "", "", "", "", "",  # 纯电网方案
+        "1", "", "", "", "",  # 纯电网方案
         "", "",  # 不继续添加、不写 JSON
     ])
     messages = []
@@ -40,21 +39,3 @@ def test_interactive_wizard_collects_joint_configuration():
 
     assert code == 0, messages
     assert any("P_max = 90" in message for message in messages)
-
-
-def test_interactive_wizard_supports_power_only_mode():
-    answers = iter([
-        "2",  # 仅电力分项
-        "1", "120", "", "1.2",  # MW、PCC 留空、k
-        "1", "",  # 纯电网方案
-        "", "",  # 不继续添加、不写 JSON
-    ])
-    messages = []
-
-    code = run_interactive(
-        asker=lambda prompt: next(answers),
-        say=lambda message="": messages.append(message),
-    )
-
-    assert code == 0, messages
-    assert any("P_E=100" in message for message in messages)

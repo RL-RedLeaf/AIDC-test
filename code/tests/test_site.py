@@ -68,13 +68,21 @@ def test_isolated_and_grid_wind(site):
     assert assess_site(site)["scenarios"][0]["P_E_mw_it"] == 100
 
 
-def test_insufficient_land_and_year(site):
-    site["land"]["effective_ha"] = 150
-    assert any(row["reason"] == "本地发电及配套用地不足" for row in assess_site(site)["excluded"])
+def test_land_and_year(site):
     site["assessment_year"] = 2025
     with pytest.raises(ValidationError, match="没有"):
         assess_site(site)
     assert land_capacity(dict(effective_ha=10, fixed_it_ha=10, ha_per_mw_it=1), 0)["P_L_mw_it"] == 0
+
+
+def test_q1_rejects_combined_battery(site):
+    site["scenarios"] = [{
+        "name": "不在正稿内的方案",
+        "type": "combined_battery",
+        "online_year": 2028,
+    }]
+    with pytest.raises(ValidationError, match="正稿 Q1"):
+        assess_site(site)
 
 
 def test_period_budget_and_missing_limits(site):

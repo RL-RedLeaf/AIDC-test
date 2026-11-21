@@ -9,6 +9,9 @@ from .supply import _build_scenario
 from .validators import _efficiency, _nonnegative, _positive, _positive_integer, _ratio
 
 
+Q1_TYPES = frozenset({"grid", "coal", "gas", "wind", "hydro", "solar"})
+
+
 def water_budget(water):
     """式 (8)–(10)，流量统一为 m³/h。"""
     basis = water.get("basis")
@@ -92,9 +95,14 @@ def _grid(data):
 
 
 def _resource_row(data, spec, grid, budget):
-    kind = spec.get("type")
-    if not isinstance(kind, str):
+    kind_value = spec.get("type")
+    if not isinstance(kind_value, str):
         raise ValidationError("每套配置需要 type。")
+    kind = kind_value.strip().lower()
+    if kind not in Q1_TYPES:
+        raise ValidationError(
+            f"正稿 Q1 不包含方案类型 {kind}；可用类型为 {', '.join(sorted(Q1_TYPES))}。"
+        )
     if kind == "wind" and grid > 0 and "alpha" in spec:
         raise ValidationError("并网风电需同期 net_output_mw 或 power_ratios 进行逐时平衡。")
     multiplier = spec.get("k_factor", data.get("k_factor"))
@@ -152,15 +160,7 @@ def assess_site(data):
         if spec["online_year"] > year:
             excluded.append({"name": spec["name"], "online_year": spec["online_year"], "reason": "尚未投运"})
             continue
-        row = _resource_row(data, spec, grid, budget)
-        if "local_generation_required_ha" in spec:
-            required = spec["local_generation_required_ha"]
-            _nonnegative("local_generation_required_ha", required)
-            if required > row["land"]["reserved_generation_ha"] + 1e-9:
-                excluded.append({"name": spec["name"], "online_year": spec["online_year"],
-                                 "reason": "本地发电及配套用地不足"})
-                continue
-        rows.append(row)
+        rows.append(_resource_row(data, spec, grid, budget))
     if not rows:
         raise ValidationError(f"{year} 年没有满足投运与发电用地条件的候选配置。")
     best = max(row["P_mw_it"] for row in rows)

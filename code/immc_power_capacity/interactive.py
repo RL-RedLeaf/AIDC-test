@@ -80,8 +80,8 @@ def _series(asker, prompt):
         return values
 
 
-def _ask_battery(asker, default=True, required=False):
-    if not required and not _yes_no(asker, "是否配置电池", default):
+def _ask_battery(asker, default=True):
+    if not _yes_no(asker, "是否配置电池", default):
         return None
     return {
         "C_max_mw": _number(asker, "最大充电功率 C_max_mw", 10, allow_zero=False),
@@ -105,7 +105,7 @@ def _ask_site(asker):
     }
 
 
-def _ask_power_inputs(asker, joint):
+def _ask_power_inputs(asker):
     mode = _choice(asker, "电网输入方式", ["MW", "MVA"], "MW")
     config = {}
     if mode == "MVA":
@@ -114,7 +114,7 @@ def _ask_power_inputs(asker, joint):
             asker, "功率因数", 0.9, minimum=0.000001, maximum=1, allow_zero=False
         )
     else:
-        config["P_grid_mw"] = _number(asker, "电网可持续有功 P_grid_mw", 108, minimum=0, allow_zero=not joint)
+        config["P_grid_mw"] = _number(asker, "电网可持续有功 P_grid_mw", 108, minimum=0, allow_zero=True)
     pcc = _optional_number(asker, "共享关口容量 C_PCC_mw（留空表示专用接线）")
     if pcc is not None:
         config["C_PCC_mw"] = pcc
@@ -152,28 +152,24 @@ def _ask_land(asker):
     }
 
 
-def _ask_scenario(asker, number, joint, grid_mw):
+def _ask_scenario(asker, number, grid_mw):
     kind = _choice(
         asker,
         "方案类型",
-        ["grid", "coal", "gas", "wind", "hydro", "solar", "combined_battery"],
+        ["grid", "coal", "gas", "wind", "hydro", "solar"],
         "grid",
     )
     spec = {
         "name": _text(asker, "方案名称", f"{kind}-{number}"),
         "type": kind,
     }
-    if joint:
-        spec["online_year"] = _number(asker, "投运年份", 2028, minimum=1, integer=True, allow_zero=False)
-        generation_share = _optional_number(asker, "本方案发电用地份额（留空沿用场址值）")
-        if generation_share is not None:
-            spec["generation_share"] = generation_share
-        local_land = _optional_number(asker, "本地发电及配套所需面积 ha（可留空）")
-        if local_land is not None:
-            spec["local_generation_required_ha"] = local_land
-        wue = _optional_number(asker, "本方案 WUE 覆盖（L/kWh IT，可留空）")
-        if wue is not None:
-            spec["wue_l_per_kwh_it"] = wue
+    spec["online_year"] = _number(asker, "投运年份", 2028, minimum=1, integer=True, allow_zero=False)
+    generation_share = _optional_number(asker, "本方案发电用地份额（留空沿用场址值）")
+    if generation_share is not None:
+        spec["generation_share"] = generation_share
+    wue = _optional_number(asker, "本方案 WUE 覆盖（L/kWh IT，可留空）")
+    if wue is not None:
+        spec["wue_l_per_kwh_it"] = wue
 
     if kind in {"coal", "gas"}:
         spec["units"] = _number(asker, "可同时运行机组台数", 2 if kind == "coal" else 1,
@@ -213,32 +209,22 @@ def _ask_scenario(asker, number, joint, grid_mw):
         battery = _ask_battery(asker, True)
         if battery is not None:
             spec["battery"] = battery
-    elif kind == "combined_battery":
-        spec["installed_mw"] = _number(asker, "风光合计装机 MW", 230, minimum=0.000001, allow_zero=False)
-        spec["dt_hours"] = _number(asker, "时段长度 dt_hours", 1, minimum=0.000001, allow_zero=False)
-        spec["supply_series_mw"] = _series(asker, "风光合并逐时净功率 MW（逗号分隔）")
-        spec["battery"] = _ask_battery(asker, required=True)
     return spec
 
 
 def build_interactive_config(asker=input, say=print, default_json=None):
     """收集一套配置，供函数调用和测试复用。"""
-    say("IMMC 2027 A 题第一问：交互式容量计算")
-    mode = _choice(asker, "计算模式", ["联合模型（电/水/土地）", "仅电力分项"], "联合模型（电/水/土地）")
-    joint = mode.startswith("联合")
-    data = {}
-    if joint:
-        data.update(_ask_site(asker))
-        data["model"] = "q1"
-    data.update(_ask_power_inputs(asker, joint))
+    say("IMMC 2027 A 题第一问：交互式电水土地容量计算")
+    data = _ask_site(asker)
+    data["model"] = "q1"
+    data.update(_ask_power_inputs(asker))
     grid_mw = data.get("P_grid_mw", data.get("P_grid_mva", 0) * data.get("power_factor", 1))
-    if joint:
-        data["water"] = _ask_water(asker)
-        data["land"] = _ask_land(asker)
+    data["water"] = _ask_water(asker)
+    data["land"] = _ask_land(asker)
     data["scenarios"] = []
     while True:
         index = len(data["scenarios"]) + 1
-        data["scenarios"].append(_ask_scenario(asker, index, joint, grid_mw))
+        data["scenarios"].append(_ask_scenario(asker, index, grid_mw))
         if not _yes_no(asker, "继续添加方案", False):
             break
     if default_json:
