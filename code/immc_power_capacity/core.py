@@ -561,6 +561,12 @@ def water_budget(water):
     if any(field in water for field in (*river_fields, "stress_fraction")):
         if basis != "withdrawal":
             raise ValidationError("式 (9)、(10) 的既有取水和水压力需使用 withdrawal 口径。")
+        missing = [field for field in river_fields if field not in water]
+        if missing:
+            raise ValidationError(
+                "仅有河流流量和生态保留只能得到未核实的 Q_水文余量，不能作为 "
+                "Q_source；请补充 other_m3_h，或直接提供 source_m3_h / 供水单位交付量。"
+            )
         for field in river_fields:
             _nonnegative(field, water.get(field))
         available = water["river_m3_h"] - water["eco_m3_h"]

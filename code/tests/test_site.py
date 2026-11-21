@@ -133,3 +133,13 @@ def test_q1_combined_battery(site):
 def test_invalid_or_ambiguous_water(water):
     with pytest.raises(ValidationError):
         water_budget(water)
+
+
+def test_hydrologic_margin_is_not_treated_as_available_source():
+    with pytest.raises(ValidationError, match="水文余量"):
+        water_budget({
+            "basis": "withdrawal",
+            "wue_l_per_kwh_it": 1.5,
+            "river_m3_h": 100,
+            "eco_m3_h": 20,
+        })
