@@ -17,17 +17,17 @@ def _site_config():
 def test_run_module_accepts_config_mapping(tmp_path):
     output = tmp_path / "function_result.json"
     report = run_module.calculate(_site_config(), output)
-    assert report["P_max_mw_it"] == 110
+    assert report["P_max_mw_it"] == 140
     assert output.exists()
 
 
 def test_interactive_wizard_collects_joint_configuration():
     answers = iter([
         "", "", "", "",  # 场址、年份、设计期、服务水平
-        "1", "108", "", "",  # 电网 MW、PCC 留空、k
+        "1", "108", "",  # 电网 MW、k
         "2", "1.5", "", "", "180",  # 取水口径、WUE、水量上限
-        "", "", "", "",  # 土地四项
-        "1", "", "", "", "",  # 纯电网方案
+        "", "", "",  # 土地三项
+        "1", "", "", "",  # 纯电网方案
         "", "",  # 不继续添加、不写 JSON
     ])
     messages = []

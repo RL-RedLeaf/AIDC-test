@@ -17,30 +17,24 @@ def site():
     return yaml.safe_load((ROOT / "examples/q1_site.yaml").read_text(encoding="utf-8"))
 
 
-def test_demo_and_sensitivity(tmp_path):
+def test_demo(tmp_path):
     output = tmp_path / "result.json"
     report = run(ROOT / "examples/q1_site.yaml", output)
     assert json.loads(output.read_text(encoding="utf-8")) == report
-    assert report["P_max_mw_it"] == 110
+    assert report["P_max_mw_it"] == 140
     assert report["winners"] == ["燃气配干冷园区"]
     assert report["excluded"][0]["online_year"] == 2030
-    assert [row["binding"] for row in report["scenarios"]] == [["电力"], ["电力"], ["水"], ["土地"]]
-    assert report["scenarios"][-1]["breakdown"]["facility_mw"] == 156
+    assert [row["binding"] for row in report["scenarios"]] == [["电力"], ["电力"], ["水"], ["电力"]]
+    assert report["scenarios"][-1]["breakdown"]["facility_mw"] == 168
     assert report["water"]["limits_m3_h"] == {"source": 400, "stress": 150, "policy": 180}
-    assert len(report["sensitivity"]) == 12
-    upgraded = next(case for case in report["sensitivity"]
-                    if case["parameter"] == "P_grid_mw" and case["value"] == 120)
-    assert upgraded["scenarios"][0]["P_mw_it"] == 100
-    assert upgraded["scenarios"][0]["binding"] == ["电力", "水"]
 
 
-def test_minimal_config_defaults_generation_share():
+def test_minimal_config():
     data = yaml.safe_load((ROOT / "examples/q1_minimal.yaml").read_text(encoding="utf-8"))
     report = assess_site(data)
     assert report["P_max_mw_it"] == 100
     assert report["scenarios"][0]["P_W_mw_it"] == 120
     assert report["scenarios"][0]["P_L_mw_it"] == 160
-    assert report["scenarios"][0]["land"]["reserved_generation_ha"] == 0
 
 
 def test_grid_conversion_and_tied_winners(site):
@@ -71,29 +65,36 @@ def test_land_and_year(site):
     site["assessment_year"] = 2025
     with pytest.raises(ValidationError, match="没有"):
         assess_site(site)
-    assert land_capacity(dict(effective_ha=10, fixed_it_ha=10, ha_per_mw_it=1), 0)["P_L_mw_it"] == 0
+    assert land_capacity(dict(effective_ha=10, fixed_it_ha=10, ha_per_mw_it=1))["P_L_mw_it"] == 0
 
 
-def test_q1_rejects_combined_battery(site):
+def test_q1_rejects_unknown_type(site):
     site["scenarios"] = [{
         "name": "不在正稿内的方案",
-        "type": "combined_battery",
+        "type": "unknown",
         "online_year": 2028,
     }]
     with pytest.raises(ValidationError, match="正稿 Q1"):
         assess_site(site)
 
 
-def test_period_budget_and_missing_limits(site):
-    site["water"] = dict(basis="consumption", wue_l_per_kwh_it=2,
-                         period_budget=dict(limit="policy", volume_m3=120, hours=2, it_load_factor=0.5))
+def test_q1_combined_battery(site):
+    site["scenarios"] = [{
+        "name": "风光共用电池",
+        "type": "combined_battery",
+        "online_year": 2028,
+        "installed_mw": 230,
+        "dt_hours": 1,
+        "supply_series_mw": [20, 0],
+        "battery": {
+            "C_max_mw": 10,
+            "D_max_mw": 10,
+            "E_usable_mwh": 10,
+        },
+    }]
     row = assess_site(site)["scenarios"][0]
-    assert row["P_W_mw_it"] == 60
-    assert water_budget(site["water"])["omitted"] == ["source", "stress"]
-    site["water"].update(source_m3_h=90)
-    assert assess_site(site)["scenarios"][0]["P_W_mw_it"] == 45
-    site["water"]["wue_l_per_kwh_it"] = 0
-    assert assess_site(site)["scenarios"][0]["P_mw_it"] == 90
+    assert row["P_E_mw_it"] == pytest.approx(98.33333333333334)
+    assert row["binding"] == ["电力"]
 
 
 @pytest.mark.parametrize("water", [

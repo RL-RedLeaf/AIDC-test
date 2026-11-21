@@ -2,7 +2,6 @@
 
 import importlib
 import math
-from copy import deepcopy
 from math import isclose
 
 import numpy as np
@@ -79,15 +78,12 @@ def _finite_nonnegative(values, field):
     return series
 
 
-def total_capacity(grid_mw, self_generation_mw, k_factor, pcc_mw=None):
-    """正文式 (2)、(7)。专用接线可省略共享关口上限。"""
+def total_capacity(grid_mw, self_generation_mw, k_factor):
+    """权威稿式 (1)、(6)：P_total=P_grid+P_self，P_E=P_total/k。"""
     _nonnegative("P_grid", grid_mw)
     _nonnegative("P_self", self_generation_mw)
     _k_factor(k_factor)
     facility_mw = grid_mw + self_generation_mw
-    if pcc_mw is not None:
-        _nonnegative("C_PCC_mw", pcc_mw)
-        facility_mw = min(facility_mw, pcc_mw)
     return facility_mw / k_factor, facility_mw
 
 
@@ -340,7 +336,7 @@ def combined_battery(name, grid_mw, k_factor, supply_series_mw, installed_mw,
         settings["charge_efficiency"], settings["discharge_efficiency"],
     )
     return _breakdown(grid_mw, self_generation, k_factor, "combined_renewables", {
-        "equation": "旧版风光共用电池（非 Q1）；正文式(6) 的扩展",
+        "equation": "权威稿风、光共用电池；附录 A",
         "installed_mw": installed_mw,
         "dt_hours": dt_hours,
         "input_series": "supply_series_mw",
@@ -511,7 +507,7 @@ def _solar_result(spec, grid_value, k_value):
     )
 
 
-Q1_TYPES = frozenset({"grid", "coal", "gas", "wind", "hydro", "solar"})
+Q1_TYPES = frozenset({"grid", "coal", "gas", "wind", "hydro", "solar", "combined_battery"})
 
 
 def water_budget(water):
@@ -520,7 +516,7 @@ def water_budget(water):
     if basis not in ("withdrawal", "consumption"):
         raise ValidationError("water.basis 应为 withdrawal（取水）或 consumption（耗水）。")
     allowed = {"basis", "source_m3_h", "stress_m3_h", "policy_m3_h", "river_m3_h",
-               "eco_m3_h", "other_m3_h", "stress_fraction", "wue_l_per_kwh_it", "period_budget"}
+               "eco_m3_h", "other_m3_h", "stress_fraction", "wue_l_per_kwh_it"}
     if unknown := water.keys() - allowed:
         raise ValidationError(f"water 含未识别字段：{', '.join(map(str, unknown))}")
     limits = {}
@@ -544,44 +540,26 @@ def water_budget(water):
                 raise ValidationError("水压力上限应选用直接给定或式 (10) 推算中的一种。")
             _ratio("stress_fraction", water["stress_fraction"])
             limits["stress"] = max(0.0, water["stress_fraction"] * available - water["other_m3_h"])
-    period = water.get("period_budget")
-    if period is not None:
-        if not isinstance(period, dict) or period.get("limit") not in ("source", "stress", "policy"):
-            raise ValidationError("period_budget.limit 需说明总量属于 source、stress 或 policy。")
-        key = period["limit"]
-        if key in limits:
-            raise ValidationError(f"同一水量上限 {key} 重复输入。")
-        _nonnegative("volume_m3", period.get("volume_m3"))
-        _positive("hours", period.get("hours"))
-        _efficiency("it_load_factor", period.get("it_load_factor"))
-        limits[key] = period["volume_m3"] / period["hours"]
     if not limits:
         raise ValidationError("水量资料不足，source、stress、policy 至少需一个可用上限。")
-    design_limits = limits.copy()
-    if period:
-        design_limits[period["limit"]] /= period["it_load_factor"]
     return {
         "basis": basis, "limits_m3_h": limits, "Q_max_m3_h": min(limits.values()),
-        "design_equivalent_m3_h": min(design_limits.values()),
-        "period_budget": period,
         "omitted": [key for key in ("source", "stress", "policy") if key not in limits],
     }
 
 
-def land_capacity(land, share):
-    """式 (12)–(15)，面积为 ha，强度为 ha/MW IT。"""
+def land_capacity(land):
+    """权威稿土地式：P_land=(A_eff-A_0)/a_site。"""
     area = land.get("effective_ha")
     fixed = land.get("fixed_it_ha", 0)
     intensity = land.get("ha_per_mw_it")
     _nonnegative("effective_ha", area)
     _nonnegative("fixed_it_ha", fixed)
     _positive("ha_per_mw_it", intensity)
-    _ratio("generation_share", share)
-    site_area = area * (1 - share)
     return {
-        "site_ha": site_area, "reserved_generation_ha": area * share,
+        "site_ha": area,
         "fixed_it_ha": fixed, "optimistic_zero_fixed": fixed == 0,
-        "P_L_mw_it": max(0.0, site_area - fixed) / intensity,
+        "P_L_mw_it": max(0.0, area - fixed) / intensity,
     }
 
 
@@ -609,23 +587,16 @@ def _resource_row(data, spec, grid, budget):
         raise ValidationError("并网风电需同期 net_output_mw 或 power_ratios 进行逐时平衡。")
     multiplier = spec.get("k_factor", data.get("k_factor"))
     row = _build_scenario(kind, spec, grid, multiplier, spec["name"])
-    pcc = spec.get("C_PCC_mw", data.get("C_PCC_mw"))
-    if pcc is None or pcc == "dedicated":
-        pcc = "dedicated"
-    else:
-        _nonnegative("C_PCC_mw（专用接线填 dedicated）", pcc)
     breakdown = row["breakdown"]
-    electric, facility = total_capacity(grid, breakdown["self_generation_mw"], multiplier,
-                                        None if pcc == "dedicated" else pcc)
-    breakdown.update(it_mw=electric, facility_mw=facility, C_PCC_mw=pcc)
+    electric, facility = total_capacity(grid, breakdown["self_generation_mw"], multiplier)
+    breakdown.update(it_mw=electric, facility_mw=facility)
     if kind == "wind":
         row["method"]["capacity_basis"] = "恒定可交付电网与风电的逐时平衡" if grid else "孤立恒载最低出力"
 
     wue = spec.get("wue_l_per_kwh_it", data["water"].get("wue_l_per_kwh_it"))
     _nonnegative("wue_l_per_kwh_it", wue)
-    water_limit = budget["design_equivalent_m3_h"] / wue if wue > 0 else None
-    share = spec.get("generation_share", data["land"].get("generation_share", 0))
-    land = land_capacity(data["land"], share)
+    water_limit = budget["Q_max_m3_h"] / wue if wue > 0 else None
+    land = land_capacity(data["land"])
     limits = {"电力": electric, "土地": land["P_L_mw_it"]}
     if water_limit is not None:
         limits["水"] = water_limit
@@ -668,35 +639,8 @@ def assess_site(data):
     best = max(row["P_mw_it"] for row in rows)
     return {
         "site": data["site"], "assessment_year": year, "period_note": data["period_note"],
-        "inputs": {key: value for key, value in data.items() if key != "sensitivity"},
+        "inputs": dict(data),
         "service_level": data["service_level"], "grid_basis": grid_basis, "water": budget,
         "scenarios": rows, "excluded": excluded, "P_max_mw_it": best,
         "winners": [row["name"] for row in rows if isclose(row["P_mw_it"], best, abs_tol=1e-9)],
     }
-
-
-def sensitivity_cases(data):
-    """§7.5，每次只替换一个显式的场址参数，以同一组配置重算。"""
-    allowed = {"P_grid_mw", "C_PCC_mw", "k_factor", "water.wue_l_per_kwh_it",
-               "water.stress_fraction", "land.effective_ha", "land.ha_per_mw_it",
-               "land.generation_share"}
-    cases = []
-    settings = data.get("sensitivity", {})
-    if not isinstance(settings, dict):
-        raise ValidationError("sensitivity 应为参数与取值列表。")
-    for field, values in settings.items():
-        if field not in allowed or not isinstance(values, list) or not values:
-            raise ValidationError(f"无效的敏感性参数或取值列表：{field}")
-        for value in values:
-            varied = deepcopy(data)
-            path = field.split(".")
-            section = varied if len(path) == 1 else varied[path[0]]
-            if path[-1] not in section:
-                raise ValidationError(f"敏感性参数 {field} 缺少基准值。")
-            section[path[-1]] = value
-            report = assess_site(varied)
-            cases.append({"parameter": field, "value": value, "P_max_mw_it": report["P_max_mw_it"],
-                          "winners": report["winners"], "scenarios": [
-                              {"name": row["name"], "P_mw_it": row["P_mw_it"], "binding": row["binding"]}
-                              for row in report["scenarios"]]})
-    return cases

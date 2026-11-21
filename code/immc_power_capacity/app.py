@@ -17,7 +17,6 @@ from .core import (
     _k_factor,
     _positive,
     assess_site,
-    sensitivity_cases,
 )
 
 
@@ -51,9 +50,8 @@ def calculate(config, json_path=None):
 
     if data.get("model") == "q1":
         report = assess_site(data)
-        report["sensitivity"] = sensitivity_cases(data)
     else:
-        if "model" in data or any(key in data for key in ("water", "land", "C_PCC_mw", "assessment_year")):
+        if "model" in data or any(key in data for key in ("water", "land", "assessment_year")):
             raise CapacityModelError("正稿联合评估配置需声明 model: q1。")
         report = _power_report(data)
     if json_path:
@@ -301,11 +299,6 @@ def _ask_power_inputs(asker):
         )
     else:
         config["P_grid_mw"] = _ask_number(asker, "电网可持续有功 P_grid（P_grid_mw，MW）", 108, minimum=0)
-    pcc = _ask_optional_number(
-        asker, "共享关口容量 C_PCC（C_PCC_mw，MW；电网与自建电源共用进线的持续上限，留空表示专用接线）"
-    )
-    if pcc is not None:
-        config["C_PCC_mw"] = pcc
     config["k_factor"] = _ask_number(
         asker, "满载设施/IT 倍率 k（设计满载设施功率÷同一工况 IT 功率）", 1.2,
         minimum=1, allow_zero=False
@@ -343,8 +336,6 @@ def _ask_land(asker):
                                    minimum=0),
         "ha_per_mw_it": _ask_number(asker, "园区边际用地强度 a_site（ha/MW IT）", 1,
                                     minimum=0.000001, allow_zero=False),
-        "generation_share": _ask_number(asker, "本地发电及配套用地份额 κ（占 A_eff 的比例）", 0,
-                                         minimum=0, maximum=1),
     }
 
 
@@ -352,7 +343,7 @@ def _ask_scenario(asker, number, grid_mw):
     kind = _ask_choice(
         asker,
         "方案类型（每个方案对应式(1)中的一个候选配置 x）",
-        ["grid", "coal", "gas", "wind", "hydro", "solar"],
+        ["grid", "coal", "gas", "wind", "hydro", "solar", "combined_battery"],
         "grid",
     )
     spec = {
@@ -361,9 +352,6 @@ def _ask_scenario(asker, number, grid_mw):
         "online_year": _ask_number(asker, "投运年份（是否属于评估年份 y 的可行集合 X_y）", 2028,
                                    minimum=1, integer=True, allow_zero=False),
     }
-    generation_share = _ask_optional_number(asker, "本方案发电用地份额 κ(x)（留空沿用场址值）")
-    if generation_share is not None:
-        spec["generation_share"] = generation_share
     wue = _ask_optional_number(asker, "本方案 WUE(x) 覆盖（L/kWh IT，可留空）")
     if wue is not None:
         spec["wue_l_per_kwh_it"] = wue
@@ -415,6 +403,18 @@ def _ask_scenario(asker, number, grid_mw):
         battery = _ask_battery(asker, True)
         if battery is not None:
             spec["battery"] = battery
+    elif kind == "combined_battery":
+        spec["installed_mw"] = _ask_number(
+            asker, "风光合计装机 X_wind + X_PV（MW）", 230, minimum=0.000001, allow_zero=False
+        )
+        spec["dt_hours"] = _ask_number(
+            asker, "时段长度 Δt（dt_hours，h；只用于附录 A 的逐时校核）", 1,
+            minimum=0.000001, allow_zero=False
+        )
+        spec["supply_series_mw"] = _ask_series(
+            asker, "风光同期合计净功率 r_t（supply_series_mw，MW）"
+        )
+        spec["battery"] = _ask_battery(asker, True)
     return spec
 
 
