@@ -1,6 +1,0 @@
-technology,cooling_or_land_boundary,water_consumption_l_per_kwh,land_ha_per_twh_year,comparison_note
-Coal,wet cooling tower,2.6007,1000,"Land includes direct power-plant footprint plus coal mining and transport"
-Natural gas,combined-cycle wet cooling tower,0.7760,410,"Land shown is direct footprint; spacing definition raises median to 1900 ha/TWh/year"
-Natural gas,combined-cycle dry cooling,0.0076,, "Water factor is about two orders of magnitude lower than the wet combined-cycle case"
-Wind,none,0.0000,130,"Land shown is direct physical footprint; full project spacing has median 12000 ha/TWh/year"
-Solar PV,utility scale,0.0038,2000,"Macknick excludes most panel washing; NREL capacity-basis total area is about 8.9 acres/MWac"
