@@ -83,7 +83,7 @@ python code/run.py --interactive
 
 1. 场址名称、评估年份、设计期说明和服务水平。方括号中的值是默认值，直接回车即可采用。
 2. 电网输入方式。选择 MW 时填写 `P_grid_mw`（\(P_{\mathrm{grid}}\)）；选择 MVA 时填写 `P_grid_mva`（\(S_{\mathrm{grid}}\)）和功率因数 \(\cos\varphi\)。
-3. 水量口径、WUE 和至少一项水量上限（\(Q_{\mathrm{source}},Q_{\mathrm{stress}},Q_{\mathrm{policy}}\)），至少一项不能为空。
+3. 水量口径、WUE 和至少一项水量上限（\(Q_{\mathrm{DC,水源}},Q_{\mathrm{DC,压力上限}},Q_{\mathrm{DC,政策上限}}\)），至少一项不能为空。
 4. 有效用地 \(A_{\mathrm{eff}}\)、IT 侧固定用地 \(A_0^{\mathrm{IT}}\) 和边际用地强度 \(a_{\mathrm{site}}\)。
 5. 方案类型和设备参数。风电、光伏的逐时序列 \(r_t\) 用逗号或空格分隔，例如 `20, 0`。
 6. 是否继续添加方案。可以一次输入多套方案。
@@ -153,80 +153,80 @@ report = calculate(
 
 ### 输入分类
 
-| 类别 | 字段 | 具体含义 |
-|---|---|---|
-| 场址与评估条件 | `site`、`assessment_year`、`period_note`、`service_level` | 场址标识、评估年份 \(y\)、设计期和服务水平；定义比较边界，不直接参与功率计算 |
-| 电网接入条件 | `P_grid_mw` 或 `P_grid_mva + power_factor` | 接入点可持续交付容量；MVA 口径是初筛换算 |
-| 地理条件：水域 | `source_m3_h`、`river_m3_h`、`eco_m3_h`、`other_m3_h`、`policy_m3_h` | 水源余量、河段流量、生态保留、既有取水、政策上限；`source_m3_h` 也可填供水单位或 WAM/WRAP 的剩余水量 |
-| 地理条件：土地 | `effective_ha` | GIS、规划和生态筛选后的连续有效用地 \(A_{\mathrm{eff}}\) |
-| 气象与资源 | `net_output_mw`、`supply_series_mw`、`flow_m3_per_s`、`net_head_m`、`area_km2` | 风光逐时净功率、水电可用流量和落差、风电和光伏合格面积 |
-| 经验或情景参数 | `stress_fraction`、`wue_l_per_kwh_it`、`generation_water_l_per_kwh`、`alpha`、`k_factor`、`net_efficiency` | 取水压力阈值、WUE、发电耗水系数、风电保障比例、满载设施倍率、机组净效率；必须核对来源和口径 |
-| 厂房/园区设施 | `fixed_it_ha`、`ha_per_mw_it`、`density_mw_per_km2` | IT 侧固定用地、园区边际用地强度、风光装机密度 |
-| 机组/电源设备 | `units`、`unit_net_mw`、`installed_mw` | 可同时运行机组台数、单机持续净功率、风电/水电/风光合计装机 |
-| 储能设备 | `C_max_mw`、`D_max_mw`、`E_usable_mwh`、`charge_efficiency`、`discharge_efficiency` | 电池最大充放电功率、可用电量、充放电效率 |
-| 方案控制 | `name`、`type`、`online_year` | 候选配置名称、电源类型、投运年份；`online_year` 大于评估年份时进入 `excluded` |
+| 类别 | 字段 | 正稿符号 | 具体含义 |
+|---|---|---|---|
+| 场址与评估条件 | `site`、`assessment_year`、`period_note`、`service_level` | \(y\) 对应 `assessment_year`；其余无符号 | 场址标识、评估年份、设计期和服务水平；定义比较边界 |
+| 电网接入条件 | `P_grid_mw` 或 `P_grid_mva + power_factor` | \(P_{\mathrm{grid}}\) 或 \(S_{\mathrm{grid}},\cos\varphi\) | 接入点可持续交付容量；MVA 口径是初筛换算 |
+| 地理条件：水域 | `source_m3_h`、`river_m3_h`、`eco_m3_h`、`other_m3_h`、`policy_m3_h` | \(Q_{\mathrm{DC,水源}},Q_{\mathrm{河流}},Q_{\mathrm{生态}},Q_{\mathrm{其他取水}},Q_{\mathrm{DC,政策上限}}\) | 水源余量、河段流量、生态保留、既有取水、政策上限 |
+| 地理条件：土地 | `effective_ha` | \(A_{\mathrm{eff}}\) | GIS、规划和生态筛选后的连续有效用地 |
+| 气象与资源 | `net_output_mw`、`supply_series_mw`、`flow_m3_per_s`、`net_head_m`、`area_km2` | \(r_t\)、\(Q\)、\(H\)、\(A_{\mathrm{风}}\)、\(A_{\mathrm{光}}\) | 风光逐时净功率、水电可用流量和落差、风光合格面积 |
+| 经验或情景参数 | `stress_fraction`、`wue_l_per_kwh_it`、`generation_water_l_per_kwh`、`alpha`、`k_factor`、`net_efficiency` | \(S_{\max}\)、\(WUE\)、\(c_i\)、\(\alpha_{\mathrm{风}}\)、\(k(x)\)、\(\eta_j^{\mathrm{net}}\) | 取水压力阈值、WUE、发电耗水系数、风电保障比例、设施倍率、机组净效率 |
+| 厂房/园区设施 | `fixed_it_ha`、`ha_per_mw_it`、`density_mw_per_km2` | \(A_0^{\mathrm{IT}}\)、\(a_{\mathrm{site}}\)、\(\rho_{\mathrm{风}},\rho_{\mathrm{光}}\) | IT 固定用地、边际用地强度、风光装机密度 |
+| 机组/电源设备 | `units`、`unit_net_mw`、`installed_mw` | \(N_j\)、\(p_j^{\mathrm{net}}\)、\(X_{\mathrm{风}},X_{\mathrm{水}},X_{\mathrm{光}}\) | 火电台数和单机净功率、风电/水电/合计装机 |
+| 储能设备 | `C_max_mw`、`D_max_mw`、`E_usable_mwh`、`charge_efficiency`、`discharge_efficiency` | \(C_{\max}\)、\(D_{\max}\)、\(E_{\mathrm{可用}}\)、\(\eta_c\)、\(\eta_d\) | 电池最大充放电功率、可用电量、充放电效率 |
+| 方案控制 | `name`、`type`、`online_year` | \(x\) 对应 `name`；投运年份决定 \(x\in\mathcal X_y\) | 候选配置名称、电源类型、投运年份 |
 
 `site` 只是场址标识，真实地理信息必须通过上面的有效用地、河段流量、生态保留、风光面积和逐时序列等数值传入。程序不直接读取 GIS 地图、气象文件或流域模型；这些预处理应在外部完成。
 
 ### 必填与缺省
 
-| 字段 | 必填性 | 缺省值或规则 |
-|---|---|---|
-| `model` | 必填 | 必须为 `q1` 才进入联合模型 |
-| `site`、`assessment_year`、`period_note`、`service_level` | 必填 | 无缺省；三个资源上限必须使用同一场址、设计期和服务水平 |
-| `P_grid_mw`、`P_grid_mva` | 二选一 | 必须提供一个；`P_grid_mva` 还必须提供 `power_factor` |
-| `k_factor` | 必填 | 无缺省；方案内可覆盖，要求 \(k(x)\ge 1\) |
-| `water.basis` | 必填 | 只能为 `consumption` 或 `withdrawal` |
-| `wue_l_per_kwh_it` | 直接口径时必填 | 可按方案覆盖；填 0 表示没有该类现场用水需求 |
-| `wue_summer_l_per_kwh_it`、`wue_winter_l_per_kwh_it`、`summer_hours`、`winter_hours` | 季节口径时必填 | 四个字段必须同时提供，按 \(t_{\mathrm{夏}},t_{\mathrm{冬}}\) 加权 |
-| `source_m3_h`、`stress_m3_h`、`policy_m3_h` | 至少一项 | 作为独立水量上限；未提供的项列入 `omitted`，不能当作无穷大 |
-| `river_m3_h`、`eco_m3_h`、`other_m3_h` | 可选但成组 | 用于水源余量公式；只有河流和生态流量时只能得到未核实的水文余量，程序会报错要求补充 `other_m3_h` 或改用 `source_m3_h` |
-| `stress_fraction` | 可选 | 不提供则不计算水压力上限 |
-| `generation_water_l_per_kwh` | 可选 | 缺省视为空映射，即 \(Q_{\mathrm{发电耗水}}=0\)；实际使用时应显式填写系数 |
-| `effective_ha` | 必填 | 无缺省；用于 \(P_L=(A_{\mathrm{eff}}-A_0)/a_{\mathrm{site}}\) |
-| `fixed_it_ha` | 可选 | 默认 0，表示忽略 IT 侧固定用地，属于乐观上界 |
-| `ha_per_mw_it` | 必填 | 单位 ha/MW IT，必须为正数 |
-| `scenarios` | 必填 | 至少一项 |
-| `name`、`type`、`online_year` | 每方案必填 | `type` 取 `grid`、`coal`、`gas`、`wind`、`hydro`、`solar` 或 `combined_battery` |
-| `k_factor`、`wue_l_per_kwh_it`、`generation_water_l_per_kwh` | 方案内可选 | 分别覆盖该方案的设施倍率、WUE、发电耗水系数 |
-| `units`、`unit_net_mw` | 火电必填 | `units` 必须是正整数，`unit_net_mw` 必须为正数 |
-| `net_efficiency` | 可选 | 只用于报告燃料热功率，不改变电力容量 |
-| `gas_supply_adequate` | 可选 | `false` 会拒绝该燃气容量上界；未填写时按设计供气充足处理，但应在论文中声明 |
-| `installed_mw` 或 `area_km2 + density_mw_per_km2` | 风光设备必填 | 至少提供装机，或面积与装机密度 |
-| `alpha`、`power_ratios`、`net_output_mw` | 风电三选一 | 并网风电必须使用同期 `net_output_mw` 或 `power_ratios`，不能用单独 `alpha` 代替逐时平衡 |
-| `flow_m3_per_s`、`net_head_m`、`efficiency` | 水电必填 | 采用同一约束期的流量、落差和综合效率 |
-| `dt_hours` | 光储/共用电池必填 | 附录 A 逐时校核的时段长度，单位 h |
-| `supply_ratios` 或 `net_output_mw` | 光伏二选一 | `net_output_mw` 是逐时净功率；`supply_ratios` 是逐时净功率/装机 |
-| `battery` | 光伏可选、共用电池必填 | 光伏省略电池时按无电池处理；共用电池必须提供完整电池参数 |
-| 电池 `charge_efficiency`、`discharge_efficiency` | 电池内可选 | 默认 1.0 |
-| `C_PCC_mw`、`generation_share`、`period_budget`、`sensitivity` | 不接受 | 会明确报错；这些字段不属于当前 Q1-v1 口径 |
+| 字段 | 正稿符号 | 必填性 | 缺省值或规则 |
+|---|---|---|---|
+| `model` | — | 必填 | 必须为 `q1` 才进入联合模型 |
+| `site`、`assessment_year`、`period_note`、`service_level` | \(y\) 对应 `assessment_year` | 必填 | 无缺省；三个资源上限必须使用同一场址、设计期和服务水平 |
+| `P_grid_mw`、`P_grid_mva` | \(P_{\mathrm{grid}}\)、\(S_{\mathrm{grid}}\) | 二选一 | 必须提供一个；`P_grid_mva` 还必须提供 `power_factor` \(\cos\varphi\) |
+| `k_factor` | \(k(x)\) | 必填 | 无缺省；方案内可覆盖，要求 \(k(x)\ge 1\) |
+| `water.basis` | — | 必填 | 只能为 `consumption` 或 `withdrawal` |
+| `wue_l_per_kwh_it` | \(WUE\) | 直接口径时必填 | 可按方案覆盖；填 0 表示没有该类现场用水需求 |
+| `wue_summer_l_per_kwh_it`、`wue_winter_l_per_kwh_it`、`summer_hours`、`winter_hours` | \(WUE_{\mathrm{夏}},WUE_{\mathrm{冬}},t_{\mathrm{夏}},t_{\mathrm{冬}}\) | 季节口径时必填 | 四个字段必须同时提供，按运行小时加权 |
+| `source_m3_h`、`stress_m3_h`、`policy_m3_h` | \(Q_{\mathrm{DC,水源}},Q_{\mathrm{DC,压力上限}},Q_{\mathrm{DC,政策上限}}\) | 至少一项 | 作为独立水量上限；未提供项列入 `omitted`，不能当作无穷大 |
+| `river_m3_h`、`eco_m3_h`、`other_m3_h` | \(Q_{\mathrm{河流}},Q_{\mathrm{生态}},Q_{\mathrm{其他取水}}\) | 可选但成组 | 用于水源余量公式；只有河流和生态流量时只能得到未核实水文余量，程序会报错 |
+| `stress_fraction` | \(S_{\max}\) | 可选 | 不提供则不计算水压力上限 |
+| `generation_water_l_per_kwh` | \(c_{\mathrm{煤}},c_{\mathrm{气}},c_{\mathrm{风}},c_{\mathrm{光}}\) | 可选 | 缺省视为空映射，即 \(Q_{\mathrm{发电耗水}}=0\)；实际使用时应显式填写 |
+| `effective_ha` | \(A_{\mathrm{eff}}\) | 必填 | 无缺省；用于 \(P_L=(A_{\mathrm{eff}}-A_0)/a_{\mathrm{site}}\) |
+| `fixed_it_ha` | \(A_0^{\mathrm{IT}}\) | 可选 | 默认 0，表示忽略 IT 侧固定用地，属于乐观上界 |
+| `ha_per_mw_it` | \(a_{\mathrm{site}}\) | 必填 | 单位 ha/MW IT，必须为正数 |
+| `scenarios` | \(x\in\mathcal X\) | 必填 | 至少一项 |
+| `name`、`type`、`online_year` | \(x\)、投运年份决定 \(x\in\mathcal X_y\) | 每方案必填 | `type` 取 `grid`、`coal`、`gas`、`wind`、`hydro`、`solar` 或 `combined_battery` |
+| 方案内 `k_factor`、`wue_l_per_kwh_it`、`generation_water_l_per_kwh` | \(k(x),WUE(x),c_i(x)\) | 可选 | 分别覆盖该方案的设施倍率、WUE、发电耗水系数 |
+| `units`、`unit_net_mw` | \(N_j,p_j^{\mathrm{net}}\) | 火电必填 | `units` 为正整数，`unit_net_mw` 为正数 |
+| `net_efficiency` | \(\eta_j^{\mathrm{net}}\) | 可选 | 只用于报告燃料热功率，不改变电力容量 |
+| `gas_supply_adequate` | — | 可选 | `false` 拒绝燃气容量上界；未填写按设计供气充足处理，但应在论文中声明 |
+| `installed_mw` 或 `area_km2 + density_mw_per_km2` | \(X_i\)、\(A_i,\rho_i\) | 风光设备必填 | 至少提供装机，或面积与装机密度 |
+| `alpha`、`power_ratios`、`net_output_mw` | \(\alpha_{\mathrm{风}}\)、\(r_t/X_{\mathrm{风}}\)、\(r_t\) | 风电三选一 | 并网风电必须使用同期 `net_output_mw` 或 `power_ratios` |
+| `flow_m3_per_s`、`net_head_m`、`efficiency` | \(Q,H,\eta_{\mathrm{水}}\) | 水电必填 | 采用同一约束期的流量、落差和综合效率 |
+| `dt_hours` | \(\Delta t\) | 光储/共用电池必填 | 附录 A 逐时校核的时段长度，单位 h |
+| `supply_ratios` 或 `net_output_mw` | \(r_t/X_{\mathrm{光}}\)、\(r_t\) | 光伏二选一 | `net_output_mw` 是逐时净功率；`supply_ratios` 是逐时净功率/装机 |
+| `battery` | \(C_{\max},D_{\max},E_{\mathrm{可用}}\) | 光伏可选、共用电池必填 | 光伏省略按无电池处理；共用电池必须提供 |
+| 电池 `charge_efficiency`、`discharge_efficiency` | \(\eta_c,\eta_d\) | 电池内可选 | 默认 1.0 |
+| `C_PCC_mw`、`generation_share`、`period_budget`、`sensitivity` | — | 不接受 | 会明确报错；不属于当前 Q1-v1 口径 |
 
 ### 输出分类
 
-| 输出 | 单位 | 含义 |
-|---|---|---|
-| `P_E_mw_it` | MW IT | 电力子模型上限 \(P_E=P_{\mathrm{total}}/k\) |
-| `P_W_mw_it` | MW IT 或 null | 水子模型上限 `P_W=Qnet/WUE`；WUE 为 0 时为 null |
-| `P_L_mw_it` | MW IT | 土地子模型上限 \(P_L=(A_{\mathrm{eff}}-A_0)/a_{\mathrm{site}}\) |
-| `P_mw_it` | MW IT | \(P=\min(P_E,P_W,P_L)\) |
-| `binding` | 字符串数组 | 达到该方案最小值的约束；可并列 |
-| `P_max_mw_it` | MW IT | 所有当年可行方案中的最大 \(P\) |
-| `winners` | 字符串数组 | 达到 `P_max_mw_it` 的方案，可并列 |
-| `excluded` | 数组 | 因未投运而未进入比较的方案 |
-| `breakdown.grid_mw` | MW | \(P_{\mathrm{grid}}\) |
-| `breakdown.self_generation_mw` | MW | \(P_{\mathrm{self}}(x)\) |
-| `breakdown.facility_mw` | MW | \(P_{\mathrm{total}}=P_{\mathrm{grid}}+P_{\mathrm{self}}\) |
-| `breakdown.k` | 无量纲 | 该方案使用的 \(k(x)\) |
-| `breakdown.it_mw` | MW IT | 与 `P_E_mw_it` 对应的电力结果 |
-| `generation_water_m3_h` | m³/h | \(Q_{\mathrm{发电耗水}}\) |
-| `Q_net_m3_h` | m³/h | 扣除发电耗水后的 \(Q_{\mathrm{net}}\) |
-| `water.Q_max_m3_h` | m³/h | 三项水量上限的最小值 |
-| `water.limits_m3_h` | m³/h | 实际参与最小值的各项独立上限 |
-| `water.omitted` | 字符串数组 | 未提供的水量上限项 |
-| `land.site_ha` | ha | 参与土地计算的 \(A_{\mathrm{eff}}\) |
-| `land.fixed_it_ha` | ha | \(A_0^{\mathrm{IT}}\) |
-| `land.P_L_mw_it` | MW IT | 土地上限 |
-| `method.charge_mw` 等 | MW/MWh | 光储逐时充电、放电、荷电量、弃电和方向 |
+| 输出 | 正稿符号 | 单位 | 含义 |
+|---|---|---|---|
+| `P_E_mw_it` | \(P_E(x)\) | MW IT | 电力子模型上限 \(P_E=P_{\mathrm{total}}/k\) |
+| `P_W_mw_it` | \(P_W(x)\) | MW IT 或 null | 水子模型上限 `P_W=Qnet/WUE`；WUE 为 0 时为 null |
+| `P_L_mw_it` | \(P_{\mathrm{land}}(x)\) | MW IT | 土地子模型上限 \(P_L=(A_{\mathrm{eff}}-A_0)/a_{\mathrm{site}}\) |
+| `P_mw_it` | \(P(x)\) | MW IT | \(P=\min(P_E,P_W,P_L)\) |
+| `binding` | — | 字符串数组 | 达到该方案最小值的约束；可并列 |
+| `P_max_mw_it` | \(P_{\max}\) | MW IT | 所有当年可行方案中的最大 \(P\) |
+| `winners` | — | 字符串数组 | 达到 `P_max_mw_it` 的方案，可并列 |
+| `excluded` | — | 数组 | 因未投运而未进入比较的方案 |
+| `breakdown.grid_mw` | \(P_{\mathrm{grid}}\) | MW | 电网净有功 |
+| `breakdown.self_generation_mw` | \(P_{\mathrm{self}}(x)\) | MW | 自建电源可靠净增量 |
+| `breakdown.facility_mw` | \(P_{\mathrm{total}}(x)\) | MW | \(P_{\mathrm{total}}=P_{\mathrm{grid}}+P_{\mathrm{self}}\) |
+| `breakdown.k` | \(k(x)\) | 无量纲 | 该方案使用的设施倍率 |
+| `breakdown.it_mw` | \(P_E(x)\) | MW IT | 与 `P_E_mw_it` 对应的电力结果 |
+| `generation_water_m3_h` | \(Q_{\mathrm{发电耗水}}\) | m³/h | 自发电耗水流量 |
+| `Q_net_m3_h` | \(Q_{\mathrm{net}}\) | m³/h | 扣除发电耗水后的净可用流量 |
+| `water.Q_max_m3_h` | \(Q_{\mathrm{DC,max}}\) | m³/h | 三项水量上限的最小值 |
+| `water.limits_m3_h` | \(Q_{\mathrm{DC,水源}},Q_{\mathrm{DC,压力上限}},Q_{\mathrm{DC,政策上限}}\) | m³/h | 实际参与最小值的各项独立上限 |
+| `water.omitted` | — | 字符串数组 | 未提供的水量上限项 |
+| `land.site_ha` | \(A_{\mathrm{eff}}\) | ha | 参与土地计算的有效用地 |
+| `land.fixed_it_ha` | \(A_0^{\mathrm{IT}}\) | ha | IT 侧固定用地 |
+| `land.P_L_mw_it` | \(P_{\mathrm{land}}(x)\) | MW IT | 土地上限 |
+| `method.charge_mw` 等 | \(L,c_t,d_t,e_t\) | MW/MWh | 光储逐时负荷、充电、放电、荷电量和弃电调度 |
 
 ## YAML 输入详解
 
@@ -248,8 +248,8 @@ report = calculate(
 | \(C_{\max}\)、\(D_{\max}\) | `C_max_mw`、`D_max_mw` | 电池最大充、放电功率，MW |
 | \(E_{\mathrm{usable}}\) | `E_usable_mwh` | 扣除应急预留后的可用电量，MWh |
 | \(\eta_c\)、\(\eta_d\) | `charge_efficiency`、`discharge_efficiency` | 充电、放电效率 |
-| \(Q_{\mathrm{source}}\)、\(Q_{\mathrm{stress}}\)、\(Q_{\mathrm{policy}}\) | `source_m3_h`、`stress_m3_h`、`policy_m3_h` | 三项独立水量上限，m³/h |
-| \(Q_{\mathrm{river}}\)、\(Q_{\mathrm{eco}}\)、\(Q_{\mathrm{other}}\) | `river_m3_h`、`eco_m3_h`、`other_m3_h` | 河段流量、生态保留、既有取水，m³/h |
+| \(Q_{\mathrm{DC,水源}}\)、\(Q_{\mathrm{DC,压力上限}}\)、\(Q_{\mathrm{DC,政策上限}}\) | `source_m3_h`、`stress_m3_h`、`policy_m3_h` | 三项独立水量上限，m³/h |
+| \(Q_{\mathrm{河流}}\)、\(Q_{\mathrm{生态}}\)、\(Q_{\mathrm{其他取水}}\) | `river_m3_h`、`eco_m3_h`、`other_m3_h` | 河段流量、生态保留、既有取水，m³/h |
 | \(S_{\max}\) | `stress_fraction` | 本地水压力情景比例 |
 | \(WUE\) | `wue_l_per_kwh_it` | 现场取水或耗水强度，L/kWh IT |
 | \(A_{\mathrm{eff}}\) | `effective_ha` | 场址筛选后的总有效用地，ha |
@@ -270,7 +270,7 @@ YAML 字段名是程序接口，正稿符号用于论文和结果解释；两者
 | `P_grid_mw` | \(P_{\mathrm{grid}}\) | 与 MVA 二选一 | MW | 接入点可持续交付的净有功。 |
 | `P_grid_mva`、`power_factor` | \(S_{\mathrm{grid}},\cos\varphi\) | 与 MW 二选一 | MVA、无量纲 | 按 \(P_{\mathrm{grid}}=S_{\mathrm{grid}}\cos\varphi\) 换算，结果标为初筛上界。 |
 | `k_factor` | \(k(x)\) | 必填 | 无量纲，\(\ge 1\) | 设计满载设施总功率除以同一工况 IT 功率。方案内可覆盖。 |
-| `water` | \(Q_{\max},WUE,Q_{\mathrm{发电耗水}}\) | 必填 | 对象 | 水量上限、同口径 WUE 和自发电耗水系数。 |
+| `water` | \(Q_{\mathrm{DC,max}},WUE,Q_{\mathrm{发电耗水}}\) | 必填 | 对象 | 水量上限、同口径 WUE 和自发电耗水系数。 |
 | `land` | \(A_{\mathrm{eff}},A_0^{\mathrm{IT}},a_{\mathrm{site}}\) | 必填 | 对象 | 有效用地和园区 IT 侧边际用地关系。 |
 | `scenarios` | \(x\in\mathcal X\) | 必填 | 非空列表 | 至少一套供电与冷却配置，每项必须有 `name` 和 `type`。 |
 
@@ -284,11 +284,11 @@ YAML 字段名是程序接口，正稿符号用于论文和结果解释；两者
 |---|---|---|---|---|
 | `basis` | — | 必填 | 枚举 | `consumption`（耗水）或 `withdrawal`（取水）。 |
 | `wue_l_per_kwh_it` | \(WUE\) | 直接 WUE 时必填 | L/kWh IT | 可按方案覆盖。填 0 表示现场没有该类用水需求，JSON 的 \(P_W\) 为 `null`。 |
-| `source_m3_h` | \(Q_{\mathrm{source}}\) | 至少一项水量上限 | m³/h | 水源扣除生态保留和既有取水后的新增可用上限。 |
-| `stress_m3_h` | \(Q_{\mathrm{stress}}\) | 至少一项水量上限 | m³/h | 按本地水压力阈值允许的新增取水上限。 |
-| `policy_m3_h` | \(Q_{\mathrm{policy}}\) | 至少一项水量上限 | m³/h | 许可、合同或政策允许的上限。 |
-| `river_m3_h`、`eco_m3_h`、`other_m3_h` | \(Q_{\mathrm{river}},Q_{\mathrm{eco}},Q_{\mathrm{other}}\) | 可选 | m³/h | 仅用于按水模型的水源余量公式推算 \(Q_{\mathrm{source}}\)，三项需一起提供。 |
-| `stress_fraction` | \(S_{\max}\) | 可选 | [0,1] | 仅用于按水模型的压力阈值公式推算 \(Q_{\mathrm{stress}}\)。 |
+| `source_m3_h` | \(Q_{\mathrm{DC,水源}}\) | 至少一项水量上限 | m³/h | 水源扣除生态保留和既有取水后的新增可用上限。 |
+| `stress_m3_h` | \(Q_{\mathrm{DC,压力上限}}\) | 至少一项水量上限 | m³/h | 按本地水压力阈值允许的新增取水上限。 |
+| `policy_m3_h` | \(Q_{\mathrm{DC,政策上限}}\) | 至少一项水量上限 | m³/h | 许可、合同或政策允许的上限。 |
+| `river_m3_h`、`eco_m3_h`、`other_m3_h` | \(Q_{\mathrm{河流}},Q_{\mathrm{生态}},Q_{\mathrm{其他取水}}\) | 可选 | m³/h | 仅用于按水模型的水源余量公式推算 \(Q_{\mathrm{DC,水源}}\)，三项需一起提供。 |
+| `stress_fraction` | \(S_{\max}\) | 可选 | [0,1] | 仅用于按水模型的压力阈值公式推算 \(Q_{\mathrm{DC,压力上限}}\)。 |
 | `wue_summer_l_per_kwh_it`、`wue_winter_l_per_kwh_it` | \(WUE_{\mathrm{夏}},WUE_{\mathrm{冬}}\) | 季节 WUE 时必填 | L/kWh IT | 与夏季、冬季运行小时数一起按小时加权。 |
 | `summer_hours`、`winter_hours` | \(t_{\mathrm{夏}},t_{\mathrm{冬}}\) | 季节 WUE 时必填 | h | 两个代表时段的运行时长。 |
 | `generation_water_l_per_kwh` | \(c_{\mathrm{煤}},c_{\mathrm{气}},c_{\mathrm{风}},c_{\mathrm{光}}\) | 可选 | L/kWh | 对象，可填 `coal`、`gas`、`wind`、`solar` 的运行期耗水系数。 |
@@ -304,13 +304,13 @@ YAML 字段名是程序接口，正稿符号用于论文和结果解释；两者
 水源简化估计为：
 
 \[
-Q_{\mathrm{source}}=\max\{0,Q_{\mathrm{river}}-Q_{\mathrm{eco}}-Q_{\mathrm{other}}\}.
+Q_{\mathrm{DC,水源}}=\max\{0,Q_{\mathrm{河流}}-Q_{\mathrm{生态}}-Q_{\mathrm{其他取水}}\}.
 \]
 
 水压力上限为：
 
 \[
-Q_{\mathrm{stress}}=\max\{0,S_{\max}(Q_{\mathrm{river}}-Q_{\mathrm{eco}})-Q_{\mathrm{other}}\}.
+Q_{\mathrm{DC,压力上限}}=\max\{0,S_{\max}(Q_{\mathrm{河流}}-Q_{\mathrm{生态}})-Q_{\mathrm{其他取水}}\}.
 \]
 
 若提供夏、冬两季的 WUE，程序按权威稿的时长加权式计算：
@@ -501,8 +501,8 @@ python code/run.py code/examples/q1_site.yaml --json code/examples/q1_site_resul
 
 | 字段 | 正稿符号 | 单位 | 说明 |
 |---|---|---|---|
-| `limits_m3_h` | \(Q_{\mathrm{source}},Q_{\mathrm{stress}},Q_{\mathrm{policy}}\) | m³/h | 实际参与最小值的各项独立上限。 |
-| `Q_max_m3_h` | \(Q_{\max}\) | m³/h | 各项上限的最小值。 |
+| `limits_m3_h` | \(Q_{\mathrm{DC,水源}},Q_{\mathrm{DC,压力上限}},Q_{\mathrm{DC,政策上限}}\) | m³/h | 实际参与最小值的各项独立上限。 |
+| `Q_max_m3_h` | \(Q_{\mathrm{DC,max}}\) | m³/h | 各项上限的最小值。 |
 | `wue_l_per_kwh_it` | \(WUE\) | L/kWh IT | 直接值或按季节运行时长加权后的 WUE。 |
 | `generation_water_l_per_kwh` | \(c_i\) | L/kWh | 该场址可用的自发电耗水系数。 |
 | `omitted` | — | 字符串数组 | 没有提供的独立上限项。 |
