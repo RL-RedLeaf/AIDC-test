@@ -61,7 +61,39 @@ def test_csv_can_choose_generation_land_option():
     assert report["P_max_mw_it"] == 140
     assert row["generation_land_ha"] == 10
     assert row["generation_land_source"] == "options"
+    assert row["generation_land_required_ha"] == 8
     assert len(row["generation_land_candidates"]) == 2
+
+
+def test_generation_land_must_cover_resource_area(site):
+    site["scenarios"] = [{
+        "name": "用地不足的光储",
+        "type": "solar",
+        "online_year": 2028,
+        "generation_land_options_ha": [10],
+        "area_km2": 0.2,
+        "density_mw_per_km2": 100,
+        "net_output_mw": [20, 0],
+        "dt_hours": 1,
+    }]
+    row = assess_site(site)["scenarios"][0]
+    assert row["generation_land_ha"] == 10
+    assert row["generation_land_required_ha"] == 10
+    assert row["generation_land_capacity_capped"] is True
+    assert row["P_E_mw_it"] == pytest.approx(90)
+
+
+def test_external_generation_land_is_not_deducted(site):
+    site["scenarios"] = [{
+        "name": "外部电源",
+        "type": "grid",
+        "online_year": 2028,
+        "generation_land_in_site": False,
+    }]
+    row = assess_site(site)["scenarios"][0]
+    assert row["generation_land_ha"] == 0
+    assert row["generation_land_source"] == "external"
+    assert row["P_L_mw_it"] == 150
 
 
 def test_direct_limit_overrides_are_marked(site):

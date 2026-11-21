@@ -822,6 +822,82 @@ def _generation_land_options(land, spec):
     return [0.0], "default"
 
 
+def _generation_land_required(kind, spec):
+    """估算方案自身的发电设施用地 A_gen。
+
+    水电占地按要求忽略；火电需要 ``unit_land_ha``，风光用合格面积
+    换算，combined_battery 可用 ``generation_land_required_ha`` 显式给出。
+    """
+    explicit = spec.get("generation_land_required_ha")
+    if explicit is not None:
+        _nonnegative("generation_land_required_ha", explicit)
+        return explicit
+    if kind in {"coal", "gas"}:
+        unit_land = spec.get("unit_land_ha")
+        if unit_land is None:
+            return 0.0
+        _nonnegative("unit_land_ha", unit_land)
+        units = spec.get("units", 0)
+        _nonnegative("units", units)
+        return units * unit_land
+    if kind in {"wind", "solar"}:
+        area = spec.get("area_km2")
+        if area is None:
+            return 0.0
+        _nonnegative("area_km2", area)
+        return area * 100.0
+    return 0.0
+
+
+def _cap_generation_by_land(kind, spec, generation_land):
+    """按 A_e 限制方案可用的发电设备规模。
+
+    火电按单机用地向下取整；风电和光伏按可用面积缩放。水电占地
+    不纳入，容量保持不变。返回 ``None`` 表示该候选 A_e 连一个
+    可用机组或最小资源面积都无法容纳。
+    """
+    limited = dict(spec)
+    if spec.get("generation_land_in_site", True) is False:
+        return limited, 0.0, False
+    explicit = spec.get("generation_land_required_ha")
+    if explicit is not None:
+        _nonnegative("generation_land_required_ha", explicit)
+        if explicit > generation_land + 1e-9:
+            return None
+        return limited, explicit, False
+    if kind in {"coal", "gas"} and spec.get("unit_land_ha") is not None:
+        unit_land = spec["unit_land_ha"]
+        _nonnegative("unit_land_ha", unit_land)
+        if unit_land > 0:
+            requested_units = int(spec.get("units", 0))
+            max_units = int((generation_land + 1e-9) // unit_land)
+            if max_units < 1:
+                return None
+            limited["units"] = min(requested_units, max_units)
+            required = limited["units"] * unit_land
+            return limited, required, limited["units"] != requested_units
+    if kind in {"wind", "solar"} and spec.get("area_km2") is not None:
+        area = spec["area_km2"]
+        _nonnegative("area_km2", area)
+        available_area = generation_land / 100.0
+        if available_area <= 0:
+            return None
+        effective_area = min(area, available_area)
+        ratio = effective_area / area if area > 0 else 1.0
+        limited["area_km2"] = effective_area
+        if isinstance(spec.get("net_output_mw"), (list, tuple)):
+            limited["net_output_mw"] = [
+                value * ratio for value in spec["net_output_mw"]
+            ]
+        required = effective_area * 100.0
+        return limited, required, effective_area != area
+    required = spec.get("generation_land_required_ha", 0.0)
+    _nonnegative("generation_land_required_ha", required)
+    if required > generation_land + 1e-9:
+        return None
+    return limited, required, False
+
+
 def _grid(data):
     """解析电网输入，返回 P_grid 及其口径说明。
 
@@ -838,7 +914,7 @@ def _grid(data):
     return data["P_grid_mw"], "接入点持续净有功"
 
 
-def _resource_row(data, spec, grid, budget):
+def _resource_row_single(data, spec, grid, budget):
     """计算单个候选方案的三类上限和联合容量。
 
     这里是 Q1 的逐方案集成点：
@@ -896,7 +972,19 @@ def _resource_row(data, spec, grid, budget):
         value_source["P_W"] = "direct"
 
     direct_land = spec.get("direct_P_L_mw_it")
+    required_generation_land = _generation_land_required(kind, spec)
     land_options, land_source = _generation_land_options(data["land"], spec)
+    feasible_land_options = [
+        value
+        for value in land_options
+        if value + 1e-9 >= required_generation_land
+    ]
+    if not feasible_land_options:
+        raise ValidationError(
+            f"{spec['name']} 的自建发电站用地不足：需要 {required_generation_land:g} ha，"
+            f"候选只有 {', '.join(f'{value:g}' for value in land_options)} ha。"
+        )
+    land_options = feasible_land_options
     land_candidates = []
     selected = None
     for generation_land in land_options:
@@ -976,6 +1064,7 @@ def _resource_row(data, spec, grid, budget):
         P_mw_it=capacity,
         generation_land_ha=selected["generation_land_ha"],
         generation_land_source=land_source,
+        generation_land_required_ha=required_generation_land,
         generation_land_candidates=land_candidates,
         value_source=value_source,
         binding=[
@@ -985,6 +1074,63 @@ def _resource_row(data, spec, grid, budget):
         ],
     )
     return row
+
+
+def _resource_row(data, spec, grid, budget):
+    """在 A_e 候选上限制设备规模，并选择联合容量最大的方案。"""
+    if spec.get("generation_land_in_site", True) is False:
+        land_options, land_source = [0.0], "external"
+    else:
+        land_options, land_source = _generation_land_options(data["land"], spec)
+    candidates = []
+    for generation_land in land_options:
+        capped = _cap_generation_by_land(spec["type"].strip().lower(), spec, generation_land)
+        if capped is None:
+            continue
+        limited_spec, required_land, capacity_capped = capped
+        limited_spec = dict(limited_spec)
+        limited_spec["generation_land_ha"] = generation_land
+        limited_spec.pop("generation_land_options_ha", None)
+        row = _resource_row_single(data, limited_spec, grid, budget)
+        row["generation_land_required_ha"] = required_land
+        row["generation_land_capacity_capped"] = capacity_capped
+        candidates.append(row)
+    if not candidates:
+        raise ValidationError(
+            f"{spec['name']} 的 A_e 候选无法容纳配置的发电设备。"
+        )
+
+    selected = max(
+        candidates,
+        key=lambda row: (
+            row["P_mw_it"],
+            -row["generation_land_ha"],
+        ),
+    )
+    selected["generation_land_source"] = (
+        "direct"
+        if selected["value_source"]["P_L"] == "direct"
+        else land_source
+    )
+    if land_source == "options" and selected["value_source"]["P_L"] != "direct":
+        selected["value_source"]["P_L"] = "optimized"
+    selected["generation_land_candidates"] = [
+        {
+            "generation_land_ha": row["generation_land_ha"],
+            "generation_land_required_ha": row["generation_land_required_ha"],
+            "generation_land_capacity_capped": row[
+                "generation_land_capacity_capped"
+            ],
+            "P_L_mw_it": row["P_L_mw_it"],
+            "P_mw_it": row["P_mw_it"],
+            "binding": row["binding"],
+        }
+        for row in candidates
+    ]
+    selected["land"]["generation_land_source"] = selected[
+        "generation_land_source"
+    ]
+    return selected
 
 
 def assess_site(data):

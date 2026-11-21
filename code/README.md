@@ -177,6 +177,8 @@ CSV 规则：
 - `scenario_name`、`scenario_type`、`online_year` 是每行必填字段。
 - `scenario_k_factor`、`scenario_wue_l_per_kwh_it`、`scenario_generation_water_l_per_kwh`、`scenario_generation_land_ha`、`scenario_generation_land_options_ha` 是方案级覆盖值。
 - 电池字段使用 `battery_C_max_mw`、`battery_D_max_mw`、`battery_E_usable_mwh`、`battery_charge_efficiency`、`battery_discharge_efficiency`。
+- 火电单机用地用 `unit_land_ha`，风光资源面积用 `area_km2`；需要显式覆盖发电设施用地时用 `generation_land_required_ha`。
+- 发电设施是否位于园区边界内用 `generation_land_in_site` 标记，默认 `true`。
 - 时间序列用分号、竖线或逗号分隔，例如 `net_output_mw = 20;0`。
 - 直接覆盖结果的可选字段为 `direct_P_E_mw_it`、`direct_P_W_mw_it`、`direct_P_L_mw_it`；对应结果会记录 `value_source: direct`。
 
@@ -220,6 +222,9 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | `fixed_it_ha` | \(A_0^{\mathrm{IT}}\) | 可选 | 默认 0，表示忽略 IT 侧固定用地，属于乐观上界 |
 | `generation_land_ha` | \(A_e\) | 可选 | 园区内自建发电站及专属配套用地，默认 0；仅使用电网时填 0 |
 | `generation_land_options_ha` | \(A_e^{(k)}\) | 可选 | 发电站用地候选列表；与固定 `generation_land_ha` 二选一，程序选择联合容量最大的候选 |
+| `generation_land_in_site` | — | 可选 | 发电设施是否位于园区边界内，默认 `true`；为 `false` 时不计入园区的 \(A_e\)，也不受园区发电用地预算限制 |
+| `unit_land_ha` | \(a_{\mathrm{unit},j}\) | 火电可选 | 单台火电机组的厂区用地，ha/台；与 `units` 一起用于校核 \(A_e\) |
+| `generation_land_required_ha` | \(A_{\mathrm{gen}}\) | 可选 | 方案实际需要的发电设施用地；可用于风电、光伏、电池或显式覆盖 |
 | `ha_per_mw_it` | \(a_{\mathrm{site}}\) | 必填 | 单位 ha/MW IT，必须为正数 |
 | `scenarios` | \(x\in\mathcal X\) | 必填 | 至少一项 |
 | `name`、`type`、`online_year` | \(x\)、投运年份决定 \(x\in\mathcal X_y\) | 每方案必填 | `type` 取 `grid`、`coal`、`gas`、`wind`、`hydro`、`solar` 或 `combined_battery` |
@@ -263,8 +268,10 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | `land.fixed_it_ha` | \(A_0^{\mathrm{IT}}\) | ha | IT 侧固定用地 |
 | `land.generation_land_ha` | \(A_e\) | ha | 园区内自建发电站及专属配套用地 |
 | `land.P_L_mw_it` | \(P_{\mathrm{land}}(x)\) | MW IT | 土地上限 |
-| `generation_land_source` | — | 字符串 | \(A_e\) 来自 `fixed`、`options` 或直接覆盖 |
+| `generation_land_source` | — | 字符串 | \(A_e\) 来自 `fixed`、`options`、`external` 或直接覆盖 |
 | `generation_land_candidates` | — | 数组 | \(A_e\) 候选值对应的 \(P_L\)、\(P\) 和 binding |
+| `generation_land_required_ha` | \(A_{\mathrm{gen}}\) | ha | 方案实际需要的发电设施用地 |
+| `generation_land_capacity_capped` | — | 布尔 | 设备容量是否因 \(A_e\) 不足而被缩减 |
 | `value_source` | — | 对象 | 分别记录 \(P_E\)、\(P_W\)、\(P_L\) 是 `derived`、`direct` 还是候选优化结果 |
 | `method.charge_mw` 等 | \(L,c_t,d_t,e_t\) | MW/MWh | 光储逐时负荷、充电、放电、荷电量和弃电调度 |
 
@@ -294,6 +301,7 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | \(WUE\) | `wue_l_per_kwh_it` | 现场取水或耗水强度，L/kWh IT |
 | \(A_{\mathrm{eff}}\) | `effective_ha` | 场址筛选后的总有效用地，ha |
 | \(A_0^{\mathrm{IT}}\)、\(A_e\)、\(a_{\mathrm{site}}\) | `fixed_it_ha`、`generation_land_ha`、`ha_per_mw_it` | IT 侧固定用地 ha、园区内自发电站用地 ha、边际用地强度 ha/MW IT |
+| \(a_{\mathrm{unit},j}\)、\(A_{\mathrm{gen}}\) | `unit_land_ha`、`generation_land_required_ha` | 火电单机用地 ha/台、方案实际发电设施用地 ha |
 | \(P_{\max}\) | `P_max_mw_it` | 场址最大联合额定 IT 容量，MW IT |
 
 YAML 字段名是程序接口，正稿符号用于论文和结果解释；两者在下表中逐项对应。方案内部的 \(P_{\mathrm{self}}(x)\)、\(P_{\mathrm{total}}(x)\)、\(P_E(x)\)、\(P_W(x)\) 和 \(P_L(x)\) 是计算结果，不是额外的 YAML 输入。
@@ -433,11 +441,39 @@ P^{(k)}=\min(P_E,P_W,P_L^{(k)}),
 然后选择 \(P^{(k)}\) 最大的候选；若并列，选择较小的 \(A_e\)。结果会保存：
 
 - `generation_land_ha`：选中的 \(A_e\)；
-- `generation_land_source`：`fixed`、`options` 或 `direct`；
+- `generation_land_source`：`fixed`、`options`、`external` 或 `direct`；
 - `generation_land_candidates`：每个候选的 \(A_e\)、\(P_L\)、\(P\) 和 binding；
 - `value_source.P_L = "optimized"`。
 
 这个选项只做**离散候选枚举**，不把 \(A_e\) 作为无约束连续变量。没有工程下限、成本或最低用地约束时，连续优化会退化为选择最小 \(A_e\)。
+
+发电设施用地需求与设备规模相连：
+
+```text
+A_gen = A_coal + A_gas + A_wind + A_PV
+A_coal = N_coal * a_unit,coal
+A_gas  = N_gas  * a_unit,gas
+A_wind = 100 * A_wind_km2
+A_PV   = 100 * A_PV_km2
+A_gen <= A_e
+```
+
+对应的 YAML 字段为 `unit_land_ha`（火电单机用地）、`area_km2`（风光资源面积）和
+`generation_land_required_ha`（显式覆盖发电设施用地）。水电占地按要求不纳入
+当前土地约束，水电容量仍由 \(X_{\mathrm{hydro}}\) 和 \(Q,H\) 决定。
+
+在候选枚举时，如果某个 \(A_e^{(k)}\) 小于设备配置所需面积，程序会按土地预算缩减设备规模：
+
+- 火电按 \(N_j^{\max}=\lfloor A_e^{(k)}/a_{\mathrm{unit},j}\rfloor\) 向下取整；
+- 风电、光伏按可用面积等比例缩减 \(A_{\mathrm{wind}}\)、\(A_{\mathrm{PV}}\)，并重新计算 \(P_{\mathrm{self}}\)；
+- 缩减后的实际用地和容量会写入 `generation_land_required_ha`、`generation_land_capacity_capped` 和各候选结果。
+
+`generation_land_in_site` 用来处理边界归属：
+
+- `true`：风电、光伏资源面积、火电厂区或电池区位于园区内，计入 \(A_e\)，并可能受发电用地预算限制；
+- `false`：发电设施位于园区外，不扣园区 \(A_e\)，其资源面积仍用于计算 \(P_{\mathrm{self}}\)。
+
+边界外的风电和光伏不能通过 `generation_land_in_site: false` 逃避其自身的资源面积约束，只是这块面积不计入园区土地上限。
 
 ### `scenarios` 字段
 

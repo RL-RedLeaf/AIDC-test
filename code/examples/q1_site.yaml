@@ -41,6 +41,7 @@ scenarios:
     generation_land_ha: 20
     units: 1
     unit_net_mw: 60
+    unit_land_ha: 5
     gas_supply_adequate: true
   - name: 燃气配干冷园区
     type: gas
@@ -48,7 +49,8 @@ scenarios:
     generation_land_ha: 20
     units: 1
     unit_net_mw: 60
+    unit_land_ha: 5
     gas_supply_adequate: true
     wue_l_per_kwh_it: 0.75
     generation_water_l_per_kwh: 0.0076
-  - {name: 后续煤电, type: coal, online_year: 2030, generation_land_ha: 20, units: 2, unit_net_mw: 80}
+  - {name: 后续煤电, type: coal, online_year: 2030, generation_land_ha: 20, units: 2, unit_net_mw: 80, unit_land_ha: 10}

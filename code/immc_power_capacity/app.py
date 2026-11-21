@@ -205,7 +205,8 @@ def _load_csv(path):
         "scenario_wue_l_per_kwh_it", "scenario_generation_water_l_per_kwh",
         "scenario_generation_land_ha", "scenario_generation_land_options_ha",
         "direct_P_E_mw_it", "direct_P_W_mw_it", "direct_P_L_mw_it",
-        "units", "unit_net_mw", "net_efficiency", "gas_supply_adequate",
+        "units", "unit_net_mw", "unit_land_ha", "generation_land_required_ha",
+        "generation_land_in_site", "net_efficiency", "gas_supply_adequate",
         "area_km2", "density_mw_per_km2", "installed_mw", "alpha",
         "power_ratios", "net_output_mw", "supply_ratios", "dt_hours",
         "supply_series_mw", "flow_m3_per_s", "net_head_m", "efficiency",
@@ -302,6 +303,8 @@ def _load_csv(path):
             ("direct_P_L_mw_it", "direct_P_L_mw_it"),
             ("units", "units"),
             ("unit_net_mw", "unit_net_mw"),
+            ("unit_land_ha", "unit_land_ha"),
+            ("generation_land_required_ha", "generation_land_required_ha"),
             ("net_efficiency", "net_efficiency"),
             ("area_km2", "area_km2"),
             ("density_mw_per_km2", "density_mw_per_km2"),
@@ -333,6 +336,9 @@ def _load_csv(path):
         gas_ok = _csv_bool(row.get("gas_supply_adequate"), "gas_supply_adequate")
         if gas_ok is not None:
             spec["gas_supply_adequate"] = gas_ok
+        in_site = _csv_bool(row.get("generation_land_in_site"), "generation_land_in_site")
+        if in_site is not None:
+            spec["generation_land_in_site"] = in_site
 
         battery = {}
         for csv_field, field in (
@@ -443,7 +449,12 @@ def _print(report, say=print):
                 say(f"  水上限 P_W = {row['P_W_mw_it']:.6g} MW IT（Q_net / WUE）")
                 say(f"    Q_gen = {row['generation_water_m3_h']:.6g} m³/h，"
                     f"Q_net = {row['Q_net_m3_h']:.6g} m³/h")
-            say(f"  土地上限 P_L = {row['P_L_mw_it']:.6g} MW IT")
+            say(
+                f"  土地上限 P_L = {row['P_L_mw_it']:.6g} MW IT"
+                f"（A_0 = {row['land']['fixed_it_ha']:.6g} ha，"
+                f"A_e = {row['land']['generation_land_ha']:.6g} ha，"
+                f"需求 {row['generation_land_required_ha']:.6g} ha）"
+            )
             say(f"  联合容量 P = {row['P_mw_it']:.6g} MW IT；触顶约束：{'、'.join(row['binding'])}")
             say("")
         for item in report["excluded"]:
