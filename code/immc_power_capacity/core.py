@@ -69,7 +69,7 @@ def _positive_integer(field, value):
     """校验输入是否为正整数，例如机组台数或年份。"""
     _finite_number(field, value)
     if value <= 0 or not float(value).is_integer():
-        raise ValidationError(f"{field} 必须是正整数（机组台数）。")
+        raise ValidationError(f"{field} 必须是正整数。")
 
 
 def _k_factor(value):
@@ -1138,7 +1138,7 @@ def assess_site(data):
 
     处理顺序:
         1. 校验场址、水量和土地输入；
-        2. 按 assessment_year 筛选已投运方案；
+        2. 按 assessment_year 筛选已投运方案；未填 online_year 时按该年处理；
         3. 逐方案计算 P_E、P_W、P_L 和 P=min(...)；
         4. 取候选集最大值并记录 winners、binding 和 excluded。
 
@@ -1172,15 +1172,22 @@ def assess_site(data):
         if spec["name"] in names:
             raise ValidationError(f"配置名称重复：{spec['name']}")
         names.add(spec["name"])
-        _positive_integer("online_year", spec.get("online_year"))
-        if spec["online_year"] > year:
+        online_year = spec.get("online_year")
+        if online_year is None:
+            online_year = year
+        else:
+            _positive_integer("online_year", online_year)
+        online_year = int(online_year)
+        if online_year > year:
             excluded.append({
                 "name": spec["name"],
-                "online_year": spec["online_year"],
+                "online_year": online_year,
                 "reason": "尚未投运",
             })
             continue
-        rows.append(_resource_row(data, spec, grid, budget))
+        normalized = dict(spec)
+        normalized["online_year"] = online_year
+        rows.append(_resource_row(data, normalized, grid, budget))
     if not rows:
         raise ValidationError(f"{year} 年没有满足投运条件的候选配置。")
     best = max(row["P_mw_it"] for row in rows)

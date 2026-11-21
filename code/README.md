@@ -72,10 +72,9 @@ land:
 scenarios:
   - name: 纯电网
     type: grid
-    online_year: 2028
 ```
 
-字段单位和填写规则见下文“YAML 输入详解”。每套方案必须使用同一场址、同一设计期和同一服务水平，否则 \(P_{\max}\) 的取最小没有意义。
+`online_year` 可以省略；省略时按 `assessment_year` 视为已投运。字段单位和填写规则见下文“YAML 输入详解”。每套方案必须使用同一场址、同一设计期和同一服务水平，否则 \(P_{\max}\) 的取最小没有意义。
 
 ### 2. 控制台输入向导
 
@@ -102,7 +101,7 @@ python code/run.py --interactive
 
 ### 3. Python 函数入口
 
-`run.py` 现在是可导入模块。`calculate()` 和 `run()` 都接受配置字典或 YAML 路径：
+`run.py` 现在是可导入模块。`calculate()` 和 `run()` 都接受配置字典或 YAML 路径。下面的示例省略 `online_year`，程序按 `assessment_year` 处理：
 
 ```python
 import sys
@@ -126,7 +125,7 @@ report = calculate({
         "effective_ha": 160,
         "ha_per_mw_it": 1.0,
     },
-    "scenarios": [{"type": "grid", "name": "纯电网", "online_year": 2028}],
+    "scenarios": [{"type": "grid", "name": "纯电网"}],
 })
 print(report["P_max_mw_it"])  # 100.0
 ```
@@ -152,7 +151,7 @@ report = calculate(
             "effective_ha": 160,
             "ha_per_mw_it": 1.0,
         },
-        "scenarios": [{"type": "grid", "name": "纯电网", "online_year": 2028}],
+        "scenarios": [{"type": "grid", "name": "纯电网"}],
     },
     "result.json",
 )
@@ -174,7 +173,7 @@ CSV 规则：
 
 - 第 1 行必须是表头，列名固定。
 - 公共场址、水量、土地和电网字段可以在任意一行填写，但同一列只能有一个非空值；不同行写入不同公共值会报错。
-- `scenario_name`、`scenario_type`、`online_year` 是每行必填字段。
+- `scenario_name`、`scenario_type` 是每行必填字段；`online_year` 可留空，留空时按 `assessment_year` 视作已投运。
 - `scenario_k_factor`、`scenario_wue_l_per_kwh_it`、`scenario_generation_water_l_per_kwh`、`scenario_generation_land_ha`、`scenario_generation_land_options_ha` 是方案级覆盖值。
 - 电池字段使用 `battery_C_max_mw`、`battery_D_max_mw`、`battery_E_usable_mwh`、`battery_charge_efficiency`、`battery_discharge_efficiency`。
 - 火电单机用地用 `unit_land_ha`，风光资源面积用 `area_km2`；需要显式覆盖发电设施用地时用 `generation_land_required_ha`。
@@ -199,7 +198,7 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | 厂房/园区设施 | `fixed_it_ha`、`generation_land_ha`、`ha_per_mw_it`、`density_mw_per_km2` | \(A_0^{\mathrm{IT}}\)、\(A_e\)、\(a_{\mathrm{site}}\)、\(\rho_{\mathrm{风}},\rho_{\mathrm{光}}\) | IT 固定用地、园区内发电站用地、边际用地强度、风光装机密度 |
 | 机组/电源设备 | `units`、`unit_net_mw`、`installed_mw` | \(N_j\)、\(p_j^{\mathrm{net}}\)、\(X_{\mathrm{风}},X_{\mathrm{水}},X_{\mathrm{光}}\) | 火电台数和单机净功率、风电/水电/合计装机 |
 | 储能设备 | `C_max_mw`、`D_max_mw`、`E_usable_mwh`、`charge_efficiency`、`discharge_efficiency` | \(C_{\max}\)、\(D_{\max}\)、\(E_{\mathrm{可用}}\)、\(\eta_c\)、\(\eta_d\) | 电池最大充放电功率、可用电量、充放电效率 |
-| 方案控制 | `name`、`type`、`online_year` | \(x\) 对应 `name`；投运年份决定 \(x\in\mathcal X_y\) | 候选配置名称、电源类型、投运年份 |
+| 方案控制 | `name`、`type`、`online_year`（可选） | \(x\) 对应 `name`；\(y_x\) 对应 `online_year` | 候选配置名称、电源类型、投运年份；省略 `online_year` 时按 \(y\) 处理 |
 
 `site` 只是场址标识，真实地理信息必须通过上面的有效用地、河段流量、生态保留、风光面积和逐时序列等数值传入。程序不直接读取 GIS 地图、气象文件或流域模型；这些预处理应在外部完成。
 
@@ -227,7 +226,8 @@ CSV 中的字段名与 YAML 字段一一对应，字段单位和必填规则见�
 | `generation_land_required_ha` | \(A_{\mathrm{gen}}\) | 可选 | 方案实际需要的发电设施用地；可用于风电、光伏、电池或显式覆盖 |
 | `ha_per_mw_it` | \(a_{\mathrm{site}}\) | 必填 | 单位 ha/MW IT，必须为正数 |
 | `scenarios` | \(x\in\mathcal X\) | 必填 | 至少一项 |
-| `name`、`type`、`online_year` | \(x\)、投运年份决定 \(x\in\mathcal X_y\) | 每方案必填 | `type` 取 `grid`、`coal`、`gas`、`wind`、`hydro`、`solar` 或 `combined_battery` |
+| `name`、`type` | \(x\) | 每方案必填 | `type` 取 `grid`、`coal`、`gas`、`wind`、`hydro`、`solar` 或 `combined_battery` |
+| `online_year` | \(y_x\) | 可选 | 方案投运年份；缺省取 `assessment_year` \(y\)，即视为已投运。只有 \(y_x\le y\) 的方案进入比较 |
 | 方案内 `k_factor`、`wue_l_per_kwh_it`、`generation_water_l_per_kwh` | \(k(x),WUE(x),c_i(x)\) | 可选 | 分别覆盖该方案的设施倍率、WUE、发电耗水系数 |
 | `units`、`unit_net_mw` | \(N_j,p_j^{\mathrm{net}}\) | 火电必填 | `units` 为正整数，`unit_net_mw` 为正数 |
 | `net_efficiency` | \(\eta_j^{\mathrm{net}}\) | 可选 | 只用于报告燃料热功率，不改变电力容量 |
@@ -312,7 +312,7 @@ YAML 字段名是程序接口，正稿符号用于论文和结果解释；两者
 |---|---|---|---|---|
 | `model` | — | 必填 | 字符串 `q1` | 选择 Q1 联合容量模型。 |
 | `site` | — | 必填 | 字符串 | 场址标识。 |
-| `assessment_year` | \(y\) | 必填 | 整数年份 | 可行方案集合为 \(\mathcal X_y\)，只有 \(online\_year\le y\) 的方案进入比较。 |
+| `assessment_year` | \(y\) | 必填 | 整数年份 | 可行方案集合为 \(\mathcal X_y\)；`online_year` 省略时按该年处理。 |
 | `period_note` | — | 必填 | 字符串 | 设计期和结果适用范围。 |
 | `service_level` | — | 必填 | 字符串 | 服务水平，例如“正常运营，持续满载”。 |
 | `P_grid_mw` | \(P_{\mathrm{grid}}\) | 与 MVA 二选一 | MW | 接入点可持续交付的净有功。 |
@@ -323,6 +323,10 @@ YAML 字段名是程序接口，正稿符号用于论文和结果解释；两者
 | `scenarios` | \(x\in\mathcal X\) | 必填 | 非空列表 | 至少一套供电与冷却配置，每项必须有 `name` 和 `type`。 |
 
 `P_grid_mva` 和 `power_factor` 是电力子模型的初筛输入。所有数值按园区进线处计量。
+
+`assessment_year`（\(y\)）和 `online_year`（\(y_x\)）是程序接口字段；正稿式（1）–（6）
+不含这两个符号，它们只用于定义候选集 \(\mathcal X_y=\{x:y_x\le y\}\)。
+`online_year` 可省略；如果所有方案都已经建成，只填 `assessment_year` 即可。
 
 ### `water` 字段
 
@@ -487,7 +491,7 @@ A_gen <= A_e
 |---|---|---|---|
 | `name` | \(x\) | 必填 | 方案名称，必须唯一。 |
 | `type` | — | 必填 | `grid`、`coal`、`gas`、`wind`、`hydro`、`solar`、`combined_battery` 之一。 |
-| `online_year` | — | 必填 | 方案投运年份；大于评估年份 \(y\) 时进入 `excluded`。 |
+| `online_year` | \(y_x\) | 可选 | 方案投运年份；省略时取 `assessment_year`，即视为已投运。大于 \(y\) 时进入 `excluded`。 |
 | `k_factor` | \(k(x)\) | 可选 | 覆盖该方案的设施倍率。 |
 | `wue_l_per_kwh_it` | \(WUE(x)\) | 可选 | 覆盖该方案的现场 WUE。 |
 | `generation_water_l_per_kwh` | \(c_i(x)\) | 可选 | 覆盖该方案自发电耗水系数，L/kWh。 |
@@ -580,6 +584,7 @@ scenarios:
 | 电池功率写成 `C_max_mwh` 或 `D_max_mwh` | 报错。功率使用 `_mw`，能量使用 `_mwh`。 |
 | 光伏没有 `net_output_mw` 或 `supply_ratios` | 报错。补充同期出力序列。 |
 | 并网风电只写 `alpha` | 报错。并网场景需提供同期 `net_output_mw`。 |
+| 未填 `online_year` | 不报错。程序按 `assessment_year` 视作已投运。 |
 | `online_year` 晚于 `assessment_year` | 不报错，方案进入 `excluded`。 |
 | 旧版 `C_PCC_mw`、`generation_share`、`period_budget` 或 `sensitivity` | 报错。这些字段不属于当前权威稿口径，删除后重算。 |
 

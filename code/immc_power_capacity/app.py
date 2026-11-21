@@ -290,9 +290,8 @@ def _load_csv(path):
         spec["name"] = name
         spec["type"] = kind
         online_year = _csv_number(row.get("online_year"), "online_year", integer=True)
-        if online_year is None:
-            raise CapacityModelError(f"CSV 第 {index} 行缺少 online_year。")
-        spec["online_year"] = online_year
+        if online_year is not None:
+            spec["online_year"] = online_year
         for csv_field, field in (
             ("scenario_k_factor", "k_factor"),
             ("scenario_wue_l_per_kwh_it", "wue_l_per_kwh_it"),
@@ -650,7 +649,7 @@ def _ask_land(asker):
     }
 
 
-def _ask_scenario(asker, number, grid_mw):
+def _ask_scenario(asker, number, grid_mw, assessment_year):
     """询问一套候选供电方案的全部参数。"""
     kind = _ask_choice(
         asker,
@@ -661,8 +660,14 @@ def _ask_scenario(asker, number, grid_mw):
     spec = {
         "name": _ask_text(asker, "方案名称（唯一标识配置 x）", f"{kind}-{number}"),
         "type": kind,
-        "online_year": _ask_number(asker, "投运年份（是否属于评估年份 y 的可行集合 X_y）", 2028,
-                                   minimum=1, integer=True, allow_zero=False),
+        "online_year": _ask_number(
+            asker,
+            "投运年份（可选；直接回车按评估年份 y 视作已投运）",
+            assessment_year,
+            minimum=1,
+            integer=True,
+            allow_zero=False,
+        ),
     }
     wue = _ask_optional_number(asker, "本方案 WUE(x) 覆盖（L/kWh IT，可留空）")
     if wue is not None:
@@ -757,7 +762,9 @@ def build_interactive_config(asker=input, say=print, default_json=None):
     data["scenarios"] = []
     while True:
         index = len(data["scenarios"]) + 1
-        data["scenarios"].append(_ask_scenario(asker, index, grid_mw))
+        data["scenarios"].append(
+            _ask_scenario(asker, index, grid_mw, data["assessment_year"])
+        )
         if not _ask_yes_no(asker, "继续添加方案（每个方案是式(1)中的一个候选配置 x）", False):
             break
     if default_json:

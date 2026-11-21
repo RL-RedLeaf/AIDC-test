@@ -37,8 +37,25 @@ def test_minimal_config():
     data = yaml.safe_load((ROOT / "examples/q1_minimal.yaml").read_text(encoding="utf-8"))
     report = assess_site(data)
     assert report["P_max_mw_it"] == 100
+    assert report["scenarios"][0]["online_year"] == report["assessment_year"]
     assert report["scenarios"][0]["P_W_mw_it"] == 120
     assert report["scenarios"][0]["P_L_mw_it"] == 160
+
+
+def test_csv_online_year_is_optional(tmp_path):
+    path = tmp_path / "grid.csv"
+    path.write_text(
+        "site,assessment_year,period_note,service_level,P_grid_mw,k_factor,"
+        "water_basis,water_policy_m3_h,water_wue_l_per_kwh_it,"
+        "land_effective_ha,land_ha_per_mw_it,scenario_name,scenario_type\n"
+        "演示场址,2028,单个设计日,正常运营且持续满载,120,1.2,"
+        "consumption,180,1.5,160,1,纯电网,grid\n",
+        encoding="utf-8",
+    )
+    report = run(path)
+    assert report["P_max_mw_it"] == 100
+    assert report["scenarios"][0]["online_year"] == 2028
+    assert report["excluded"] == []
 
 
 def test_csv_input_matches_yaml_example():
@@ -156,6 +173,12 @@ def test_land_and_year(site):
     with pytest.raises(ValidationError, match="没有"):
         assess_site(site)
     assert land_capacity(dict(effective_ha=10, fixed_it_ha=10, ha_per_mw_it=1))["P_L_mw_it"] == 0
+
+
+def test_invalid_online_year_is_rejected(site):
+    site["scenarios"][0]["online_year"] = 2028.5
+    with pytest.raises(ValidationError, match="online_year"):
+        assess_site(site)
 
 
 def test_q1_rejects_unknown_type(site):

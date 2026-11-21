@@ -20,4 +20,4 @@ land:
 scenarios:
   - name: 纯电网
     type: grid
-    online_year: 2028
+    # 省略 online_year 时，按 assessment_year 视为已投运。
