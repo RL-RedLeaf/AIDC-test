@@ -22,6 +22,15 @@ class InfeasibleError(CapacityModelError):
 
 
 def _finite_number(field, value):
+    """校验输入是否为有限实数。
+
+    参数:
+        field: 错误信息中显示的字段名。
+        value: 待校验值。
+
+    异常:
+        ValidationError: 输入不是数值或包含无穷大、NaN。
+    """
     if not isinstance(value, (int, float)) or isinstance(value, bool):
         raise ValidationError(f"{field} 必须是数值。")
     if not math.isfinite(value):
@@ -29,42 +38,49 @@ def _finite_number(field, value):
 
 
 def _positive(field, value):
+    """校验输入是否为有限正数。"""
     _finite_number(field, value)
     if value <= 0:
         raise ValidationError(f"{field} 必须为正数。")
 
 
 def _nonnegative(field, value):
+    """校验输入是否为有限非负数。"""
     _finite_number(field, value)
     if value < 0:
         raise ValidationError(f"{field} 不能为负。")
 
 
 def _ratio(field, value):
+    """校验输入是否位于闭区间 [0, 1]。"""
     _nonnegative(field, value)
     if value > 1:
         raise ValidationError(f"{field} 必须位于 [0, 1]。")
 
 
 def _efficiency(field, value):
+    """校验效率或功率因数是否位于半开区间 (0, 1]。"""
     _finite_number(field, value)
     if not (0 < value <= 1):
         raise ValidationError(f"{field} 必须位于 (0, 1]。")
 
 
 def _positive_integer(field, value):
+    """校验输入是否为正整数，例如机组台数或年份。"""
     _finite_number(field, value)
     if value <= 0 or not float(value).is_integer():
         raise ValidationError(f"{field} 必须是正整数（机组台数）。")
 
 
 def _k_factor(value):
+    """校验满载设施倍率；权威稿要求 k >= 1。"""
     _finite_number("k_factor", value)
     if value < 1:
         raise ValidationError("k_factor 不能小于 1。")
 
 
 def _finite_nonnegative(values, field):
+    """校验一维时间序列，要求非空、有限且各元素非负。"""
     if values is None:
         raise ValidationError(f"{field} 不能缺失。")
     try:
@@ -79,7 +95,20 @@ def _finite_nonnegative(values, field):
 
 
 def total_capacity(grid_mw, self_generation_mw, k_factor):
-    """权威稿式 (1)、(6)：P_total=P_grid+P_self，P_E=P_total/k。"""
+    """计算园区总功率和额定 IT 容量。
+
+    对应权威稿式 (1)、(6):
+        P_total = P_grid + P_self
+        P_E = P_total / k
+
+    参数:
+        grid_mw: 接入点可持续交付的电网净有功，MW。
+        self_generation_mw: 自建电源可靠净增量，MW。
+        k_factor: 设计满载设施总功率与同一工况 IT 功率之比。
+
+    返回:
+        (P_E, P_total)，分别为 MW IT 和 MW。
+    """
     _nonnegative("P_grid", grid_mw)
     _nonnegative("P_self", self_generation_mw)
     _k_factor(k_factor)
@@ -88,6 +117,7 @@ def total_capacity(grid_mw, self_generation_mw, k_factor):
 
 
 def _storage_series(values):
+    """将逐时可用净功率转换为校验过的一维 NumPy 数组。"""
     try:
         array = np.asarray(values, dtype=float)
     except (TypeError, ValueError) as exc:
@@ -100,6 +130,11 @@ def _storage_series(values):
 
 
 def _schedule_without_battery(supply):
+    """生成无电池时段的调度记录。
+
+    无电池时，恒定附加负荷受最弱时段净功率限制；
+    其余发电量全部记为弃电。
+    """
     level = float(supply.min())
     return {
         "L_mw": level,
@@ -114,7 +149,33 @@ def _schedule_without_battery(supply):
 
 def solve_storage_capacity(supply, dt, charge_max, discharge_max, usable_energy,
                            charge_efficiency, discharge_efficiency):
-    """用稀疏 LP 求周期恒载，再以相同的电量轨迹重建单方向调度。"""
+    """求光储系统在整个周期内可维持的最大恒定附加负荷。
+
+    该函数实现权威稿附录 A:
+        r_t + d_t >= L + c_t
+        e_(t+1) = e_t + eta_c*c_t*dt - d_t*dt/eta_d
+        0 <= c_t <= C_max
+        0 <= d_t <= D_max
+        0 <= e_t <= E_usable
+        e_(T+1) = e_1
+
+    参数:
+        supply: 各时段自建电源可用净功率 r_t，MW。
+        dt: 时段长度，h。
+        charge_max: 最大充电功率 C_max，MW。
+        discharge_max: 最大放电功率 D_max，MW。
+        usable_energy: 可用电量 E_usable，MWh。
+        charge_efficiency: 充电效率 eta_c。
+        discharge_efficiency: 放电效率 eta_d。
+
+    返回:
+        (L, schedule)。L 为 MW；schedule 包含充放电、荷电量、
+        弃电量、方向和求解状态。
+
+    说明:
+        先求最大 L，再固定 L 最小化期初电量。第二次求解后用净入库
+        电量重建单方向调度，避免同一时段同时充放电。
+    """
     supply = _storage_series(supply)
     _positive("dt_hours", dt)
     _nonnegative("C_max", charge_max)
@@ -128,16 +189,30 @@ def solve_storage_capacity(supply, dt, charge_max, discharge_max, usable_energy,
         return float(supply.min()), _schedule_without_battery(supply)
 
     periods = supply.size
+    # 使用稀疏矩阵构造 LP，避免时段数很大时生成稠密矩阵。
     identity = eye(periods, format="csr")
     indices = np.arange(periods)
     successor = csr_matrix((np.ones(periods), (indices, (indices + 1) % periods)),
                            shape=(periods, periods))
     zero_column = csr_matrix((periods, 1))
-    power = hstack([np.ones((periods, 1)), identity, -identity, csr_matrix(identity.shape)], format="csr")
-    energy_balance = hstack([zero_column, -dt * charge_efficiency * identity,
-                             dt / discharge_efficiency * identity, successor - identity], format="csr")
+    # 功率约束：L + c_t - d_t <= r_t。
+    power = hstack(
+        [np.ones((periods, 1)), identity, -identity, csr_matrix(identity.shape)],
+        format="csr",
+    )
+    # 电量平衡：e_(t+1) - e_t - eta_c*c_t*dt + d_t*dt/eta_d = 0。
+    energy_balance = hstack(
+        [
+            zero_column,
+            -dt * charge_efficiency * identity,
+            dt / discharge_efficiency * identity,
+            successor - identity,
+        ],
+        format="csr",
+    )
     bounds = ([(0, None)] + [(0, charge_max)] * periods + [(0, discharge_max)] * periods
               + [(0, usable_energy)] * periods)
+    # 第一次目标：最大化 L。
     objective = np.zeros(1 + 3 * periods)
     objective[0] = -1
     constraints = dict(A_ub=power, b_ub=supply, A_eq=energy_balance, b_eq=np.zeros(periods),
@@ -146,6 +221,7 @@ def solve_storage_capacity(supply, dt, charge_max, discharge_max, usable_energy,
     if not result.success:
         raise InfeasibleError(f"光储容量求解失败：{result.message}")
 
+    # 第二次目标：固定 L，最小化期初电量，得到唯一性更好的调度。
     load = float(result.x[0])
     bounds[0] = (load, load)
     objective[0] = 0
@@ -169,7 +245,10 @@ def solve_storage_capacity(supply, dt, charge_max, discharge_max, usable_energy,
 
 
 def grid_only(grid_mw, k_factor):
-    """纯电网方案：P_self=0."""
+    """计算纯电网基准方案。
+
+    纯电网方案取 P_self=0，对应权威稿式 (1)、(6) 的退化情况。
+    """
     _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     return _breakdown(grid_mw, 0.0, k_factor, "grid_only", {
@@ -180,7 +259,13 @@ def grid_only(grid_mw, k_factor):
 
 def thermal(name, grid_mw, k_factor, units, unit_net_mw,
             net_efficiency=None, gas_supply_adequate=None):
-    """煤电或燃气：P_j=N_j p_j^net，正文式(2)。"""
+    """计算煤电或燃气的可靠容量。
+
+    对应权威稿式 (2)：
+        P_j = N_j * p_j^net
+    其中 units=N_j，unit_net_mw=p_j^net，单位均为 MW。
+    net_efficiency 只用于报告燃料热功率，不改变净电容量。
+    """
     _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     key = str(name).strip().lower()
@@ -193,6 +278,7 @@ def thermal(name, grid_mw, k_factor, units, unit_net_mw,
     if key == "gas" and gas_supply_adequate is False:
         raise ValidationError("燃气方案声明供气不足，不能作为正常运行的容量上界。")
 
+    # 煤电、燃气均为可同时运行机组台数乘以单机持续净功率。
     self_generation = units * unit_net_mw
     if key == "gas":
         gas_note = (
@@ -215,7 +301,14 @@ def thermal(name, grid_mw, k_factor, units, unit_net_mw,
 
 def wind(name, grid_mw, k_factor, area_km2=None, density_mw_per_km2=None,
          alpha=None, power_ratios=None, net_output_mw=None, installed_mw=None):
-    """风电：P_wind=alpha_wind X_wind，正文式(3)。
+    """计算风电的可靠容量。
+
+    对应权威稿式 (3)：
+        X_wind = A_wind * rho_wind
+        P_wind = alpha_wind * X_wind
+
+    alpha 可以由输入直接给出，也可以由逐时净功率序列取
+    min(net_output_mw) / X_wind 得到。并网场景应提供同期序列。
 
     alpha、归一化序列或原始 MW 序列三选一。年度容量因子不进入本式。
     """
@@ -253,6 +346,7 @@ def wind(name, grid_mw, k_factor, area_km2=None, density_mw_per_km2=None,
         raise ValidationError(
             "风电 alpha 必须在 [0,1]；请检查装机、出力序列及其单位（MW 或 MWh/MWh）。"
         )
+    # alpha_wind 是考察期最低净出力与装机之比，不是年度容量因子。
     capacity = installed_mw * alpha_value
     return _breakdown(grid_mw, capacity, k_factor, "wind", {
         "equation": "正文式(3)",
@@ -263,13 +357,19 @@ def wind(name, grid_mw, k_factor, area_km2=None, density_mw_per_km2=None,
 
 
 def hydro(name, grid_mw, k_factor, installed_mw, flow_m3_per_s, net_head_m, efficiency):
-    """水电：正文式(4)，流量与落差必须采用同一约束期口径。"""
+    """计算园区专用水电的可靠容量。
+
+    对应权威稿式 (4)：
+        P_hydro = min(X_hydro, 0.00981*eta_hydro*Q*H)
+    流量 Q 与落差 H 必须采用同一约束期口径。
+    """
     _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     _nonnegative("installed_mw", installed_mw)
     _nonnegative("flow_m3_per_s", flow_m3_per_s)
     _nonnegative("net_head_m", net_head_m)
     _efficiency("hydraulic_efficiency", efficiency)
+    # 0.00981 将 rho*g*Q*H 换算为 MW。
     water_power = 0.00981 * efficiency * flow_m3_per_s * net_head_m
     capacity = min(installed_mw, water_power)
     return _breakdown(grid_mw, capacity, k_factor, "hydro", {
@@ -281,7 +381,14 @@ def hydro(name, grid_mw, k_factor, installed_mw, flow_m3_per_s, net_head_m, effi
 
 def solar(name, grid_mw, k_factor, area_km2, density_mw_per_km2,
           supply_ratios=None, dt_hours=None, battery=None, net_output_mw=None):
-    """光伏与光储的逐时容量：正文式(5)，附录 A 给出 LP。
+    """计算无电池光伏或光储的可靠容量。
+
+    对应权威稿式 (5)：
+        X_PV = A_PV * rho_PV
+        P_PV+st = f_PV+st(X_PV, W, Cmax, Dmax, Eusable, eta_c, eta_d)
+
+    supply_ratios 的单位为 MWh/MWh，net_output_mw 为 MW。
+    无电池时退化为考察期最小净功率；有电池时调用附录 A 的 LP。
 
     supply_ratios 的单位为 MWh/MWh（净电功率/装机），net_output_mw 为 MW。
     """
@@ -301,6 +408,7 @@ def solar(name, grid_mw, k_factor, area_km2, density_mw_per_km2,
         input_unit = "supply_ratios"
 
     settings = _battery_settings(battery, required=False)
+    # 电池调度只使用光伏可用净功率，不把电网功率用于给电池充电。
     self_generation, schedule = solve_storage_capacity(
         installed_mw * values, dt_hours,
         settings["C_max_mw"], settings["D_max_mw"], settings["E_usable_mwh"],
@@ -323,7 +431,11 @@ def solar(name, grid_mw, k_factor, area_km2, density_mw_per_km2,
 
 def combined_battery(name, grid_mw, k_factor, supply_series_mw, installed_mw,
                      dt_hours, battery):
-    """风光共用电池：先合并同一时段的可用净功率，再求解一次附录 A."""
+    """计算风电与光伏共用电池的可靠容量。
+
+    先按同一时段合并风光净功率 r_t，再对合并后的序列求解一次
+    附录 A。installed_mw 是风光合计装机，仅用于记录配置。
+    """
     _nonnegative("P_grid", grid_mw)
     _k_factor(k_factor)
     _positive("combined_installed_mw", installed_mw)
@@ -346,6 +458,7 @@ def combined_battery(name, grid_mw, k_factor, supply_series_mw, installed_mw,
 
 
 def _battery_settings(value, required):
+    """解析并校验电池容量、功率和效率参数。"""
     if value is None:
         if required:
             raise ValidationError("该方案必须提供 battery 配置。")
@@ -384,6 +497,10 @@ def _battery_settings(value, required):
 
 
 def _breakdown(grid_mw, self_generation, k_factor, power_type, method):
+    """构造统一的方案结果字典。
+
+    返回的 breakdown 字段与终端/JSON 输出保持一致，便于逐方案复核。
+    """
     it_mw, facility_mw = total_capacity(grid_mw, self_generation, k_factor)
     return {
         "name": power_type,
@@ -400,6 +517,7 @@ def _breakdown(grid_mw, self_generation, k_factor, power_type, method):
 
 
 def _config_series(spec, field, required):
+    """从方案配置读取一维序列，支持内嵌数组或 module::variable。"""
     if field not in spec or spec[field] is None:
         if required:
             raise CapacityModelError(f"{field} 不能缺失。")
@@ -420,6 +538,7 @@ def _config_series(spec, field, required):
 
 
 def _config_number(spec, field):
+    """从方案配置读取并校验一个数值字段。"""
     if field not in spec or spec[field] is None:
         raise CapacityModelError(f"{field} 不能缺失。")
     value = spec[field]
@@ -429,10 +548,15 @@ def _config_number(spec, field):
 
 
 def _config_optional(spec, field):
+    """读取可选数值字段；缺失或为 null 时返回 None。"""
     return None if field not in spec or spec[field] is None else _config_number(spec, field)
 
 
 def _build_scenario(kind, spec, grid_value, k_value, name):
+    """按方案类型分派到对应的电源计算函数。
+
+    这是输入配置与电源公式之间的适配层，不改变任何物理计算。
+    """
     if kind == "grid":
         return grid_only(grid_value, k_value)
     if kind == "coal":
@@ -470,6 +594,7 @@ def _build_scenario(kind, spec, grid_value, k_value, name):
 
 
 def _wind_result(spec, grid_value, k_value):
+    """从方案配置提取风电参数并调用 wind()。"""
     provided = [
         field for field in ("alpha", "power_ratios", "net_output_mw")
         if spec.get(field) is not None
@@ -490,6 +615,7 @@ def _wind_result(spec, grid_value, k_value):
 
 
 def _solar_result(spec, grid_value, k_value):
+    """从方案配置提取光伏/光储参数并调用 solar()。"""
     provided = [
         field for field in ("supply_ratios", "net_output_mw")
         if spec.get(field) is not None
@@ -498,10 +624,21 @@ def _solar_result(spec, grid_value, k_value):
         raise CapacityModelError("光伏方案必须在 supply_ratios 与 net_output_mw 中提供且只提供一个。")
     source = provided[0]
     return solar(
-        "solar", grid_value, k_value,
-        _config_number(spec, "area_km2"), _config_number(spec, "density_mw_per_km2"),
-        supply_ratios=_config_series(spec, source, required=True) if source == "supply_ratios" else None,
-        net_output_mw=_config_series(spec, source, required=True) if source == "net_output_mw" else None,
+        "solar",
+        grid_value,
+        k_value,
+        _config_number(spec, "area_km2"),
+        _config_number(spec, "density_mw_per_km2"),
+        supply_ratios=(
+            _config_series(spec, source, required=True)
+            if source == "supply_ratios"
+            else None
+        ),
+        net_output_mw=(
+            _config_series(spec, source, required=True)
+            if source == "net_output_mw"
+            else None
+        ),
         dt_hours=_config_number(spec, "dt_hours"),
         battery=spec.get("battery"),
     )
@@ -511,6 +648,7 @@ Q1_TYPES = frozenset({"grid", "coal", "gas", "wind", "hydro", "solar", "combined
 
 
 def _resolve_wue(water):
+    """解析 WUE，支持直接值或夏冬时段加权值。"""
     direct = water.get("wue_l_per_kwh_it")
     seasonal_keys = (
         "wue_summer_l_per_kwh_it",
@@ -538,7 +676,19 @@ def _resolve_wue(water):
 
 
 def water_budget(water):
-    """水资源模型，流量统一为 m³/h；WUE 为 L/kWh IT。"""
+    """计算场址的最终可用水量上限。
+
+    参数:
+        water: YAML 中的 water 对象。流量统一为 m³/h，
+            WUE 为 L/kWh IT。
+
+    返回:
+        包含各项水量上限、Q_max、WUE、发电耗水系数和 omitted 的字典。
+
+    说明:
+        三项水量上限只有一项是必需的实际限制；未提供的项会列入
+        ``omitted``，不会被自动视为无穷大。
+    """
     basis = water.get("basis")
     if basis not in ("withdrawal", "consumption"):
         raise ValidationError("water.basis 应为 withdrawal（取水）或 consumption（耗水）。")
@@ -600,7 +750,17 @@ def water_budget(water):
 
 
 def land_capacity(land):
-    """权威稿土地式：P_land=(A_eff-A_0)/a_site。"""
+    """计算园区土地允许的最大 IT 容量。
+
+    对应权威稿土地模型：
+        A_req = A_0 + a_site * P
+        P_land = max(0, (A_eff - A_0) / a_site)
+
+    参数:
+        land: 含 effective_ha、fixed_it_ha、ha_per_mw_it 的字典。
+            effective_ha 和 fixed_it_ha 的单位为 ha，
+            ha_per_mw_it 的单位为 ha/MW IT。
+    """
     allowed = {"effective_ha", "fixed_it_ha", "ha_per_mw_it"}
     if unknown := set(land) - allowed:
         raise ValidationError(f"land 含权威稿未使用字段：{', '.join(sorted(unknown))}")
@@ -618,6 +778,11 @@ def land_capacity(land):
 
 
 def _grid(data):
+    """解析电网输入，返回 P_grid 及其口径说明。
+
+    MW 输入直接使用；MVA 输入按 S_grid*cos(phi) 换算，并标注为
+    初筛上界。两项不能同时提供。
+    """
     if ("P_grid_mw" in data) == ("P_grid_mva" in data):
         raise ValidationError("电网需给 P_grid_mw 或 P_grid_mva 中的一项。")
     if "P_grid_mva" in data:
@@ -629,6 +794,16 @@ def _grid(data):
 
 
 def _resource_row(data, spec, grid, budget):
+    """计算单个候选方案的三类上限和联合容量。
+
+    这里是 Q1 的逐方案集成点：
+        P_E = total_capacity(...)
+        P_W = max(0, Q_max - Q_gen) / WUE
+        P_L = land_capacity(...)
+        P = min(P_E, P_W, P_L)
+
+    ``binding`` 记录达到最小值的约束；并列时保留多个名称。
+    """
     kind_value = spec.get("type")
     if not isinstance(kind_value, str):
         raise ValidationError("每套配置需要 type。")
@@ -657,6 +832,7 @@ def _resource_row(data, spec, grid, budget):
         budget["generation_water_l_per_kwh"].get(kind, 0.0),
     )
     _nonnegative("generation_water_l_per_kwh", generation_water_coefficient)
+    # P_i 用 MW、c_i 用 L/kWh 时，乘积数值直接对应 m³/h。
     generation_water = breakdown["self_generation_mw"] * generation_water_coefficient
     net_water = max(0.0, budget["Q_max_m3_h"] - generation_water)
     water_limit = net_water / wue if wue > 0 else None
@@ -665,15 +841,38 @@ def _resource_row(data, spec, grid, budget):
     if water_limit is not None:
         limits["水"] = water_limit
     capacity = min(limits.values())
-    row.update(name=spec["name"], online_year=spec["online_year"], land=land,
-               wue_l_per_kwh_it=wue, P_E_mw_it=electric, P_W_mw_it=water_limit,
-               generation_water_m3_h=generation_water, Q_net_m3_h=net_water,
-               P_L_mw_it=land["P_L_mw_it"], P_mw_it=capacity,
-               binding=[key for key, value in limits.items() if isclose(value, capacity, abs_tol=1e-9)])
+    row.update(
+        name=spec["name"],
+        online_year=spec["online_year"],
+        land=land,
+        wue_l_per_kwh_it=wue,
+        P_E_mw_it=electric,
+        P_W_mw_it=water_limit,
+        generation_water_m3_h=generation_water,
+        Q_net_m3_h=net_water,
+        P_L_mw_it=land["P_L_mw_it"],
+        P_mw_it=capacity,
+        binding=[
+            key
+            for key, value in limits.items()
+            if isclose(value, capacity, abs_tol=1e-9)
+        ],
+    )
     return row
 
 
 def assess_site(data):
+    """在单一给定场址上评估所有候选方案。
+
+    处理顺序:
+        1. 校验场址、水量和土地输入；
+        2. 按 assessment_year 筛选已投运方案；
+        3. 逐方案计算 P_E、P_W、P_L 和 P=min(...)；
+        4. 取候选集最大值并记录 winners、binding 和 excluded。
+
+    返回:
+        可直接写入 JSON 的 Q1 结果字典。
+    """
     for field in ("C_PCC_mw", "sensitivity"):
         if field in data:
             raise ValidationError(f"权威稿 Q1 不使用字段 {field}，请删除后重算。")
@@ -692,14 +891,22 @@ def assess_site(data):
         raise ValidationError("scenarios 至少要有一套配置。")
     rows, excluded, names = [], [], set()
     for spec in scenarios:
-        if not isinstance(spec, dict) or not isinstance(spec.get("name"), str) or not spec["name"].strip():
+        if (
+            not isinstance(spec, dict)
+            or not isinstance(spec.get("name"), str)
+            or not spec["name"].strip()
+        ):
             raise ValidationError("每套配置需要 name。")
         if spec["name"] in names:
             raise ValidationError(f"配置名称重复：{spec['name']}")
         names.add(spec["name"])
         _positive_integer("online_year", spec.get("online_year"))
         if spec["online_year"] > year:
-            excluded.append({"name": spec["name"], "online_year": spec["online_year"], "reason": "尚未投运"})
+            excluded.append({
+                "name": spec["name"],
+                "online_year": spec["online_year"],
+                "reason": "尚未投运",
+            })
             continue
         rows.append(_resource_row(data, spec, grid, budget))
     if not rows:

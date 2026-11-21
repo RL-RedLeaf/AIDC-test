@@ -32,6 +32,7 @@ WRONG_UNIT_KEYS = {
 
 
 def build_parser():
+    """构造命令行参数解析器。"""
     parser = argparse.ArgumentParser(
         description="IMMC 2027 A 题第一问：计算场址电、水、土地联合容量。"
     )
@@ -42,13 +43,25 @@ def build_parser():
 
 
 def calculate(config, json_path=None):
-    """直接接收配置字典或 YAML 路径，供 Python 脚本调用。"""
+    """执行一次 Q1 或兼容电力分项计算。
+
+    参数:
+        config: YAML 文件路径或已构造的配置字典。
+        json_path: 可选的 JSON 输出路径；父目录必须存在。
+
+    返回:
+        计算结果字典。Q1 结果包含 P_max_mw_it、winners 和 scenarios。
+
+    异常:
+        CapacityModelError: 配置文件、字段或模型计算不合法。
+    """
     if isinstance(config, Mapping):
         data = dict(config)
     else:
         data = _load_config(config)
 
     if data.get("model") == "q1":
+        # Q1 的标准路径：场址集成，不附加旧版敏感性结果。
         report = assess_site(data)
     else:
         if "model" in data or any(key in data for key in ("water", "land", "assessment_year")):
@@ -57,18 +70,27 @@ def calculate(config, json_path=None):
     if json_path:
         output = Path(json_path)
         try:
-            output.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
+            output.write_text(
+                json.dumps(
+                    report,
+                    ensure_ascii=False,
+                    indent=2,
+                    allow_nan=False,
+                ),
+                encoding="utf-8",
+            )
         except OSError as exc:
             raise CapacityModelError(f"无法写入 JSON 结果：{exc}") from exc
     return report
 
 
 def run(config_path, json_path=None):
-    """兼容原命令行调用，等价于 calculate(config_path, json_path)."""
+    """兼容旧调用方式，等价于 calculate(config_path, json_path)。"""
     return calculate(config_path, json_path)
 
 
 def _load_config(config_path):
+    """读取 UTF-8 YAML 配置文件，并确认顶层是对象。"""
     path = Path(config_path)
     if not path.exists():
         raise CapacityModelError(f"配置文件不存在：{path}")
@@ -83,6 +105,7 @@ def _load_config(config_path):
 
 
 def _power_report(data):
+    """执行旧版电力分项计算，保留用于兼容既有示例。"""
     _reject_wrong_units(data)
     grid_value = _config_number(data, "P_grid_mw")
     k_value = _config_number(data, "k_factor")
@@ -129,6 +152,7 @@ def _power_report(data):
 
 
 def _reject_wrong_units(mapping, label="配置"):
+    """拒绝容易导致量纲错误的字段名。"""
     if not isinstance(mapping, dict):
         return
     for key, message in WRONG_UNIT_KEYS.items():
@@ -137,7 +161,9 @@ def _reject_wrong_units(mapping, label="配置"):
 
 
 def _print(report, say=print):
+    """以分节、非 Markdown 表格的格式输出结果。"""
     if "P_max_mw_it" in report:
+        # 联合模型：按场址、水量、逐方案、结论四层输出。
         say("评估设置")
         say(f"  场址：{report['site']}")
         say(f"  评估年份 y：{report['assessment_year']}")
@@ -156,8 +182,12 @@ def _print(report, say=print):
             power = row["breakdown"]
             say(f"[{index}] {row['name']}（{row['power_type']}）")
             say(f"  电力上限 P_E = {row['P_E_mw_it']:.6g} MW IT")
-            say(f"    P_grid = {power['grid_mw']:.6g} MW，P_self = {power['self_generation_mw']:.6g} MW，"
-                f"P_total = {power['facility_mw']:.6g} MW，k = {power['k']:.6g}")
+            say(
+                f"    P_grid = {power['grid_mw']:.6g} MW，"
+                f"P_self = {power['self_generation_mw']:.6g} MW，"
+                f"P_total = {power['facility_mw']:.6g} MW，"
+                f"k = {power['k']:.6g}"
+            )
             if row["P_W_mw_it"] is None:
                 say("  水上限 P_W = 无现场用水需求")
             else:
@@ -190,6 +220,7 @@ def _print(report, say=print):
 
 
 def _ask_text(asker, prompt, default=None, allow_blank=False):
+    """读取文本输入，空输入时采用默认值或按配置决定是否允许留空。"""
     suffix = f" [{default}]" if default is not None else ""
     raw = asker(f"{prompt}{suffix}：").strip()
     if not raw:
@@ -203,6 +234,7 @@ def _ask_text(asker, prompt, default=None, allow_blank=False):
 
 def _ask_number(asker, prompt, default=None, minimum=None, maximum=None,
                 allow_zero=True, integer=False):
+    """循环读取数值，直到满足范围、整数和零值约束。"""
     while True:
         raw = _ask_text(asker, prompt, default)
         try:
@@ -223,6 +255,7 @@ def _ask_number(asker, prompt, default=None, minimum=None, maximum=None,
 
 
 def _ask_optional_number(asker, prompt):
+    """读取可选数值；直接回车返回 None。"""
     while True:
         raw = _ask_text(asker, prompt, allow_blank=True)
         if raw is None:
@@ -234,6 +267,7 @@ def _ask_optional_number(asker, prompt):
 
 
 def _ask_choice(asker, prompt, options, default):
+    """读取枚举选项，支持输入编号或选项原文。"""
     labels = "，".join(f"{index}={value}" for index, value in enumerate(options, start=1))
     while True:
         raw = _ask_text(asker, f"{prompt}（{labels}）", str(default))
@@ -245,10 +279,12 @@ def _ask_choice(asker, prompt, options, default):
 
 
 def _ask_yes_no(asker, prompt, default=True):
+    """读取是/否布尔输入。"""
     return _ask_choice(asker, prompt, ["是", "否"], "是" if default else "否") == "是"
 
 
 def _ask_series(asker, prompt):
+    """读取逗号或空格分隔的一维数值序列。"""
     while True:
         raw = _ask_text(asker, prompt)
         parts = [part for part in re.split(r"[,，\s]+", raw.strip()) if part]
@@ -263,12 +299,15 @@ def _ask_series(asker, prompt):
 
 
 def _ask_battery(asker, default=True):
+    """询问并构造电池参数字典。"""
     if not _ask_yes_no(asker, "是否配置电池（有电池时按式(6)校核充放电与夜间供电）", default):
         return None
     return {
         "C_max_mw": _ask_number(asker, "最大充电功率 C_max_mw（C_max，MW）", 10, allow_zero=False),
         "D_max_mw": _ask_number(asker, "最大放电功率 D_max_mw（D_max，MW）", 10, allow_zero=False),
-        "E_usable_mwh": _ask_number(asker, "可用电量 E_usable_mwh（E_usable，MWh）", 10, allow_zero=False),
+        "E_usable_mwh": _ask_number(
+            asker, "可用电量 E_usable_mwh（E_usable，MWh）", 10, allow_zero=False
+        ),
         "charge_efficiency": _ask_number(
             asker, "充电效率（η_c）", 1, minimum=0.000001, maximum=1, allow_zero=False
         ),
@@ -279,6 +318,7 @@ def _ask_battery(asker, default=True):
 
 
 def _ask_site(asker):
+    """询问场址和评估上下文参数。"""
     return {
         "site": _ask_text(asker, "场址名称（本次评估的同一场址）", "演示场址"),
         "assessment_year": _ask_number(asker, "评估年份 y（只比较该年之前已投运的配置）", 2028,
@@ -289,6 +329,7 @@ def _ask_site(asker):
 
 
 def _ask_power_inputs(asker):
+    """询问电网输入和设计满载倍率。"""
     mode = _ask_choice(asker, "电网输入方式（P_grid 为接入点可持续交付净有功；MVA 仅作初筛换算）",
                        ["MW", "MVA"], "MW")
     config = {}
@@ -309,6 +350,7 @@ def _ask_power_inputs(asker):
 
 
 def _ask_water(asker):
+    """询问水量口径、WUE 和至少一项独立水量上限。"""
     basis = _ask_choice(asker, "水量口径（耗水或取水；Q_max 与 WUE 必须同口径）",
                          ["consumption", "withdrawal"], "consumption")
     wue = _ask_number(asker, "WUE（每 kWh IT 的取水/耗水量，L/kWh IT；P_W=Q_max/WUE）", 1.5, minimum=0)
@@ -331,6 +373,7 @@ def _ask_water(asker):
 
 
 def _ask_land(asker):
+    """询问土地容量模型的三个核心参数。"""
     return {
         "effective_ha": _ask_number(asker, "场址总有效用地 A_eff（effective_ha，ha）", 160,
                                     minimum=0, allow_zero=False),
@@ -342,6 +385,7 @@ def _ask_land(asker):
 
 
 def _ask_scenario(asker, number, grid_mw):
+    """询问一套候选供电方案的全部参数。"""
     kind = _ask_choice(
         asker,
         "方案类型（每个方案对应式(1)中的一个候选配置 x）",
@@ -421,7 +465,16 @@ def _ask_scenario(asker, number, grid_mw):
 
 
 def build_interactive_config(asker=input, say=print, default_json=None):
-    """收集一套 Q1 配置，供函数调用和测试复用。"""
+    """通过控制台问题收集一套 Q1 配置。
+
+    参数:
+        asker: 接收问题字符串并返回用户输入的函数。
+        say: 输出说明文字的函数。
+        default_json: 可选的默认 JSON 输出路径。
+
+    返回:
+        (配置字典, JSON 路径或 None)。
+    """
     say("IMMC 2027 A 题第一问：交互式电水土地容量计算")
     say("说明：本向导按正文式(1)-(16)收集同一场址、同一设计期和同一服务水平下的候选配置 x。")
     data = _ask_site(asker)
@@ -445,7 +498,7 @@ def build_interactive_config(asker=input, say=print, default_json=None):
 
 
 def run_interactive(asker=input, say=print, default_json=None):
-    """运行输入向导，返回进程退出码。"""
+    """运行输入向导、执行模型并返回进程退出码。"""
     try:
         config, output_path = build_interactive_config(asker, say, default_json)
         report = calculate(config, output_path)
@@ -460,6 +513,7 @@ def run_interactive(asker=input, say=print, default_json=None):
 
 
 def main(argv=None):
+    """解析命令行参数并执行配置入口或交互向导。"""
     try:
         sys.stdout.reconfigure(encoding="utf-8")
         sys.stderr.reconfigure(encoding="utf-8")

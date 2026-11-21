@@ -1,3 +1,5 @@
+"""IMMC 2027 A 题第一问的脚本入口。"""
+
 import sys
 from pathlib import Path
 
