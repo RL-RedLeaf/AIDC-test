@@ -31,6 +31,14 @@ $$
 
 **Abilene 示例。** [Oracle 项目资料](https://arrington.house.gov/uploadedfiles/final_oracle_oai_data_center_fact_sheet_092225b.pdf)预计每栋楼每年约 12,625 美制加仑用于闭式冷却系统的维护与水质管理，八栋楼合计约 382 m³/年；这不是该园区的现场总取水量。这个数字可以作为已选定八栋楼配置的年度补水检查；单靠它没有同期 IT 用电量、实际补水时段或同类扩建的物理比例，就不能得出设计工况 WUE，更不能除以 Epoch 对该园区的 IT 容量估计后带回去验证上限。“按栋”仅是此项目的披露口径，不是主模型必须采用的结构。市政年度规划余量也不能直接视作该园区设计小时的可交付水量。因此，在进一步取得同工况、同边界的资料前，该案例的水容量应注明未独立确定。
 
+### 附录图：闭式冷却设施的现场用水构成
+
+![Crusoe 对一座 200 MW 数据中心的用水构成示意](01_Crusoe_200MW_用水构成_原图.png)
+
+*图 S1　Crusoe 公布的 200 MW 数据中心示意，并非 Abilene 八栋楼的实测水量。图中一次性初次充填约 170 万美制加仑；年度冷却运行用水记为 0，冷却系统维护约 5.4 万、员工室内约 46 万、设备清洁和设施维护约 140 万，年度总量约 200 万加仑。这里的“冷却运行用水为 0”不意味着现场总用水 WUE 为 0。原图与说明：[Crusoe, Water stewardship at our data centers](https://www.crusoe.ai/resources/blog/water-stewardship-at-our-data-centers)；图中所有数值均是运营商的示意估计。*
+
+此图适合解释现场用水边界，不用于计算 Abilene 的 $P_W$：[Crusoe 的另一份影响报告说明](https://www.crusoe.ai/resources/blog/crusoes-2025-impact-report)把一座 200 MW 设施的年度总用水写作约 91 万加仑，与本图的约 200 万加仑不同；现有原文未交代两者是否为同一设计版本或相同边界。[Crusoe 的 Abilene 项目介绍](https://www.crusoe.ai/resources/blog/an-inside-look-at-the-abilene-ai-data-center)还预计每栋楼每年约 5 万加仑冷却系统维护补水，与上文 Oracle 的 12,625 加仑/栋·年不同。不能把这些数字混合或平均，再除以已公布的 IT MW 形成“验证用”WUE。
+
 ## 原文关键内容的中文译读
 
 **[1] Hoekstra 等，2012，PLOS ONE（同行评审）**：作者认为只比较年平均供需会遮蔽月度缺水；估算可用蓝水时，应为维持河流生态功能留出流量。文中专门指出，许多工业与家庭取水会回流，因此取水量与实际耗掉的水不一样。**用于本题**：论证按枯水时段而非仅按全年平均检查物理余量；不要把论文中的“剩余可耗水”直接当成数据中心“可抽取水”。原文的全球尺度环境流量假设不等于当地法定或工程取水规则。<sup>[1]</sup>

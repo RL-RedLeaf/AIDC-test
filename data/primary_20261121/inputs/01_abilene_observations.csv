@@ -1,0 +1,39 @@
+key,value,unit,source_id,locator,meaning
+campus_acres,1100,acre,ORACLE_2025,Abilene Size,Campus gross area; ecological exclusions unknown
+buildings,8,count,ORACLE_2025,Abilene Size,Planned completed campus buildings
+total_building_sqft,4000000,sqft,ORACLE_2025,Abilene Size,Up to approximately four million square feet across buildings
+cooling_maintenance_gal_per_building_year,12625,US_gal/year,ORACLE_2025,Abilene Water Efficiency,Annual closed-loop cooling maintenance and quality water per building
+new_substation_mw,1000,MW_facility,MORTENSON_2026,Project overview and phase 2,345 kV station engineering capacity; not firm import entitlement
+new_substation_acres,12.5,acre,MORTENSON_2026,Project overview and phase 2,Station land; assumed within campus gross area in model
+old_substation_mw,200,MW_facility,MORTENSON_2026,Project overview and phase 1,Older 138 kV station; not added to new station because overlap and dispatch unknown
+water_source_bra_main_stem,19418,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,BRA supply after stated treatment deduction
+water_source_oh_ivie,4721,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Region F reservoir assigned yield
+water_source_fort_phantom_hill,2888,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Reservoir safe yield after Clyde right
+water_source_fort_phantom_reuse,7840,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-4,Indirect potable reuse
+water_source_west_central_hubbard,10720,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-4,West Central Texas MWD supply
+water_demand_city_abilene,26848,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-2,Projected municipal demand
+water_contract_ballinger,1250,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-2,Existing sale
+water_contract_baird,77,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-2,Existing sale
+water_contract_blair,77,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-2,Existing sale
+water_contract_buffalo_gap,153,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-2,Existing sale
+water_contract_clyde,307,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-2,Existing sale
+water_contract_lawn,153,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-2,Existing sale
+water_contract_merkel,353,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-2,Existing sale
+water_contract_tye,184,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-2,Existing sale
+water_contract_eula,61,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-2,Existing sale
+water_contract_hamby,308,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Existing sale
+water_contract_hawley,384,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Existing sale
+water_contract_potosi,307,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Existing sale
+water_contract_steamboat,307,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Existing sale
+water_contract_sun,230,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Existing sale
+water_contract_tuscola,92,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Existing sale
+water_contract_view_caps,199,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Existing sale
+water_contract_taylor_manufacturing,671,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Existing sale
+water_strategy_baird,206,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Recommended additional supply sale
+water_strategy_clyde,100,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Recommended additional supply sale
+water_strategy_potosi,857,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Recommended additional supply sale
+water_strategy_sun,14,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Recommended additional supply sale
+water_strategy_steamboat,653,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Recommended additional supply sale
+water_strategy_view_caps,109,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Recommended additional supply sale
+water_strategy_jones_other,167,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Recommended additional supply sale
+water_strategy_taylor_manufacturing,49,acre_ft/year,REGION_G_2026,Table 5.33-2 p. 5.33-3,Recommended additional supply sale

@@ -1,0 +1,223 @@
+{
+  "site": "Stargate Abilene, Texas - fully built eight-building campus",
+  "assessment_year": 2030,
+  "period_note": "Static 2030 design night; annualized municipal margin assumed deliverable in that design condition",
+  "inputs": {
+    "model": "q1",
+    "site": "Stargate Abilene, Texas - fully built eight-building campus",
+    "assessment_year": 2030,
+    "period_note": "Static 2030 design night; annualized municipal margin assumed deliverable in that design condition",
+    "service_level": "Normal operation at rated IT load; no N-1, no backup turbine counted",
+    "P_grid_mw": 1000.0,
+    "k_factor": 1.3,
+    "water": {
+      "basis": "withdrawal",
+      "source_m3_h": 1615.2134884141096,
+      "wue_l_per_kwh_it": 0.0
+    },
+    "land": {
+      "effective_ha": 445.15420646399997,
+      "fixed_it_ha": 5.058570528,
+      "ha_per_mw_it": 0.14374799999999996,
+      "generation_land_ha": 0
+    },
+    "scenarios": [
+      {
+        "name": "Grid plus non-evaporative cooling",
+        "type": "grid"
+      },
+      {
+        "name": "Counterfactual on-site PV without storage",
+        "type": "solar",
+        "online_year": 2030,
+        "generation_land_ha": 50.0,
+        "area_km2": 0.5,
+        "density_mw_per_km2": 96.0,
+        "net_output_mw": [
+          0.0
+        ],
+        "dt_hours": 1
+      }
+    ]
+  },
+  "service_level": "Normal operation at rated IT load; no N-1, no backup turbine counted",
+  "grid_basis": "接入点持续净有功",
+  "water": {
+    "basis": "withdrawal",
+    "limits_m3_h": {
+      "source": 1615.2134884141096
+    },
+    "Q_max_m3_h": 1615.2134884141096,
+    "periods": [
+      {
+        "period": "design",
+        "limit_m3_h": 1615.2134884141096,
+        "wue_l_per_kwh_it": 0.0
+      }
+    ],
+    "wue_l_per_kwh_it": 0.0,
+    "generation_water_l_per_kwh": {},
+    "omitted": [
+      "stress",
+      "policy"
+    ]
+  },
+  "scenarios": [
+    {
+      "name": "Grid plus non-evaporative cooling",
+      "power_type": "grid_only",
+      "breakdown": {
+        "grid_mw": 1000.0,
+        "self_generation_mw": 0.0,
+        "facility_mw": 1000.0,
+        "k": 1.3,
+        "it_mw": 769.2307692307692
+      },
+      "method": {
+        "equation": "正文式(1)、(6)",
+        "assumption": "P_self = 0，作为所有候选方案的基准。"
+      },
+      "online_year": 2030,
+      "land": {
+        "site_ha": 445.15420646399997,
+        "fixed_it_ha": 5.058570528,
+        "generation_land_ha": 0,
+        "optimistic_zero_fixed": false,
+        "P_L_mw_it": 3061.577454545455,
+        "generation_land_source": "fixed"
+      },
+      "wue_l_per_kwh_it": 0.0,
+      "P_E_mw_it": 769.2307692307692,
+      "P_W_mw_it": null,
+      "water_checks": [
+        {
+          "period": "design",
+          "limit_m3_h": 1615.2134884141096,
+          "wue_l_per_kwh_it": 0.0,
+          "P_W_mw_it": null,
+          "water_used_m3_h": 0.0
+        }
+      ],
+      "self_generation_used_mw": 0.0,
+      "generation_water_m3_h": 0.0,
+      "Q_net_m3_h": 1615.2134884141096,
+      "P_L_mw_it": 3061.577454545455,
+      "P_mw_it": 769.2307692307692,
+      "generation_land_ha": 0,
+      "generation_land_source": "fixed",
+      "generation_land_required_ha": 0.0,
+      "generation_land_candidates": [
+        {
+          "generation_land_ha": 0,
+          "generation_land_required_ha": 0.0,
+          "generation_land_capacity_capped": false,
+          "P_L_mw_it": 3061.577454545455,
+          "P_mw_it": 769.2307692307692,
+          "binding": [
+            "电力"
+          ]
+        }
+      ],
+      "value_source": {
+        "P_E": "derived",
+        "P_W": "derived",
+        "P_L": "derived"
+      },
+      "binding": [
+        "电力"
+      ],
+      "generation_land_capacity_capped": false
+    },
+    {
+      "name": "Counterfactual on-site PV without storage",
+      "power_type": "solar",
+      "breakdown": {
+        "grid_mw": 1000.0,
+        "self_generation_mw": 0.0,
+        "facility_mw": 1000.0,
+        "k": 1.3,
+        "it_mw": 769.2307692307692
+      },
+      "method": {
+        "equation": "正文式(5) 无电池退化（周期最小净功率）",
+        "installed_mw": 48.0,
+        "dt_hours": 1,
+        "input_series": "net_output_mw",
+        "battery": null,
+        "L_mw": 0.0,
+        "charge_mw": [
+          0.0
+        ],
+        "discharge_mw": [
+          0.0
+        ],
+        "energy_start_mwh": [
+          0.0
+        ],
+        "curtailment_mw": [
+          0.0
+        ],
+        "direction": [
+          0
+        ],
+        "status": "no battery"
+      },
+      "online_year": 2030,
+      "land": {
+        "site_ha": 445.15420646399997,
+        "fixed_it_ha": 5.058570528,
+        "generation_land_ha": 50.0,
+        "optimistic_zero_fixed": false,
+        "P_L_mw_it": 2713.746528202132,
+        "generation_land_source": "fixed"
+      },
+      "wue_l_per_kwh_it": 0.0,
+      "P_E_mw_it": 769.2307692307692,
+      "P_W_mw_it": null,
+      "water_checks": [
+        {
+          "period": "design",
+          "limit_m3_h": 1615.2134884141096,
+          "wue_l_per_kwh_it": 0.0,
+          "P_W_mw_it": null,
+          "water_used_m3_h": 0.0
+        }
+      ],
+      "self_generation_used_mw": 0.0,
+      "generation_water_m3_h": 0.0,
+      "Q_net_m3_h": 1615.2134884141096,
+      "P_L_mw_it": 2713.746528202132,
+      "P_mw_it": 769.2307692307692,
+      "generation_land_ha": 50.0,
+      "generation_land_source": "fixed",
+      "generation_land_required_ha": 50.0,
+      "generation_land_candidates": [
+        {
+          "generation_land_ha": 50.0,
+          "generation_land_required_ha": 50.0,
+          "generation_land_capacity_capped": false,
+          "P_L_mw_it": 2713.746528202132,
+          "P_mw_it": 769.2307692307692,
+          "binding": [
+            "电力"
+          ]
+        }
+      ],
+      "value_source": {
+        "P_E": "derived",
+        "P_W": "derived",
+        "P_L": "derived"
+      },
+      "binding": [
+        "电力"
+      ],
+      "generation_land_capacity_capped": false
+    }
+  ],
+  "excluded": [],
+  "P_max_mw_it": 769.2307692307692,
+  "winners": [
+    "Grid plus non-evaporative cooling",
+    "Counterfactual on-site PV without storage"
+  ]
+}

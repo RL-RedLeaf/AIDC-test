@@ -1,0 +1,9 @@
+﻿annual_water_source,annual_water_gal,facility_rating_mw,pue,assumed_it_load_fraction,implied_it_capacity_mw,annual_it_energy_kwh,equivalent_wue_l_per_kwh,classification
+Crusoe 2026 impact page: 910000 gal/y,910000,200,1.2,1.0,166.66666666666669,1460000000.0000002,0.0023594004955068493,illustrative Crusoe archetype ratio; not an Abilene parameter or design-hour WUE
+Crusoe 2026 impact page: 910000 gal/y,910000,200,1.2,0.75,166.66666666666669,1095000000.0000002,0.0031458673273424653,illustrative Crusoe archetype ratio; not an Abilene parameter or design-hour WUE
+Crusoe 2026 impact page: 910000 gal/y,910000,200,1.4,1.0,142.85714285714286,1251428571.4285715,0.0027526339114246575,illustrative Crusoe archetype ratio; not an Abilene parameter or design-hour WUE
+Crusoe 2026 impact page: 910000 gal/y,910000,200,1.4,0.75,142.85714285714286,938571428.5714285,0.0036701785485662103,illustrative Crusoe archetype ratio; not an Abilene parameter or design-hour WUE
+Crusoe 2026 stewardship diagram: 2000000 gal/y,2000000,200,1.2,1.0,166.66666666666669,1460000000.0000002,0.005185495594520547,illustrative Crusoe archetype ratio; not an Abilene parameter or design-hour WUE
+Crusoe 2026 stewardship diagram: 2000000 gal/y,2000000,200,1.2,0.75,166.66666666666669,1095000000.0000002,0.0069139941260273965,illustrative Crusoe archetype ratio; not an Abilene parameter or design-hour WUE
+Crusoe 2026 stewardship diagram: 2000000 gal/y,2000000,200,1.4,1.0,142.85714285714286,1251428571.4285715,0.006049744860273973,illustrative Crusoe archetype ratio; not an Abilene parameter or design-hour WUE
+Crusoe 2026 stewardship diagram: 2000000 gal/y,2000000,200,1.4,0.75,142.85714285714286,938571428.5714285,0.008066326480365298,illustrative Crusoe archetype ratio; not an Abilene parameter or design-hour WUE

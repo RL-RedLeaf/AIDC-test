@@ -1,0 +1,17 @@
+﻿number,file,inputs,meaning,conditions,use
+0,00_output_index.csv,script output manifest,index of every numbered output,generated with this run,"find inputs, meanings and conditions"
+1,01_derived_physical_inputs.csv,observations 01; assumptions 02,raw geometry and water arithmetic to Q1 inputs,2030 static completed campus; one-story design,audit conversions and no target leakage
+2,02_abilene_static_input.yaml,output 01,Q1-v2 executable baseline configuration,"optimistic station, gross land, conditional municipal water",rerun with code/run.py
+3,03_abilene_static_result.json,output 02; code/immc_power_capacity,conditional E/W/L screen,P_W null because WUE is unidentified; displayed P_max is not a verified three-resource maximum,inspect electric-land ceiling and unresolved water term
+4,04_design_sensitivity.csv,output 02; independent k and usable land fractions,nine static design sensitivities,"same year, site, water and service",see uncertainty before comparison
+5,05_observation_comparison.csv,output 03; Epoch snapshot,electric-land screening ceiling vs current IT estimate,water unresolved; different stages; not calibration,compare scale without calling it a validated maximum
+6,06_epoch_top30_comparison_only.csv,Epoch snapshot,large-center comparison targets,not inputs to Q1,select future sites and benchmark scale
+7,07_source_registry.csv,primary downloads and Epoch snapshot,URLs and content hashes,source versions at retrieval,reproducibility
+8,08_evidence_gaps.csv,outputs 01-05 and source scope,missing primary evidence by axis,conditional result,prioritize next records
+9,09_primary_site_inventory.csv,Oracle; Meta; Mortenson; MLGW; DayOne original publications,published raw facts for six major campuses,incomplete sites are not modeled,investigate further primary records
+10,10_pv_night_counterfactual.csv,output 02; independent module-area layout assumptions,on-site PV without storage versus grid design-night capacity,"hypothetical PV, not built or permitted",see renewable variability and land tradeoff
+11,11_task_scale_comparison.csv,output 03; IMMC task examples,numerical order-of-magnitude comparison only,different geography/stage and unclear IT boundary,meet prompt without circular validation
+12,12_water_source_reconciliation.csv,Oracle and Crusoe operator disclosures,comparison of annual water claims and scopes,conflicting estimates; none is a matched design-hour Abilene WUE,"primary-source audit, not a model input"
+13,13_crusoe_archetype_wue_sensitivity.csv,Crusoe generic 200 MW annual-water and PUE claims,algebraic equivalent-WUE sensitivity,"assumed PUE and IT load; archetype only, not Abilene",illustrate denominator sensitivity; not calibration
+14,14_electric_land_crossover.csv,outputs 01 and 02; Q1 electricity and land equations,effective land share where P_E equals P_L,"conditional on 1 GW station delivery, k, and layout assumptions",identify when land replaces electricity as the E-L bottleneck
+15,15_validity_audit.csv,"review of outputs 00-14 and visualize/fig06",validity classification and missing evidence for each prior output,"withdraws Abilene capacity findings pending primary electrical, land and water inputs",identify reusable source facts and required next records

@@ -1,0 +1,10 @@
+﻿axis,current_limit,next_primary_record
+electricity,1 GW station engineering rating is not firm import at site,utility system impact study; transformer nameplates and simultaneous old/new station configuration
+water WUE,no matched Abilene total onsite water and IT-energy pair; operator annual claims conflict,"project water-service/design records or same-stage, same-boundary annual water and IT-energy pair"
+water delivery,annual city planning margin is not a design-hour deliverable amount or project water right,2030 project water-service contract; seasonal treatment and pumping capacity
+hydrology,"source-level planned yields do not reproduce reservoir streamflows, environmental flow and WAM allocation",relevant reservoir safe-yield calculation and water-rights allocation records
+land,1100 acres are gross and four million sqft are planned floor space,"parcel polygons, ecological and flood exclusions, floor counts, actual hall fraction"
+efficiency,full-load k=1.30 is a declared scenario,same-condition facility and IT design power budget
+water model,Abilene design WUE and P_W unresolved; reported 382 m3/year is expected cooling maintenance only,same-boundary design water intensity and matching deliverable-water condition
+joint criterion,"769 MW is an electricity-land screening ceiling, not a verified three-resource maximum","firm grid import, water WUE and allocation, effective parcel, design full-load k"
+comparison,Epoch current IT estimate is a different stage from 2030 completed campus,dated matched-stage independently measured IT rating

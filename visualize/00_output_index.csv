@@ -1,0 +1,44 @@
+﻿number,file,inputs,meaning,conditions,use
+00,00_output_index.csv,all figure files,index of every output in visualize,mixed synthetic and conditional real-site figures,find figures and their scope
+01,fig01_joint_limits.csv,visualize/plot_q1.py,Synthetic: six supply portfolios and joint constraints,fully synthetic model diagnostic,inspect exact values
+01,fig01_joint_limits.pdf,visualize/plot_q1.py,Synthetic: six supply portfolios and joint constraints,fully synthetic model diagnostic,chart preview/editing
+01,fig01_joint_limits.png,visualize/plot_q1.py,Synthetic: six supply portfolios and joint constraints,fully synthetic model diagnostic,chart preview/editing
+01,fig01_joint_limits.svg,visualize/plot_q1.py,Synthetic: six supply portfolios and joint constraints,fully synthetic model diagnostic,chart preview/editing
+01,fig01_joint_limits_zh.pdf,visualize/plot_q1.py,Synthetic: six supply portfolios and joint constraints,fully synthetic model diagnostic,chart preview/editing
+01,fig01_joint_limits_zh.png,visualize/plot_q1.py,Synthetic: six supply portfolios and joint constraints,fully synthetic model diagnostic,chart preview/editing
+01,fig01_joint_limits_zh.svg,visualize/plot_q1.py,Synthetic: six supply portfolios and joint constraints,fully synthetic model diagnostic,chart preview/editing
+02,fig02_binding_map.csv,visualize/plot_q1.py,Synthetic: grid/water capacity and binding map,fully synthetic model diagnostic,inspect exact values
+02,fig02_binding_map.pdf,visualize/plot_q1.py,Synthetic: grid/water capacity and binding map,fully synthetic model diagnostic,chart preview/editing
+02,fig02_binding_map.png,visualize/plot_q1.py,Synthetic: grid/water capacity and binding map,fully synthetic model diagnostic,chart preview/editing
+02,fig02_binding_map.svg,visualize/plot_q1.py,Synthetic: grid/water capacity and binding map,fully synthetic model diagnostic,chart preview/editing
+02,fig02_binding_map_zh.pdf,visualize/plot_q1.py,Synthetic: grid/water capacity and binding map,fully synthetic model diagnostic,chart preview/editing
+02,fig02_binding_map_zh.png,visualize/plot_q1.py,Synthetic: grid/water capacity and binding map,fully synthetic model diagnostic,chart preview/editing
+02,fig02_binding_map_zh.svg,visualize/plot_q1.py,Synthetic: grid/water capacity and binding map,fully synthetic model diagnostic,chart preview/editing
+03,fig03_land_tradeoff.csv,visualize/plot_q1.py,Synthetic: generation-land tradeoff,fully synthetic model diagnostic,inspect exact values
+03,fig03_land_tradeoff.pdf,visualize/plot_q1.py,Synthetic: generation-land tradeoff,fully synthetic model diagnostic,chart preview/editing
+03,fig03_land_tradeoff.png,visualize/plot_q1.py,Synthetic: generation-land tradeoff,fully synthetic model diagnostic,chart preview/editing
+03,fig03_land_tradeoff.svg,visualize/plot_q1.py,Synthetic: generation-land tradeoff,fully synthetic model diagnostic,chart preview/editing
+03,fig03_land_tradeoff_zh.pdf,visualize/plot_q1.py,Synthetic: generation-land tradeoff,fully synthetic model diagnostic,chart preview/editing
+03,fig03_land_tradeoff_zh.png,visualize/plot_q1.py,Synthetic: generation-land tradeoff,fully synthetic model diagnostic,chart preview/editing
+03,fig03_land_tradeoff_zh.svg,visualize/plot_q1.py,Synthetic: generation-land tradeoff,fully synthetic model diagnostic,chart preview/editing
+04,fig04_storage_cycle.pdf,visualize/plot_q1.py,Synthetic: battery power and energy constraints,fully synthetic model diagnostic,chart preview/editing
+04,fig04_storage_cycle.png,visualize/plot_q1.py,Synthetic: battery power and energy constraints,fully synthetic model diagnostic,chart preview/editing
+04,fig04_storage_cycle.svg,visualize/plot_q1.py,Synthetic: battery power and energy constraints,fully synthetic model diagnostic,chart preview/editing
+04,fig04_storage_cycle_zh.pdf,visualize/plot_q1.py,Synthetic: battery power and energy constraints,fully synthetic model diagnostic,chart preview/editing
+04,fig04_storage_cycle_zh.png,visualize/plot_q1.py,Synthetic: battery power and energy constraints,fully synthetic model diagnostic,chart preview/editing
+04,fig04_storage_cycle_zh.svg,visualize/plot_q1.py,Synthetic: battery power and energy constraints,fully synthetic model diagnostic,chart preview/editing
+04,fig04_storage_dispatch.csv,visualize/plot_q1.py,Synthetic: battery power and energy constraints,fully synthetic model diagnostic,inspect exact values
+04,fig04_storage_sweep.csv,visualize/plot_q1.py,Synthetic: battery power and energy constraints,fully synthetic model diagnostic,inspect exact values
+05,fig05_commissioning.csv,visualize/plot_q1.py,Synthetic: commissioning-year candidate set,fully synthetic model diagnostic,inspect exact values
+05,fig05_commissioning.pdf,visualize/plot_q1.py,Synthetic: commissioning-year candidate set,fully synthetic model diagnostic,chart preview/editing
+05,fig05_commissioning.png,visualize/plot_q1.py,Synthetic: commissioning-year candidate set,fully synthetic model diagnostic,chart preview/editing
+05,fig05_commissioning.svg,visualize/plot_q1.py,Synthetic: commissioning-year candidate set,fully synthetic model diagnostic,chart preview/editing
+05,fig05_commissioning_zh.pdf,visualize/plot_q1.py,Synthetic: commissioning-year candidate set,fully synthetic model diagnostic,chart preview/editing
+05,fig05_commissioning_zh.png,visualize/plot_q1.py,Synthetic: commissioning-year candidate set,fully synthetic model diagnostic,chart preview/editing
+05,fig05_commissioning_zh.svg,visualize/plot_q1.py,Synthetic: commissioning-year candidate set,fully synthetic model diagnostic,chart preview/editing
+06,fig06_abilene_binding.csv,data/primary_20261121/outputs/04_design_sensitivity.csv,Abilene: conditional k and effective-land sensitivity,2030 static conditional screen; P_W not verified,inspect exact values
+06,fig06_abilene_binding.png,data/primary_20261121/outputs/04_design_sensitivity.csv,Abilene: conditional k and effective-land sensitivity,2030 static conditional screen; P_W not verified,chart preview/editing
+06,fig06_abilene_binding.svg,data/primary_20261121/outputs/04_design_sensitivity.csv,Abilene: conditional k and effective-land sensitivity,2030 static conditional screen; P_W not verified,chart preview/editing
+06,fig06_abilene_binding_zh.png,data/primary_20261121/outputs/04_design_sensitivity.csv,Abilene: conditional k and effective-land sensitivity,2030 static conditional screen; P_W not verified,chart preview/editing
+06,fig06_abilene_binding_zh.svg,data/primary_20261121/outputs/04_design_sensitivity.csv,Abilene: conditional k and effective-land sensitivity,2030 static conditional screen; P_W not verified,chart preview/editing
+06,fig06_abilene_binding*,data/primary_20261121/outputs/15_validity_audit.csv,WITHDRAWN: former Abilene conditional screen,Do not cite or regenerate; underlying grid and land inputs are unsupported,trace historical files only

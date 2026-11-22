@@ -1,0 +1,4 @@
+﻿task_label,stated_number_mw,abilene_screen_mw_it,numeric_ratio_only,scope,same_site_model_validation
+950 MW example,950,769.2307692307692,0.8097165991902834,task figure; facility versus IT boundary not specified,no
+2263 MW example,2263,769.2307692307692,0.33991638057037965,task figure; site stage and boundary must be verified,no
+5 GW example,5000,769.2307692307692,0.15384615384615383,Meta compute-capacity label; cannot assume IT MW,no

@@ -1,0 +1,20 @@
+﻿编号,文件,输入,意义,条件,用途
+00,00_output_index.csv,全部输出,输出索引,Abilene 单一地理情景,追溯输入与输出
+01,01_q1_inputs.yaml,气象、地块几何、全球参考值、区域水计划,可执行 Q1 输入,P_grid 基准 100 MW；2025-01-29 重复日循环,复算模型
+02,02_q1_optimized_result.json,输出 01、Q1 核心代码、SciPy 线性规划,电网、光储、风储、燃气和燃煤的最优候选,条件性地理筛查，不代表实际项目；火电按模型燃料充分上界,读取容量与瓶颈
+03,03_candidate_allocation_results.csv,输出 01；PV 20–380 ha 粗网格及 400–440 ha 的 0.1 ha 网格，并含风电/火电候选,各候选方案的 Q1 求解结果,电网+风光储能及条件性火电模块,检查能源组合的优化选择
+04,04_design_day_weather_to_PV.csv,Open-Meteo 设计日逐小时 JSON,气象到光伏/风电出力的换算,24 h；PV 温度修正与 10→100 m 风速外推均为情景参数,核查可再生能源时序输入
+05,05_reference_sensitivity.csv,同一设计日；改变 k 与 a_site,全球参考值与布局系数敏感性,未进行反向标定,检查参数影响
+06,06_source_registry.csv,保存的数据源及出版资料,输入来源与限制,地理资料加明示全球/工程参考假设,审核参数依据
+07,../raw/open_meteo_abilene_2025-01-29.json,Open-Meteo Archive API,逐小时辐射、温度与风速原始响应,Abilene 网格点；2025-01-29 当地时间,追溯地理气象数据
+08,08_design_day_selection.csv,raw/open_meteo_abilene_2025-01_month.json,每日辐射总量及选择 1 月 29 日的依据,2025 年 1 月；按当地时间汇总,复核设计日选择
+09,07_allocation_optimization.png; 07_allocation_optimization.svg,输出 03 与各候选约束上限,电网基准、光储电力增量及容量曲线,假设电网可持续交付 100 MW；其他电网值见输出 11,解释电力曲线斜率与约束切换
+10,10_geographic_case_report.md,输出 01–09、11 与来源表,地理结果、图解、合理性和模型评估,Abilene 静态情景；不反向标定,解释计算结果及局限
+11,11_grid_access_sensitivity.csv,同一地理资源；网电 0、25、50、100、250 MW 情景,电网、光储、风储、燃气与燃煤组合对比,电网值为参考情景，不是当地接入承诺；燃料充分按模型上界,检查不同供电途径与接入水平
+12,12_geography_heatmap_data.csv,Abilene 气象循环、土地比例、k 与电网水平网格,网电+光储分支每个参数格点的最优配置和容量,PV 子分支；每格枚举光伏用地份额,复核热力图底层数据
+13,13_grid_land_capacity_heatmap.png; 13_grid_land_capacity_heatmap.svg,网电可持续供电、有效可用土地情景；输出 12,光储方案容量对电力与土地条件的响应面,基准 k=1.41；等值线为联合 IT 容量,比较两项地理资源约束
+14,14_optimal_pv_gain_heatmap.png; 14_optimal_pv_gain_heatmap.svg,网电可持续供电、有效可用土地情景；输出 12,最优发电用地分配及相对纯电网的容量增益,k=1.41；网电+光储方案,观察配置变化与光储增量
+15,15_grid_water_technology.csv,同一设计日、技术方案、电网与供水情景,网电/水量二维网格下各技术的最优容量和瓶颈,PV、风、燃气、燃煤分支；水量为情景值,复核水-电热力图底层数据
+16,16_grid_water_technology_heatmap.png; 16_grid_water_technology_heatmap.svg,输出 15,网电交付和补水量对四类能源组合容量的影响,k=1.41；红虚线为 Region G 规划水量折算值,对比能源技术的水-电瓶颈
+17,17_generation_leadtime.csv,纯电网及已选光储、风储、燃气、燃煤候选,按发电设施投运年份筛选候选方案,2025 起算，燃气按题面 7 年示例于 2032 可用,解释建成等待期如何筛选候选集
+18,18_generation_leadtime.png; 18_generation_leadtime.svg,输出 17,候选集容量随投运年份的阶梯图,其他资源固定；不是逐年资源仿真,可视化建设等待期影响

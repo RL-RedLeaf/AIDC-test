@@ -1,0 +1,4 @@
+﻿k_design,P_E_mw_it,fixed_substation_land_ha,land_intensity_ha_per_mw_it,effective_land_at_E_L_crossover_ha,effective_land_at_E_L_crossover_acres,share_of_1100_acre_gross_site,binding_rule
+1.15,869.5652173913044,5.058570528,0.14374799999999996,130.0568313975652,321.3774293490616,0.29216129940823776,"land below crossover; electricity above crossover, conditional on grid and k assumptions"
+1.3,769.2307692307692,5.058570528,0.14374799999999996,115.63395514338458,285.7377259626314,0.2597615690569376,"land below crossover; electricity above crossover, conditional on grid and k assumptions"
+1.4,714.2857142857143,5.058570528,0.14374799999999996,107.73571338514284,266.22074553672917,0.2420188595788447,"land below crossover; electricity above crossover, conditional on grid and k assumptions"

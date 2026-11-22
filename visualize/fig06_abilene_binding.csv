@@ -1,0 +1,13 @@
+﻿k_design,effective_site_fraction,P_E_mw_it,P_W_mw_it,P_L_mw_it,P_max_mw_it,binding,classification
+1.15,0.25,869.565217,,739.001455,739.001455,土地,conditional upper screen; no firm grid or site water right verified
+1.15,0.5,869.565217,,1513.193455,869.565217,电力,conditional upper screen; no firm grid or site water right verified
+1.15,0.75,869.565217,,2287.385455,869.565217,电力,conditional upper screen; no firm grid or site water right verified
+1.15,1.0,869.565217,,3061.577455,869.565217,电力,conditional upper screen; no firm grid or site water right verified
+1.3,0.25,769.230769,,739.001455,739.001455,土地,conditional upper screen; no firm grid or site water right verified
+1.3,0.5,769.230769,,1513.193455,769.230769,电力,conditional upper screen; no firm grid or site water right verified
+1.3,0.75,769.230769,,2287.385455,769.230769,电力,conditional upper screen; no firm grid or site water right verified
+1.3,1.0,769.230769,,3061.577455,769.230769,电力,conditional upper screen; no firm grid or site water right verified
+1.4,0.25,714.285714,,739.001455,714.285714,电力,conditional upper screen; no firm grid or site water right verified
+1.4,0.5,714.285714,,1513.193455,714.285714,电力,conditional upper screen; no firm grid or site water right verified
+1.4,0.75,714.285714,,2287.385455,714.285714,电力,conditional upper screen; no firm grid or site water right verified
+1.4,1.0,714.285714,,3061.577455,714.285714,电力,conditional upper screen; no firm grid or site water right verified

@@ -1,0 +1,5 @@
+﻿source,published_value,published_unit,building_count_multiplier,derived_annual_gallons,derived_annual_m3,same_site_stage_and_scope_verified,interpretation
+Oracle Abilene fact sheet,12625,US_gal/building/year,8,101000,382.326590184,no,Abilene project; anticipated closed-loop cooling maintenance and quality water; 2025-09-23
+Crusoe Abilene project page,50000,US_gal/building/year,8,400000,1514.1647136000001,no,Abilene project; anticipated cooling-system maintenance; page dated 2025-08-05
+Crusoe 2026 Impact Report page,910000,US_gal/facility/year,,910000,3444.72472344,no,Generic 200 MW facility total annual water; page dated 2026-05-28; not identified as Abilene
+Crusoe 200 MW water stewardship diagram,2000000,US_gal/facility/year,,2000000,7570.823568000001,no,"Generic illustrative facility total; diagram itemizes cooling maintenance, employee indoor and custodial use"

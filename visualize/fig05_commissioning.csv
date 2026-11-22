@@ -1,0 +1,9 @@
+﻿year,P_max_mw_it,winners,included,excluded
+2026,90.0,Grid only,Grid only,PV + battery+Gas / wet+Gas / dry+Coal
+2027,90.0,Grid only,Grid only,PV + battery+Gas / wet+Gas / dry+Coal
+2028,98.33333333333334,PV + battery,Grid only+PV + battery,Gas / wet+Gas / dry+Coal
+2029,98.33333333333334,PV + battery,Grid only+PV + battery+Gas / wet,Gas / dry+Coal
+2030,130.0,Gas / dry,Grid only+PV + battery+Gas / wet+Gas / dry,Coal
+2031,130.0,Gas / dry,Grid only+PV + battery+Gas / wet+Gas / dry,Coal
+2032,130.0,Gas / dry,Grid only+PV + battery+Gas / wet+Gas / dry+Coal,
+2033,130.0,Gas / dry,Grid only+PV + battery+Gas / wet+Gas / dry+Coal,

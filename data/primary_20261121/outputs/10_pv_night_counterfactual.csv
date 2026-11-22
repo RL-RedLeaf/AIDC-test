@@ -1,0 +1,3 @@
+﻿scenario,status,onsite_generation_area_ha,onsite_reliable_increment_mw,P_E_mw_it,P_L_mw_it,P_mw_it,interpretation
+Grid plus non-evaporative cooling,documented grid station conditional ceiling,0,0.0,769.2307692307692,3061.577454545455,769.2307692307692,base grid screen
+Counterfactual on-site PV without storage,counterfactual design,50.0,0.0,769.2307692307692,2713.746528202132,769.2307692307692,zero night output; no firm increment and 50 ha site deduction

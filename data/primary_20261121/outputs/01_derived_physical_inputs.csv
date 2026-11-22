@@ -1,0 +1,15 @@
+﻿quantity,value,unit,calculation
+campus_gross_ha,445.15420646399997,ha,1100 acre * 0.40468564224
+substation_fixed_ha,5.058570528,ha,12.5 acre * 0.40468564224
+planned_building_floor_m2,371612.16000000003,m2,4 million sqft * 0.09290304
+planned_floor_to_site_ratio,0.08347942232239755,m2_floor/m2_site,planned total floor area / gross site area
+building_coverage_if_one_story,0.08347942232239755,fraction,floor area / gross site area / stories
+land_intensity_ha_per_mw_it,0.14374799999999996,ha/MW_IT,rack cell / rack rating / IT hall fraction / planned floor-to-site ratio
+solar_density_mw_ac_km2,96.0,MW_ac/km2,600 W/module / 5 m2/module * 1e6 * 0.8 AC/DC
+municipal_supply_acft_year,45587.0,acre-ft/year,sum five source rows; Table 5.33-2 control total 45587
+municipal_demands_acft_year,34116.0,acre-ft/year,"sum city, 17 contracts and 8 strategies; control total 34116"
+municipal_supply_minus_demands_acft_year,11471.0,acre-ft/year,source components minus demand components; conditional full-contract access
+municipal_planning_margin_m3_year,14149270.1585076,m3/year,supply minus demand * 1233.48183754752
+municipal_planning_margin_m3_h,1615.2134884141096,m3/h,annual planning margin / 8760; NOT hourly guarantee
+cooling_maintenance_m3_year,382.326590184,m3/year,8 buildings * 12625 US gal/year * 0.003785411784
+water_fraction_needed_for_maintenance,2.7020940719978876e-05,fraction,fixed maintenance / gross planning margin

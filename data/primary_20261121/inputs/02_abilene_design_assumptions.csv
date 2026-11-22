@@ -1,0 +1,15 @@
+key,value,unit,role,reason
+assessment_year,2030,year,static_evaluation,One completed configuration; water planning table uses 2030 column
+k_design,1.30,facility_MW/IT_MW,engineering_scenario,Design full-load multiplier is unpublished; not fitted to observed IT power
+rack_rating_mw,0.10,MW_IT/rack,engineering_scenario,Declared 100 kW rack for transparent physical layout calculation
+rack_cell_m2,6,m2/rack,engineering_scenario,Declared rack plus aisle and service space
+it_hall_fraction,0.50,fraction_of_building_floor,engineering_scenario,Declared share of building area usable as IT halls
+building_stories,1,count,engineering_scenario,Converts planned floor area to footprint; unknown actual number of stories
+effective_site_fraction,1.00,fraction,optimistic_geometry,Uses gross project acreage as A_eff pending ecological and zoning polygon screen
+grid_deliverable_fraction,1.00,fraction,optimistic_electricity,Uses full 1 GW station engineering rating; upstream deliverability and committed loads unknown
+water_accessible_fraction,1.00,fraction,optimistic_water,Assumes all planning supply sources and contracts accessible; no site-specific allocation proven
+cooling_variable_wue_l_per_kwh,0,L/kWh_IT,non_evaporative_scenario,Closed-loop non-evaporative cooling; fixed annual maintenance handled separately
+solar_land_ha,50,ha,counterfactual_design,On-campus candidate only; no evidence this array is planned or permitted
+solar_module_mw_dc,0.0006,MW_dc/module,counterfactual_design,Declared 600 W module; not selected from project IT rating
+solar_module_land_cell_m2,5,m2/module,counterfactual_design,Module plus row spacing and access design cell
+solar_ac_to_dc_ratio,0.8,MW_ac/MW_dc,counterfactual_design,Declared inverter and delivery conversion scenario

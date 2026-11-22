@@ -1,0 +1,6 @@
+﻿assumed_firm_grid_MW,grid_only_MW_IT,best_grid_PV_MW_IT,best_grid_wind_MW_IT,best_grid_gas_MW_IT,best_grid_coal_MW_IT,best_portfolio,best_joint_MW_IT,binding,classification
+0,0.0,2.206799031861761,0.1681346502920817,141.84397163120568,3.3795526306218524,电网+燃气（干冷）2×100 MW,141.84397163120568,电力,illustrative grid-delivery sensitivity; not a local utility commitment
+25,17.73049645390071,19.924748300000235,17.89863110419279,159.5744680851064,21.06272359018411,电网+燃气（干冷）2×100 MW,159.5744680851064,电力,illustrative grid-delivery sensitivity; not a local utility commitment
+50,35.46099290780142,37.64219568070823,35.6291275580935,177.3049645390071,38.74589454974637,电网+燃气（干冷）2×100 MW,177.3049645390071,电力,illustrative grid-delivery sensitivity; not a local utility commitment
+100,70.92198581560284,73.07759232955469,71.09012046589491,212.76595744680853,74.11223646887089,电网+燃气（干冷）2×100 MW,212.76595744680853,电力,illustrative grid-delivery sensitivity; not a local utility commitment
+250,177.3049645390071,179.38428416352457,177.47309918929918,319.1489361702128,180.21126222624443,电网+燃气（干冷）2×100 MW,319.1489361702128,电力,illustrative grid-delivery sensitivity; not a local utility commitment

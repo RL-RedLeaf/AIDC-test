@@ -1,0 +1,2 @@
+﻿site,electric_land_screening_ceiling_mw_it,epoch_current_mw_it,difference_mw_it,relative_difference_pct,observed_used_as_input,water_limit_status,scope_warning
+OpenAI Stargate Abilene,769.2307692307692,824.0,-54.76923076923083,-6.646751306945486,no,unresolved; do not interpret screening ceiling as three-resource P_max,2030 completed campus electricity-land screen vs Epoch current estimate; temporal/stage mismatch
