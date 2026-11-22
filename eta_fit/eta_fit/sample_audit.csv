@@ -1,0 +1,97 @@
+﻿Name,Current power (MW),Current H100 equivalents,included,reason
+Colossus 2,946.0,1111672.5618999496,True,positive finite pair
+OpenAI Stargate Abilene,824.0,1018696.3112683172,True,positive finite pair
+Anthropic-Amazon New Carlisle,1037.0,818428.4992420415,True,positive finite pair
+Microsoft Fairwater Atlanta,636.0,768768.7220818596,True,positive finite pair
+Google Pryor (North),368.0,636685.1945426983,True,positive finite pair
+DayOne Nusajaya,473.0,583836.7862556847,True,positive finite pair
+Meta Prometheus,471.0,536343.0015159171,True,positive finite pair
+DayOne Kempas,421.691664,480638.7064173825,True,positive finite pair
+Microsoft Fairwater Wisconsin,369.0,445679.63617988885,True,positive finite pair
+Google Columbus,303.0,331985.85144012125,True,positive finite pair
+Google New Albany,333.0,323900.9600808489,True,positive finite pair
+Anthropic Lake Mariner,210.0,292829.71197574533,True,positive finite pair
+Google Mesa,183.0,289540.17180394137,True,positive finite pair
+Colossus 1,340.0,275795.85649317835,True,positive finite pair
+Google Council Bluffs (East),237.0,255684.6892369884,True,positive finite pair
+CoreWeave Denton TX,262.0,252652.85497726125,True,positive finite pair
+QTS Richmond 1,238.0,242546.7407781708,True,positive finite pair
+Bridge Data Centres MY06,243.0,221051.54118241536,True,positive finite pair
+Meta Rosemount,178.0,215675.11520970188,True,positive finite pair
+Amazon Madison Mega Site,284.0,214348.14354550533,True,positive finite pair
+Google Bristow,238.0,209860.5356240525,True,positive finite pair
+Microsoft Goodyear,202.0,205154.1182415361,True,positive finite pair
+Meta Jeffersonville,178.0,203132.89540171804,True,positive finite pair
+Google Kansas City East,105.0,202627.5896917635,True,positive finite pair
+Meta Temple,178.0,202472.98777125112,True,positive finite pair
+AWS New Albany,213.0,201111.6725619,True,positive finite pair
+Google Omaha,237.0,198585.14401212733,True,positive finite pair
+Google Lincoln,141.0,197574.53259221828,True,positive finite pair
+QTS Richmond 2,180.0,182920.66700353715,True,positive finite pair
+Google The Dalles,154.0,175341.0813542193,True,positive finite pair
+QTS Richmond 3,144.0,174835.77564426477,True,positive finite pair
+Meta Montgomery,153.0,174517.43304699342,True,positive finite pair
+Meta Kuna,152.0,173247.67205659422,True,positive finite pair
+Meta Cheyenne,152.0,172814.5528044467,True,positive finite pair
+Amazon Ridgeland,228.0,171298.6356745831,True,positive finite pair
+Meta Huntsville,146.0,166760.9903991915,True,positive finite pair
+Coreweave Helios,132.0,159551.768236855,True,positive finite pair
+Microsoft Project Osmium,190.0,155634.15866599293,True,positive finite pair
+YTL Johor,113.0,153532.0869125821,True,positive finite pair
+Meta Eagle Mountain,133.0,151354.21930267813,True,positive finite pair
+Meta Aiken,129.0,147043.96159676605,True,positive finite pair
+Google Midlothian,103.0,143580.85118746842,True,positive finite pair
+Google Storey County,161.0,133906.01313794847,True,positive finite pair
+Meta Los Lunas,118.0,133906.01313794847,True,positive finite pair
+Google Lancaster,137.0,130368.8731682668,True,positive finite pair
+Meta-QTS Hillsboro 2,180.0,123839.0,True,positive finite pair
+Google Waltham Cross,88.0,123799.898938858,True,positive finite pair
+VNET Bayin Ulanqab,221.0,122789.28751894896,True,positive finite pair
+Google Arcola,77.0,108135.4219302678,True,positive finite pair
+Google Red Oak,77.0,108135.4219302678,True,positive finite pair
+Google Papillion,237.0,100555.83628094998,True,positive finite pair
+Meta Gallatin,87.0,99545.22486104092,True,positive finite pair
+CoreWeave Ellendale ND,68.0,93481.55634158666,True,positive finite pair
+Meta Sarpy,80.0,91965.63921172309,True,positive finite pair
+CoreWeave Chester VA,82.0,88428.49924204143,True,positive finite pair
+Oracle Batam,72.0,84386.05356240526,True,positive finite pair
+AWS Berwick,108.0,81354.21930267812,True,positive finite pair
+Huawei Horinger,169.9,81043.96159676605,True,positive finite pair
+CoreWeave Marble NC,65.0,78827.6907529055,True,positive finite pair
+Core42 Lake Mariner,58.0,71753.4108135422,True,positive finite pair
+Microsoft SAT40,75.0,64679.13087417888,True,positive finite pair
+STACK Infrastructure NVA02,85.0,61141.99090449722,True,positive finite pair
+Microsoft-Nebius New Jersey,50.0,56846.89236988378,True,positive finite pair
+Huawei Wuhu,197.0,52830.72258716523,True,positive finite pair
+CoreWeave Norway,42.0,50773.11773623042,True,positive finite pair
+Nebius Mantsala,75.0,48527.92066700354,True,positive finite pair
+Envision Galaxy Ulanqab,118.0,47931.27842344619,True,positive finite pair
+Southgate Melbourne,41.0,46488.12531581607,True,positive finite pair
+Stream Phoenix,64.0,46134.4113188479,True,positive finite pair
+Microsoft SAT14,47.0,45174.33046993431,True,positive finite pair
+Vantage TX1,32.0,38706.417382516425,True,positive finite pair
+CoreWeave Dalton 1 & 2,28.0,32238.504295098533,True,positive finite pair
+Alibaba Zhangbei,169.0,31884.79029813037,True,positive finite pair
+Start Campus Sines Data Campus,33.0,31834.259727134915,True,positive finite pair
+xAI QTS Atlanta,17.32971,11470.43961596766,True,positive finite pair
+Nscale Keflavik,5.11,5821.121778676099,True,positive finite pair
+Anthropic Barber Lake,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+CoreWeave Lancaster Greenfield site,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+CoreWeave Muskogee OK,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+Crusoe Abilene Expansion,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+EcoDataCenter 2,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+Goodnight,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+Google Cedar Rapids,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+Google Fort Wayne,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+Meta Bowling Green,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+Meta Hyperion,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+Microsoft Narvik Norway,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+OpenAI Stargate Lordstown,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+OpenAI Stargate Michigan,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+OpenAI Stargate Milam,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+OpenAI Stargate New Mexico,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+OpenAI Stargate Shackelford,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+OpenAI Stargate UAE,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+OpenAI Stargate Wisconsin,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+QTS Cedar Rapids,0.0,0.0,False,nonpositive or missing pair; not an operating observation
+QTS Eagle Mountain,0.0,0.0,False,nonpositive or missing pair; not an operating observation

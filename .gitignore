@@ -4,7 +4,10 @@ __pycache__/
 .pytest_cache/
 *.pyc
 /tmp
+/.tmp
 /code/examples/q1_site_result.json
 /.acl-recovery
 /oc
 .venv/
+*.mjs
+/.codexprobe

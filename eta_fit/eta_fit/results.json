@@ -1,0 +1,35 @@
+{
+  "source_sha256": "c3c68eceea0264eb0389d5e15e9e645fde2a8e69649d33353b6df825c0546d46",
+  "n_total": 96,
+  "n_used": 76,
+  "n_excluded": 20,
+  "eta_proxy_H100eq_per_MW": 1053.7883051624665,
+  "eta_proxy_H100eq_per_kW": 1.0537883051624666,
+  "eta_proxy_bootstrap95_per_MW": [
+    932.9662178559962,
+    1160.7175459051507
+  ],
+  "origin_fit_centered_R2": 0.8947839131387799,
+  "origin_fit_uncentered_R2": 0.94594715804982,
+  "free_intercept_fit": {
+    "slope_per_MW": 1065.9942890583272,
+    "intercept_H100eq": -4626.0423979186135,
+    "R2": 0.8950074261150934
+  },
+  "leave_one_out_R2": 0.8778306109744579,
+  "leave_one_out_eta_range_per_MW": [
+    1029.262800479444,
+    1114.8944329303113
+  ],
+  "direct_power_on_compute_origin_fit": {
+    "MW_per_H100eq": 0.0008976633669359046,
+    "implied_eta_per_MW": 1114.003352296098,
+    "centered_R2": 0.8862044207814991
+  },
+  "individual_efficiency_percentiles_per_MW": [
+    674.9444687707121,
+    1137.2132713708916,
+    1394.2080231823888
+  ],
+  "interpretation": "Cross-sectional capacity proxies, not measured sustained output. Power scope unspecified. IT eta cannot be identified without power scope/PUE and utilization. Bootstrap assumes independent rows; shared-source errors are not included."
+}
