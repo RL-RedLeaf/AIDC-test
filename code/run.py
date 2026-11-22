@@ -1,4 +1,4 @@
-"""IMMC 2027 A 题第一问的脚本入口。"""
+"""IMMC 2027 A 题 Q1 和 Q2 的脚本入口。"""
 
 import sys
 from pathlib import Path

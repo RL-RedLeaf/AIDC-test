@@ -19,6 +19,7 @@ from .core import (
     _positive,
     assess_site,
 )
+from .q2 import assess_network
 
 
 WRONG_UNIT_KEYS = {
@@ -34,12 +35,13 @@ WRONG_UNIT_KEYS = {
 DEFAULT_OUTPUT_DIR = (
     Path(__file__).resolve().parents[2] / "正稿" / "Q1-v2" / "output"
 )
+Q2_OUTPUT_DIR = DEFAULT_OUTPUT_DIR.parents[1] / "Q2-v0" / "output"
 
 
 def build_parser():
     """构造命令行参数解析器。"""
     parser = argparse.ArgumentParser(
-        description="IMMC 2027 A 题第一问：计算场址电、水、土地联合容量。"
+        description="IMMC 2027 A 题：Q1 场址承载容量与 Q2 集中式、分布式方案比较。"
     )
     parser.add_argument("config", nargs="?", help="YAML/CSV 配置路径；省略时进入中文输入向导。")
     parser.add_argument("--json", default=None, help="同时写出 JSON 结果文件。")
@@ -47,17 +49,18 @@ def build_parser():
     return parser
 
 
-def _default_output_path(config):
+def _default_output_path(config, model=None):
     """为一次 CLI 运行生成默认 JSON 输出路径。"""
     if isinstance(config, (str, Path)):
         stem = Path(config).stem
     else:
         stem = "interactive"
-    return DEFAULT_OUTPUT_DIR / f"{stem}_result.json"
+    directory = Q2_OUTPUT_DIR if model == "q2" else DEFAULT_OUTPUT_DIR
+    return directory / f"{stem}_result.json"
 
 
 def calculate(config, json_path=None):
-    """执行一次 Q1 或兼容电力分项计算。
+    """执行 Q1、Q2 或兼容电力分项计算。
 
     参数:
         config: YAML 文件路径或已构造的配置字典。
@@ -77,26 +80,31 @@ def calculate(config, json_path=None):
     if data.get("model") == "q1":
         # Q1 的标准路径：场址集成，不附加旧版敏感性结果。
         report = assess_site(data)
+    elif data.get("model") == "q2":
+        if isinstance(data.get("sites"), dict):
+            base = Path.cwd() if isinstance(config, Mapping) else Path(config).parent
+            data = {**data, "sites": {
+                name: _load_config(base / site) if isinstance(site, str) else site
+                for name, site in data["sites"].items()
+            }}
+        report = assess_network(data)
     else:
         if "model" in data or any(key in data for key in ("water", "land", "assessment_year")):
             raise CapacityModelError("正稿联合评估配置需声明 model: q1。")
         report = _power_report(data)
     if json_path:
-        output = Path(json_path)
-        try:
-            output.parent.mkdir(parents=True, exist_ok=True)
-            output.write_text(
-                json.dumps(
-                    report,
-                    ensure_ascii=False,
-                    indent=2,
-                    allow_nan=False,
-                ),
-                encoding="utf-8",
-            )
-        except OSError as exc:
-            raise CapacityModelError(f"无法写入 JSON 结果：{exc}") from exc
+        _write_report(report, json_path)
     return report
+
+
+def _write_report(report, path):
+    output = Path(path)
+    try:
+        serialized = json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(serialized, encoding="utf-8")
+    except OSError as exc:
+        raise CapacityModelError(f"无法写入 JSON 结果：{exc}") from exc
 
 
 def run(config_path, json_path=None):
@@ -422,6 +430,28 @@ def _reject_wrong_units(mapping, label="配置"):
 
 def _print(report, say=print):
     """以分节、非 Markdown 表格的格式输出结果。"""
+    if report.get("model") == "q2":
+        labels = {"centralized": "集中式", "distributed": "分布式"}
+        water_label = "取水" if report["water_basis"] == "withdrawal" else "耗水"
+        say(f"Q2 同等算力方案比较（{report['hours']:g} 小时）")
+        for kind, plan in report["plans"].items():
+            totals = plan["footprint"]
+            say(f"{labels[kind]}：{totals['carbon_t_co2']:.6g} t CO₂，"
+                f"{water_label} {totals['water_m3']:.6g} m³，占地 {totals['land_ha']:.6g} ha")
+            for key, label in (("water", "水"), ("grid", "电网"), ("land", "土地")):
+                ratio = plan["pressure"][key]
+                usage = "无可用资源" if ratio is None else f"{ratio:.2%}"
+                say(f"  {label}最高占用率 {usage}（{'、'.join(plan['hotspots'][key])}）")
+            if plan["feasible"]:
+                footprint_score = "−∞" if plan["F"] is None else f"{plan['F']:.6g}"
+                overall = "−∞" if plan["omega"] is None else f"{plan['omega']:.6g}"
+                say(f"  F = {footprint_score}，S = {plan['S']:.6g}，Ω = {overall}")
+            else:
+                for node in plan["nodes"]:
+                    if node["infeasible_reasons"]:
+                        say(f"  {node['site']} 不可行：{'、'.join(node['infeasible_reasons'])}")
+        say("得分最低的可行方案：" + ("、".join(labels[kind] for kind in report["winners"]) or "无"))
+        return
     if "P_max_mw_it" in report:
         # 联合模型：按场址、水量、逐方案、结论四层输出。
         say("评估设置")
@@ -817,8 +847,9 @@ def main(argv=None):
         if args.interactive or args.config is None:
             output_path = args.json or _default_output_path("interactive")
             return run_interactive(default_json=output_path)
-        output_path = args.json or _default_output_path(args.config)
-        report = calculate(args.config, output_path)
+        report = calculate(args.config)
+        output_path = args.json or _default_output_path(args.config, report.get("model"))
+        _write_report(report, output_path)
     except CapacityModelError as exc:
         print(f"[输入或模型错误] {exc}", file=sys.stderr)
         return 2

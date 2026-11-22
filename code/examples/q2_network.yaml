@@ -1,0 +1,53 @@
+# 合成对照：两个各 1 h 的时段，算力按同一参考设备的等效算力计。
+model: q2
+dt_hours: 1
+compute_demand: [60, 80]
+footprint_weights: {carbon_t_co2: 0.4, water_m3: 0.3, land_ha: 0.3}
+pressure_weights: {water: 0.4, grid: 0.4, land: 0.2}
+lambda: 0.25
+
+sites:
+  中心: q1_minimal.yaml
+  西站: &small_site
+    model: q1
+    site: 西站
+    assessment_year: 2028
+    period_note: 单个设计日
+    service_level: 正常运营，持续满载
+    P_grid_mw: 70
+    k_factor: 1.5
+    water: {basis: consumption, source_m3_h: 100, wue_l_per_kwh_it: 1}
+    land: {effective_ha: 120, fixed_it_ha: 5, ha_per_mw_it: 1.1}
+    scenarios: [{name: 纯电网, type: grid}]
+  东站:
+    <<: *small_site
+    site: 东站
+    water: {basis: consumption, source_m3_h: 150, wue_l_per_kwh_it: 1.5}
+
+centralized:
+  nodes:
+    - site: 中心
+      scenario: 纯电网
+      compute: [60, 80]
+      compute_per_mw_it: 1
+      installed_it_mw: 80
+      grid_co2_t_per_mwh: 0.5
+      local_grid_available_mw: 120
+      local_water_available_m3_h: 180
+distributed:
+  wan: {power_mw: [1, 2], co2_t_per_mwh: 0.5}
+  nodes:
+    - site: 西站
+      scenario: 纯电网
+      compute: [30, 40]
+      compute_per_mw_it: 1
+      installed_it_mw: 40
+      grid_co2_t_per_mwh: 0.2
+      local_grid_available_mw: 120
+    - site: 东站
+      scenario: 纯电网
+      compute: [30, 40]
+      compute_per_mw_it: 1
+      installed_it_mw: 40
+      grid_co2_t_per_mwh: 0.6
+      local_grid_available_mw: 150

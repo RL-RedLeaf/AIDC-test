@@ -1,6 +1,7 @@
-"""IMMC 2027 A 题第一问：电、水、土地容量模型."""
+"""IMMC 2027 A 题场址容量和算力网络评价。"""
 
 from .app import calculate
+from .q2 import assess_network
 from .core import (
     combined_battery,
     grid_only,
@@ -14,6 +15,7 @@ from .core import (
 
 __all__ = [
     "calculate",
+    "assess_network",
     "combined_battery",
     "grid_only",
     "hydro",
