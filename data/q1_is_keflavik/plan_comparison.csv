@@ -1,0 +1,2 @@
+﻿site,stage,input_basis,facility_input_MW,k,layout_ceiling_IT,scope,conditional_screen_IT,benchmark_IT,facility_MW_needed,design_water_intensity_L_per_kWh,design_water_needed_m3_h
+is_keflavik,VDC04,module grid allocation unknown,,1.2,100.0,layout ceiling only,100.0,120,144.0,0.02,2.4

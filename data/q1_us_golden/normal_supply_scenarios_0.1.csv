@@ -1,0 +1,4 @@
+﻿site,net_A,energy_limit_IT,layout_limit_IT,conditional_IT,normal_water_required_m3_h,first_limit_if_water_adequate
+us_golden,120,2.4604530176875348,15.5,2.4604530176875348,1.7223171123812742,electricity
+us_golden,300,6.14874083169175,15.5,6.14874083169175,4.304118582184225,electricity
+us_golden,600,12.295887188365445,15.5,12.295887188365445,8.60712103185581,electricity

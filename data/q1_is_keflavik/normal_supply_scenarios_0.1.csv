@@ -1,0 +1,4 @@
+﻿site,net_A,energy_limit_IT,layout_limit_IT,conditional_IT,normal_water_required_m3_h,first_limit_if_water_adequate
+is_keflavik_extension,120,21.720846829689172,100.0,21.720846829689172,0.43441693659378344,electricity
+is_keflavik_extension,300,54.30072252005976,100.0,54.30072252005976,1.0860144504011953,electricity
+is_keflavik_extension,600,108.60051533734405,100.0,100.0,2.0,layout

@@ -1,0 +1,2 @@
+﻿site,stage,input_basis,facility_input_MW,k,layout_ceiling_IT,scope,conditional_screen_IT,benchmark_IT,facility_MW_needed,design_water_intensity_L_per_kWh,design_water_needed_m3_h
+us_golden,ESIF upgrade,"usable distribution, facility-side reading",6,1.06,15.5,upgrade stage conditional,5.660377358490566,10,10.600000000000001,0.7,7.0
