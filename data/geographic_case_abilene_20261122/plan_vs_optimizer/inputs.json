@@ -1,0 +1,85 @@
+{
+  "model_commit": "5374865a8234cd5608c243abc99dfe73bdd18493",
+  "reference_date": "2026-11-01",
+  "buildings": 8,
+  "halls_per_building": 4,
+  "hall_mw_it": 25.0,
+  "other_mw_it_per_building": 3.0,
+  "phase1_leased_acres": 94.963,
+  "phase1_mw_it": 206.0,
+  "campus_gross_acres": 1100,
+  "building_footprint_sqft_each": 484960,
+  "new_station_acres": 12.5,
+  "acre_to_ha": 0.40468564224,
+  "grid_nameplate_mw": 1200.0,
+  "firm_share": 1.0,
+  "k_factor": 1.41,
+  "annual_design_pue_range": [
+    1.2,
+    1.4
+  ],
+  "wue_l_kwh_it": 0.5,
+  "city_2030_surplus_acre_ft_year": 4496.0,
+  "acre_ft_m3": 1233.48183754752,
+  "hours_year": 8760,
+  "municipal_usage_us_gal_month": {
+    "2025": 1000000,
+    "2026_to_interview": 3000000
+  },
+  "us_gal_m3": 0.003785411784,
+  "current_maintenance_us_gal_per_building_year": 50000,
+  "older_maintenance_us_gal_per_building_year": 12625,
+  "tech": {
+    "coal": {
+      "max_units": 2,
+      "net_mw": 100,
+      "ha_per_unit": 20,
+      "water_l_per_kwh": 132.5
+    },
+    "gas": {
+      "max_units": 2,
+      "net_mw": 100,
+      "ha_per_unit": 10,
+      "water_l_per_kwh": 0.02
+    },
+    "pv_acres_per_mwac": 8.9,
+    "wind_ha_per_mw": 30.0,
+    "storage_mw_per_renewable_mw": 0.25,
+    "storage_hours": 4,
+    "charge_efficiency": 0.9,
+    "discharge_efficiency": 0.9
+  },
+  "weather_model": {
+    "pv_pr": 0.85,
+    "noct_c": 45.0,
+    "pv_temp_coeff_per_c": -0.0035,
+    "wind_hub_m": 100,
+    "wind_measurement_m": 10,
+    "wind_exponent": 0.14285714285714285,
+    "wind_cutin_ms": 3,
+    "wind_rated_ms": 12,
+    "wind_cutout_ms": 25
+  },
+  "sources": {
+    "DPR": "https://www.dpr.com/projects/crusoe-abilene-data-center",
+    "CEO": "https://www.youtube.com/watch?v=cH7tiy7s17A&t=48s",
+    "EPOCH": "https://epoch.ai/graphs/largest-ai-data-centers-by-power-capacity",
+    "GRID": "https://www.crusoe.ai/resources/newsroom/crusoe-expands-ai-data-center-campus-in-abilene-to-1-2-gigawatts",
+    "PUE": "https://media.ffycdn.net/us/crusoe/PL5TuZz5apXB9pVsd3H1.pdf#page=16",
+    "LEASE": "https://abilenetx.gov/DocumentCenter/View/39456/Lancium-LLC-Abilene-Second-Amended-and-Restated-Tax-Abatement-Agreement-PDF#page=25",
+    "PHASE1": "https://www.nmrk.com/insights/press-releases/newmark-advises-on-3-4-billion-joint-venture-on-one-million-square-foot-texas-data-center",
+    "ORACLE": "https://www.oracle.com/data-centers/abilene/",
+    "ORACLE_2025": "https://arrington.house.gov/uploadedfiles/final_oracle_oai_data_center_fact_sheet_092225b.pdf#page=2",
+    "CRUSOE_WATER": "https://www.crusoe.ai/resources/blog/an-inside-look-at-the-abilene-ai-data-center",
+    "CITY_WATER": "https://american-audacity.buzzsprout.com/1821492/episodes/19398965-emily-crawford-abilene-city-manager",
+    "REGION_G": "https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/G/RegionG_2026_RWP_VolumeI.pdf#page=607",
+    "CITY_PLAN": "https://abilenetx.gov/DocumentCenter/View/43833/SP-2026-77-PDF?bidId=#page=1",
+    "STATION": "https://www.mortenson.com/projects/abilene-data-center-development",
+    "GIS": "../eight_building_land_review/README.md",
+    "BASE": "../run_case.py",
+    "SOLVER": "../plot_fixed_installation.py",
+    "HOLDOUT": "https://archive-api.open-meteo.com/v1/archive?latitude=32.442883&longitude=-99.7327&start_date=2024-01-01&end_date=2024-12-31&hourly=temperature_2m%2Cshortwave_radiation%2Cwind_speed_10m&models=era5&timezone=GMT&wind_speed_unit=kmh",
+    "GIS_ISSUE": "https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075327576"
+  },
+  "redesign_horizon_year": 2033
+}

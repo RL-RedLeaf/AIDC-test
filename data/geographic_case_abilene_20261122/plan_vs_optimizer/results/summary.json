@@ -1,0 +1,47 @@
+{
+  "source_commit": "5374865a8234cd5608c243abc99dfe73bdd18493",
+  "module_mw": 103.0,
+  "reference_mw_it": 824.0,
+  "reference_facility_mw": 1154.0,
+  "facility_ratio_diagnostic": 1.4004854368932038,
+  "phase1_ha": 38.43016264403712,
+  "slope": 0.18655418759241318,
+  "calibration_mw": 206.0,
+  "lots_ha": 179.6057935528464,
+  "fixed_ha": 5.853275422871202,
+  "patch_ha": 23.357852949781925,
+  "patch_drawn_ha": 39.58233218390985,
+  "water_m3_h": 633.0746965312385,
+  "plan_min_grid_mw": 1161.84,
+  "plan_min_water_m3_h": 412.0,
+  "plan_grid_share_needed": 0.9682,
+  "plan_resources_mw": 851.0638297872341,
+  "plan_deliverable_mw": 824.0,
+  "redesign_mw": 980.7533610683157,
+  "increment_over_plan_mw": 156.7533610683157,
+  "increment_over_resources_mw": 129.6895312810816,
+  "modules_possible": 9,
+  "whole_module_mw": 927.0,
+  "min_gas_for_winner_mw": 182.86223910632498,
+  "epoch_power_to_it_mw": 818.4397163120568,
+  "reference_gap_grid_rating_mw_it": 32.62411347517731,
+  "reference_gap_factor_mw_it": -5.560283687943183,
+  "weather_check": [
+    {
+      "window": "2025-01-29_selected",
+      "hours": 24,
+      "reliable_extra_mw": 0.16529448046208023,
+      "extra_it_if_power_binds": 0.11723012798729095,
+      "electric_bound_mw_it": 851.1810599152213
+    },
+    {
+      "window": "2024_full_year_holdout",
+      "hours": 8784,
+      "reliable_extra_mw": 0.21759854078102595,
+      "extra_it_if_power_binds": 0.15432520622767798,
+      "electric_bound_mw_it": 851.2181549934617
+    }
+  ],
+  "ex_post_slope": 0.22843953221490174,
+  "anchored_extension_mw": 882.4743490772678
+}

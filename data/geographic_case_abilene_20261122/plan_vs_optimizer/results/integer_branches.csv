@@ -1,0 +1,10 @@
+﻿coal_units,gas_units,status,it_mw
+0,0,optimal_for_counts,851.1810599152213
+0,1,optimal_for_counts,922.0528569877753
+0,2,optimal_for_counts,980.7533610683157
+1,0,optimal_for_counts,852.1885663491375
+1,1,exceeds_patch,
+1,2,exceeds_patch,
+2,0,exceeds_patch,
+2,1,exceeds_patch,
+2,2,exceeds_patch,

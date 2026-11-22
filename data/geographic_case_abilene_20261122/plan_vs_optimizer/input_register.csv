@@ -1,0 +1,29 @@
+﻿变量,数值（留空表示待补）,单位,证据性质,来源,用途与边界
+"N,h,P_h,P_b",8; 4; 25; 3,栋; 厅/栋; MW IT/厅; MW IT/栋,披露的设计值,https://www.dpr.com/projects/crusoe-abilene-data-center | https://www.youtube.com/watch?v=cH7tiy7s17A&t=48s,总包逐项列明四厅、每厅 25 MW，以及每栋另列 3 MW IT。结合开发商 CEO 对每栋约 103 MW IT 的访谈理解其他 IT。八栋并网兑现仍受资源约束。
+"P_ref,facility_ref",824; 1154,MW IT; MW facility,第三方阶段估计,https://epoch.ai/graphs/largest-ai-data-centers-by-power-capacity,仓库时间线 2026-11-01 原八栋行。只在计算末端用于对照，不作为八栋目标反推参数。
+A_gross,1100,acre,园区披露,https://www.oracle.com/data-centers/abilene/,毛地用于界定对象。完整法律红线仍待逐宗核对。
+A_building_each,484960,ft²/栋,工程图纸,https://abilenetx.gov/DocumentCenter/View/43833/SP-2026-77-PDF?bidId=#page=1,C1.0 中 1–8 栋单层建筑基底，合计 36.04 ha。已在运营宗地内。
+A_phase1,94.963,acre,法律附件,https://abilenetx.gov/DocumentCenter/View/39456/Lancium-LLC-Abilene-Second-Amended-and-Restated-Tax-Abatement-Agreement-PDF#page=25,第 25 页 Exhibit B-1/2，前两栋共用租赁宗地，换算为 38.43016 ha。
+P_phase1,206,MW IT,披露结合交叉核对,https://www.nmrk.com/insights/press-releases/newmark-advises-on-3-4-billion-joint-venture-on-one-million-square-foot-texas-data-center | https://www.youtube.com/watch?v=cH7tiy7s17A&t=48s | https://media.ffycdn.net/us/crusoe/PL5TuZz5apXB9pVsd3H1.pdf#page=16,一期融资披露为 206 MW，总包与开发商访谈用每栋 IT 交叉核对。用于一期系数，未用八栋目标标定。
+a_s,0.186554188,ha/MW IT,一期同口径代理,https://abilenetx.gov/DocumentCenter/View/39456/Lancium-LLC-Abilene-Second-Amended-and-Restated-Tax-Abatement-Agreement-PDF#page=25 | https://www.nmrk.com/insights/press-releases/newmark-advises-on-3-4-billion-joint-venture-on-one-million-square-foot-texas-data-center,一期租赁土地除以其 IT 规模，包含宗内预留和配套。平均用地强度作为边际系数的代理。
+a_s_measured,,ha/MW IT,待核,https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075327576,尚缺两个独立建设阶段，同口径的实际净增占地、变动固定设施与额定 IT。
+A_IT_lots,179.605794,ha,县地籍与工程图叠加估计,../eight_building_land_review/README.md | https://abilenetx.gov/DocumentCenter/View/43833/SP-2026-77-PDF?bidId=#page=1,七宗运营地在已核分区内的并集。宗内后备设施、通道和池体已计入。
+A0_new;A0_old,5.05857; 0.7947,ha,承建商披露与图上估算,https://www.mortenson.com/projects/abilene-data-center-development | ../eight_building_land_review/README.md,新站 12.5 acre，旧站外框估算。两站在计算土地账中位于运营宗地外，增列固定地 5.85328 ha，进入有效面积和显式扣除各一遍。
+A_patch,23.357853,ha,GIS 整宗保留情景,../eight_building_land_review/README.md,四个规划区块合计 330.19 ha。在整宗保留后最大连续候选块为 23.35785 ha。能源用地只能落在此块。
+"A_full_net, A_full_patch",,ha,待核,https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075327576,"原 1,100 英亩的净地总量、最大单块及与运营区的可连接性。较松口径 39.58 ha 与整宗运营地边界不配套。"
+G_connection,1200,MW 设施电力,开发商公开并网规模,https://www.crusoe.ai/resources/newsroom/crusoe-expands-ai-data-center-campus-in-abilene-to-1-2-gigawatts,原八栋额定并网连接。备用燃机常态计零。
+g_firm,1.0,额定容量比例,基准情景,https://www.crusoe.ai/resources/newsroom/crusoe-expands-ai-data-center-campus-in-abilene-to-1-2-gigawatts,合同保障量未知，取全额交付。0.70、0.80、0.90、1.00 用于敏感性。
+G_firm_measured,,MW,待核,https://www.crusoe.ai/resources/newsroom/crusoe-expands-ai-data-center-campus-in-abilene-to-1-2-gigawatts,缺同阶段保障到场供电与限电数据。
+k,1.41,MW设施/MW IT,仓库比较基线,../run_case.py | https://media.ffycdn.net/us/crusoe/PL5TuZz5apXB9pVsd3H1.pdf#page=16,使用时须对应设计满载。开发商报告原园区年化设计 PUE 1.2–1.4，另作敏感性。
+k_site_metered,,MW设施/MW IT,待核,https://media.ffycdn.net/us/crusoe/PL5TuZz5apXB9pVsd3H1.pdf#page=16,缺同时点分表和设计满载工况。1154/824=1.40049 是同一估计内部比值。
+Q_reference,633.074697,m³/h,区域规划经情景折算,https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/G/RegionG_2026_RWP_VolumeI.pdf#page=607 | ../run_case.py,市级 2030 年盈余 4496 acre-ft/年，全额均摊为 633.07 m³/h。不是项目供水合同。
+Q_site_dry,,m³/h,待核,https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/G/RegionG_2026_RWP_VolumeI.pdf#page=607 | https://american-audacity.buzzsprout.com/1821492/episodes/19398965-emily-crawford-abilene-city-manager,缺原八栋枯水或高温期保障可配送流量。另测 300/400/450/500 m³/h。
+WUE_scenario,0.50,L/kWh IT,仓库情景,../run_case.py,比较口径为全站现场取水。另测 0.20、0.80、1.00。
+WUE_site_dry,,L/kWh IT,待核,https://www.oracle.com/data-centers/abilene/ | https://american-audacity.buzzsprout.com/1821492/episodes/19398965-emily-crawford-abilene-city-manager,缺相同时间、相同供水范围的取水与 IT 电量，维护补水不用于反推。
+water_maintenance,50000; 12625,US gal/(栋·年),当前及较早企业披露,https://www.oracle.com/data-centers/abilene/ | https://www.crusoe.ai/resources/blog/an-inside-look-at-the-abilene-ai-data-center | https://arrington.house.gov/uploadedfiles/final_oracle_oai_data_center_fact_sheet_092225b.pdf#page=2,"当前 Oracle 和 Crusoe 网页均为 50,000。较早 Oracle 简报为 12,625。口径均指维护或水质需要。"
+municipal_use,1000000; 3000000,US gal/月,市经理访谈汇总,https://american-audacity.buzzsprout.com/1821492/episodes/19398965-emily-crawford-abilene-city-manager,2025 年及 2026 年截至 6 月 25 日访谈时，约合 5.19 与 15.56 m³/h（年平均月长）。含建设、冲洗和充水。
+thermal_blocks,2 x 100 coal; 2 x 100 gas,MW 设施电力,反事实技术候选,../run_case.py | ../plot_fixed_installation.py,每台煤 20 ha，气 10 ha。取水系数 132.5 与 0.02 L/kWh 生成电量。燃料充分，未施加爬坡、最小稳定出力、成本或排放上限。
+"wind,pv_density",30; 8.9,ha/MW wind; acre/MWac PV,仓库技术参数,../run_case.py,风电按间距用地，光伏按交流装机。另设电池地会进一步缩小风光可用地。
+battery,0.25; 4; 0.90; 0.90,MW/MW 风光; h; 充电效率; 放电效率,仓库设备情景,../run_case.py | ../plot_fixed_installation.py,风光共享电池，初末荷电量相同。
+"weather_design,holdout",24; 8784,小时,公开再分析,../run_case.py | https://archive-api.open-meteo.com/v1/archive?latitude=32.442883&longitude=-99.7327&start_date=2024-01-01&end_date=2024-12-31&hourly=temperature_2m%2Cshortwave_radiation%2Cwind_speed_10m&models=era5&timezone=GMT&wind_speed_unit=kmh,2025-01-29 当地设计日用于求解。2024 UTC 全年独立窗口固定设备复核，地点为与仓库相同的 Abilene 市域气象点。
+redesign_horizon,2033,年,技术就绪情景,../run_case.py,新建常态电源假设届时获许可并可供气，保持相同电水地输入以比较，并非已建项目。现有备用出力在两类运行中均不另加。

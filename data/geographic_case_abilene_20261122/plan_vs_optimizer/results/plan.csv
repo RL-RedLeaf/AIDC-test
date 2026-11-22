@@ -1,0 +1,7 @@
+﻿view,mw_it,difference_vs_epoch_mw,difference_vs_epoch_pct,meaning
+halls_only,800.0,-24.0,-2.9126213592232997,design subtotal
+installed_it_design,824.0,0.0,0.0,halls plus separately listed building IT
+resource_only_q1,851.0638297872341,27.063829787234113,3.28444536252841,electricity/water/land minimum
+fixed_plan_deliverable,824.0,0.0,0.0,minimum of configured equipment and resources
+epoch_2026-11-01_it,824.0,0.0,0.0,stage estimate; comparison only
+epoch_facility_divided_by_k,818.4397163120568,-5.560283687943183,-0.6747917097018385,same-stage diagnostic; comparison only
