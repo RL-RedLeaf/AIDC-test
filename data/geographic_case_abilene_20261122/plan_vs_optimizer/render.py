@@ -1,4 +1,4 @@
-"""Make the three figures and the four-page student PDF from the saved solver outputs."""
+"""Render the figures and student PDF from the saved solver outputs."""
 import csv
 import json
 import os
@@ -122,13 +122,51 @@ def sensitivities():
     cb.set_label("MW IT");save(fig,"sensitivity.png")
 
 
+def parcel_review(summary):
+    fig, (land, it) = plt.subplots(1, 2, figsize=(10.3, 3.1))
+    fig.subplots_adjust(left=.14, right=.97, bottom=.22, top=.80, wspace=.49)
+    land.set_title("四区块内还有多少候选地", fontsize=13)
+    for y, (net, single) in enumerate([(summary["net_ha_lots"], summary["patch_ha"]),
+                                       (summary["net_ha_drawn"], summary["patch_drawn_ha"])]):
+        land.barh(y, net, color=PALE, height=.38)
+        land.barh(y, single, color=GREEN, height=.38)
+        land.text(single / 2, y, f"{single:.2f}", va="center", ha="center", fontsize=10, color="white")
+        land.text(net + 2, y, f"{net:.2f}", va="center", fontsize=10)
+    land.set_yticks([0, 1], ["保留整宗运营地", "保留图示运维区"])
+    land.set_xlim(0, 158)
+    land.set_xticks([0, 40, 80, 120])
+    land.set_ylim(-.60, 1.65)
+    land.set_xlabel("候选地面积（ha）")
+    land.text(0, 1.32, "深色为最大单块，整条为净余合计", color=SLATE, fontsize=9)
+    it.set_title("保留八栋，还能增加多少 IT", fontsize=13)
+    cases = rows("anchored_extension.csv")
+    scales = [float(r["phase1_average_multiplier"]) for r in cases]
+    increments = [float(r["increment_mw_it"]) for r in cases]
+    it.plot(scales, increments, color=GREEN, linewidth=2, marker="o", markersize=6)
+    for x, y in zip(scales, increments):
+        it.text(x, y + 2.5, f"+{y:.2f}", ha="center", color=DARK, fontsize=10)
+    it.axhline(summary["module_mw"], color=GOLD, ls="--", lw=1.3)
+    it.text(1.24, summary["module_mw"] + 1.7, "原设计一栋 103 MW", ha="right", color=GOLD, fontsize=9)
+    it.set_xticks(scales, [f"{factor:.0%}" for factor in scales])
+    it.set_yticks([50, 70, 90, 110])
+    it.set(xlim=(.73, 1.27), ylim=(47, 113), xlabel="新增 IT 用地强度 / 一期平均值", ylabel="新增 MW IT")
+    for ax in (land, it):
+        ax.set_axisbelow(True)
+        ax.tick_params(length=0)
+    it.grid(axis="y", color=FAINT, linewidth=.6)
+    save(fig, "parcel_review.png")
+
+
 def pdf(s):
     # The report uses the same result files as the figures. Compile intermediate files in isolation.
     fields={"planMW":(s["plan_deliverable_mw"],0),"resourceMW":(s["plan_resources_mw"],2),
             "bestMW":(s["redesign_mw"],2),"gainPlan":(s["increment_over_plan_mw"],2),
             "gainResource":(s["increment_over_resources_mw"],2),"wholeMW":(s["whole_module_mw"],0),
             "slopeVal":(s["slope"],6),"patchVal":(s["patch_ha"],2),
-            "anchoredMW":(s["anchored_extension_mw"],2),"minGrid":(s["plan_min_grid_mw"],2),"phaseHa":(s["phase1_ha"],2)}
+            "anchoredMW":(s["anchored_scenario_mw"]["phase1_average_proxy"],2),
+            "anchorLow":(s["anchored_scenario_mw"]["higher_land_use"],2),
+            "anchorHigh":(s["anchored_scenario_mw"]["lower_land_use"],2),
+            "minGrid":(s["plan_min_grid_mw"],2),"phaseHa":(s["phase1_ha"],2)}
     with tempfile.TemporaryDirectory() as temp:
         work=Path(temp)
         (work/"values.tex").write_text("\n".join(f"\\newcommand{{\\{k}}}{{{v:.{n}f}}}" for k,(v,n) in fields.items()),encoding="utf8")
@@ -141,4 +179,4 @@ def pdf(s):
 if __name__=="__main__":
     FIG.mkdir(exist_ok=True)
     s=json.loads((CASE/"results/summary.json").read_text(encoding="utf8"))
-    chart_style();planned(s);technologies(s);sensitivities();pdf(s)
+    chart_style();planned(s);technologies(s);sensitivities();parcel_review(s);pdf(s)

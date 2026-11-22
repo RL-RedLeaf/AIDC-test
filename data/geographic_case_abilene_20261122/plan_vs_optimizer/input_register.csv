@@ -2,15 +2,23 @@
 "N,h,P_h,P_b",8; 4; 25; 3,栋; 厅/栋; MW IT/厅; MW IT/栋,披露的设计值,https://www.dpr.com/projects/crusoe-abilene-data-center | https://www.youtube.com/watch?v=cH7tiy7s17A&t=48s,总包逐项列明四厅、每厅 25 MW，以及每栋另列 3 MW IT。结合开发商 CEO 对每栋约 103 MW IT 的访谈理解其他 IT。八栋并网兑现仍受资源约束。
 "P_ref,facility_ref",824; 1154,MW IT; MW facility,第三方阶段估计,https://epoch.ai/graphs/largest-ai-data-centers-by-power-capacity,仓库时间线 2026-11-01 原八栋行。只在计算末端用于对照，不作为八栋目标反推参数。
 A_gross,1100,acre,园区披露,https://www.oracle.com/data-centers/abilene/,毛地用于界定对象。完整法律红线仍待逐宗核对。
-A_building_each,484960,ft²/栋,工程图纸,https://abilenetx.gov/DocumentCenter/View/43833/SP-2026-77-PDF?bidId=#page=1,C1.0 中 1–8 栋单层建筑基底，合计 36.04 ha。已在运营宗地内。
+A_building_each,484960,ft²/栋,工程图纸,https://abilenetx.gov/DocumentCenter/View/43833/SP-2026-77-PDF?bidId=#page=1,"已重开官方 54 页 PDF 第 1 页 C1.0，逐一核对 1–8 栋各 484,960 ft²。合计 36.04 ha，已在运营宗地内。原文件 SHA-256 4aad843378a6037a82cbf72b504415b19ff31c2ff31a8fec572b450cc93e20ca。"
 A_phase1,94.963,acre,法律附件,https://abilenetx.gov/DocumentCenter/View/39456/Lancium-LLC-Abilene-Second-Amended-and-Restated-Tax-Abatement-Agreement-PDF#page=25,第 25 页 Exhibit B-1/2，前两栋共用租赁宗地，换算为 38.43016 ha。
 P_phase1,206,MW IT,披露结合交叉核对,https://www.nmrk.com/insights/press-releases/newmark-advises-on-3-4-billion-joint-venture-on-one-million-square-foot-texas-data-center | https://www.youtube.com/watch?v=cH7tiy7s17A&t=48s | https://media.ffycdn.net/us/crusoe/PL5TuZz5apXB9pVsd3H1.pdf#page=16,一期融资披露为 206 MW，总包与开发商访谈用每栋 IT 交叉核对。用于一期系数，未用八栋目标标定。
 a_s,0.186554188,ha/MW IT,一期同口径代理,https://abilenetx.gov/DocumentCenter/View/39456/Lancium-LLC-Abilene-Second-Amended-and-Restated-Tax-Abatement-Agreement-PDF#page=25 | https://www.nmrk.com/insights/press-releases/newmark-advises-on-3-4-billion-joint-venture-on-one-million-square-foot-texas-data-center,一期租赁土地除以其 IT 规模，包含宗内预留和配套。平均用地强度作为边际系数的代理。
-a_s_measured,,ha/MW IT,待核,https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075327576,尚缺两个独立建设阶段，同口径的实际净增占地、变动固定设施与额定 IT。
+a_s_measured,,ha/MW IT,待核,../eight_building_land_review/parcel_check/ | https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106,前两栋用租约界，八栋运营宗地用七宗在 PDD 内的裁切并集。相减无法识别后六栋新增占地。待同口径两期净增面积及公用设施分摊。
 A_IT_lots,179.605794,ha,县地籍与工程图叠加估计,../eight_building_land_review/README.md | https://abilenetx.gov/DocumentCenter/View/43833/SP-2026-77-PDF?bidId=#page=1,七宗运营地在已核分区内的并集。宗内后备设施、通道和池体已计入。
-A0_new;A0_old,5.05857; 0.7947,ha,承建商披露与图上估算,https://www.mortenson.com/projects/abilene-data-center-development | ../eight_building_land_review/README.md,新站 12.5 acre，旧站外框估算。两站在计算土地账中位于运营宗地外，增列固定地 5.85328 ha，进入有效面积和显式扣除各一遍。
-A_patch,23.357853,ha,GIS 整宗保留情景,../eight_building_land_review/README.md,四个规划区块合计 330.19 ha。在整宗保留后最大连续候选块为 23.35785 ha。能源用地只能落在此块。
-"A_full_net, A_full_patch",,ha,待核,https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075327576,"原 1,100 英亩的净地总量、最大单块及与运营区的可连接性。较松口径 39.58 ha 与整宗运营地边界不配套。"
+A0_new;A0_old,5.05857; 0.7947,ha,承建商披露与图上估算,https://www.mortenson.com/projects/abilene-data-center-development | ../eight_building_land_review/README.md | https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106,新站 12.5 acre，旧站外框估算。两站在计算土地账中位于运营宗地外，增列固定地 5.85328 ha，进入有效面积和显式扣除各一遍。
+A_patch,23.357853,ha,GIS 整宗保留情景,../eight_building_land_review/parcel_check/ | https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106 | ../eight_building_land_review/site-land.gpkg,四个规划区块合计 330.19 ha。在整宗保留后最大连续候选块为 23.35785 ha。能源用地只能落在此块。
+A_PDD,330.1947,ha,测绘区块并集，QGIS 和 GeoPandas 复算,../eight_building_land_review/parcel_check/ | https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106,四个规划区块的并集。与毛地 445.15 ha 的差额 114.96 ha 为范围差，连通性待核。
+A_county_union,216.6527,ha,县宗地快照，双工具复算,../eight_building_land_review/parcel_check/ | https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106,按 LANCIUM 分区名匹配的 13 条宗地几何求并集。
+A_county_in_PDD,211.7812,ha,县宗地与规划区的交集,../eight_building_land_review/parcel_check/ | https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106,包含于县宗地并集及四个规划区内部。
+A_county_outside_PDD,4.8715,ha,县宗地与规划区差集,../eight_building_land_review/parcel_check/ | https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106,原八栋归属未知，已从两种情景可用地排除。
+A_free_drawn;A_single_drawn,127.6205; 39.5823,ha,复核原 GIS 筛选情景,../eight_building_land_review/parcel_check/ | https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106,保留图示运维区。分别为四区块内净余合计与最大候选单块。
+A_free_lots;A_single_lots,93.1002; 23.3579,ha,复核原 GIS 筛选情景,../eight_building_land_review/parcel_check/ | https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106,保留整宗运营地。23.35785 ha 才用于本次新增设施的单块面积约束。
+new_station_share_of_original_gross,,比例,待核,../eight_building_land_review/parcel_check/ | https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106,"尚缺 1,100 英亩同阶段法律红线与新站实测围界的相交依据。"
+expansion_intensity_cases,0.8; 1.0; 1.2,倍一期平均用地强度,自选敏感性情景,inputs.json | https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106,三组分别乘以一期平均 0.186554 ha/MW IT，用于保留原八栋的扩建。端点不代表观测边界或置信限。
+"A_full_net, A_full_patch",,ha,待核,../eight_building_land_review/parcel_check/ | https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106,"原 1,100 英亩的净地总量、最大单块及与运营区的可连接性。较松口径 39.58 ha 与整宗运营地边界不配套。"
 G_connection,1200,MW 设施电力,开发商公开并网规模,https://www.crusoe.ai/resources/newsroom/crusoe-expands-ai-data-center-campus-in-abilene-to-1-2-gigawatts,原八栋额定并网连接。备用燃机常态计零。
 g_firm,1.0,额定容量比例,基准情景,https://www.crusoe.ai/resources/newsroom/crusoe-expands-ai-data-center-campus-in-abilene-to-1-2-gigawatts,合同保障量未知，取全额交付。0.70、0.80、0.90、1.00 用于敏感性。
 G_firm_measured,,MW,待核,https://www.crusoe.ai/resources/newsroom/crusoe-expands-ai-data-center-campus-in-abilene-to-1-2-gigawatts,缺同阶段保障到场供电与限电数据。

@@ -207,6 +207,10 @@ def main():
     q = p["city_2030_surplus_acre_ft_year"] * p["acre_ft_m3"] / p["hours_year"]
     a = p["phase1_leased_acres"] * p["acre_to_ha"] / p["phase1_mw_it"]
     op, fixed, patch = (ledger[s][1] for s in ("operation", "substations", "largest"))
+    review = p["parcel_review"]
+    # The returned overlay is a cross-check. Unassigned parcels outside the PDD add no model land.
+    assert abs(ledger["gross"][1] - review["planning_union_ha"]) < 1e-4
+    assert abs(review["parcel_union_ha"] - review["intersection_ha"] - review["outside_planning_ha"]) < 2e-4
     module = p["halls_per_building"] * p["hall_mw_it"] + p["other_mw_it_per_building"]
     equipment = module * p["buildings"]
     reference = float(epoch["IT power (MW)"])
@@ -248,14 +252,21 @@ def main():
     best = portfolios[-1]
     assert all(best["it_mw"]+TOL>=r["it_mw"] for r in portfolios)
     assert abs(portfolios[0]["it_mw"]-uncapped)<TOL
-    phase1_ha = p["phase1_leased_acres"] * p["acre_to_ha"]
-    ex_post_slope = (op - phase1_ha) / (reference - p["phase1_mw_it"])
-    anchored, _ = fit_portfolio(Mix, config(slope=ex_post_slope,extra=patch), weather, patch,
-                                 TECHS, retained_it=equipment)
-    used_patch = ex_post_slope*(anchored["it_mw"]-equipment) + anchored["gen_ha"]
-    assert anchored["it_mw"] >= equipment-TOL and used_patch <= patch+TOL
-    write_csv(out,"anchored_extension.csv",[{"retained_mw_it":equipment,"marginal_proxy_ha_mw_it":ex_post_slope,
-              "increment_mw_it":anchored["it_mw"]-equipment,"used_patch_ha":used_patch, **anchored}])
+    # Phase 1 leases and clipped operating parcels have different boundaries. Estimate extensions
+    # conditionally on an explicit land-use scenario while keeping the measured slope missing.
+    extensions = []
+    for case, factor in p["expansion_intensity_cases"].items():
+        slope = a * factor
+        anchored, _ = fit_portfolio(Mix, config(slope=slope, extra=patch), weather, patch,
+                                    TECHS, retained_it=equipment)
+        increment = anchored["it_mw"] - equipment
+        used_patch = slope * increment + anchored["gen_ha"]
+        assert increment >= -TOL and used_patch <= patch + TOL
+        extensions.append({"case": case, "phase1_average_multiplier": factor,
+                           "retained_mw_it": equipment, "marginal_proxy_ha_mw_it": slope,
+                           "increment_mw_it": increment, "used_patch_ha": used_patch,
+                           "patch_left_after_generation_ha": patch - anchored["gen_ha"], **anchored})
+    write_csv(out, "anchored_extension.csv", extensions)
     checks = validate_weather(p,portfolios[-2],grid,k)
     write_csv(out,"weather_check.csv",checks)
     sensitivity = []
@@ -304,7 +315,11 @@ def main():
              "whole_module_mw":module*math.floor((best["it_mw"]+TOL)/module),
              "min_gas_for_winner_mw":max(0,k*best["it_mw"]-grid) if best["wind_mw"]+best["pv_mw"]<TOL and best["coal_mw"]<TOL else None,
              "epoch_power_to_it_mw":facility/k,"reference_gap_grid_rating_mw_it":(grid-facility)/k,
-             "reference_gap_factor_mw_it":facility/k-reference,"weather_check":checks,"ex_post_slope":ex_post_slope,"anchored_extension_mw":anchored["it_mw"]}
+             "reference_gap_factor_mw_it":facility/k-reference,"weather_check":checks,
+             "parcel_review_commit":review["commit"], "net_ha_drawn":ledger["raw_free"][0],
+             "net_ha_lots":ledger["raw_free"][1], "ex_post_slope":review["measured_incremental_ha_per_mw_it"],
+             "anchored_extension_mw":None,
+             "anchored_scenario_mw":{r["case"]:r["it_mw"] for r in extensions}}
     (out/"summary.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2,allow_nan=False)+"\n",encoding="utf8")
     print(json.dumps(summary,ensure_ascii=False,indent=2))
 

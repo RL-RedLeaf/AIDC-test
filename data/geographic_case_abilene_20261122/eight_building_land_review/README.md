@@ -5,7 +5,9 @@
 | 文件 | 怎么用 |
 | --- | --- |
 | [四页中文研究报告](abilene-land-review.pdf) | 第 1 页用建筑基底检验全园面积，第 2 页比较两种保留方式，第 3 页是同阶段资源与四类发电方式对照，第 4 页说明固定用地修正与数据出处。 |
-| [可编辑学生研读表 0.3](Abilene%20第一问学生研读表%200.3.xlsx) | 三个工作表分别是“八栋园区”“四类供电”“场址用地核查”。第一张可改网电、水量、土地及站地入界比例。第二张保留单项电源表和原生图表。第三张可沿公式复核八栋建筑的面积上限。 |
+| [可编辑学生研读表 0.4](Abilene%20第一问学生研读表%200.4.xlsx) | 前三张表涵盖同阶段电水地、四类供电和八栋建筑的用地上限。新增“宗地回传与扩建”列出县地籍复核数据，可修改新增 IT 的单位用地，观察单块可支撑的增量。 |
+| [宗地回传与 QGIS 复算脚本](parcel_check/) | 县地籍 GeoJSON 和复核四区块面积的两套脚本。与上一行的工作表配套。 |
+| [按规划与重配的最新计算](../plan_vs_optimizer/README.md) | 五页中文报告、输入、图表和求解器结果。第 5 页专门展示宗地复核对扩建估计的影响。 |
 | [QGIS 数据包](site-land.gpkg) | 单文件 GeoPackage，包含 7 个空间图层和 3 个面积表。 |
 | [LaTeX 源码](abilene-land-review.tex) | 两幅地图与面积图均已嵌入。可用带有 ctex、Fandol 和 TikZ 的 TeX Live 运行 `latexmk -xelatex abilene-land-review.tex`。 |
 
@@ -37,5 +39,7 @@
 工程图用于辨认 1–8 栋及同阶段配套。较宽松情景保留图示运维范围，较严格情景保留七宗对应运营地，其中 1、2 栋共宗。计算依次并入变电设施、备用设施、调蓄池、主要道路、规划缓冲带和市级洪泛层，每一项只记新增覆盖。通道取 12 m 宽，并用 8 m、16 m 另算。余地向内收 5 m 后分出连片，各片分别向外扩回 5 m、裁回原余地再量算，以过滤约 10 m 以下的窄连接。两列是情景结果。坡度、具体退界和环境许可仍需核实。[县估价区宗地 GIS](https://gis.taylor-cad.org/server/rest/services/Property_Search_Map/MapServer/0) · [市税务协议](https://abilenetx.gov/DocumentCenter/View/39456/Lancium-LLC-Abilene-Second-Amended-and-Restated-Tax-Abatement-Agreement-PDF#page=4) · [市洪泛图层](https://services6.arcgis.com/iBFmWI3dYPQqS1KF/ArcGIS/rest/services/City_of_Abilene_Flood_Zones/FeatureServer)
 
 12.5 英亩（5.06 ha）是承建商公布的新站面积，旧站约 0.79 ha 为图示外框估算。公开材料支持将新站作为原园区配套，仍缺能把新站逐宗对应到 Oracle 1,100 英亩的法律边界。Longhorn 工程图列出的 25.38 英亩（10.27 ha）为施工整地界。道路、停车和其余硬化合计约 24.05–35.17 ha，端点反映 1、2 栋重复行的两种读法。[Mortenson 项目记录](https://www.mortenson.com/projects/abilene-data-center-development) · [Longhorn 场平图，第 4 页](https://www.abilenetx.gov/DocumentCenter/View/31589/SP-2024-25-Revision-PDF#page=4) · [市存工程图 C1.0](https://abilenetx.gov/DocumentCenter/View/43833/SP-2026-77-PDF?bidId=#page=1)
+
+2026-11-22 回传的 13 宗县地籍并集为 216.6527 ha，其中 211.7812 ha 位于四区块内。区外 4.8715 ha 的原八栋归属仍待核。QGIS 与 GeoPandas 均复核了上述交叠和四区块面积，两种保留方式的余地及最大单块也已按原面积账复算。当天通过市政府不带 www 的地址重新取得 54 页工程 PDF，第 1 页 C1.0 的 1–8 栋逐项标注 484,960 ft²。学生表 0.4 保留了这个可独立核对的面积上界。[回传原文](https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106) · [市工程图第 1 页](https://abilenetx.gov/DocumentCenter/View/43833/SP-2026-77-PDF?bidId=#page=1)
 
 电、水、土地对照与四类单项发电结果沿用仓库提交 `e29f173`。输出 03 的光储已包含 100 MW 持续网电。报告同时核查了固定站地和单位用地系数是否分摊了同一块地。研究材料整理于 2026-11-22。[仓库模型与输出](https://github.com/RL-RedLeaf/AIDC-test/tree/e29f173e6fefb8e29455d2b8aea577f6961dfd37/data/geographic_case_abilene_20261122) · [GitHub 议题 #1](https://github.com/RL-RedLeaf/AIDC-test/issues/1)

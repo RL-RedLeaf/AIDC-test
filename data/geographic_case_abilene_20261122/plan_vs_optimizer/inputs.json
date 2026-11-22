@@ -10,6 +10,21 @@
   "campus_gross_acres": 1100,
   "building_footprint_sqft_each": 484960,
   "new_station_acres": 12.5,
+  "parcel_review": {
+    "commit": "9301ec74699d58157999d672a8249c739ff7cfdc",
+    "parcel_count": 13,
+    "planning_union_ha": 330.1947,
+    "parcel_union_ha": 216.6527,
+    "intersection_ha": 211.7812,
+    "outside_planning_ha": 4.8715,
+    "new_station_share_of_original_gross": null,
+    "measured_incremental_ha_per_mw_it": null
+  },
+  "expansion_intensity_cases": {
+    "lower_land_use": 0.8,
+    "phase1_average_proxy": 1.0,
+    "higher_land_use": 1.2
+  },
   "acre_to_ha": 0.40468564224,
   "grid_nameplate_mw": 1200.0,
   "firm_share": 1.0,
@@ -79,7 +94,8 @@
     "BASE": "../run_case.py",
     "SOLVER": "../plot_fixed_installation.py",
     "HOLDOUT": "https://archive-api.open-meteo.com/v1/archive?latitude=32.442883&longitude=-99.7327&start_date=2024-01-01&end_date=2024-12-31&hourly=temperature_2m%2Cshortwave_radiation%2Cwind_speed_10m&models=era5&timezone=GMT&wind_speed_unit=kmh",
-    "GIS_ISSUE": "https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075327576"
+    "GIS_ISSUE": "https://github.com/RL-RedLeaf/AIDC-test/issues/1#issuecomment-7075596106",
+    "GIS_PARCELS": "../eight_building_land_review/parcel_check/"
   },
   "redesign_horizon_year": 2033
 }

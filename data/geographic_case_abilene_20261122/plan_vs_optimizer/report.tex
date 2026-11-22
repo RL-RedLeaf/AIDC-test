@@ -22,7 +22,7 @@
 \fancyhead[L]{\footnotesize\sffamily\color{muted}IMMC 2027\quad 问题一\quad /\quad 原规划与反事实求解}
 \fancyhead[R]{\footnotesize\sffamily\color{muted}ABILENE, TEXAS}
 \fancyfoot[L]{\footnotesize\sffamily\color{muted}学生研读资料\quad ·\quad 2026 年 11 月 22 日}
-\fancyfoot[R]{\footnotesize\sffamily\color{muted}\thepage\,/\,4}
+\fancyfoot[R]{\footnotesize\sffamily\color{muted}\thepage\,/\,5}
 \begin{document}\color{ink}
 \titleline{按原八栋规划，IT 容量是多少？}
 总包 DPR 列出每栋四个数据厅，每厅 25 MW IT，每栋还另列 3 MW IT。开发商 CEO 在访谈中给出的单栋规模约为 103 MW IT。两项工程数据合起来，八栋设计为 $8\times(4\times25+3)=\mathbf{824}$ MW IT，其中数据厅占 800 MW。\sref{1}
@@ -47,8 +47,8 @@ Epoch 在 2026 年 11 月 1 日估计八栋为 824 MW IT、1,154 MW 设施功率
 \chart{technology}
 在此组合下，供电可以支撑 992.91 MW IT。剩给机房与配套的是 $179.61+23.36-20\approx182.96$ ha，按一期用地强度折算，土地先触顶，得到 \textbf{\bestMW\ MW IT}。与原规划设备相比多 \gainPlan\ MW，与纯网电的资源上限相比多 \gainResource\ MW。
 \sect{这比原园区实际能增多少？}
-连续最优允许重新布置原有土地。若新楼必须按 103 MW 整栋投运，容量向下取整为 \textbf{\wholeMW\ MW IT（九栋）}，实际能否布置仍需总平面检验。另做一组保留八栋的扩建核算，已有宗地不再释放，只允许在 23.36 ha 上加设备。按后六栋的用地增量折算，最优约为 \textbf{\anchoredMW\ MW IT}，只新增一台燃气机组。
-\fine{“保留八栋再扩建”使用已知规模估计后六栋的增量用地，专门回答改造问题。重新规划默认余下候选地可接入 IT 配套。若该块只许发电，重配上限回落到 962.75 MW IT。}
+连续最优允许重新布置原有土地。若新楼必须按 103 MW 整栋投运，容量向下取整为 \textbf{\wholeMW\ MW IT（九栋）}，实际能否布置仍需总平面检验。另一种方案保留原八栋及其全部运营宗地，只在 23.36 ha 上扩建。每增加 1 MW IT 若占用与一期平均值相同的土地，该方案可到 \textbf{\anchoredMW\ MW IT}。第 5 页给出其他用地假设下的结果。
+\fine{重新规划默认候选地可接入 IT 配套。若该块只许发电，重配上限降至 962.75 MW IT。}
 \newpage
 \titleline{哪些输入会改变答案？}
 \sect{供水和持续网电决定设备能否用满}
@@ -64,8 +64,8 @@ Epoch 在 2026 年 11 月 1 日估计八栋为 824 MW IT、1,154 MW 设施功率
 \titleline{哪些是原始输入，哪些仍待核实？}
 {\small\begin{tabularx}{\linewidth}{@{}L{18mm}L{50mm}Y@{}}\toprule
 \hd 输入&已有资料&本次模型的处理\\\midrule
-土地&毛地 445.15 ha。图纸八栋基底合计 36.04 ha。四个可核界区块内，七宗运营地合计约 179.61 ha。&两座站地按 5.85 ha 单列于此计算边界，宗内设施只记一次。完整 1,100 英亩的范围、可用净地和连通性待 GIS 回传。\sref{4–6}\\
-单位用地 $a_s$&前两栋租约 94.963 英亩（\phaseHa\ ha），一期约 206 MW IT。&用一期同边界平均值 \slopeVal\ ha/MW IT 代理边际用地。后六栋增量诊断约 0.2284 ha/MW IT，使用了八栋参照，只用于扩建诊断。\sref{1,4,6}\\
+土地&毛地 445.15 ha。图纸八栋基底合计 36.04 ha。四个规划区块 330.19 ha，其中七宗运营地约 179.61 ha。&两站 5.85 ha 在此计算边界按去重面积单列。1,100 英亩的完整红线、新站入界比例及全园最大净块待核。\sref{4–6}\\
+单位用地 $a_s$&前两栋租约 94.963 英亩（\phaseHa\ ha），一期约 206 MW IT。&一期平均值为 \slopeVal\ ha/MW IT，主算例暂用作边际系数。后六栋同口径用地仍缺，扩建另算三种假设。\sref{1,4,6}\\
 电与 $k$&公开并网 1,200 MW。开发商列年化设计 PUE 约 1.2–1.4。&主算例沿用仓库 $k=1.41$。满载实测 $k$、可持续交付量与限电条款仍缺。\sref{2}\\
 水与 WUE&市经理称 2025 年约 100 万、2026 年截至 6 月访谈时约 300 万美制加仑/月，含建设和初次充水。&枯水期合同流量、同期全站 WUE 仍缺。基准将 2030 年市级盈余年化并全额给园区，得 633.07 m³/h，现场 WUE 取 0.50。\sref{9}\\\bottomrule
 \end{tabularx}}
@@ -77,9 +77,22 @@ Epoch 在 2026 年 11 月 1 日估计八栋为 824 MW IT、1,154 MW 设施功率
 {[3]}&\href{https://epoch.ai/graphs/largest-ai-data-centers-by-power-capacity}{Epoch AI 的 IT 容量定义与估计}。阶段设施量取仓库时间线 2026-11-01 行。\\
 {[4]}&\href{https://abilenetx.gov/DocumentCenter/View/39456/Lancium-LLC-Abilene-Second-Amended-and-Restated-Tax-Abatement-Agreement-PDF\#page=25}{市税务协议 Exhibit B-1/2，第 25 页}，\href{https://www.nmrk.com/insights/press-releases/newmark-advises-on-3-4-billion-joint-venture-on-one-million-square-foot-texas-data-center}{Newmark 一期融资与规模说明}。\\
 {[5]}&\href{https://www.oracle.com/data-centers/abilene/}{Oracle 当前场址页}，\href{https://arrington.house.gov/uploadedfiles/final_oracle_oai_data_center_fact_sheet_092225b.pdf\#page=2}{Oracle 早期简报}，\href{https://www.mortenson.com/projects/abilene-data-center-development}{Mortenson 变电站披露}。\\
-{[6]}&\href{https://github.com/RL-RedLeaf/AIDC-test/tree/5374865a8234cd5608c243abc99dfe73bdd18493/data/geographic_case_abilene_20261122/eight_building_land_review}{前次 GIS 面积账与依据}，\href{https://github.com/RL-RedLeaf/AIDC-test/issues/1\#issuecomment-7075327576}{完整宗地的 QGIS 核查请求}。\\
+{[6]}&\href{https://github.com/RL-RedLeaf/AIDC-test/tree/9301ec74699d58157999d672a8249c739ff7cfdc/data/geographic_case_abilene_20261122/eight_building_land_review}{GIS 面积账、县宗地快照与脚本}，\href{https://github.com/RL-RedLeaf/AIDC-test/issues/1\#issuecomment-7075596106}{协作者的 QGIS 复核结果}。\\
 {[7]}&\href{https://github.com/RL-RedLeaf/AIDC-test/tree/5374865a8234cd5608c243abc99dfe73bdd18493/data/geographic_case_abilene_20261122}{仓库案例与混合电源求解器}。对每个整数台数组合求连续容量和周期电池调度。\\
 {[8]}&\href{https://open-meteo.com/en/docs/historical-weather-api}{Open-Meteo 历史天气 API / ERA5}。独立气象年、参数表与代码随本报告入库。\\
 {[9]}&\href{https://american-audacity.buzzsprout.com/1821492/episodes/19398965-emily-crawford-abilene-city-manager}{市经理 2026-06-25 访谈，40:51 起}，\href{https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/G/RegionG_2026_RWP_VolumeI.pdf\#page=607}{得州 Region G 水规划}，\href{https://www.crusoe.ai/resources/blog/an-inside-look-at-the-abilene-ai-data-center}{Crusoe 用水披露}。
 \end{tabularx}}
+\newpage
+\titleline{保留原八栋后，哪一块地能用于扩建？}
+县地籍中按 Lancium 分区名筛出的 13 条记录，合并后占 216.6527 ha。其中 211.7812 ha 落在 PDD-181 的四个规划区块内，另有 4.8715 ha 在区块外，归属阶段待核。四区块共 330.1947 ha，与公告的 1,100 英亩毛地相差 114.96 ha。下图左侧只计算这四区块内的候选地。\sref{5,6}
+\chart{parcel_review}
+\sect{23.36 ha 怎样分给电源和新增机房？}
+在保留整宗运营用地的三组情景中，求解器都选一台 100 MW 干冷燃气机组，占 10 ha。由此给机房与配套留下 $23.35785-10=13.35785$ ha。以 $a_\Delta$ 表示每增加 1 MW IT 所需土地，三组都先碰到土地约束，容量满足
+\[
+     P_{\rm IT}=824+\frac{13.35785}{a_\Delta}\quad\text{MW IT}.
+\]
+若 $a_\Delta$ 等于一期平均值，容量为 \textbf{\anchoredMW\ MW IT}。若分别取一期的 80\% 和 120\%，结果为 \anchorHigh\ 和 \anchorLow\ MW IT。三组是敏感性假设，均不足以再加完整的 103 MW 楼栋。枯水、限电及工程审批仍按前页另行判断。
+\sect{为什么撤回原来的 882.47 MW IT？}
+前版把七宗运营地裁在四区块内的 179.61 ha 减去一期合同的 38.43 ha。前者按规划图和宗地图形取并集，后者按租约取面积。两者边界不同，不能把差额当成后六栋新增用地。待两期均取得同口径的面积和公用设施分摊后，才可用观测值替换 $a_\Delta$。\sref{4,6}
+\fine{已重新核对\href{https://abilenetx.gov/DocumentCenter/View/43833/SP-2026-77-PDF?bidId=\#page=1}{市工程原图 C1.0}。毛地 445.15 ha 扣去八栋建筑基底 36.04 ha，最多剩 409.11 ha。要放下 429.5 ha 地面光伏，至少缺 20.39 ha。即使今后核明新变电站在园外，这个结论仍成立。}
 \end{document}

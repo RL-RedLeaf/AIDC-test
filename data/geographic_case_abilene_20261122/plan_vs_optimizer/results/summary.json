@@ -42,6 +42,14 @@
       "electric_bound_mw_it": 851.2181549934617
     }
   ],
-  "ex_post_slope": 0.22843953221490174,
-  "anchored_extension_mw": 882.4743490772678
+  "parcel_review_commit": "9301ec74699d58157999d672a8249c739ff7cfdc",
+  "net_ha_drawn": 127.62046325387601,
+  "net_ha_lots": 93.10024796953277,
+  "ex_post_slope": null,
+  "anchored_extension_mw": null,
+  "anchored_scenario_mw": {
+    "lower_land_use": 913.5038401588067,
+    "phase1_average_proxy": 895.6030721270454,
+    "higher_land_use": 883.6692267725377
+  }
 }
