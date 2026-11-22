@@ -1,0 +1,12 @@
+场址,模型量或工程量,原值,单位与限定,时期,证据性质,用途与边界,来源与定位,来源链接
+冰岛 Keflavík · Verne,园区毛面积,16,ha,2025 规格,园区规格,原表同时写40 acre；以发布方取整的16 ha记录。,Verne 园区规格,https://www.verneglobal.com/hubfs/Downloadable_Content/Datasheets%202025/Iceland_Datasheet%20.pdf
+冰岛 Keflavík · Verne,园区容量,140,MW，下限,2025 规格,园区规格,原文140+ MW，未明确IT侧/设施侧。,Verne 园区规格,https://www.verneglobal.com/hubfs/Downloadable_Content/Datasheets%202025/Iceland_Datasheet%20.pdf
+冰岛 Keflavík · Verne,电网进线电压,33,kV,2025 规格,园区规格,双路不同路径；不相加作供电容量。,Verne 园区规格,https://www.verneglobal.com/hubfs/Downloadable_Content/Datasheets%202025/Iceland_Datasheet%20.pdf
+冰岛 Keflavík · Verne,进线数量,2,路,2025 规格,园区规格,UPS及发电机冗余2N。,Verne 园区规格,https://www.verneglobal.com/hubfs/Downloadable_Content/Datasheets%202025/Iceland_Datasheet%20.pdf
+冰岛 Keflavík · Verne,k · 年PUE,1.24,比值,2023,冰岛运营披露,按Verne冰岛业务口径；用作满载k的代理。,Verne 冰岛能效,https://www.verne.co/about-us/sustainability
+冰岛 Keflavík · Verne,k · 年PUE,1.22,比值,2024,冰岛运营披露,按Verne冰岛业务口径；用作满载k的代理。,Verne 冰岛能效,https://www.verne.co/about-us/sustainability
+冰岛 Keflavík · Verne,k · 年PUE,1.2,比值,2025,冰岛运营披露,按Verne冰岛业务口径；用作满载k的代理。,Verne 冰岛能效,https://www.verne.co/about-us/sustainability
+冰岛 Keflavík · Verne,历史供电上限,25,MW，约,2009 合同,合同资料,逐步增供，按小时平均计；仅用于历史情景。,ESA 2009 年供电合同,https://www.eftasurv.int/cms/sites/default/files/documents/decision-418-10-COL.pdf
+冰岛 Keflavík · Verne,历史年度电量上限,210,GWh/年,2009 合同,合同资料,与25 MW同合同，全年满功率另受年度上限约束。,ESA 2009 年供电合同,https://www.eftasurv.int/cms/sites/default/files/documents/decision-418-10-COL.pdf
+冰岛 Keflavík · Verne,新增供电设想,120,MW，上限,2026-08,拟扩建,公告为潜在扩建及变电站工程；与其他年代口径不叠加。,Verne 扩建公告,https://www.verne.co/news/news-verne-to-host-supplier-information-day-for-major-keflavik-campus-expansion
+冰岛 Keflavík · Verne,冷却方式,闭式循环液冷,类别,2026,运营商披露,结合当地低温免费冷却；未查得同口径场址WUE数值。,Verne 冷却说明,https://www.verne.co/blog/blog-looking-beyond-headlines-understanding-data-center-power-and-water-use

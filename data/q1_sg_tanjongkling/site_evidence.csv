@@ -1,0 +1,12 @@
+场址,模型量或工程量,原值,单位与限定,时期,证据性质,用途与边界,来源与定位,来源链接
+新加坡 Tanjong Kling · Meta,k · 预期年PUE,1.19,比值,2019 设计,设计目标,热湿条件下的预期年度效率。,Meta 工程设计,https://datacenters.atmeta.com/2019/01/rethinking-data-center-design-for-singapore/
+新加坡 Tanjong Kling · Meta,园区原始面积,12,acre,2019 设计,项目设计,换算为4.8562 ha；整块土地。,Meta 工程设计,https://datacenters.atmeta.com/2019/01/rethinking-data-center-design-for-singapore/
+新加坡 Tanjong Kling · Meta,建筑总面积,170000,m²,2019 设计,项目设计,多层建筑的全部楼面。,Meta 工程设计,https://datacenters.atmeta.com/2019/01/rethinking-data-center-design-for-singapore/
+新加坡 Tanjong Kling · Meta,楼层数,11,层,2019 设计,项目设计,用于区别高层与单层园区布局。,Meta 工程设计,https://datacenters.atmeta.com/2019/01/rethinking-data-center-design-for-singapore/
+新加坡 Tanjong Kling · Meta,购电协议光伏规模,50,MW,2019 设计,采购项目,跨新加坡屋顶发电，不能作本项目持续接入。,Meta 工程设计,https://datacenters.atmeta.com/2019/01/rethinking-data-center-design-for-singapore/
+新加坡 Tanjong Kling · Meta,冷却方式,间接蒸发 SPLC,类别,2019 设计,项目设计,试验预计在类似气候下，相较传统技术可降低峰值用水超过20%。,Meta 工程设计,https://datacenters.atmeta.com/2019/01/rethinking-data-center-design-for-singapore/
+新加坡 Tanjong Kling · Meta,行业用水强度中位数,2.1,m³/MWh,2025-12 发布,地区行业代理,PUB的WEI，部分租户用水可能未纳入；作为当地量级。,PUB 用水基准,https://www.pub.gov.sg/public/waterloop/water-conservation/resources-on-water-efficiency-measures/sectoral-water-efficiency-benchmark
+新加坡 Tanjong Kling · Meta,WUE · 样本中位数,2.4,L/kWh IT,2021 样本,地区行业代理,按年用水/IT电量；与Meta项目实测分开。,新加坡金融管理局分类标准,https://www.mas.gov.sg/-/media/mas-media-library/development/sustainable-%EF%AC%81nance/singaporeasia-taxonomy-updated.pdf
+新加坡 Tanjong Kling · Meta,WUE · 样本最低,2.0,L/kWh IT,2021 样本,地区行业代理,用于当地用水强度敏感性。,新加坡金融管理局分类标准,https://www.mas.gov.sg/-/media/mas-media-library/development/sustainable-%EF%AC%81nance/singaporeasia-taxonomy-updated.pdf
+新加坡 Tanjong Kling · Meta,WUE · 样本最高,4.8,L/kWh IT，约,2021 样本,地区行业代理,样本上端；受冷却系统等条件影响。,新加坡金融管理局分类标准,https://www.mas.gov.sg/-/media/mas-media-library/development/sustainable-%EF%AC%81nance/singaporeasia-taxonomy-updated.pdf
+新加坡 Tanjong Kling · Meta,地区主要供水,NEWater 再生水,类别,2026,政府行业披露,多数数据中心供水来自NEWater；项目分水合同与可供流量待核。,新加坡环境部供水说明,https://www.mse.gov.sg/latest-news/written-reply-to-parliamentary-question-on-data-centres--use-of-fresh-water-supply/

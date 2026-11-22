@@ -1,0 +1,74 @@
+{
+  "site": "Keflavík · Verne",
+  "weather_source": {
+    "site": "冰岛 Keflavík · Verne",
+    "requested_lat": "63.97",
+    "requested_lon": "-22.55",
+    "grid_lat": "64.0",
+    "grid_lon": "-22.5",
+    "api_elevation_m": "11.0",
+    "url_2016_2024": "https://archive-api.open-meteo.com/v1/archive?latitude=63.97&longitude=-22.55&start_date=2016-01-01&end_date=2024-12-31&hourly=temperature_2m%2Crelative_humidity_2m%2Cwind_speed_10m%2Cwind_speed_100m%2Cshortwave_radiation%2Cprecipitation&models=era5&wind_speed_unit=ms&timezone=GMT&cell_selection=nearest",
+    "url_2025": "https://archive-api.open-meteo.com/v1/archive?latitude=63.97&longitude=-22.55&start_date=2025-01-01&end_date=2025-12-31&hourly=temperature_2m%2Crelative_humidity_2m%2Cwind_speed_10m%2Cwind_speed_100m%2Cshortwave_radiation%2Cprecipitation&models=era5&wind_speed_unit=ms&timezone=GMT&cell_selection=nearest"
+  },
+  "water_stress": {
+    "场址": "冰岛 Keflavík · Verne",
+    "取点纬度": "63.97",
+    "取点经度": "-22.55",
+    "子流域ID": "271010",
+    "用水压力比值": "0.01669",
+    "压力等级": "Low (<10%)",
+    "年际变率等级": "Low (<0.25)",
+    "季节变率等级": "Low (<0.33)",
+    "查询链接": "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/aqueduct_water_risk/FeatureServer/1/query?geometry=-22.55%2C63.97&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=pfaf_id%2Cbws_raw%2Cbws_label%2Ciav_label%2Csev_label&returnGeometry=false&f=json"
+  },
+  "parameters": {
+    "grid": {
+      "value": 120,
+      "status": "设计代理",
+      "rationale": "2025年首期变电站120 MW已投运；按铭牌全额可交付。另测60 MW及规划终态240 MW。",
+      "source": "https://www.verne.co/news/news-verne-and-landsnet-launch-high-capacity-substation"
+    },
+    "k": {
+      "value": 1.2,
+      "status": "运行统计代理",
+      "rationale": "2025冰岛业务PUE作场址满载代理。",
+      "source": "https://www.verne.co/about-us/sustainability"
+    },
+    "Q": {
+      "value": 3.6,
+      "status": "情景假设",
+      "rationale": "假设为整个园区划拨1 L/s的常态补水服务。扩建答复称已接HS Veitur且闭路散热初充后补水极少；未披露全园区合同流量。",
+      "source": "https://uua.is/urleits/uua2606003-uppbygging-gagnavers/"
+    },
+    "wue": {
+      "value": 0.02,
+      "status": "情景假设",
+      "rationale": "闭路项目环评给出600 m³初装冷却液及每年少量补液，二者均不足以确定全园区WUE。本次预留0.02 L/kWh IT用于辅助补水和杂用，取0.005–0.08检验。",
+      "source": "https://uua.is/urleits/uua2606003-uppbygging-gagnavers/"
+    },
+    "A": {
+      "value": 16,
+      "status": "设计代理",
+      "rationale": "以运营商16 ha毛地作可用面积的乐观上界，含共享设施。",
+      "source": "https://www.verne.co/hubfs/Datasheets%202025/Iceland_Datasheet%20.pdf"
+    },
+    "A0": {
+      "value": 0.15,
+      "status": "情景假设",
+      "rationale": "1500 m²首期变电站按单层地面占用计入园区；其余设施由综合强度覆盖。",
+      "source": "https://www.verne.co/news/news-verne-and-landsnet-launch-high-capacity-substation"
+    },
+    "a": {
+      "value": 0.02,
+      "status": "同阶段标定",
+      "rationale": "采用同址新建筑2.4 ha / 120 MW IT；是紧凑模块平均强度，假设可代表既有园区可扩建布局。若新模块已包含共享变电站份额，存在小量重复，另测A0=0。",
+      "source": "https://uua.is/urleits/uua2606003-uppbygging-gagnavers/"
+    },
+    "roof_m2": {
+      "value": 4800.0,
+      "status": "情景假设",
+      "rationale": "取已披露扩建地块面积20%作整个园区可铺屋面情景。",
+      "source": "https://uua.is/urleits/uua2606003-uppbygging-gagnavers/"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+site,grid_MW_IT,best_nonfuel_MW_IT,best_including_hypothetical_gas_MW_IT,first_winner,binding
+Huntingwood · SYD3,320.0,320.0,320.0,Grid,土地
+Quilicura · Google,60.18518518518518,60.22953134749605,60.22953134749605,Ground PV optimal area + storage,电力+土地
+Keflavík · Verne,100.0,100.01465686033453,136.36363636363637,Gas with guaranteed fuel,水
+Tanjong Kling · Meta,110.44661672776618,110.44661672776618,110.44661672776618,Grid,水
+Golden · ESIF,5.660377358490566,5.661971833508622,5.661971833508622,Roof PV + storage,电力

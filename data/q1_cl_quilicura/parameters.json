@@ -1,0 +1,74 @@
+{
+  "site": "Quilicura · Google",
+  "weather_source": {
+    "site": "智利 Quilicura · Google",
+    "requested_lat": "-33.36",
+    "requested_lon": "-70.73",
+    "grid_lat": "-33.25",
+    "grid_lon": "-70.75",
+    "api_elevation_m": "485.0",
+    "url_2016_2024": "https://archive-api.open-meteo.com/v1/archive?latitude=-33.36&longitude=-70.73&start_date=2016-01-01&end_date=2024-12-31&hourly=temperature_2m%2Crelative_humidity_2m%2Cwind_speed_10m%2Cwind_speed_100m%2Cshortwave_radiation%2Cprecipitation&models=era5&wind_speed_unit=ms&timezone=GMT&cell_selection=nearest",
+    "url_2025": "https://archive-api.open-meteo.com/v1/archive?latitude=-33.36&longitude=-70.73&start_date=2025-01-01&end_date=2025-12-31&hourly=temperature_2m%2Crelative_humidity_2m%2Cwind_speed_10m%2Cwind_speed_100m%2Cshortwave_radiation%2Cprecipitation&models=era5&wind_speed_unit=ms&timezone=GMT&cell_selection=nearest"
+  },
+  "water_stress": {
+    "场址": "智利 Quilicura · Google",
+    "取点纬度": "-33.36",
+    "取点经度": "-70.73",
+    "子流域ID": "662540",
+    "用水压力比值": "4.24587",
+    "压力等级": "Extremely High (>80%)",
+    "年际变率等级": "High (0.75-1.00)",
+    "季节变率等级": "Low - Medium (0.33-0.66)",
+    "查询链接": "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/aqueduct_water_risk/FeatureServer/1/query?geometry=-70.73%2C-33.36&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=pfaf_id%2Cbws_raw%2Cbws_label%2Ciav_label%2Csev_label&returnGeometry=false&f=json"
+  },
+  "parameters": {
+    "grid": {
+      "value": 65,
+      "status": "设计代理",
+      "rationale": "智利电网运营机构2021潮流研究对Data Luna自身取2025年需求65 MW。另有75 MVA二号变压器记录；基准用需求预测代理持续交付。",
+      "source": "https://www.coordinador.cl/wp-content/uploads/2021/08/Minuta_Solicitud_Nueva_Subestacion_COLINA_24_08_2021.pdf"
+    },
+    "k": {
+      "value": 1.08,
+      "status": "运行统计代理",
+      "rationale": "2025园区年度PUE作满载代理。",
+      "source": "https://storage.googleapis.com/gweb-mobius-cdn/sustainability/uploads/21455428735c7305f2cb5c0038fc14bb0803abb8.pdf"
+    },
+    "Q": {
+      "value": 180,
+      "status": "设计代理",
+      "rationale": "历史环评两井合计50 L/s即180 m³/h。假定权利仍可用且井产量足以支撑；全站需求由该边界承担，不另加市政水。",
+      "source": "https://infofirma.sea.gob.cl/DocumentosSEA/MostrarDocumento?docId=ac%2Ff2%2Fd1e1a5ee1a9628acc781bdf1b58f4f6e66b8"
+    },
+    "wue": {
+      "value": 2.6632705373457535,
+      "status": "情景假设",
+      "rationale": "2025地点取水278.2百万美制加仑。假设同年设施平均负荷为65 MW规划值的75%，用PUE换算IT年电量，得取水强度；联合核查50%及100%负荷率。",
+      "source": "https://storage.googleapis.com/gweb-mobius-cdn/sustainability/uploads/21455428735c7305f2cb5c0038fc14bb0803abb8.pdf"
+    },
+    "A": {
+      "value": 15.9,
+      "status": "设计代理",
+      "rationale": "一期与相邻二期合计15.9 ha，占地口径；假设可按既有工业布局使用。",
+      "source": "https://infofirma.sea.gob.cl/DocumentosSEA/MostrarDocumento?docId=ac%2Ff2%2Fd1e1a5ee1a9628acc781bdf1b58f4f6e66b8"
+    },
+    "A0": {
+      "value": 2.03,
+      "status": "情景假设",
+      "rationale": "二期明确的变电站0.45 ha与道路1.58 ha单列为固定设施；一期固定面积缺测。",
+      "source": "https://infofirma.sea.gob.cl/DocumentosSEA/MostrarDocumento?docId=ac%2Ff2%2Fd1e1a5ee1a9628acc781bdf1b58f4f6e66b8"
+    },
+    "a": {
+      "value": 0.143748,
+      "status": "情景假设",
+      "rationale": "无同址扩建分期的IT MW，转用原仓库Abilene机柜—楼面—地块参考强度；配套与固定设施口径有误差。",
+      "source": "../geographic_case_abilene_20261122/10_geographic_case_report.md"
+    },
+    "roof_m2": {
+      "value": 2720.0,
+      "status": "情景假设",
+      "rationale": "二期机房建筑地面面积1.36 ha作屋面代理，取20%。",
+      "source": "https://infofirma.sea.gob.cl/DocumentosSEA/MostrarDocumento?docId=ac%2Ff2%2Fd1e1a5ee1a9628acc781bdf1b58f4f6e66b8"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+场址,模型量或工程量,原值,单位与限定,时期,证据性质,用途与边界,来源与定位,来源链接
+澳大利亚 Huntingwood · SYD3,终态IT负载,320,MW IT，下限,2021 方案,运营商设计,原文320+ MW IT；与同一方案8.3 ha配对。,AirTrunk 分期方案,https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/
+澳大利亚 Huntingwood · SYD3,园区毛面积,8.3,ha,2021 方案,运营商设计,同阶段毛面积；8.3/320≈0.02594 ha/MW IT为平均强度上界。,AirTrunk 分期方案,https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/
+澳大利亚 Huntingwood · SYD3,k · 设计PUE,1.15,比值,2021 方案,运营商设计,满载k的设计代理；未披露逐时曲线。,AirTrunk 分期方案,https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/
+澳大利亚 Huntingwood · SYD3,园区变电站电压,132,kV,2021 方案,运营商设计,园区内变电站。,AirTrunk 分期方案,https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/
+澳大利亚 Huntingwood · SYD3,技术机房面积,70000,m²,园区规格页,园区设计,多个机房的楼面之和。,AirTrunk 园区规格,https://airtrunk.com/location/syd3-sydney-west/
+澳大利亚 Huntingwood · SYD3,园区总容量,400,MW，下限,园区规格页,园区规格,原文400+ MW；规格页未注明IT分母。,AirTrunk 园区规格,https://airtrunk.com/location/syd3-sydney-west/
+澳大利亚 Huntingwood · SYD3,场址总用电规模,400,MW,2023 原审批,审批规模,51 Huntingwood Drive；设施用电规模，投运情况与供电合同需单独核实。,NSW 项目审批与变更,https://www.planningportal.nsw.gov.au/major-projects/projects/51-huntingwood-drive-data-centre
+澳大利亚 Huntingwood · SYD3,申报地块面积,90582,m²,2022 申报,审批地块,与运营商8.3 ha有边界差异，分开保留。,NSW 用地申报图,https://majorprojects.planningportal.nsw.gov.au/prweb/PRRestService/mp/01/getContent?AttachRef=SSD-41589232%2120220916T041044.853+GMT
+澳大利亚 Huntingwood · SYD3,首层变电站楼面,1471,m²,2022 申报,申报图,L1楼面分项，不能直接等同独立固定用地。,NSW 用地申报图,https://majorprojects.planningportal.nsw.gov.au/prweb/PRRestService/mp/01/getContent?AttachRef=SSD-41589232%2120220916T041044.853+GMT
+澳大利亚 Huntingwood · SYD3,现有水管最大供水,240,L/s,2022 方案,既有市政设施,工程说明预计峰值超过此值并需扩容；非改造后承诺流量。,NSW 供水工程 §7,https://majorprojects.planningportal.nsw.gov.au/prweb/PRRestService/mp/01/getContent?AttachRef=SSD-41589232%2120220916T041049.122+GMT
+澳大利亚 Huntingwood · SYD3,事故储水设计,20738,kL,2022 方案,原设计,按冷却塔最不利情形准备24小时储水；不能充当正常年供水。,NSW 供水工程 §7,https://majorprojects.planningportal.nsw.gov.au/prweb/PRRestService/mp/01/getContent?AttachRef=SSD-41589232%2120220916T041049.122+GMT
+澳大利亚 Huntingwood · SYD3,应急储备时长,24,h,2022 方案,原设计,对应约864.08 m³/h的储水设计等效流量。,NSW 供水工程 §7,https://majorprojects.planningportal.nsw.gov.au/prweb/PRRestService/mp/01/getContent?AttachRef=SSD-41589232%2120220916T041049.122+GMT
+澳大利亚 Huntingwood · SYD3,雨水储罐单罐容量,335,kL,2022 方案,原设计,3座回收屋顶雨水供机械补水。,NSW 供水工程 §7,https://majorprojects.planningportal.nsw.gov.au/prweb/PRRestService/mp/01/getContent?AttachRef=SSD-41589232%2120220916T041049.122+GMT
+澳大利亚 Huntingwood · SYD3,WUE上限区间 · 低端,0.7,L/kWh IT,FY2023 框架,运营商技术框架,SYD3所属组的最大WUE控制值区间；非实测范围。,AirTrunk FY23 图4,https://airtrunk.com/wp-content/uploads/2023/10/AirTrunk-FY23-Sustainability-Report-FINAL-Online.pdf
+澳大利亚 Huntingwood · SYD3,WUE上限区间 · 高端,1.2,L/kWh IT,FY2023 框架,运营商技术框架,该版框架对悉尼水压力分组与本次Aqueduct 4.0点查可不同。,AirTrunk FY23 图4,https://airtrunk.com/wp-content/uploads/2023/10/AirTrunk-FY23-Sustainability-Report-FINAL-Online.pdf

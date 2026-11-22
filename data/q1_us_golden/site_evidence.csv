@@ -1,0 +1,11 @@
+场址,模型量或工程量,原值,单位与限定,时期,证据性质,用途与边界,来源与定位,来源链接
+美国 Golden · ESIF,k · 滚动年PUE,1.06,比值，上界,2016–18 试验,运行统计,报告期自投运以来滚动12个月≤1.06；可代理满载倍率。,NREL 热虹吸实测 §§1–2,https://docs.nlr.gov/docs/fy18osti/72196.pdf
+美国 Golden · ESIF,WUE · 混合冷却,0.7,L/kWh IT,2016–18 试验,现场计量,热虹吸首年，水表边界为现场用水；保留原报告口径。,NREL 热虹吸实测 §§1–2,https://docs.nlr.gov/docs/fy18osti/72196.pdf
+美国 Golden · ESIF,WUE · 热回收+冷却塔,1.27,L/kWh IT,2016–18 试验,反事实估算,同一运行期去掉热虹吸，保留热回收。,NREL 热虹吸实测 §§1–2,https://docs.nlr.gov/docs/fy18osti/72196.pdf
+美国 Golden · ESIF,WUE · 单用冷却塔,1.42,L/kWh IT,2016–18 试验,反事实估算,同一运行期同时去掉热回收和热虹吸。,NREL 热虹吸实测 §§1–2,https://docs.nlr.gov/docs/fy18osti/72196.pdf
+美国 Golden · ESIF,机房面积,930,m²,2016–18 试验,设施面积,HPC机房位于综合研究楼内；不能作整个园区用地。,NREL 热虹吸实测 §§1–2,https://docs.nlr.gov/docs/fy18osti/72196.pdf
+美国 Golden · ESIF,改造前冷却年用水,9500,m³/年，约,2016–18 试验,历史运行,对应接近1 MW的小时平均IT负载。,NREL 热虹吸实测 §§1–2,https://docs.nlr.gov/docs/fy18osti/72196.pdf
+美国 Golden · ESIF,热虹吸平均入口水温,28.9,°C,2016–18 试验,运行统计,用于解释混合冷却工况。,NREL 热虹吸实测 §§1–2,https://docs.nlr.gov/docs/fy18osti/72196.pdf
+美国 Golden · ESIF,两年累计节水,7950,m³,2016–18 试验,项目统计,相对无热虹吸系统；不能充当容量模型的供水预算。,NREL 热虹吸实测 §§1–2,https://docs.nlr.gov/docs/fy18osti/72196.pdf
+美国 Golden · ESIF,终态容量参照,10,MW,2023 技术资料,终态设计,全建成的HPC容量参照；无同年接入合同。,NREL 液冷设计,https://docs.nlr.gov/docs/fy24osti/84492.pdf
+美国 Golden · ESIF,设备供水温度,24,°C,2023 技术资料,系统设计,部件级液冷供水温度；区别于热虹吸入口。,NREL 液冷设计,https://docs.nlr.gov/docs/fy24osti/84492.pdf

@@ -1,0 +1,74 @@
+{
+  "site": "Huntingwood · SYD3",
+  "weather_source": {
+    "site": "澳大利亚 Huntingwood · SYD3",
+    "requested_lat": "-33.8",
+    "requested_lon": "150.84",
+    "grid_lat": "-33.75",
+    "grid_lon": "150.75",
+    "api_elevation_m": "85.0",
+    "url_2016_2024": "https://archive-api.open-meteo.com/v1/archive?latitude=-33.8&longitude=150.84&start_date=2016-01-01&end_date=2024-12-31&hourly=temperature_2m%2Crelative_humidity_2m%2Cwind_speed_10m%2Cwind_speed_100m%2Cshortwave_radiation%2Cprecipitation&models=era5&wind_speed_unit=ms&timezone=GMT&cell_selection=nearest",
+    "url_2025": "https://archive-api.open-meteo.com/v1/archive?latitude=-33.8&longitude=150.84&start_date=2025-01-01&end_date=2025-12-31&hourly=temperature_2m%2Crelative_humidity_2m%2Cwind_speed_10m%2Cwind_speed_100m%2Cshortwave_radiation%2Cprecipitation&models=era5&wind_speed_unit=ms&timezone=GMT&cell_selection=nearest"
+  },
+  "water_stress": {
+    "场址": "澳大利亚 Huntingwood · SYD3",
+    "取点纬度": "-33.8",
+    "取点经度": "150.87",
+    "子流域ID": "563940",
+    "用水压力比值": "0.4974",
+    "压力等级": "High (40-80%)",
+    "年际变率等级": "Extremely High (>1.00)",
+    "季节变率等级": "Low - Medium (0.33-0.66)",
+    "查询链接": "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/aqueduct_water_risk/FeatureServer/1/query?geometry=150.87%2C-33.8&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=pfaf_id%2Cbws_raw%2Cbws_label%2Ciav_label%2Csev_label&returnGeometry=false&f=json"
+  },
+  "parameters": {
+    "grid": {
+      "value": 400,
+      "status": "设计代理",
+      "rationale": "NSW原审批为设施总用电400 MW；假设届时可同时持续交付。",
+      "source": "https://www.planningportal.nsw.gov.au/major-projects/projects/51-huntingwood-drive-data-centre"
+    },
+    "k": {
+      "value": 1.15,
+      "status": "设计代理",
+      "rationale": "运营商设计PUE。",
+      "source": "https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/"
+    },
+    "Q": {
+      "value": 864,
+      "status": "设计代理",
+      "rationale": "原工程称既有管网最大240 L/s，基准假设全部可供本项目；未假定升级已投运。",
+      "source": "https://majorprojects.planningportal.nsw.gov.au/prweb/PRRestService/mp/01/getContent?AttachRef=SSD-41589232%2120220916T041049.122+GMT"
+    },
+    "wue": {
+      "value": 1.2,
+      "status": "设计代理",
+      "rationale": "AirTrunk FY23框架给SYD3组最大WUE控制值区间0.7–1.2，取上端作取水代理。",
+      "source": "https://airtrunk.com/wp-content/uploads/2023/10/AirTrunk-FY23-Sustainability-Report-FINAL-Online.pdf"
+    },
+    "A": {
+      "value": 8.3,
+      "status": "设计代理",
+      "rationale": "沿用与320+ MW IT同版的8.3 ha园区边界，避免混用9.0582 ha报批地块。",
+      "source": "https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/"
+    },
+    "A0": {
+      "value": 0,
+      "status": "同阶段标定",
+      "rationale": "使用整园平均毛地强度时，固定设施已合并。",
+      "source": "https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/"
+    },
+    "a": {
+      "value": 0.025937500000000002,
+      "status": "同阶段标定",
+      "rationale": "据同阶段8.3 ha / 320+ MW IT，取320对应的平均强度上界，固定面积设0。320由标定引入。",
+      "source": "https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/"
+    },
+    "roof_m2": {
+      "value": 8300.0,
+      "status": "情景假设",
+      "rationale": "缺屋顶清单，取毛地的10%作可铺屋面情景。",
+      "source": "https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/"
+    }
+  }
+}

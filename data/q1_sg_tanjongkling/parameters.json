@@ -1,0 +1,74 @@
+{
+  "site": "Tanjong Kling · Meta",
+  "weather_source": {
+    "site": "新加坡 Tanjong Kling · Meta",
+    "requested_lat": "1.32",
+    "requested_lon": "103.7",
+    "grid_lat": "1.25",
+    "grid_lon": "103.75",
+    "api_elevation_m": "13.0",
+    "url_2016_2024": "https://archive-api.open-meteo.com/v1/archive?latitude=1.32&longitude=103.7&start_date=2016-01-01&end_date=2024-12-31&hourly=temperature_2m%2Crelative_humidity_2m%2Cwind_speed_10m%2Cwind_speed_100m%2Cshortwave_radiation%2Cprecipitation&models=era5&wind_speed_unit=ms&timezone=GMT&cell_selection=nearest",
+    "url_2025": "https://archive-api.open-meteo.com/v1/archive?latitude=1.32&longitude=103.7&start_date=2025-01-01&end_date=2025-12-31&hourly=temperature_2m%2Crelative_humidity_2m%2Cwind_speed_10m%2Cwind_speed_100m%2Cshortwave_radiation%2Cprecipitation&models=era5&wind_speed_unit=ms&timezone=GMT&cell_selection=nearest"
+  },
+  "water_stress": {
+    "场址": "新加坡 Tanjong Kling · Meta",
+    "取点纬度": "1.32",
+    "取点经度": "103.7",
+    "子流域ID": "444055",
+    "用水压力比值": "0.04278",
+    "压力等级": "Low (<10%)",
+    "年际变率等级": "Low - Medium (0.25-0.50)",
+    "季节变率等级": "Low (<0.33)",
+    "查询链接": "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/aqueduct_water_risk/FeatureServer/1/query?geometry=103.7%2C1.32&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=pfaf_id%2Cbws_raw%2Cbws_label%2Ciav_label%2Csev_label&returnGeometry=false&f=json"
+  },
+  "parameters": {
+    "grid": {
+      "value": 150,
+      "status": "设计代理",
+      "rationale": "Cushman & Wakefield亚太项目原始市场研究将本项目总功率列为150 MW；用作设施输入代理，缺逐时交付协议。",
+      "source": "https://assets.cushmanwakefield.com/-/media/cw/apac/japan/insights/research/2022/08/apac-dc-marketbeats-h1-2022.pdf"
+    },
+    "k": {
+      "value": 1.19,
+      "status": "设计代理",
+      "rationale": "Meta预期年PUE作满载倍率。",
+      "source": "https://datacenters.atmeta.com/2019/01/rethinking-data-center-design-for-singapore/"
+    },
+    "Q": {
+      "value": 265.0718801466388,
+      "status": "情景假设",
+      "rationale": "缺项目获配NEWater流量。以单根内径250 mm、流速1.5 m/s的专用管等效建模；250 mm参照悉尼工程规格，流速为显式设计假设。另算200和300 mm。",
+      "source": "https://majorprojects.planningportal.nsw.gov.au/prweb/PRRestService/mp/01/getContent?AttachRef=SSD-41589232%2120220916T041049.122+GMT"
+    },
+    "wue": {
+      "value": 2.4,
+      "status": "运行统计代理",
+      "rationale": "当地2021数据中心样本中位，用水/IT电量。作为Meta的取水代理；另试2025年发布的行业WEI 2.1。",
+      "source": "https://www.mas.gov.sg/-/media/mas-media-library/development/sustainable-%EF%AC%81nance/singaporeasia-taxonomy-updated.pdf"
+    },
+    "A": {
+      "value": 4.8562277068799995,
+      "status": "设计代理",
+      "rationale": "项目12 acre毛地全部作为有效用地上界。",
+      "source": "https://datacenters.atmeta.com/2019/01/rethinking-data-center-design-for-singapore/"
+    },
+    "A0": {
+      "value": 0,
+      "status": "情景假设",
+      "rationale": "采用悉尼整园平均用地强度转移，已内含共用设施。",
+      "source": "https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/"
+    },
+    "a": {
+      "value": 0.025937500000000002,
+      "status": "情景假设",
+      "rationale": "同为亚太高密度园区，转用悉尼的整园平均用地强度；新加坡11层，实际密度待核。",
+      "source": "https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/"
+    },
+    "roof_m2": {
+      "value": 3090.909090909091,
+      "status": "情景假设",
+      "rationale": "总楼面/11近似单层，再取20%屋面可用于阵列。",
+      "source": "https://datacenters.atmeta.com/2019/01/rethinking-data-center-design-for-singapore/"
+    }
+  }
+}
