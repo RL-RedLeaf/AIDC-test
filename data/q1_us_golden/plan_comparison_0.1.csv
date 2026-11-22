@@ -1,0 +1,2 @@
+﻿site,name,benchmark_source,public_MW,public_basis,comparison_IT,conditional_IT_at300A,difference_IT,difference_pct,facility_MW_needed,net_A_needed,white_space_needed_m2,assumed_white_space_m2,normal_water_needed_m3_h,normal_water_needed_at300A_m3_h
+us_golden,戈尔登,NREL full build-out,10,IT,10,6.14874083169175,-3.8512591683082498,-38.5125916830825,10.600000000000001,487.95351264707256,600,930.0,7.0,4.304118582184225

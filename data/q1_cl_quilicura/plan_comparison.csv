@@ -1,2 +1,2 @@
-﻿site,name,benchmark_source,public_MW,public_basis,comparison_IT,conditional_IT_at300A,difference_IT,difference_pct,facility_MW_needed,net_A_needed,white_space_needed_m2,assumed_white_space_m2,normal_water_needed_m3_h,normal_water_needed_at300A_m3_h
-cl_quilicura,基利库拉,CEN Data Luna 2025 demand assumption,65,facility,60.18518518518518,50.29259060714521,-9.892594578039976,-16.43692637582027,65.0,359.02786137822426,3612,6800.0,30.09259259259259,25.146295303572604
+﻿site,stage,input_basis,facility_input_MW,k,layout_ceiling_IT,scope,conditional_screen_IT,benchmark_IT,facility_MW_needed,design_water_intensity_L_per_kWh,design_water_needed_m3_h
+cl_quilicura,Data Luna,illustrative surviving 76 MVA corridor circuit at PF 0.95,72.2,1.08,,one-circuit component screen only,66.85185185185185,60.18518518518518,65.0,,

@@ -1,6 +1,5 @@
-"""Compare site engineering cases with separately specified public benchmarks."""
+"""Site-specific engineering screens. Missing firm allocations remain unknown."""
 import csv
-import math
 from pathlib import Path
 
 import matplotlib
@@ -10,93 +9,67 @@ from matplotlib import font_manager
 
 HERE = Path(__file__).resolve().parent
 DATA = HERE.parent
-# Benchmarks are read only after computing the forward engineering scenarios.
-REFERENCES = {
-    "us_golden": (10, "IT", "NREL full build-out", "戈尔登"),
-    "is_keflavik_extension": (120, "IT", "HMS VDC04 phases 1–3", "凯夫拉维克扩建"),
-    "sg_tanjongkling": (150, "facility", "Cushman & Wakefield 2021 market survey", "丹戎吉岭"),
-    "cl_quilicura": (65, "facility", "CEN Data Luna 2025 demand assumption", "基利库拉"),
-    "au_huntingwood": (320, "IT minimum", "AirTrunk SYD3 nine phases (2021)", "悉尼西部"),
-}
 
 
-def write_rows(path, rows):
-    with path.open("w", newline="", encoding="utf-8-sig") as f:
-        writer = csv.DictWriter(f, fieldnames=rows[0], lineterminator="\n")
+def write(path, rows):
+    with path.open('w', encoding='utf-8-sig', newline='') as out:
+        writer = csv.DictWriter(out, fieldnames=rows[0], lineterminator='\n')
         writer.writeheader()
         writer.writerows(rows)
 
 
-def compare(site, row):
-    # Use the Q1 dispatch result, evaluated on the 2025 hourly resource series.
-    pv = float(row["roof_PV_firm_MW"])
-    k, wue, v, floor = [float(row[key]) for key in
-                         ("k", "wue", "voltage_kV", "white_space_m2")]
-    rack_limit = math.floor(floor / 6) * 0.1
-    unit = math.sqrt(3) * v * .95 / 1000  # Facility MW per net A
-    scenarios = []
-    for current in [120, 300, 600]:
-        energy_limit = (current * unit + pv) / k
-        it = min(energy_limit, rack_limit)
-        scenarios.append(dict(site=site, net_A=current, energy_limit_IT=energy_limit,
-            layout_limit_IT=rack_limit, conditional_IT=it, normal_water_required_m3_h=it*wue,
-            first_limit_if_water_adequate="electricity" if energy_limit < rack_limit else "layout"))
-    public, basis, source, name = REFERENCES[site]
-    target = public/k if basis == "facility" else public
-    base = scenarios[1]["conditional_IT"]
-    summary = dict(site=site, name=name, benchmark_source=source, public_MW=public,
-        public_basis=basis, comparison_IT=target, conditional_IT_at300A=base,
-        difference_IT=base-target, difference_pct=100*(base/target-1),
-        facility_MW_needed=k*target, net_A_needed=(k*target-pv)/unit,
-        white_space_needed_m2=math.ceil(target/.1-1e-9)*6,
-        assumed_white_space_m2=floor, normal_water_needed_m3_h=target*wue,
-        normal_water_needed_at300A_m3_h=base*wue)
-    assert math.isclose((summary["net_A_needed"]*unit+pv)/k, target)
-    assert all(a["conditional_IT"] <= b["conditional_IT"] for a,b in zip(scenarios,scenarios[1:]))
-    return summary, scenarios
+def compute():
+    # site, stage, technical input, input MW, PUE, IT-area screen, water
+    # intensity, published reference (IT MW), scope of calculated result.
+    # The intake is an engineering or planning envelope, not firm delivery.
+    golden_layout = (930 // 6) * 0.100
+    verne_layout = (24000 * 0.5 * 0.5 // 6) * 0.100
+    cases = [
+        ('us_golden','ESIF upgrade','usable distribution, facility-side reading',6,1.06,golden_layout,.7,10,'upgrade stage conditional'),
+        ('is_keflavik','VDC04','module grid allocation unknown',None,1.20,verne_layout,.02,120,'layout ceiling only'),
+        ('sg_tanjongkling','Sunview campus','firm grid allocation unknown',None,1.19,None,2.4,150/1.19,'independent capacity unidentified'),
+        ('cl_quilicura','Data Luna','illustrative surviving 76 MVA corridor circuit at PF 0.95',76*.95,1.08,None,None,65/1.08,'one-circuit component screen only'),
+        ('au_huntingwood','SYD3','planning approval total site consumption envelope',400,1.15,None,1.2,320,'approval envelope only'),
+    ]
+    rows=[]
+    for site,stage,kind,p,k,land,w,target,scope in cases:
+        power = None if p is None else p/k
+        known = [lim for lim in (power,land) if lim is not None]
+        screen = min(known) if known else None
+        rows.append(dict(site=site,stage=stage,input_basis=kind,facility_input_MW=p,
+            k=k,layout_ceiling_IT=land,scope=scope,conditional_screen_IT=screen,
+            benchmark_IT=target,facility_MW_needed=target*k,
+            design_water_intensity_L_per_kWh=w,design_water_needed_m3_h=None if w is None else target*w))
+    return rows
 
 
-def plot(rows, zh):
-    fonts = {f.name for f in font_manager.fontManager.ttflist}
-    if zh:
-        plt.rcParams["font.family"] = next(x for x in
-            ["Arial Unicode MS","Noto Sans CJK SC","PingFang SC"] if x in fonts)
-    else:
-        plt.rcParams["font.family"] = "DejaVu Sans"
-    plt.rcParams["pdf.fonttype"] = 42
-    fig, ax = plt.subplots(figsize=(8.4,4.6),layout="constrained")
-    labels = ([r["name"] for r in rows] if zh else
-              ["Golden","Keflavík expansion","Tanjong Kling","Quilicura","Huntingwood"])
-    for i,r in enumerate(rows):
-        x,y=r["conditional_IT_at300A"],r["comparison_IT"]
-        ax.plot([x,y],[i,i],color="#bac9ca")
-        ax.scatter(x,i,color="#14716f",s=47,label=("300 A 情景" if zh else "300 A scenario") if i==0 else None)
-        ax.scatter(y,i,facecolor="white",edgecolor="#ae521f",s=63,linewidth=2,
-                   label=("公开参照*" if zh else "Public benchmark*") if i==0 else None)
-        ax.annotate(f"{x:.1f}",(x,i),xytext=(0,8),textcoords="offset points",ha="center",fontsize=9)
-        ax.annotate(f"{y:.1f}"+("+" if i==4 else ""),(y,i),xytext=(4,-13),textcoords="offset points",fontsize=9)
-    ax.set(yscale="linear",xscale="log",xlim=(4,500),ylim=(4.55,-.65),yticks=range(5),yticklabels=labels,
-           xlabel="IT 负载（MW，对数刻度）" if zh else "IT load (MW, log scale)")
-    ax.set_title("正常供水充足时的模型容量与同址公开规模" if zh else "Site capacity with adequate utility water vs. public benchmark",loc="left")
-    ax.legend(frameon=False,loc="upper right")
-    ax.grid(axis="x",alpha=.2)
-    ax.spines[["top","right"]].set_visible(False)
-    fig.text(.01,.005,("* 新加坡为市场调查；智利为电网需求预测。两者由设施功率折算。悉尼取公布下限。" if zh else
-        "* Singapore: market survey. Chile: grid forecast. Both converted from facility MW. Sydney: published minimum."),fontsize=8)
-    fig.savefig(HERE/("五地规划对照.pdf" if zh else "five_site_benchmarks.pdf"),bbox_inches="tight",pad_inches=.2)
-    plt.close(fig)
-
-
-if __name__ == "__main__":
-    with (DATA/"q1_geography_rebuild/results.csv").open() as f:
-        inputs = {r["site"]:r for r in csv.DictReader(f) if float(r["occupied_fraction"]) == .5}
-    summaries = []
-    for site in REFERENCES:
-        summary, scenarios = compare(site, inputs[site])
-        summaries.append(summary)
-        folder = DATA/("q1_"+site.removesuffix("_extension"))
-        write_rows(folder/"plan_comparison.csv",[summary])
-        write_rows(folder/"normal_supply_scenarios.csv", scenarios)
-    write_rows(HERE/"comparison.csv", summaries)
+def figures(rows):
+    labels = [r['site'].split('_',1)[1].title() for r in rows]
     for zh in (True,False):
-        plot(summaries,zh)
+        fonts = {f.name for f in font_manager.fontManager.ttflist}
+        plt.rcParams['font.family'] = next(f for f in ['Arial Unicode MS','Noto Sans CJK SC','PingFang SC'] if f in fonts) if zh else 'DejaVu Sans'
+        fig, ax = plt.subplots(figsize=(8.5,4.1),layout='constrained')
+        names = ['戈尔登','凯夫拉维克','丹戎吉岭','基利库拉','悉尼西部'] if zh else labels
+        notes = (['改造阶段','布局上限','供电份额待核','单回路技术情景','审批用电上限'] if zh else
+                 ['Upgrade stage','Layout ceiling','Grid allocation unknown','One-circuit screen','Approved site envelope'])
+        for i,r in enumerate(rows):
+            val=r['conditional_screen_IT']
+            if val is not None:
+                ax.scatter(val,i,color='#176b72',s=60)
+            ax.text(1.02,i,notes[i],va='center',transform=ax.get_yaxis_transform(),fontsize=9)
+            ax.scatter(r['benchmark_IT'],i,marker='|',s=160,color='#ae562e',linewidth=2)
+        ax.set(yticks=range(5),yticklabels=names,xscale='log',xlim=(4,450),ylim=(4.6,-.6),
+               xlabel='IT 功率（MW，对数刻度）' if zh else 'IT power (MW, logarithmic scale)')
+        ax.set_title('场址工程条件（圆点）与公开规模（竖线）' if zh else 'Site engineering screens (dots) and public benchmarks (ticks)',loc='left')
+        ax.grid(axis='x',alpha=.25)
+        ax.spines[['top','right']].set_visible(False)
+        fig.savefig(HERE/('五地规划对照.pdf' if zh else 'five_site_benchmarks.pdf'),bbox_inches='tight')
+        plt.close(fig)
+
+
+if __name__=='__main__':
+    results=compute()
+    write(HERE/'comparison.csv',results)
+    for row in results:
+        write(DATA/('q1_'+row['site'])/'plan_comparison.csv',[row])
+    figures(results)

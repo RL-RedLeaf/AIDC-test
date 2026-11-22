@@ -1,0 +1,2 @@
+﻿site,name,benchmark_source,public_MW,public_basis,comparison_IT,conditional_IT_at300A,difference_IT,difference_pct,facility_MW_needed,net_A_needed,white_space_needed_m2,assumed_white_space_m2,normal_water_needed_m3_h,normal_water_needed_at300A_m3_h
+sg_tanjongkling,丹戎吉岭,Cushman & Wakefield 2021 market survey,150,facility,126.05042016806723,27.392732649024385,-98.65768751904285,-78.26843209844066,150.0,1381.0598167723604,7566,85000.0,302.52100840336135,65.74255835765852

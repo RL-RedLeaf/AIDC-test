@@ -1,2 +1,2 @@
-﻿site,name,benchmark_source,public_MW,public_basis,comparison_IT,conditional_IT_at300A,difference_IT,difference_pct,facility_MW_needed,net_A_needed,white_space_needed_m2,assumed_white_space_m2,normal_water_needed_m3_h,normal_water_needed_at300A_m3_h
-au_huntingwood,悉尼西部,AirTrunk SYD3 nine phases (2021),320,IT minimum,320,56.693875184603804,-263.3061248153962,-82.28316400481131,368.0,1694.1215418473937,19200,35000.0,384.0,68.03265022152456
+﻿site,stage,input_basis,facility_input_MW,k,layout_ceiling_IT,scope,conditional_screen_IT,benchmark_IT,facility_MW_needed,design_water_intensity_L_per_kWh,design_water_needed_m3_h
+au_huntingwood,SYD3,planning approval total site consumption envelope,400,1.15,,approval envelope only,347.82608695652175,320,368.0,1.2,384.0
