@@ -703,7 +703,7 @@ def main():
         {"编号": "07", "文件": "../raw/open_meteo_abilene_2025-01-29.json", "输入": "Open-Meteo Archive API", "意义": "逐小时辐射、温度与风速原始响应", "条件": "Abilene 网格点；2025-01-29 当地时间", "用途": "追溯地理气象数据"},
         {"编号": "08", "文件": "08_design_day_selection.csv", "输入": "raw/open_meteo_abilene_2025-01_month.json", "意义": "每日辐射总量及选择 1 月 29 日的依据", "条件": "2025 年 1 月；按当地时间汇总", "用途": "复核设计日选择"},
         {"编号": "09", "文件": "07_allocation_optimization.png; 07_allocation_optimization.svg", "输入": "输出 03 与各候选约束上限", "意义": "电网基准、光储电力增量及容量曲线", "条件": "假设电网可持续交付 100 MW；其他电网值见输出 11", "用途": "解释电力曲线斜率与约束切换"},
-        {"编号": "10", "文件": "10_geographic_case_report.md", "输入": "输出 01–09、11 与来源表", "意义": "地理结果、图解、合理性和模型评估", "条件": "Abilene 静态情景；不反向标定", "用途": "解释计算结果及局限"},
+        {"编号": "10", "文件": "../10_geographic_case_report.md", "输入": "输出 01–09、11、19–20 与来源表", "意义": "地理结果、图解、合理性和模型评估", "条件": "Abilene 静态情景；不反向标定", "用途": "解释计算结果及局限"},
         {"编号": "11", "文件": "11_grid_access_sensitivity.csv", "输入": "同一地理资源；网电 0、25、50、100、250 MW 情景", "意义": "电网、光储、风储、燃气与燃煤组合对比", "条件": "电网值为参考情景，不是当地接入承诺；燃料充分按模型上界", "用途": "检查不同供电途径与接入水平"},
         {"编号": "12", "文件": "12_geography_heatmap_data.csv", "输入": "Abilene 气象循环、土地比例、k 与电网水平网格", "意义": "网电+光储分支每个参数格点的最优配置和容量", "条件": "PV 子分支；每格枚举光伏用地份额", "用途": "复核热力图底层数据"},
         {"编号": "13", "文件": "13_grid_land_capacity_heatmap.png; 13_grid_land_capacity_heatmap.svg", "输入": "网电可持续供电、有效可用土地情景；输出 12", "意义": "光储方案容量对电力与土地条件的响应面", "条件": "基准 k=1.41；等值线为联合 IT 容量", "用途": "比较两项地理资源约束"},
@@ -713,6 +713,30 @@ def main():
         {"编号": "17", "文件": "17_generation_leadtime.csv", "输入": "纯电网及已选光储、风储、燃气、燃煤候选", "意义": "按发电设施投运年份筛选候选方案", "条件": "2025 起算，燃气按题面 7 年示例于 2032 可用", "用途": "解释建成等待期如何筛选候选集"},
         {"编号": "18", "文件": "18_generation_leadtime.png; 18_generation_leadtime.svg", "输入": "输出 17", "意义": "候选集容量随投运年份的阶梯图", "条件": "其他资源固定；不是逐年资源仿真", "用途": "可视化建设等待期影响"},
     ]
+    if all((OUT / name).exists() for name in (
+        "19_generation_land_portfolio.csv",
+        "20_generation_land_supply_choice.png",
+        "20_generation_land_supply_choice.svg",
+    )):
+        index_rows.extend([
+            {"编号": "19", "文件": "19_generation_land_portfolio.csv",
+             "输入": "基准 Q1 配置、设计日辐照/风速、发电用地上限 0–440 ha",
+             "意义": "每种供电技术与最优候选的联合 IT 容量和装机",
+             "条件": "每点选实际 A_e 不超过上限的单技术方案；燃气为燃料充足上界",
+             "用途": "图 20 的逐点数据"},
+            {"编号": "20", "文件": "20_generation_land_supply_choice.png; 20_generation_land_supply_choice.svg",
+             "输入": "输出 19", "意义": "技术容量曲线、低用地放大与获胜方案装机",
+             "条件": "横轴为发电用地上限，不是总装机；不含混装优化",
+             "用途": "展示 Q1 发电用地与方案选择的耦合"},
+        ])
+    if all((OUT / name).is_file() for name in (
+        "21_fixed_installation_mix.csv", "22_fixed_installation_peak_day.csv",
+        "23_fixed_installation_mix.png", "23_fixed_installation_mix.svg",
+    )):
+        from plot_fixed_installation import index_entries
+
+        index_rows.extend(index_entries())
+        next(row for row in index_rows if row["编号"] == "10")["输入"] = "输出 01–09、11–23 与来源表"
     write_csv(OUT / "00_output_index.csv", index_rows)
     print(json.dumps({
         "design_day": "2025-01-29",

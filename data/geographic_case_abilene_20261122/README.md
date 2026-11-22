@@ -38,6 +38,10 @@ python data/geographic_case_abilene_20261122/run_case.py
 
 新增图只保留对 Q1 解释有用的参数轴，不在图上展示程序字段名。横纵轴直接使用模型变量及其含义：电网可持续供电功率 $P_{\mathrm{电网}}$、有效可用土地 $A_{\mathrm{eff}}$、数据中心水源可取量 $Q_{\mathrm{DC,max}}$、发电用地 $A_e$ 和评估年份 $y$。其中 `outputs/13_grid_land_capacity_heatmap.png` 展示电网与有效土地对光储容量的影响；`outputs/14_optimal_pv_gain_heatmap.png` 展示最优发电用地及相对纯电网的容量增益；`outputs/16_grid_water_technology_heatmap.png` 比较水量与电网条件下光储、风储、燃气、燃煤方案；`outputs/18_generation_leadtime.png` 展示投运时间如何筛选候选方案，不做全年动态仿真。程序字段仅用于复算，底层格点数据及唯一索引均在 `outputs/` 下。
 
+`python data/geographic_case_abilene_20261122/plot_supply_choice.py` 根据同一套 Q1 输入另绘 `outputs/20_generation_land_supply_choice.png`。它沿用所提供参考图的“各技术容量曲线、局部放大、最优装机组成”结构，但横轴改为可供自建发电使用的土地上限；各曲线是在实际 $A_e$ 不超过该上限的单技术候选中得到的联合容量，未声称求解混装发电组合。底层数据为 `outputs/19_generation_land_portfolio.csv`；该脚本会在唯一索引中登记 19、20 号。
+
 ## 解释限制
+
+固定新增发电总装机的混装比较见 [图 23](outputs/23_fixed_installation_mix.png)。运行 `python data/geographic_case_abilene_20261122/plot_fixed_installation.py` 可从案例配置和设计日数据重建该图、逐点配比表与峰值小时收支。图 20 的 212.77 MW IT 对应单项自建电源候选，图 23 的 217.40 MW IT 对应允许煤、气、风、光共享同一场址资源的扩展候选集合。图 23 中公共电网供电和配套电池都另行计量，横轴仅包含四类发电设备的新增装机。
 
 结果是指定地理点、单日设计气象、规划水量分配、全球参考值和通用电源模块假设共同构成的静态比较情景。`P_grid` 未由当地电网模型推导；火电按模型自带的燃料充分上界；风机曲线、轮毂高度、电厂用地也不是本地设计数据。它用于比较约束切换和方案结构，不能替代电网接入研究、全年资源充分性、许可或实际工程设计。天气数据只用一个选定的 24 h 循环，没有跑全年逐日模型。
