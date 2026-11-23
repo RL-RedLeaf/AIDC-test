@@ -1,0 +1,80 @@
+﻿% 片段单独校验用（正式编译请用 main.tex）
+% !TeX program = xelatex
+% =====================================================================
+%  IMMC 2027 论文（正式版 LaTeX）
+%  主文件：main.tex     片段：sections/*.tex     文献：ref.bib
+%  编译：latexmk -xelatex main.tex   （或 xelatex 两遍 + biber）
+%  版式：MCM/ICM 论文模板 mcmthesis.cls（用户提供）+ ctex 中文化
+% =====================================================================
+\documentclass{mcmthesis}
+\mcmsetup{CTeX = false,        % 不使用 CTeX 套装
+        tcn = 2027,            % 队伍控制号（占位，待填）
+        problem = A,           % 选题
+        sheet = true,          % 生成 summary sheet
+        titleinsheet = true,   % sheet 页显示标题
+        keywordsinsheet = true,% sheet 页显示关键词
+        titlepage = false,     % 不单独生成标题页
+        abstract = true        % 摘要
+        }
+
+% ---------------- 中文支持 ----------------
+\usepackage[UTF8, fontset=fandol]{ctex}
+\usepackage{amsmath, amssymb, bm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+%\usepackage[...]{biblatex} (fragment check)
+
+% ---------------- 中文化标题名 ----------------
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+\renewcommand{\keywordsname}{关键词}
+\renewcommand{\abstractname}{摘要}
+\renewcommand{\contentsname}{目录}
+\renewcommand{\refname}{参考文献}
+\renewcommand{\headset}{2027\\IMMC\\Summary Sheet}
+\renewcommand{\team}{Team 2027}
+
+% 引用标记占位宏：转换阶段统一写成 \citemark{原标记}，最后由 Lead 统一替换成 \cite{...}。
+% 这样分头转换时不必猜测文献键，也不会出现张冠李戴的引用。
+\newcommand{\citemark}[1]{\textsuperscript{[#1]}}
+
+% ---------------- 版式 ----------------
+% 标题不自动编号：原稿标题自带编号，且正文大量交叉引用“4.1 节”“附录 C”，
+% 交给 LaTeX 重新编号会让这些引用失效，故保留原编号文字。
+\setcounter{secnumdepth}{-1}
+\setcounter{tocdepth}{3}
+\raggedbottom
+
+% 假设/注记块（对应 markdown 的引用块）
+\newenvironment{asum}
+  {\par\vspace{0.2em}\begin{quote}\small}
+  {\end{quote}\vspace{0.2em}}
+
+% 图表路径
+\graphicspath{{./}{./figures/}}
+
+% ---------------- 文档信息 ----------------
+\title{\mbox{}}                 % TODO 标题待定：原稿未给标题，先留空（\mbox{} 仅为满足类文件检查）
+\author{\small Team 2027}
+\date{\today}
+
+\memoto{WAICO}
+\memofrom{Team 2027}
+\memosubject{IMMC 2027 Problem A}
+\memodate{\today}
+
+% =====================================================================
+
+\begin{document}
+\setcounter{page}{1}
+\input{sections/02-q1}
+\end{document}
+
+

@@ -1,0 +1,184 @@
+﻿% !TeX program = xelatex
+% =====================================================================
+%  IMMC 2027 论文（正式版 LaTeX）
+%  主文件：main.tex     片段：sections/*.tex     文献：ref.bib
+%  编译：latexmk -xelatex main.tex   （或 xelatex → biber → xelatex ×2）
+%  结构：按数学建模论文惯例 —— 问题重述 / 模型的建立与求解（含第一问、第二问）
+%        / 结果讨论 / 讨论与推广 / 结论 / 参考文献 / 附录 A–F
+% =====================================================================
+\documentclass{mcmthesis}
+\mcmsetup{CTeX = false,        % 不使用 CTeX 套装
+        tcn = 2027,            % 队伍控制号（占位，待填）
+        problem = A,           % 选题
+        sheet = true,          % 生成 summary sheet
+        titleinsheet = true,   % sheet 页显示标题
+        keywordsinsheet = true,% sheet 页显示关键词
+        titlepage = false,     % 不单独生成标题页
+        abstract = true        % 摘要
+        }
+
+% ---------------- 中文支持与字体 ----------------
+\usepackage[UTF8, fontset=fandol]{ctex}
+\setmainfont{TeX Gyre Termes}      % 西文/数字：Times 克隆
+\setsansfont{TeX Gyre Heros}
+\setmonofont{TeX Gyre Cursor}[Scale=0.9]
+
+\usepackage{amsmath, amssymb, bm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+
+% ---------------- 参考文献（GB/T 7714-2015，正文上标角标） ----------------
+\usepackage[backend=biber, style=gb7714-2015]{biblatex}
+\addbibresource{ref.bib}
+
+% 图表题注：编号自动生成（图 1、表 1、图 F.1…），说明文字取自原稿
+\usepackage{caption}
+\captionsetup{labelsep=quad, font=small, justification=centering}
+
+% ---------------- 中文化标题名 ----------------
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+\renewcommand{\keywordsname}{关键词}
+\renewcommand{\abstractname}{摘要}
+\renewcommand{\contentsname}{目录}
+\renewcommand{\refname}{参考文献}
+\renewcommand{\headset}{2027\\IMMC\\Summary Sheet}
+\renewcommand{\team}{Team 2027}
+
+% 引用标记占位宏（转换阶段用过；正文已全部换成 \cite，保留以兼容旧片段）
+\newcommand{\citemark}[1]{\textsuperscript{[#1]}}
+
+% 关键词用中文全角冒号（类文件默认是英文 “Keywords: ”）
+\makeatletter
+\def\make@keywords{\par\noindent\textbf{\keywordsname}：\@keywords\par}
+\makeatother
+
+% ---------------- 编号 ----------------
+% 章节全部自动编号（原来手工编号的“1 能源约束”“附录 C”一律交给 LaTeX）
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{3}
+\raggedbottom
+\setlength{\emergencystretch}{3em}
+% 公式按章编号：正文 (2.1)(2.2)…，附录 (A.1)(A.2)…
+\numberwithin{equation}{section}
+
+% 标题样式：黑体、分级字号，段前段后留白（类文件默认几乎为 0，紧贴正文）
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+  {1.4ex \@plus .3ex \@minus .2ex}%
+  {0.9ex \@plus .2ex}%
+  {\heiti\Large}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+  {1.2ex \@plus .2ex \@minus .2ex}%
+  {0.6ex \@plus .2ex}%
+  {\heiti\large}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+  {1.0ex \@plus .2ex \@minus .2ex}%
+  {0.4ex \@plus .2ex}%
+  {\heiti\normalsize}}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {0.9ex \@plus .2ex \@minus .2ex}%
+  {0.3ex \@plus .2ex}%
+  {\heiti\normalsize}}
+\makeatother
+
+% 五级小标题（“碳足迹”“水足迹”这类，不再编号，黑体独立成行）
+\newcommand{\subhead}[1]{%
+  \par\addvspace{0.8em}\noindent{\heiti\normalsize #1}%
+  \par\nopagebreak\addvspace{0.15em}}
+
+% ---------------- 假设环境（自动连续编号） ----------------
+\newcounter{asumcount}
+\newenvironment{asum}[1][]{%
+  \par\addvspace{0.45em}%
+  \refstepcounter{asumcount}%
+  \begingroup\small
+  \begin{list}{}{\leftmargin=4.8em\rightmargin=1em\topsep=0pt\parsep=0.15em\partopsep=0pt\itemsep=0pt}%
+  \item[\hfill\textbf{假设~\theasumcount}]\ifstrempty{#1}{}{\textbf{（#1）}}：\ignorespaces}%
+  {\end{list}\endgroup\addvspace{0.2em}}
+
+% 定义 / 注记块（原稿的“定义”“注”式引用块，不编号）
+\newenvironment{noteblock}{%
+  \par\addvspace{0.35em}\begingroup\small
+  \setlength{\leftskip}{1.6em}\setlength{\rightskip}{1em}\setlength{\parindent}{0pt}\noindent\ignorespaces}%
+  {\par\endgroup\addvspace{0.2em}}
+
+% ======================================================================
+% 版式压缩（正文目标 ≤20 页）。只调几何与间距，一个字不动。
+% 想要“宽松版”就把本段整体注释掉（行距 1.3、段间空一行，类文件默认）。
+% ======================================================================
+\linespread{1.10}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.15em}
+\setlength{\abovedisplayskip}{5pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{5pt plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{3pt plus 1pt}
+\setlength{\belowdisplayshortskip}{4pt plus 1pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{9pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\setlength{\dblfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{9pt plus 2pt minus 2pt}
+\renewcommand{\arraystretch}{0.96}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{2pt}
+
+% 图表路径
+\graphicspath{{./}{./figures/}}
+
+% ---------------- 文档信息 ----------------
+\title{\mbox{}}                 % TODO 标题待定：原稿未给标题，先留空（\mbox{} 仅为满足类文件检查）
+\author{\small Team 2027}
+\date{\today}
+
+\memoto{WAICO}
+\memofrom{Team 2027}
+\memosubject{IMMC 2027 Problem A}
+\memodate{\today}
+
+% =====================================================================
+\begin{document}
+
+% ---------------- 摘要（原稿留空，此处保持空白） ----------------
+\begin{abstract}
+\end{abstract}
+
+\begin{keywords}
+\end{keywords}
+
+\maketitle
+
+% ---------------- 致 WAICO 的一封信（原稿标题存在但正文为空） ----------------
+\section*{致 WAICO 的一封信}
+\addcontentsline{toc}{section}{致 WAICO 的一封信}
+
+\newpage
+
+% ---------------- 目录 ----------------
+\tableofcontents
+\newpage
+
+% ---------------- 正文 ----------------
+\input{sections/01-intro}
+\input{sections/02-q1}
+\input{sections/03-q2}
+\input{sections/04-results}
+
+% ---------------- 参考文献 ----------------
+\newpage
+\printbibliography[title={参考文献}, heading=bibintoc]
+
+% ---------------- 附录（A–F） ----------------
+\newpage
+\appendix
+\input{sections/05-appendix}
+
+\end{document}
+

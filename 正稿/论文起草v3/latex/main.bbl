@@ -1,0 +1,3002 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global/global}
+    \entry{q1ref01}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=7ddfb261130d2af8916054bd686f0614}{%
+           family={{International Telecommunication Union}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=7ddfb261130d2af8916054bd686f0614}{%
+           family={{International Telecommunication Union}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {International Telecommunication Union}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {International Telecommunication Union}%
+      }
+      \strng{namehash}{7ddfb261130d2af8916054bd686f0614}
+      \strng{fullhash}{7ddfb261130d2af8916054bd686f0614}
+      \strng{fullhashraw}{7ddfb261130d2af8916054bd686f0614}
+      \strng{bibnamehash}{7ddfb261130d2af8916054bd686f0614}
+      \strng{authorbibnamehash}{7ddfb261130d2af8916054bd686f0614}
+      \strng{authornamehash}{7ddfb261130d2af8916054bd686f0614}
+      \strng{authorfullhash}{7ddfb261130d2af8916054bd686f0614}
+      \strng{authorfullhashraw}{7ddfb261130d2af8916054bd686f0614}
+      \strng{nameabibnamehash}{7ddfb261130d2af8916054bd686f0614}
+      \strng{nameanamehash}{7ddfb261130d2af8916054bd686f0614}
+      \strng{nameafullhash}{7ddfb261130d2af8916054bd686f0614}
+      \strng{nameafullhashraw}{7ddfb261130d2af8916054bd686f0614}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{entrysubtype}{report}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{note}{§12.1}
+      \field{number}{ITU-T L.1300}
+      \field{title}{Best practices for green data centres}
+      \field{type}{Recommendation}
+      \field{usera}{R}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2014}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.itu.int/rec/T-REC-L.1300-201406-I/en
+      \endverb
+      \verb{url}
+      \verb https://www.itu.int/rec/T-REC-L.1300-201406-I/en
+      \endverb
+      \keyw{q1ref01,report}
+    \endentry
+    \entry{q1ref02}{article}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=802e2903a3489bf6ffd53cc8df49d197}{%
+           family={Jones},
+           familyi={J\bibinitperiod},
+           given={E.\bibnamedelimi R.},
+           giveni={E\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \true{morenamea}
+      \name{namea}{1}{}{%
+        {{hash=802e2903a3489bf6ffd53cc8df49d197}{%
+           family={Jones},
+           familyi={J\bibinitperiod},
+           given={E.\bibnamedelimi R.},
+           giveni={E\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{75f68832dbdb3baa9b77d958374cd887}
+      \strng{fullhash}{75f68832dbdb3baa9b77d958374cd887}
+      \strng{fullhashraw}{75f68832dbdb3baa9b77d958374cd887}
+      \strng{bibnamehash}{75f68832dbdb3baa9b77d958374cd887}
+      \strng{authorbibnamehash}{75f68832dbdb3baa9b77d958374cd887}
+      \strng{authornamehash}{75f68832dbdb3baa9b77d958374cd887}
+      \strng{authorfullhash}{75f68832dbdb3baa9b77d958374cd887}
+      \strng{authorfullhashraw}{75f68832dbdb3baa9b77d958374cd887}
+      \strng{nameabibnamehash}{75f68832dbdb3baa9b77d958374cd887}
+      \strng{nameanamehash}{75f68832dbdb3baa9b77d958374cd887}
+      \strng{nameafullhash}{75f68832dbdb3baa9b77d958374cd887}
+      \strng{nameafullhashraw}{75f68832dbdb3baa9b77d958374cd887}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Environmental Research: Water}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{A multi-model assessment of global freshwater temperature and thermoelectric power supply under climate change}
+      \field{usera}{J}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{volume}{1}
+      \field{year}{2025}
+      \field{dateera}{ce}
+      \field{pages}{025002}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1088/3033-4942/addffa
+      \endverb
+      \keyw{q1ref02}
+    \endentry
+    \entry{q1ref03}{article}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=3988ce1867cf548f1b3ba278ae06c429}{%
+           family={Parzen},
+           familyi={P\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+      }
+      \true{morenamea}
+      \name{namea}{1}{}{%
+        {{hash=3988ce1867cf548f1b3ba278ae06c429}{%
+           family={Parzen},
+           familyi={P\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{d6026b683ea09734e27e65771402cc2f}
+      \strng{fullhash}{d6026b683ea09734e27e65771402cc2f}
+      \strng{fullhashraw}{d6026b683ea09734e27e65771402cc2f}
+      \strng{bibnamehash}{d6026b683ea09734e27e65771402cc2f}
+      \strng{authorbibnamehash}{d6026b683ea09734e27e65771402cc2f}
+      \strng{authornamehash}{d6026b683ea09734e27e65771402cc2f}
+      \strng{authorfullhash}{d6026b683ea09734e27e65771402cc2f}
+      \strng{authorfullhashraw}{d6026b683ea09734e27e65771402cc2f}
+      \strng{nameabibnamehash}{d6026b683ea09734e27e65771402cc2f}
+      \strng{nameanamehash}{d6026b683ea09734e27e65771402cc2f}
+      \strng{nameafullhash}{d6026b683ea09734e27e65771402cc2f}
+      \strng{nameafullhashraw}{d6026b683ea09734e27e65771402cc2f}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Applied Energy}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{PyPSA-Earth. A new global open energy system optimization model demonstrated in Africa}
+      \field{usera}{J}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{volume}{341}
+      \field{year}{2023}
+      \field{dateera}{ce}
+      \field{pages}{121096}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.apenergy.2023.121096
+      \endverb
+      \keyw{q1ref03}
+    \endentry
+    \entry{q1ref04}{inproceedings}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=872f27d0cf6f5b80e7f5a23ab905042b}{%
+           family={Goiri},
+           familyi={G\bibinitperiod},
+           given={I.},
+           giveni={I\bibinitperiod}}}%
+      }
+      \true{morenamea}
+      \name{namea}{1}{}{%
+        {{hash=872f27d0cf6f5b80e7f5a23ab905042b}{%
+           family={Goiri},
+           familyi={G\bibinitperiod},
+           given={I.},
+           giveni={I\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{844298517d098db32a15ee12cf4b5082}
+      \strng{fullhash}{844298517d098db32a15ee12cf4b5082}
+      \strng{fullhashraw}{844298517d098db32a15ee12cf4b5082}
+      \strng{bibnamehash}{844298517d098db32a15ee12cf4b5082}
+      \strng{authorbibnamehash}{844298517d098db32a15ee12cf4b5082}
+      \strng{authornamehash}{844298517d098db32a15ee12cf4b5082}
+      \strng{authorfullhash}{844298517d098db32a15ee12cf4b5082}
+      \strng{authorfullhashraw}{844298517d098db32a15ee12cf4b5082}
+      \strng{nameabibnamehash}{844298517d098db32a15ee12cf4b5082}
+      \strng{nameanamehash}{844298517d098db32a15ee12cf4b5082}
+      \strng{nameafullhash}{844298517d098db32a15ee12cf4b5082}
+      \strng{nameafullhashraw}{844298517d098db32a15ee12cf4b5082}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of ASPLOS}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Parasol and GreenSwitch: Managing datacenters powered by renewable energy}
+      \field{usera}{C}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2013}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.1145/2451116.2451123
+      \endverb
+      \keyw{q1ref04}
+    \endentry
+    \entry{q1ref06}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=e0c89fe224097555de879ad918ae77ce}{%
+           family={{EG\&G Idaho, Inc.}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=e0c89fe224097555de879ad918ae77ce}{%
+           family={{EG\&G Idaho, Inc.}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {U.S. Department of Energy}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {U.S. Department of Energy}%
+      }
+      \strng{namehash}{e0c89fe224097555de879ad918ae77ce}
+      \strng{fullhash}{e0c89fe224097555de879ad918ae77ce}
+      \strng{fullhashraw}{e0c89fe224097555de879ad918ae77ce}
+      \strng{bibnamehash}{e0c89fe224097555de879ad918ae77ce}
+      \strng{authorbibnamehash}{e0c89fe224097555de879ad918ae77ce}
+      \strng{authornamehash}{e0c89fe224097555de879ad918ae77ce}
+      \strng{authorfullhash}{e0c89fe224097555de879ad918ae77ce}
+      \strng{authorfullhashraw}{e0c89fe224097555de879ad918ae77ce}
+      \strng{nameabibnamehash}{e0c89fe224097555de879ad918ae77ce}
+      \strng{nameanamehash}{e0c89fe224097555de879ad918ae77ce}
+      \strng{nameafullhash}{e0c89fe224097555de879ad918ae77ce}
+      \strng{nameafullhashraw}{e0c89fe224097555de879ad918ae77ce}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{entrysubtype}{report}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{note}{引用位置：Appendix A-1, \emph{Development of the Power Equation}, p.~A1-1}
+      \field{number}{IDO-10107}
+      \field{title}{Microhydropower Handbook, Volume 2}
+      \field{usera}{R}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{1983}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.energy.gov/sites/default/files/2019/01/f59/Microhydropower_Handbook_2.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.energy.gov/sites/default/files/2019/01/f59/Microhydropower_Handbook_2.pdf
+      \endverb
+      \keyw{q1ref06,report}
+    \endentry
+    \entry{q1bref04}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=b76d64428d9f5a2d31d280dacd07e11f}{%
+           family={Mytton},
+           familyi={M\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=b76d64428d9f5a2d31d280dacd07e11f}{%
+           family={Mytton},
+           familyi={M\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{b76d64428d9f5a2d31d280dacd07e11f}
+      \strng{fullhash}{b76d64428d9f5a2d31d280dacd07e11f}
+      \strng{fullhashraw}{b76d64428d9f5a2d31d280dacd07e11f}
+      \strng{bibnamehash}{b76d64428d9f5a2d31d280dacd07e11f}
+      \strng{authorbibnamehash}{b76d64428d9f5a2d31d280dacd07e11f}
+      \strng{authornamehash}{b76d64428d9f5a2d31d280dacd07e11f}
+      \strng{authorfullhash}{b76d64428d9f5a2d31d280dacd07e11f}
+      \strng{authorfullhashraw}{b76d64428d9f5a2d31d280dacd07e11f}
+      \strng{nameabibnamehash}{b76d64428d9f5a2d31d280dacd07e11f}
+      \strng{nameanamehash}{b76d64428d9f5a2d31d280dacd07e11f}
+      \strng{nameafullhash}{b76d64428d9f5a2d31d280dacd07e11f}
+      \strng{nameafullhashraw}{b76d64428d9f5a2d31d280dacd07e11f}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{npj Clean Water}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Data centre water consumption}
+      \field{usera}{J}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{volume}{4}
+      \field{year}{2021}
+      \field{dateera}{ce}
+      \field{pages}{11}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1038/s41545-021-00101-w
+      \endverb
+      \keyw{q1bref04}
+    \endentry
+    \entry{q1bref09}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=9e5047e3ad66c623ce177bfa0522ab60}{%
+           family={Siddik},
+           familyi={S\bibinitperiod},
+           given={M.\bibnamedelimi A.\bibnamedelimi B.},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=7a3ada1546accc0da01d4575fa6fbe8f}{%
+           family={Shehabi},
+           familyi={S\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=3d600b403bd94ac2adbb617736c85217}{%
+           family={Marston},
+           familyi={M\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+      }
+      \name{namea}{3}{}{%
+        {{hash=9e5047e3ad66c623ce177bfa0522ab60}{%
+           family={Siddik},
+           familyi={S\bibinitperiod},
+           given={M.\bibnamedelimi A.\bibnamedelimi B.},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=7a3ada1546accc0da01d4575fa6fbe8f}{%
+           family={Shehabi},
+           familyi={S\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=3d600b403bd94ac2adbb617736c85217}{%
+           family={Marston},
+           familyi={M\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{b2de9740985d58a5c9d3969bd691c3cc}
+      \strng{fullhash}{fd9262db5f46de626fab426eccc932a7}
+      \strng{fullhashraw}{fd9262db5f46de626fab426eccc932a7}
+      \strng{bibnamehash}{fd9262db5f46de626fab426eccc932a7}
+      \strng{authorbibnamehash}{fd9262db5f46de626fab426eccc932a7}
+      \strng{authornamehash}{b2de9740985d58a5c9d3969bd691c3cc}
+      \strng{authorfullhash}{fd9262db5f46de626fab426eccc932a7}
+      \strng{authorfullhashraw}{fd9262db5f46de626fab426eccc932a7}
+      \strng{nameabibnamehash}{fd9262db5f46de626fab426eccc932a7}
+      \strng{nameanamehash}{b2de9740985d58a5c9d3969bd691c3cc}
+      \strng{nameafullhash}{fd9262db5f46de626fab426eccc932a7}
+      \strng{nameafullhashraw}{fd9262db5f46de626fab426eccc932a7}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Environmental Research Letters}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{number}{6}
+      \field{title}{The environmental footprint of data centers in the United States}
+      \field{usera}{J}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{volume}{16}
+      \field{year}{2021}
+      \field{dateera}{ce}
+      \field{pages}{064017}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1088/1748-9326/abfba1
+      \endverb
+      \keyw{q1bref09}
+    \endentry
+    \entry{q1bref01}{report}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=e245a75c107b55474840bac3191a431d}{%
+           family={Kuzma},
+           familyi={K\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \true{morenamea}
+      \name{namea}{1}{}{%
+        {{hash=e245a75c107b55474840bac3191a431d}{%
+           family={Kuzma},
+           familyi={K\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {World Resources Institute}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {World Resources Institute}%
+      }
+      \strng{namehash}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{fullhash}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{fullhashraw}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{bibnamehash}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{authorbibnamehash}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{authornamehash}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{authorfullhash}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{authorfullhashraw}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{nameabibnamehash}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{nameanamehash}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{nameafullhash}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{nameafullhashraw}{d22196a60efc4cba1f33375179c74fe0}
+      \field{extraname}{1}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Aqueduct 4.0: Updated Decision-Relevant Global Water Risk Indicators}
+      \field{usera}{R}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2023}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.46830/writn.23.00061
+      \endverb
+      \keyw{q1bref01}
+    \endentry
+    \entry{q1bref02}{article}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=00106cba456cb43a74dadcce34bbf1d5}{%
+           family={Hoekstra},
+           familyi={H\bibinitperiod},
+           given={A.\bibnamedelimi Y.},
+           giveni={A\bibinitperiod\bibinitdelim Y\bibinitperiod}}}%
+      }
+      \true{morenamea}
+      \name{namea}{1}{}{%
+        {{hash=00106cba456cb43a74dadcce34bbf1d5}{%
+           family={Hoekstra},
+           familyi={H\bibinitperiod},
+           given={A.\bibnamedelimi Y.},
+           giveni={A\bibinitperiod\bibinitdelim Y\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{c6c3255c56ac0ffdb959d16d963301c6}
+      \strng{fullhash}{c6c3255c56ac0ffdb959d16d963301c6}
+      \strng{fullhashraw}{c6c3255c56ac0ffdb959d16d963301c6}
+      \strng{bibnamehash}{c6c3255c56ac0ffdb959d16d963301c6}
+      \strng{authorbibnamehash}{c6c3255c56ac0ffdb959d16d963301c6}
+      \strng{authornamehash}{c6c3255c56ac0ffdb959d16d963301c6}
+      \strng{authorfullhash}{c6c3255c56ac0ffdb959d16d963301c6}
+      \strng{authorfullhashraw}{c6c3255c56ac0ffdb959d16d963301c6}
+      \strng{nameabibnamehash}{c6c3255c56ac0ffdb959d16d963301c6}
+      \strng{nameanamehash}{c6c3255c56ac0ffdb959d16d963301c6}
+      \strng{nameafullhash}{c6c3255c56ac0ffdb959d16d963301c6}
+      \strng{nameafullhashraw}{c6c3255c56ac0ffdb959d16d963301c6}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{PLOS ONE}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{number}{2}
+      \field{title}{Global monthly water scarcity: Blue water footprints versus blue water availability}
+      \field{usera}{J}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{volume}{7}
+      \field{year}{2012}
+      \field{dateera}{ce}
+      \field{pages}{e32688}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1371/journal.pone.0032688
+      \endverb
+      \keyw{q1bref02}
+    \endentry
+    \entry{q1bref03}{article}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=22abac0cb1e77fb5c69f42f9c0a44276}{%
+           family={Pastor},
+           familyi={P\bibinitperiod},
+           given={A.\bibnamedelimi V.},
+           giveni={A\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+      }
+      \true{morenamea}
+      \name{namea}{1}{}{%
+        {{hash=22abac0cb1e77fb5c69f42f9c0a44276}{%
+           family={Pastor},
+           familyi={P\bibinitperiod},
+           given={A.\bibnamedelimi V.},
+           giveni={A\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{e8fc9652ce087200991ed2c2982a9bd4}
+      \strng{fullhash}{e8fc9652ce087200991ed2c2982a9bd4}
+      \strng{fullhashraw}{e8fc9652ce087200991ed2c2982a9bd4}
+      \strng{bibnamehash}{e8fc9652ce087200991ed2c2982a9bd4}
+      \strng{authorbibnamehash}{e8fc9652ce087200991ed2c2982a9bd4}
+      \strng{authornamehash}{e8fc9652ce087200991ed2c2982a9bd4}
+      \strng{authorfullhash}{e8fc9652ce087200991ed2c2982a9bd4}
+      \strng{authorfullhashraw}{e8fc9652ce087200991ed2c2982a9bd4}
+      \strng{nameabibnamehash}{e8fc9652ce087200991ed2c2982a9bd4}
+      \strng{nameanamehash}{e8fc9652ce087200991ed2c2982a9bd4}
+      \strng{nameafullhash}{e8fc9652ce087200991ed2c2982a9bd4}
+      \strng{nameafullhashraw}{e8fc9652ce087200991ed2c2982a9bd4}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Hydrology and Earth System Sciences}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Accounting for environmental flow requirements in global water assessments}
+      \field{usera}{J}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{volume}{18}
+      \field{year}{2014}
+      \field{dateera}{ce}
+      \field{pages}{5041\bibrangedash 5059}
+      \range{pages}{19}
+      \verb{doi}
+      \verb 10.5194/hess-18-5041-2014
+      \endverb
+      \keyw{q1bref03}
+    \endentry
+    \entry{q1bref08}{report}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{1}{}{%
+        {{hash=e48097454f25754f691158318f87e31c}{%
+           family={Dieter},
+           familyi={D\bibinitperiod},
+           given={C.\bibnamedelimi A.},
+           giveni={C\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \true{morenamea}
+      \name{namea}{1}{}{%
+        {{hash=e48097454f25754f691158318f87e31c}{%
+           family={Dieter},
+           familyi={D\bibinitperiod},
+           given={C.\bibnamedelimi A.},
+           giveni={C\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {U.S. Geological Survey}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {U.S. Geological Survey}%
+      }
+      \strng{namehash}{ddf6107898aab15f0da6f7bb6004d15b}
+      \strng{fullhash}{ddf6107898aab15f0da6f7bb6004d15b}
+      \strng{fullhashraw}{ddf6107898aab15f0da6f7bb6004d15b}
+      \strng{bibnamehash}{ddf6107898aab15f0da6f7bb6004d15b}
+      \strng{authorbibnamehash}{ddf6107898aab15f0da6f7bb6004d15b}
+      \strng{authornamehash}{ddf6107898aab15f0da6f7bb6004d15b}
+      \strng{authorfullhash}{ddf6107898aab15f0da6f7bb6004d15b}
+      \strng{authorfullhashraw}{ddf6107898aab15f0da6f7bb6004d15b}
+      \strng{nameabibnamehash}{ddf6107898aab15f0da6f7bb6004d15b}
+      \strng{nameanamehash}{ddf6107898aab15f0da6f7bb6004d15b}
+      \strng{nameafullhash}{ddf6107898aab15f0da6f7bb6004d15b}
+      \strng{nameafullhashraw}{ddf6107898aab15f0da6f7bb6004d15b}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{number}{1441}
+      \field{title}{Estimated use of water in the United States in 2015}
+      \field{type}{Circular}
+      \field{usera}{R}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2018}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.3133/cir1441
+      \endverb
+      \keyw{q1bref08}
+    \endentry
+    \entry{q1bref10}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=f5d5aba6c8a76f04d84d202661ca5060}{%
+           family={{Colorado's Decision Support Systems (CDSS)}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=f5d5aba6c8a76f04d84d202661ca5060}{%
+           family={{Colorado's Decision Support Systems (CDSS)}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{f5d5aba6c8a76f04d84d202661ca5060}
+      \strng{fullhash}{f5d5aba6c8a76f04d84d202661ca5060}
+      \strng{fullhashraw}{f5d5aba6c8a76f04d84d202661ca5060}
+      \strng{bibnamehash}{f5d5aba6c8a76f04d84d202661ca5060}
+      \strng{authorbibnamehash}{f5d5aba6c8a76f04d84d202661ca5060}
+      \strng{authornamehash}{f5d5aba6c8a76f04d84d202661ca5060}
+      \strng{authorfullhash}{f5d5aba6c8a76f04d84d202661ca5060}
+      \strng{authorfullhashraw}{f5d5aba6c8a76f04d84d202661ca5060}
+      \strng{nameabibnamehash}{f5d5aba6c8a76f04d84d202661ca5060}
+      \strng{nameanamehash}{f5d5aba6c8a76f04d84d202661ca5060}
+      \strng{nameafullhash}{f5d5aba6c8a76f04d84d202661ca5060}
+      \strng{nameafullhashraw}{f5d5aba6c8a76f04d84d202661ca5060}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{StateMod}
+      \field{urlday}{22}
+      \field{urlmonth}{11}
+      \field{urlyear}{2026}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://cdss.colorado.gov/software/statemod
+      \endverb
+      \verb{url}
+      \verb https://cdss.colorado.gov/software/statemod
+      \endverb
+      \keyw{q1bref10}
+    \endentry
+    \entry{apxref29}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=0523b13262b12c215d8009938f5c14f1}{%
+           family={{OpenAI}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=0523b13262b12c215d8009938f5c14f1}{%
+           family={{OpenAI}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {chinese}%
+      }
+      \strng{namehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{fullhash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{fullhashraw}{0523b13262b12c215d8009938f5c14f1}
+      \strng{bibnamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authorbibnamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authornamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authorfullhash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authorfullhashraw}{0523b13262b12c215d8009938f5c14f1}
+      \strng{nameabibnamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{nameanamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{nameafullhash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{nameafullhashraw}{0523b13262b12c215d8009938f5c14f1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{chinese}
+      \field{lansortorder}{1}
+      \field{title}{Codex CLI（开源编码代理工具）}
+      \field{usera}{EB}
+      \field{userd}{chinese}
+      \field{userf}{english}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://github.com/openai/codex
+      \endverb
+      \verb{url}
+      \verb https://github.com/openai/codex
+      \endverb
+      \keyw{apxref29}
+    \endentry
+    \entry{apxref01}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=33e1b0cab8d23f1b3cf242b0d9ffc6ac}{%
+           family={{Crusoe}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=33e1b0cab8d23f1b3cf242b0d9ffc6ac}{%
+           family={{Crusoe}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{fullhash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{fullhashraw}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{bibnamehash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{authorbibnamehash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{authornamehash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{authorfullhash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{authorfullhashraw}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{nameabibnamehash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{nameanamehash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{nameafullhash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{nameafullhashraw}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{An inside look at the Abilene AI data center}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \verb{urlraw}
+      \verb https://www.crusoe.ai/resources/blog/an-inside-look-at-the-abilene-ai-data-center
+      \endverb
+      \verb{url}
+      \verb https://www.crusoe.ai/resources/blog/an-inside-look-at-the-abilene-ai-data-center
+      \endverb
+      \keyw{apxref01}
+    \endentry
+    \entry{apxref02}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=33e1b0cab8d23f1b3cf242b0d9ffc6ac}{%
+           family={{Crusoe}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=33e1b0cab8d23f1b3cf242b0d9ffc6ac}{%
+           family={{Crusoe}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{fullhash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{fullhashraw}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{bibnamehash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{authorbibnamehash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{authornamehash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{authorfullhash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{authorfullhashraw}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{nameabibnamehash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{nameanamehash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{nameafullhash}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \strng{nameafullhashraw}{33e1b0cab8d23f1b3cf242b0d9ffc6ac}
+      \field{extraname}{2}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Crusoe expands AI data center campus in Abilene to 1.2 gigawatts}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \verb{urlraw}
+      \verb https://www.crusoe.ai/resources/newsroom/crusoe-expands-ai-data-center-campus-in-abilene-to-1-2-gigawatts
+      \endverb
+      \verb{url}
+      \verb https://www.crusoe.ai/resources/newsroom/crusoe-expands-ai-data-center-campus-in-abilene-to-1-2-gigawatts
+      \endverb
+      \keyw{apxref02}
+    \endentry
+    \entry{apxref03}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=7526f7854a5dd1600458c5f47326cdb3}{%
+           family={{DPR Construction}},
+           familyi={D\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=7526f7854a5dd1600458c5f47326cdb3}{%
+           family={{DPR Construction}},
+           familyi={D\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{7526f7854a5dd1600458c5f47326cdb3}
+      \strng{fullhash}{7526f7854a5dd1600458c5f47326cdb3}
+      \strng{fullhashraw}{7526f7854a5dd1600458c5f47326cdb3}
+      \strng{bibnamehash}{7526f7854a5dd1600458c5f47326cdb3}
+      \strng{authorbibnamehash}{7526f7854a5dd1600458c5f47326cdb3}
+      \strng{authornamehash}{7526f7854a5dd1600458c5f47326cdb3}
+      \strng{authorfullhash}{7526f7854a5dd1600458c5f47326cdb3}
+      \strng{authorfullhashraw}{7526f7854a5dd1600458c5f47326cdb3}
+      \strng{nameabibnamehash}{7526f7854a5dd1600458c5f47326cdb3}
+      \strng{nameanamehash}{7526f7854a5dd1600458c5f47326cdb3}
+      \strng{nameafullhash}{7526f7854a5dd1600458c5f47326cdb3}
+      \strng{nameafullhashraw}{7526f7854a5dd1600458c5f47326cdb3}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Crusoe Abilene data center}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \verb{urlraw}
+      \verb https://www.dpr.com/projects/crusoe-abilene-data-center
+      \endverb
+      \verb{url}
+      \verb https://www.dpr.com/projects/crusoe-abilene-data-center
+      \endverb
+      \keyw{apxref03}
+    \endentry
+    \entry{apxref04}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=30162ed78b6c10f731411f2fc440c24f}{%
+           family={{Oracle}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=30162ed78b6c10f731411f2fc440c24f}{%
+           family={{Oracle}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{30162ed78b6c10f731411f2fc440c24f}
+      \strng{fullhash}{30162ed78b6c10f731411f2fc440c24f}
+      \strng{fullhashraw}{30162ed78b6c10f731411f2fc440c24f}
+      \strng{bibnamehash}{30162ed78b6c10f731411f2fc440c24f}
+      \strng{authorbibnamehash}{30162ed78b6c10f731411f2fc440c24f}
+      \strng{authornamehash}{30162ed78b6c10f731411f2fc440c24f}
+      \strng{authorfullhash}{30162ed78b6c10f731411f2fc440c24f}
+      \strng{authorfullhashraw}{30162ed78b6c10f731411f2fc440c24f}
+      \strng{nameabibnamehash}{30162ed78b6c10f731411f2fc440c24f}
+      \strng{nameanamehash}{30162ed78b6c10f731411f2fc440c24f}
+      \strng{nameafullhash}{30162ed78b6c10f731411f2fc440c24f}
+      \strng{nameafullhashraw}{30162ed78b6c10f731411f2fc440c24f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Abilene data center}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \verb{urlraw}
+      \verb https://www.oracle.com/data-centers/abilene/
+      \endverb
+      \verb{url}
+      \verb https://www.oracle.com/data-centers/abilene/
+      \endverb
+      \keyw{apxref04}
+    \endentry
+    \entry{apxref09}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=d127e86780d33f043d640e748acc840e}{%
+           family={{Texas Water Development Board}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=d127e86780d33f043d640e748acc840e}{%
+           family={{Texas Water Development Board}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Texas Water Development Board}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {Texas Water Development Board}%
+      }
+      \strng{namehash}{d127e86780d33f043d640e748acc840e}
+      \strng{fullhash}{d127e86780d33f043d640e748acc840e}
+      \strng{fullhashraw}{d127e86780d33f043d640e748acc840e}
+      \strng{bibnamehash}{d127e86780d33f043d640e748acc840e}
+      \strng{authorbibnamehash}{d127e86780d33f043d640e748acc840e}
+      \strng{authornamehash}{d127e86780d33f043d640e748acc840e}
+      \strng{authorfullhash}{d127e86780d33f043d640e748acc840e}
+      \strng{authorfullhashraw}{d127e86780d33f043d640e748acc840e}
+      \strng{nameabibnamehash}{d127e86780d33f043d640e748acc840e}
+      \strng{nameanamehash}{d127e86780d33f043d640e748acc840e}
+      \strng{nameafullhash}{d127e86780d33f043d640e748acc840e}
+      \strng{nameafullhashraw}{d127e86780d33f043d640e748acc840e}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{entrysubtype}{report}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{note}{原文页码 607}
+      \field{title}{2026 Region G regional water plan, Volume I}
+      \field{usera}{R}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/G/RegionG_2026_RWP_VolumeI.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.twdb.texas.gov/waterplanning/rwp/plans/2026/G/RegionG_2026_RWP_VolumeI.pdf
+      \endverb
+      \keyw{apxref09,report}
+    \endentry
+    \entry{apxref11}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=11ab286c1cb3da4f84c3c018fdc5ca82}{%
+           family={{City of Abilene}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=11ab286c1cb3da4f84c3c018fdc5ca82}{%
+           family={{City of Abilene}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{fullhash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{fullhashraw}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{bibnamehash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{authorbibnamehash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{authornamehash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{authorfullhash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{authorfullhashraw}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{nameabibnamehash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{nameanamehash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{nameafullhash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{nameafullhashraw}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{note}{原文页码 25}
+      \field{title}{Lancium LLC Abilene second amended and restated tax abatement agreement}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2025}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://abilenetx.gov/DocumentCenter/View/39456/Lancium-LLC-Abilene-Second-Amended-and-Restated-Tax-Abatement-Agreement-PDF
+      \endverb
+      \verb{url}
+      \verb https://abilenetx.gov/DocumentCenter/View/39456/Lancium-LLC-Abilene-Second-Amended-and-Restated-Tax-Abatement-Agreement-PDF
+      \endverb
+      \keyw{apxref11}
+    \endentry
+    \entry{apxref12}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=11ab286c1cb3da4f84c3c018fdc5ca82}{%
+           family={{City of Abilene}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=11ab286c1cb3da4f84c3c018fdc5ca82}{%
+           family={{City of Abilene}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{fullhash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{fullhashraw}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{bibnamehash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{authorbibnamehash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{authornamehash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{authorfullhash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{authorfullhashraw}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{nameabibnamehash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{nameanamehash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{nameafullhash}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \strng{nameafullhashraw}{11ab286c1cb3da4f84c3c018fdc5ca82}
+      \field{extraname}{2}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{SP-2026-77 (specific use permit)}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://abilenetx.gov/DocumentCenter/View/43833/SP-2026-77-PDF
+      \endverb
+      \verb{url}
+      \verb https://abilenetx.gov/DocumentCenter/View/43833/SP-2026-77-PDF
+      \endverb
+      \keyw{apxref12}
+    \endentry
+    \entry{apxref13}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=fdb128a28dda2d13321cbd7bd26b5e0a}{%
+           family={{Mortenson}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=fdb128a28dda2d13321cbd7bd26b5e0a}{%
+           family={{Mortenson}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{fdb128a28dda2d13321cbd7bd26b5e0a}
+      \strng{fullhash}{fdb128a28dda2d13321cbd7bd26b5e0a}
+      \strng{fullhashraw}{fdb128a28dda2d13321cbd7bd26b5e0a}
+      \strng{bibnamehash}{fdb128a28dda2d13321cbd7bd26b5e0a}
+      \strng{authorbibnamehash}{fdb128a28dda2d13321cbd7bd26b5e0a}
+      \strng{authornamehash}{fdb128a28dda2d13321cbd7bd26b5e0a}
+      \strng{authorfullhash}{fdb128a28dda2d13321cbd7bd26b5e0a}
+      \strng{authorfullhashraw}{fdb128a28dda2d13321cbd7bd26b5e0a}
+      \strng{nameabibnamehash}{fdb128a28dda2d13321cbd7bd26b5e0a}
+      \strng{nameanamehash}{fdb128a28dda2d13321cbd7bd26b5e0a}
+      \strng{nameafullhash}{fdb128a28dda2d13321cbd7bd26b5e0a}
+      \strng{nameafullhashraw}{fdb128a28dda2d13321cbd7bd26b5e0a}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Abilene data center development}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \verb{urlraw}
+      \verb https://www.mortenson.com/projects/abilene-data-center-development
+      \endverb
+      \verb{url}
+      \verb https://www.mortenson.com/projects/abilene-data-center-development
+      \endverb
+      \keyw{apxref13}
+    \endentry
+    \entry{apxref08}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=40900c9ce29eee318cb66a1cedac293a}{%
+           family={{Epoch AI}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=40900c9ce29eee318cb66a1cedac293a}{%
+           family={{Epoch AI}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{fullhash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{fullhashraw}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{bibnamehash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{authorbibnamehash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{authornamehash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{authorfullhash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{authorfullhashraw}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{nameabibnamehash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{nameanamehash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{nameafullhash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{nameafullhashraw}{40900c9ce29eee318cb66a1cedac293a}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{note}{分项容量：\url{https://epoch.ai/graphs/largest-ai-data-centers-by-power-capacity}}
+      \field{title}{AI data centers}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \verb{urlraw}
+      \verb https://epoch.ai/data/ai-data-centers
+      \endverb
+      \verb{url}
+      \verb https://epoch.ai/data/ai-data-centers
+      \endverb
+      \keyw{apxref08}
+    \endentry
+    \entry{apxref05}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=2dc617a9ee401666df1267e5ecf7cc4f}{%
+           family={{IMMC 2027 组委会}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=2dc617a9ee401666df1267e5ecf7cc4f}{%
+           family={{IMMC 2027 组委会}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{2dc617a9ee401666df1267e5ecf7cc4f}
+      \strng{fullhash}{2dc617a9ee401666df1267e5ecf7cc4f}
+      \strng{fullhashraw}{2dc617a9ee401666df1267e5ecf7cc4f}
+      \strng{bibnamehash}{2dc617a9ee401666df1267e5ecf7cc4f}
+      \strng{authorbibnamehash}{2dc617a9ee401666df1267e5ecf7cc4f}
+      \strng{authornamehash}{2dc617a9ee401666df1267e5ecf7cc4f}
+      \strng{authorfullhash}{2dc617a9ee401666df1267e5ecf7cc4f}
+      \strng{authorfullhashraw}{2dc617a9ee401666df1267e5ecf7cc4f}
+      \strng{nameabibnamehash}{2dc617a9ee401666df1267e5ecf7cc4f}
+      \strng{nameanamehash}{2dc617a9ee401666df1267e5ecf7cc4f}
+      \strng{nameafullhash}{2dc617a9ee401666df1267e5ecf7cc4f}
+      \strng{nameafullhashraw}{2dc617a9ee401666df1267e5ecf7cc4f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{note}{第 1--2、5--6 页}
+      \field{title}{Problem A: How big an AI data center to be?}
+      \field{usera}{Z}
+      \field{userd}{english}
+      \field{userf}{chinese}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \keyw{apxref05}
+    \endentry
+    \entry{apxref07}{report}{}{}
+      \name{author}{5}{}{%
+        {{hash=ae9cc96ddc88c2e630f2d354fb38a54b}{%
+           family={Ong},
+           familyi={O\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=acbfa8f5b82f8c172159fe678686c503}{%
+           family={Campbell},
+           familyi={C\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=79c0e8cfe7da85021f22069544a056f8}{%
+           family={Denholm},
+           familyi={D\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=a70b962b4c0e0dc072b2bde4c9294a49}{%
+           family={Margolis},
+           familyi={M\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=fbd33babf884a9128125d647d1864814}{%
+           family={Heath},
+           familyi={H\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+      }
+      \name{namea}{5}{}{%
+        {{hash=ae9cc96ddc88c2e630f2d354fb38a54b}{%
+           family={Ong},
+           familyi={O\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=acbfa8f5b82f8c172159fe678686c503}{%
+           family={Campbell},
+           familyi={C\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=79c0e8cfe7da85021f22069544a056f8}{%
+           family={Denholm},
+           familyi={D\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=a70b962b4c0e0dc072b2bde4c9294a49}{%
+           family={Margolis},
+           familyi={M\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=fbd33babf884a9128125d647d1864814}{%
+           family={Heath},
+           familyi={H\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {National Renewable Energy Laboratory}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {National Renewable Energy Laboratory}%
+      }
+      \strng{namehash}{c1445c0e9193fdcbfeb806325a2fa004}
+      \strng{fullhash}{a1ee759b72c276ea096eed410277c886}
+      \strng{fullhashraw}{a1ee759b72c276ea096eed410277c886}
+      \strng{bibnamehash}{5ed916cc1a98f92db050b7df79631648}
+      \strng{authorbibnamehash}{5ed916cc1a98f92db050b7df79631648}
+      \strng{authornamehash}{c1445c0e9193fdcbfeb806325a2fa004}
+      \strng{authorfullhash}{a1ee759b72c276ea096eed410277c886}
+      \strng{authorfullhashraw}{a1ee759b72c276ea096eed410277c886}
+      \strng{nameabibnamehash}{5ed916cc1a98f92db050b7df79631648}
+      \strng{nameanamehash}{c1445c0e9193fdcbfeb806325a2fa004}
+      \strng{nameafullhash}{a1ee759b72c276ea096eed410277c886}
+      \strng{nameafullhashraw}{a1ee759b72c276ea096eed410277c886}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{number}{NREL/TP-6A20-56290}
+      \field{title}{Land-use requirements for solar power plants in the United States}
+      \field{usera}{R}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2013}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.2172/1086349
+      \endverb
+      \keyw{apxref07}
+    \endentry
+    \entry{apxref14}{report}{}{}
+      \name{author}{4}{}{%
+        {{hash=79c0e8cfe7da85021f22069544a056f8}{%
+           family={Denholm},
+           familyi={D\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=c48f531807d0772fe6f454bb6cfca281}{%
+           family={Hand},
+           familyi={H\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=918e9ac75c3eec8e61828e6cfd061203}{%
+           family={Jackson},
+           familyi={J\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ae9cc96ddc88c2e630f2d354fb38a54b}{%
+           family={Ong},
+           familyi={O\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \name{namea}{4}{}{%
+        {{hash=79c0e8cfe7da85021f22069544a056f8}{%
+           family={Denholm},
+           familyi={D\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=c48f531807d0772fe6f454bb6cfca281}{%
+           family={Hand},
+           familyi={H\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=918e9ac75c3eec8e61828e6cfd061203}{%
+           family={Jackson},
+           familyi={J\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ae9cc96ddc88c2e630f2d354fb38a54b}{%
+           family={Ong},
+           familyi={O\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {National Renewable Energy Laboratory}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {National Renewable Energy Laboratory}%
+      }
+      \strng{namehash}{f4fe2761e3eaf68d9fad7cdb164ff516}
+      \strng{fullhash}{c7f86ff7d5e9e044b443d52178c31117}
+      \strng{fullhashraw}{c7f86ff7d5e9e044b443d52178c31117}
+      \strng{bibnamehash}{887ea8926c925b2d37d51209c5026e2c}
+      \strng{authorbibnamehash}{887ea8926c925b2d37d51209c5026e2c}
+      \strng{authornamehash}{f4fe2761e3eaf68d9fad7cdb164ff516}
+      \strng{authorfullhash}{c7f86ff7d5e9e044b443d52178c31117}
+      \strng{authorfullhashraw}{c7f86ff7d5e9e044b443d52178c31117}
+      \strng{nameabibnamehash}{887ea8926c925b2d37d51209c5026e2c}
+      \strng{nameanamehash}{f4fe2761e3eaf68d9fad7cdb164ff516}
+      \strng{nameafullhash}{c7f86ff7d5e9e044b443d52178c31117}
+      \strng{nameafullhashraw}{c7f86ff7d5e9e044b443d52178c31117}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{number}{NREL/TP-6A2-45834}
+      \field{title}{Land-use requirements of modern wind power plants in the United States}
+      \field{usera}{R}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2009}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.2172/964608
+      \endverb
+      \keyw{apxref14}
+    \endentry
+    \entry{apxref06}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=7a4f949d5134aa78dac4b93a794f829e}{%
+           family={Macknick},
+           familyi={M\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=a71d724ca3ec80919dd229eeff44c668}{%
+           family={Newmark},
+           familyi={N\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=fbd33babf884a9128125d647d1864814}{%
+           family={Heath},
+           familyi={H\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=e9134b0222d584b0c21d60d5fea07fd1}{%
+           family={Hallett},
+           familyi={H\bibinitperiod},
+           given={K.\bibnamedelimi C.},
+           giveni={K\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \name{namea}{4}{}{%
+        {{hash=7a4f949d5134aa78dac4b93a794f829e}{%
+           family={Macknick},
+           familyi={M\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=a71d724ca3ec80919dd229eeff44c668}{%
+           family={Newmark},
+           familyi={N\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=fbd33babf884a9128125d647d1864814}{%
+           family={Heath},
+           familyi={H\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=e9134b0222d584b0c21d60d5fea07fd1}{%
+           family={Hallett},
+           familyi={H\bibinitperiod},
+           given={K.\bibnamedelimi C.},
+           giveni={K\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{89201c168a6c9fc646e4b321cfdb8e9a}
+      \strng{fullhash}{55cc6ac73374d0e2ced0bc071a3a9b0e}
+      \strng{fullhashraw}{55cc6ac73374d0e2ced0bc071a3a9b0e}
+      \strng{bibnamehash}{e5c18a89a74168c5cacbd78ff7ab30dc}
+      \strng{authorbibnamehash}{e5c18a89a74168c5cacbd78ff7ab30dc}
+      \strng{authornamehash}{89201c168a6c9fc646e4b321cfdb8e9a}
+      \strng{authorfullhash}{55cc6ac73374d0e2ced0bc071a3a9b0e}
+      \strng{authorfullhashraw}{55cc6ac73374d0e2ced0bc071a3a9b0e}
+      \strng{nameabibnamehash}{e5c18a89a74168c5cacbd78ff7ab30dc}
+      \strng{nameanamehash}{89201c168a6c9fc646e4b321cfdb8e9a}
+      \strng{nameafullhash}{55cc6ac73374d0e2ced0bc071a3a9b0e}
+      \strng{nameafullhashraw}{55cc6ac73374d0e2ced0bc071a3a9b0e}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Environmental Research Letters}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{note}{与 q1ref05 为同一条文献，正文按 [4-6] 引用}
+      \field{title}{Operational water consumption and withdrawal factors for electricity generating technologies: A review of existing literature}
+      \field{usera}{J}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{volume}{7}
+      \field{year}{2012}
+      \field{dateera}{ce}
+      \field{pages}{045802}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1088/1748-9326/7/4/045802
+      \endverb
+      \keyw{apxref06}
+    \endentry
+    \entry{apxref10}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=6416a59f90819c052d0abaec137aca32}{%
+           family={{Open-Meteo}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=6416a59f90819c052d0abaec137aca32}{%
+           family={{Open-Meteo}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{6416a59f90819c052d0abaec137aca32}
+      \strng{fullhash}{6416a59f90819c052d0abaec137aca32}
+      \strng{fullhashraw}{6416a59f90819c052d0abaec137aca32}
+      \strng{bibnamehash}{6416a59f90819c052d0abaec137aca32}
+      \strng{authorbibnamehash}{6416a59f90819c052d0abaec137aca32}
+      \strng{authornamehash}{6416a59f90819c052d0abaec137aca32}
+      \strng{authorfullhash}{6416a59f90819c052d0abaec137aca32}
+      \strng{authorfullhashraw}{6416a59f90819c052d0abaec137aca32}
+      \strng{nameabibnamehash}{6416a59f90819c052d0abaec137aca32}
+      \strng{nameanamehash}{6416a59f90819c052d0abaec137aca32}
+      \strng{nameafullhash}{6416a59f90819c052d0abaec137aca32}
+      \strng{nameafullhashraw}{6416a59f90819c052d0abaec137aca32}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Historical weather API (ERA5)}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \verb{urlraw}
+      \verb https://open-meteo.com/en/docs/historical-weather-api
+      \endverb
+      \verb{url}
+      \verb https://open-meteo.com/en/docs/historical-weather-api
+      \endverb
+      \keyw{apxref10}
+    \endentry
+    \entry{apxref15}{report}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{3}{}{%
+        {{hash=e245a75c107b55474840bac3191a431d}{%
+           family={Kuzma},
+           familyi={K\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=16c07b2166c6ead56d5dc72e3e51f8ad}{%
+           family={Bierkens},
+           familyi={B\bibinitperiod},
+           given={M.\bibnamedelimi F.\bibnamedelimi P.},
+           giveni={M\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=4848084a9debb8c856ca14a862582887}{%
+           family={Lakshman},
+           familyi={L\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \true{morenamea}
+      \name{namea}{3}{}{%
+        {{hash=e245a75c107b55474840bac3191a431d}{%
+           family={Kuzma},
+           familyi={K\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=16c07b2166c6ead56d5dc72e3e51f8ad}{%
+           family={Bierkens},
+           familyi={B\bibinitperiod},
+           given={M.\bibnamedelimi F.\bibnamedelimi P.},
+           giveni={M\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=4848084a9debb8c856ca14a862582887}{%
+           family={Lakshman},
+           familyi={L\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {World Resources Institute}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {World Resources Institute}%
+      }
+      \strng{namehash}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{fullhash}{9d33a043d8260f7391960ea5cf20382e}
+      \strng{fullhashraw}{9d33a043d8260f7391960ea5cf20382e}
+      \strng{bibnamehash}{9d33a043d8260f7391960ea5cf20382e}
+      \strng{authorbibnamehash}{9d33a043d8260f7391960ea5cf20382e}
+      \strng{authornamehash}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{authorfullhash}{9d33a043d8260f7391960ea5cf20382e}
+      \strng{authorfullhashraw}{9d33a043d8260f7391960ea5cf20382e}
+      \strng{nameabibnamehash}{9d33a043d8260f7391960ea5cf20382e}
+      \strng{nameanamehash}{d22196a60efc4cba1f33375179c74fe0}
+      \strng{nameafullhash}{9d33a043d8260f7391960ea5cf20382e}
+      \strng{nameafullhashraw}{9d33a043d8260f7391960ea5cf20382e}
+      \field{extraname}{2}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Aqueduct 4.0: updated decision-relevant global water risk indicators}
+      \field{usera}{R}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2023}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.46830/writn.23.00061
+      \endverb
+      \keyw{apxref15}
+    \endentry
+    \entry{apxref16}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=c25f761959185bf92353ae28c53775e9}{%
+           family={{Verne}},
+           familyi={V\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=c25f761959185bf92353ae28c53775e9}{%
+           family={{Verne}},
+           familyi={V\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{c25f761959185bf92353ae28c53775e9}
+      \strng{fullhash}{c25f761959185bf92353ae28c53775e9}
+      \strng{fullhashraw}{c25f761959185bf92353ae28c53775e9}
+      \strng{bibnamehash}{c25f761959185bf92353ae28c53775e9}
+      \strng{authorbibnamehash}{c25f761959185bf92353ae28c53775e9}
+      \strng{authornamehash}{c25f761959185bf92353ae28c53775e9}
+      \strng{authorfullhash}{c25f761959185bf92353ae28c53775e9}
+      \strng{authorfullhashraw}{c25f761959185bf92353ae28c53775e9}
+      \strng{nameabibnamehash}{c25f761959185bf92353ae28c53775e9}
+      \strng{nameanamehash}{c25f761959185bf92353ae28c53775e9}
+      \strng{nameafullhash}{c25f761959185bf92353ae28c53775e9}
+      \strng{nameafullhashraw}{c25f761959185bf92353ae28c53775e9}
+      \field{extraname}{1}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Iceland data sheet}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2025}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.verneglobal.com/hubfs/Downloadable_Content/Datasheets%202025/Iceland_Datasheet%20.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.verneglobal.com/hubfs/Downloadable_Content/Datasheets%202025/Iceland_Datasheet%20.pdf
+      \endverb
+      \keyw{apxref16}
+    \endentry
+    \entry{apxref17}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=c25f761959185bf92353ae28c53775e9}{%
+           family={{Verne}},
+           familyi={V\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=c25f761959185bf92353ae28c53775e9}{%
+           family={{Verne}},
+           familyi={V\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{c25f761959185bf92353ae28c53775e9}
+      \strng{fullhash}{c25f761959185bf92353ae28c53775e9}
+      \strng{fullhashraw}{c25f761959185bf92353ae28c53775e9}
+      \strng{bibnamehash}{c25f761959185bf92353ae28c53775e9}
+      \strng{authorbibnamehash}{c25f761959185bf92353ae28c53775e9}
+      \strng{authornamehash}{c25f761959185bf92353ae28c53775e9}
+      \strng{authorfullhash}{c25f761959185bf92353ae28c53775e9}
+      \strng{authorfullhashraw}{c25f761959185bf92353ae28c53775e9}
+      \strng{nameabibnamehash}{c25f761959185bf92353ae28c53775e9}
+      \strng{nameanamehash}{c25f761959185bf92353ae28c53775e9}
+      \strng{nameafullhash}{c25f761959185bf92353ae28c53775e9}
+      \strng{nameafullhashraw}{c25f761959185bf92353ae28c53775e9}
+      \field{extraname}{2}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Launch of a high-capacity substation in Keflavík}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.verne.co/news/news-verne-and-landsnet-launch-high-capacity-substation
+      \endverb
+      \verb{url}
+      \verb https://www.verne.co/news/news-verne-and-landsnet-launch-high-capacity-substation
+      \endverb
+      \keyw{apxref17}
+    \endentry
+    \entry{apxref18}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=b9891cf7e2e248dbb90e611b68c31208}{%
+           family={{Skipulagsstofnun (UUA)}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=b9891cf7e2e248dbb90e611b68c31208}{%
+           family={{Skipulagsstofnun (UUA)}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{b9891cf7e2e248dbb90e611b68c31208}
+      \strng{fullhash}{b9891cf7e2e248dbb90e611b68c31208}
+      \strng{fullhashraw}{b9891cf7e2e248dbb90e611b68c31208}
+      \strng{bibnamehash}{b9891cf7e2e248dbb90e611b68c31208}
+      \strng{authorbibnamehash}{b9891cf7e2e248dbb90e611b68c31208}
+      \strng{authornamehash}{b9891cf7e2e248dbb90e611b68c31208}
+      \strng{authorfullhash}{b9891cf7e2e248dbb90e611b68c31208}
+      \strng{authorfullhashraw}{b9891cf7e2e248dbb90e611b68c31208}
+      \strng{nameabibnamehash}{b9891cf7e2e248dbb90e611b68c31208}
+      \strng{nameanamehash}{b9891cf7e2e248dbb90e611b68c31208}
+      \strng{nameafullhash}{b9891cf7e2e248dbb90e611b68c31208}
+      \strng{nameafullhashraw}{b9891cf7e2e248dbb90e611b68c31208}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Uppbygging gagnavers}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://uua.is/urleits/uua2606003-uppbygging-gagnavers/
+      \endverb
+      \verb{url}
+      \verb https://uua.is/urleits/uua2606003-uppbygging-gagnavers/
+      \endverb
+      \keyw{apxref18}
+    \endentry
+    \entry{apxref19}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=b6755d218d5f4e1cef9cce9cc39aeda9}{%
+           family={{Meta}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=b6755d218d5f4e1cef9cce9cc39aeda9}{%
+           family={{Meta}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{b6755d218d5f4e1cef9cce9cc39aeda9}
+      \strng{fullhash}{b6755d218d5f4e1cef9cce9cc39aeda9}
+      \strng{fullhashraw}{b6755d218d5f4e1cef9cce9cc39aeda9}
+      \strng{bibnamehash}{b6755d218d5f4e1cef9cce9cc39aeda9}
+      \strng{authorbibnamehash}{b6755d218d5f4e1cef9cce9cc39aeda9}
+      \strng{authornamehash}{b6755d218d5f4e1cef9cce9cc39aeda9}
+      \strng{authorfullhash}{b6755d218d5f4e1cef9cce9cc39aeda9}
+      \strng{authorfullhashraw}{b6755d218d5f4e1cef9cce9cc39aeda9}
+      \strng{nameabibnamehash}{b6755d218d5f4e1cef9cce9cc39aeda9}
+      \strng{nameanamehash}{b6755d218d5f4e1cef9cce9cc39aeda9}
+      \strng{nameafullhash}{b6755d218d5f4e1cef9cce9cc39aeda9}
+      \strng{nameafullhashraw}{b6755d218d5f4e1cef9cce9cc39aeda9}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Rethinking data center design for Singapore}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2019}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://datacenters.atmeta.com/2019/01/rethinking-data-center-design-for-singapore/
+      \endverb
+      \verb{url}
+      \verb https://datacenters.atmeta.com/2019/01/rethinking-data-center-design-for-singapore/
+      \endverb
+      \keyw{apxref19}
+    \endentry
+    \entry{apxref20}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=a2d17848bb199136af5368284f884ba8}{%
+           family={{PUB, Singapore}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=a2d17848bb199136af5368284f884ba8}{%
+           family={{PUB, Singapore}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{a2d17848bb199136af5368284f884ba8}
+      \strng{fullhash}{a2d17848bb199136af5368284f884ba8}
+      \strng{fullhashraw}{a2d17848bb199136af5368284f884ba8}
+      \strng{bibnamehash}{a2d17848bb199136af5368284f884ba8}
+      \strng{authorbibnamehash}{a2d17848bb199136af5368284f884ba8}
+      \strng{authornamehash}{a2d17848bb199136af5368284f884ba8}
+      \strng{authorfullhash}{a2d17848bb199136af5368284f884ba8}
+      \strng{authorfullhashraw}{a2d17848bb199136af5368284f884ba8}
+      \strng{nameabibnamehash}{a2d17848bb199136af5368284f884ba8}
+      \strng{nameanamehash}{a2d17848bb199136af5368284f884ba8}
+      \strng{nameafullhash}{a2d17848bb199136af5368284f884ba8}
+      \strng{nameafullhashraw}{a2d17848bb199136af5368284f884ba8}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Sectoral water efficiency benchmark}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \verb{urlraw}
+      \verb https://www.pub.gov.sg/public/waterloop/water-conservation/resources-on-water-efficiency-measures/sectoral-water-efficiency-benchmark
+      \endverb
+      \verb{url}
+      \verb https://www.pub.gov.sg/public/waterloop/water-conservation/resources-on-water-efficiency-measures/sectoral-water-efficiency-benchmark
+      \endverb
+      \keyw{apxref20}
+    \endentry
+    \entry{apxref21}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=05e5e078213d0e8d8c00ca7bba2f9e83}{%
+           family={{Monetary Authority of Singapore}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=05e5e078213d0e8d8c00ca7bba2f9e83}{%
+           family={{Monetary Authority of Singapore}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Monetary Authority of Singapore}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {Monetary Authority of Singapore}%
+      }
+      \strng{namehash}{05e5e078213d0e8d8c00ca7bba2f9e83}
+      \strng{fullhash}{05e5e078213d0e8d8c00ca7bba2f9e83}
+      \strng{fullhashraw}{05e5e078213d0e8d8c00ca7bba2f9e83}
+      \strng{bibnamehash}{05e5e078213d0e8d8c00ca7bba2f9e83}
+      \strng{authorbibnamehash}{05e5e078213d0e8d8c00ca7bba2f9e83}
+      \strng{authornamehash}{05e5e078213d0e8d8c00ca7bba2f9e83}
+      \strng{authorfullhash}{05e5e078213d0e8d8c00ca7bba2f9e83}
+      \strng{authorfullhashraw}{05e5e078213d0e8d8c00ca7bba2f9e83}
+      \strng{nameabibnamehash}{05e5e078213d0e8d8c00ca7bba2f9e83}
+      \strng{nameanamehash}{05e5e078213d0e8d8c00ca7bba2f9e83}
+      \strng{nameafullhash}{05e5e078213d0e8d8c00ca7bba2f9e83}
+      \strng{nameafullhashraw}{05e5e078213d0e8d8c00ca7bba2f9e83}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{entrysubtype}{report}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Singapore-Asia taxonomy for sustainable finance}
+      \field{usera}{R}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2023}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.mas.gov.sg/-/media/mas-media-library/development/sustainable-finance/singaporeasia-taxonomy-updated.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.mas.gov.sg/-/media/mas-media-library/development/sustainable-finance/singaporeasia-taxonomy-updated.pdf
+      \endverb
+      \keyw{apxref21,report}
+    \endentry
+    \entry{apxref22}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=0c52ea2222b9761594b7ed807dc22915}{%
+           family={{Servicio de Evaluación Ambiental (SEA), Chile}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=0c52ea2222b9761594b7ed807dc22915}{%
+           family={{Servicio de Evaluación Ambiental (SEA), Chile}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{0c52ea2222b9761594b7ed807dc22915}
+      \strng{fullhash}{0c52ea2222b9761594b7ed807dc22915}
+      \strng{fullhashraw}{0c52ea2222b9761594b7ed807dc22915}
+      \strng{bibnamehash}{0c52ea2222b9761594b7ed807dc22915}
+      \strng{authorbibnamehash}{0c52ea2222b9761594b7ed807dc22915}
+      \strng{authornamehash}{0c52ea2222b9761594b7ed807dc22915}
+      \strng{authorfullhash}{0c52ea2222b9761594b7ed807dc22915}
+      \strng{authorfullhashraw}{0c52ea2222b9761594b7ed807dc22915}
+      \strng{nameabibnamehash}{0c52ea2222b9761594b7ed807dc22915}
+      \strng{nameanamehash}{0c52ea2222b9761594b7ed807dc22915}
+      \strng{nameafullhash}{0c52ea2222b9761594b7ed807dc22915}
+      \strng{nameafullhashraw}{0c52ea2222b9761594b7ed807dc22915}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Documento ambiental del proyecto de centro de datos en Quilicura}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2022}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://infofirma.sea.gob.cl/DocumentosSEA/MostrarDocumento?docId=56%2F79%2F5da3b81f2f6e96f0e1740ab072571d17e39a
+      \endverb
+      \verb{url}
+      \verb https://infofirma.sea.gob.cl/DocumentosSEA/MostrarDocumento?docId=56%2F79%2F5da3b81f2f6e96f0e1740ab072571d17e39a
+      \endverb
+      \keyw{apxref22}
+    \endentry
+    \entry{apxref23}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=8b36e9207c24c76e6719268e49201d94}{%
+           family={{Google}},
+           familyi={G\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=8b36e9207c24c76e6719268e49201d94}{%
+           family={{Google}},
+           familyi={G\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{8b36e9207c24c76e6719268e49201d94}
+      \strng{fullhash}{8b36e9207c24c76e6719268e49201d94}
+      \strng{fullhashraw}{8b36e9207c24c76e6719268e49201d94}
+      \strng{bibnamehash}{8b36e9207c24c76e6719268e49201d94}
+      \strng{authorbibnamehash}{8b36e9207c24c76e6719268e49201d94}
+      \strng{authornamehash}{8b36e9207c24c76e6719268e49201d94}
+      \strng{authorfullhash}{8b36e9207c24c76e6719268e49201d94}
+      \strng{authorfullhashraw}{8b36e9207c24c76e6719268e49201d94}
+      \strng{nameabibnamehash}{8b36e9207c24c76e6719268e49201d94}
+      \strng{nameanamehash}{8b36e9207c24c76e6719268e49201d94}
+      \strng{nameafullhash}{8b36e9207c24c76e6719268e49201d94}
+      \strng{nameafullhashraw}{8b36e9207c24c76e6719268e49201d94}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{10 datos sobre el centro de datos de Google en Quilicura, Chile}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \verb{urlraw}
+      \verb https://blog.google/intl/es-419/noticias-de-la-empresa/10-datos-sobre-el-centro-de-datos-de-google-en-quilicura-chile/
+      \endverb
+      \verb{url}
+      \verb https://blog.google/intl/es-419/noticias-de-la-empresa/10-datos-sobre-el-centro-de-datos-de-google-en-quilicura-chile/
+      \endverb
+      \keyw{apxref23}
+    \endentry
+    \entry{apxref24}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=d7ea829f6b15465329864e4853362996}{%
+           family={{Coordinador Eléctrico Nacional, Chile}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=d7ea829f6b15465329864e4853362996}{%
+           family={{Coordinador Eléctrico Nacional, Chile}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{d7ea829f6b15465329864e4853362996}
+      \strng{fullhash}{d7ea829f6b15465329864e4853362996}
+      \strng{fullhashraw}{d7ea829f6b15465329864e4853362996}
+      \strng{bibnamehash}{d7ea829f6b15465329864e4853362996}
+      \strng{authorbibnamehash}{d7ea829f6b15465329864e4853362996}
+      \strng{authornamehash}{d7ea829f6b15465329864e4853362996}
+      \strng{authorfullhash}{d7ea829f6b15465329864e4853362996}
+      \strng{authorfullhashraw}{d7ea829f6b15465329864e4853362996}
+      \strng{nameabibnamehash}{d7ea829f6b15465329864e4853362996}
+      \strng{nameanamehash}{d7ea829f6b15465329864e4853362996}
+      \strng{nameafullhash}{d7ea829f6b15465329864e4853362996}
+      \strng{nameafullhashraw}{d7ea829f6b15465329864e4853362996}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{Minuta: solicitud nueva subestación Colina}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2021}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.coordinador.cl/wp-content/uploads/2021/08/Minuta_Solicitud_Nueva_Subestacion_COLINA_24_08_2021.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.coordinador.cl/wp-content/uploads/2021/08/Minuta_Solicitud_Nueva_Subestacion_COLINA_24_08_2021.pdf
+      \endverb
+      \keyw{apxref24}
+    \endentry
+    \entry{apxref25}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=a98b6741d68ee696bb19bcf4fe8b2f66}{%
+           family={{AirTrunk}},
+           familyi={A\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=a98b6741d68ee696bb19bcf4fe8b2f66}{%
+           family={{AirTrunk}},
+           familyi={A\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{a98b6741d68ee696bb19bcf4fe8b2f66}
+      \strng{fullhash}{a98b6741d68ee696bb19bcf4fe8b2f66}
+      \strng{fullhashraw}{a98b6741d68ee696bb19bcf4fe8b2f66}
+      \strng{bibnamehash}{a98b6741d68ee696bb19bcf4fe8b2f66}
+      \strng{authorbibnamehash}{a98b6741d68ee696bb19bcf4fe8b2f66}
+      \strng{authornamehash}{a98b6741d68ee696bb19bcf4fe8b2f66}
+      \strng{authorfullhash}{a98b6741d68ee696bb19bcf4fe8b2f66}
+      \strng{authorfullhashraw}{a98b6741d68ee696bb19bcf4fe8b2f66}
+      \strng{nameabibnamehash}{a98b6741d68ee696bb19bcf4fe8b2f66}
+      \strng{nameanamehash}{a98b6741d68ee696bb19bcf4fe8b2f66}
+      \strng{nameafullhash}{a98b6741d68ee696bb19bcf4fe8b2f66}
+      \strng{nameafullhashraw}{a98b6741d68ee696bb19bcf4fe8b2f66}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{AirTrunk expands western Sydney region with new SYD3 hyperscale data centre}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2023}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/
+      \endverb
+      \verb{url}
+      \verb https://airtrunk.com/airtrunk-expands-western-sydney-region-with-new-syd3-hyperscale-data-centre-asia-pacifics-largest/
+      \endverb
+      \keyw{apxref25}
+    \endentry
+    \entry{apxref26}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=d98afae7c7f4bfbdb9695666bee46616}{%
+           family={{NSW Department of Planning}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=d98afae7c7f4bfbdb9695666bee46616}{%
+           family={{NSW Department of Planning}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{fullhash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{fullhashraw}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{bibnamehash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{authorbibnamehash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{authornamehash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{authorfullhash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{authorfullhashraw}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{nameabibnamehash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{nameanamehash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{nameafullhash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{nameafullhashraw}{d98afae7c7f4bfbdb9695666bee46616}
+      \field{extraname}{1}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{51 Huntingwood Drive data centre (SSD-41589232)}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \verb{urlraw}
+      \verb https://www.planningportal.nsw.gov.au/major-projects/projects/51-huntingwood-drive-data-centre
+      \endverb
+      \verb{url}
+      \verb https://www.planningportal.nsw.gov.au/major-projects/projects/51-huntingwood-drive-data-centre
+      \endverb
+      \keyw{apxref26}
+    \endentry
+    \entry{apxref27}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=d98afae7c7f4bfbdb9695666bee46616}{%
+           family={{NSW Department of Planning}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=d98afae7c7f4bfbdb9695666bee46616}{%
+           family={{NSW Department of Planning}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{fullhash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{fullhashraw}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{bibnamehash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{authorbibnamehash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{authornamehash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{authorfullhash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{authorfullhashraw}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{nameabibnamehash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{nameanamehash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{nameafullhash}{d98afae7c7f4bfbdb9695666bee46616}
+      \strng{nameafullhashraw}{d98afae7c7f4bfbdb9695666bee46616}
+      \field{extraname}{2}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{SSD-41589232: water supply assessment}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2022}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://majorprojects.planningportal.nsw.gov.au/prweb/PRRestService/mp/01/getContent?AttachRef=SSD-41589232%2120220916T041049.122+GMT
+      \endverb
+      \verb{url}
+      \verb https://majorprojects.planningportal.nsw.gov.au/prweb/PRRestService/mp/01/getContent?AttachRef=SSD-41589232%2120220916T041049.122+GMT
+      \endverb
+      \keyw{apxref27}
+    \endentry
+    \entry{apxref28}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=fb347e3972f2bd02631bfabbfb1dfc87}{%
+           family={{NPS}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=fb347e3972f2bd02631bfabbfb1dfc87}{%
+           family={{NPS}},
+           familyi={N\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{fb347e3972f2bd02631bfabbfb1dfc87}
+      \strng{fullhash}{fb347e3972f2bd02631bfabbfb1dfc87}
+      \strng{fullhashraw}{fb347e3972f2bd02631bfabbfb1dfc87}
+      \strng{bibnamehash}{fb347e3972f2bd02631bfabbfb1dfc87}
+      \strng{authorbibnamehash}{fb347e3972f2bd02631bfabbfb1dfc87}
+      \strng{authornamehash}{fb347e3972f2bd02631bfabbfb1dfc87}
+      \strng{authorfullhash}{fb347e3972f2bd02631bfabbfb1dfc87}
+      \strng{authorfullhashraw}{fb347e3972f2bd02631bfabbfb1dfc87}
+      \strng{nameabibnamehash}{fb347e3972f2bd02631bfabbfb1dfc87}
+      \strng{nameanamehash}{fb347e3972f2bd02631bfabbfb1dfc87}
+      \strng{nameafullhash}{fb347e3972f2bd02631bfabbfb1dfc87}
+      \strng{nameafullhashraw}{fb347e3972f2bd02631bfabbfb1dfc87}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{title}{NPS-100C small wind turbine brochure}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2019}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.nps100.com/wp/wp-content/uploads/2022/10/brochure-NPS-100C-24_ed2019_light_ENG.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.nps100.com/wp/wp-content/uploads/2022/10/brochure-NPS-100C-24_ed2019_light_ENG.pdf
+      \endverb
+      \keyw{apxref28}
+    \endentry
+    \entry{q2cref01}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=bbbe8912824f29df82a6b19218544eaa}{%
+           family={{SETI@home}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=bbbe8912824f29df82a6b19218544eaa}{%
+           family={{SETI@home}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{bbbe8912824f29df82a6b19218544eaa}
+      \strng{fullhash}{bbbe8912824f29df82a6b19218544eaa}
+      \strng{fullhashraw}{bbbe8912824f29df82a6b19218544eaa}
+      \strng{bibnamehash}{bbbe8912824f29df82a6b19218544eaa}
+      \strng{authorbibnamehash}{bbbe8912824f29df82a6b19218544eaa}
+      \strng{authornamehash}{bbbe8912824f29df82a6b19218544eaa}
+      \strng{authorfullhash}{bbbe8912824f29df82a6b19218544eaa}
+      \strng{authorfullhashraw}{bbbe8912824f29df82a6b19218544eaa}
+      \strng{nameabibnamehash}{bbbe8912824f29df82a6b19218544eaa}
+      \strng{nameanamehash}{bbbe8912824f29df82a6b19218544eaa}
+      \strng{nameafullhash}{bbbe8912824f29df82a6b19218544eaa}
+      \strng{nameafullhashraw}{bbbe8912824f29df82a6b19218544eaa}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{note}{原始条目仅给出 URL；题名取自站点域名}
+      \field{title}{SETI@home}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \verb{urlraw}
+      \verb https://setiathome.berkeley.edu/sah_about.php
+      \endverb
+      \verb{url}
+      \verb https://setiathome.berkeley.edu/sah_about.php
+      \endverb
+      \keyw{q2cref01}
+    \endentry
+    \entry{q2cref03}{article}{}{}
+      \name{author}{6}{}{%
+        {{hash=240f15f7d0b589c89d5552453f46785d}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod}}}%
+        {{hash=df9a91cca8764730a9c1bd551f277702}{%
+           family={Hu},
+           familyi={H\bibinitperiod},
+           given={X.},
+           giveni={X\bibinitperiod}}}%
+        {{hash=95c40ddfdd2cb0ac5a1ef74bb71692f3}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=606bee091c4c9eec3c987c88e82e657d}{%
+           family={Hao},
+           familyi={H\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=f0306bfaac1677056d13ec3a5ec8ba1b}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Q.},
+           giveni={Q\bibinitperiod}}}%
+        {{hash=32e563370422457790db030ab2c13183}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod}}}%
+      }
+      \name{namea}{6}{}{%
+        {{hash=240f15f7d0b589c89d5552453f46785d}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod}}}%
+        {{hash=df9a91cca8764730a9c1bd551f277702}{%
+           family={Hu},
+           familyi={H\bibinitperiod},
+           given={X.},
+           giveni={X\bibinitperiod}}}%
+        {{hash=95c40ddfdd2cb0ac5a1ef74bb71692f3}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=606bee091c4c9eec3c987c88e82e657d}{%
+           family={Hao},
+           familyi={H\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=f0306bfaac1677056d13ec3a5ec8ba1b}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Q.},
+           giveni={Q\bibinitperiod}}}%
+        {{hash=32e563370422457790db030ab2c13183}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{8e509e5e53b3287487b3d77bfc550fb5}
+      \strng{fullhash}{c08cb9959c2aafe68d8c98ce7c9c77e3}
+      \strng{fullhashraw}{c08cb9959c2aafe68d8c98ce7c9c77e3}
+      \strng{bibnamehash}{161fac6f2c7fe3f8851dbd98fbddd61e}
+      \strng{authorbibnamehash}{161fac6f2c7fe3f8851dbd98fbddd61e}
+      \strng{authornamehash}{8e509e5e53b3287487b3d77bfc550fb5}
+      \strng{authorfullhash}{c08cb9959c2aafe68d8c98ce7c9c77e3}
+      \strng{authorfullhashraw}{c08cb9959c2aafe68d8c98ce7c9c77e3}
+      \strng{nameabibnamehash}{161fac6f2c7fe3f8851dbd98fbddd61e}
+      \strng{nameanamehash}{8e509e5e53b3287487b3d77bfc550fb5}
+      \strng{nameafullhash}{c08cb9959c2aafe68d8c98ce7c9c77e3}
+      \strng{nameafullhashraw}{c08cb9959c2aafe68d8c98ce7c9c77e3}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Digital Communications and Networks}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{number}{2}
+      \field{title}{Green scheduling for {LLM} workloads with model and data reuse across geo-distributed data centers}
+      \field{usera}{J}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{volume}{12}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \field{pages}{236\bibrangedash 251}
+      \range{pages}{16}
+      \verb{doi}
+      \verb 10.1016/j.dcan.2025.11.006
+      \endverb
+      \keyw{q2cref03}
+    \endentry
+    \entry{q2cref02}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=ff7bb5bc3b8e71a5516b098e8a5354ab}{%
+           family={Lawey},
+           familyi={L\bibinitperiod},
+           given={A.\bibnamedelimi Q.},
+           giveni={A\bibinitperiod\bibinitdelim Q\bibinitperiod}}}%
+        {{hash=b57353b670118d602fc9565600544dd8}{%
+           family={El-Gorashi},
+           familyi={E\bibinithyphendelim G\bibinitperiod},
+           given={T.\bibnamedelimi E.\bibnamedelimi H.},
+           giveni={T\bibinitperiod\bibinitdelim E\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=1c0f5eab23a8951a23492c9853a04187}{%
+           family={Elmirghani},
+           familyi={E\bibinitperiod},
+           given={J.\bibnamedelimi M.\bibnamedelimi H.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \name{namea}{3}{}{%
+        {{hash=ff7bb5bc3b8e71a5516b098e8a5354ab}{%
+           family={Lawey},
+           familyi={L\bibinitperiod},
+           given={A.\bibnamedelimi Q.},
+           giveni={A\bibinitperiod\bibinitdelim Q\bibinitperiod}}}%
+        {{hash=b57353b670118d602fc9565600544dd8}{%
+           family={El-Gorashi},
+           familyi={E\bibinithyphendelim G\bibinitperiod},
+           given={T.\bibnamedelimi E.\bibnamedelimi H.},
+           giveni={T\bibinitperiod\bibinitdelim E\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=1c0f5eab23a8951a23492c9853a04187}{%
+           family={Elmirghani},
+           familyi={E\bibinitperiod},
+           given={J.\bibnamedelimi M.\bibnamedelimi H.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{96d20b04f934238ff1f5c1dead3d42e0}
+      \strng{fullhash}{7ed8b6d69fb349ce7b0db2140aaba964}
+      \strng{fullhashraw}{7ed8b6d69fb349ce7b0db2140aaba964}
+      \strng{bibnamehash}{7ed8b6d69fb349ce7b0db2140aaba964}
+      \strng{authorbibnamehash}{7ed8b6d69fb349ce7b0db2140aaba964}
+      \strng{authornamehash}{96d20b04f934238ff1f5c1dead3d42e0}
+      \strng{authorfullhash}{7ed8b6d69fb349ce7b0db2140aaba964}
+      \strng{authorfullhashraw}{7ed8b6d69fb349ce7b0db2140aaba964}
+      \strng{nameabibnamehash}{7ed8b6d69fb349ce7b0db2140aaba964}
+      \strng{nameanamehash}{96d20b04f934238ff1f5c1dead3d42e0}
+      \strng{nameafullhash}{7ed8b6d69fb349ce7b0db2140aaba964}
+      \strng{nameafullhashraw}{7ed8b6d69fb349ce7b0db2140aaba964}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Lightwave Technology}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{number}{7}
+      \field{title}{Distributed energy efficient clouds over core networks}
+      \field{usera}{J}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{volume}{32}
+      \field{year}{2014}
+      \field{dateera}{ce}
+      \field{pages}{1261\bibrangedash 1281}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1109/JLT.2014.2301450
+      \endverb
+      \keyw{q2cref02}
+    \endentry
+    \entry{q2ref01}{online}{}{}
+      \list{language}{1}{%
+        {english}%
+      }
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{note}{原始条目仅给出 URL，未给出作者与题名；标题按文件名转写}
+      \field{title}{UNU-INWEH-Report-The\_Env\_Cost\_of\_AI-2026}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \verb{urlraw}
+      \verb https://unu.edu/sites/default/files/2026-10/UNU-INWEH-Report-The_Env_Cost_of_AI-2026.pdf
+      \endverb
+      \verb{url}
+      \verb https://unu.edu/sites/default/files/2026-10/UNU-INWEH-Report-The_Env_Cost_of_AI-2026.pdf
+      \endverb
+      \keyw{q2ref01}
+    \endentry
+    \entry{q2bref01}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=732afd6a8e5c2ade60cb565e35a7926f}{%
+           family={{生态环境部 and 国家统计局}},
+           familyi={生\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=732afd6a8e5c2ade60cb565e35a7926f}{%
+           family={{生态环境部 and 国家统计局}},
+           familyi={生\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {chinese}%
+      }
+      \strng{namehash}{732afd6a8e5c2ade60cb565e35a7926f}
+      \strng{fullhash}{732afd6a8e5c2ade60cb565e35a7926f}
+      \strng{fullhashraw}{732afd6a8e5c2ade60cb565e35a7926f}
+      \strng{bibnamehash}{732afd6a8e5c2ade60cb565e35a7926f}
+      \strng{authorbibnamehash}{732afd6a8e5c2ade60cb565e35a7926f}
+      \strng{authornamehash}{732afd6a8e5c2ade60cb565e35a7926f}
+      \strng{authorfullhash}{732afd6a8e5c2ade60cb565e35a7926f}
+      \strng{authorfullhashraw}{732afd6a8e5c2ade60cb565e35a7926f}
+      \strng{nameabibnamehash}{732afd6a8e5c2ade60cb565e35a7926f}
+      \strng{nameanamehash}{732afd6a8e5c2ade60cb565e35a7926f}
+      \strng{nameafullhash}{732afd6a8e5c2ade60cb565e35a7926f}
+      \strng{nameafullhashraw}{732afd6a8e5c2ade60cb565e35a7926f}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{31}
+      \field{langid}{english}
+      \field{languageid}{chinese}
+      \field{lansortorder}{1}
+      \field{month}{12}
+      \field{note}{附件：\url{https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202512/W020251231726284332528.pdf}}
+      \field{title}{关于发布2023年电力二氧化碳排放因子的公告：公告2025年第47号}
+      \field{usera}{EB}
+      \field{userd}{chinese}
+      \field{userf}{chinese}
+      \field{year}{2025}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202512/t20251231_1139517.html
+      \endverb
+      \verb{url}
+      \verb https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202512/t20251231_1139517.html
+      \endverb
+      \keyw{q2bref01}
+    \endentry
+    \entry{q2bref02}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=9301a4899a1c285ff54b592f16922008}{%
+           family={{生态环境部}},
+           familyi={生\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=9301a4899a1c285ff54b592f16922008}{%
+           family={{生态环境部}},
+           familyi={生\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {chinese}%
+      }
+      \strng{namehash}{9301a4899a1c285ff54b592f16922008}
+      \strng{fullhash}{9301a4899a1c285ff54b592f16922008}
+      \strng{fullhashraw}{9301a4899a1c285ff54b592f16922008}
+      \strng{bibnamehash}{9301a4899a1c285ff54b592f16922008}
+      \strng{authorbibnamehash}{9301a4899a1c285ff54b592f16922008}
+      \strng{authornamehash}{9301a4899a1c285ff54b592f16922008}
+      \strng{authorfullhash}{9301a4899a1c285ff54b592f16922008}
+      \strng{authorfullhashraw}{9301a4899a1c285ff54b592f16922008}
+      \strng{nameabibnamehash}{9301a4899a1c285ff54b592f16922008}
+      \strng{nameanamehash}{9301a4899a1c285ff54b592f16922008}
+      \strng{nameafullhash}{9301a4899a1c285ff54b592f16922008}
+      \strng{nameafullhashraw}{9301a4899a1c285ff54b592f16922008}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{5}
+      \field{langid}{english}
+      \field{languageid}{chinese}
+      \field{lansortorder}{1}
+      \field{month}{1}
+      \field{title}{生态环境部应对气候变化司有关负责人就《关于发布2023年电力二氧化碳排放因子的公告》答记者问}
+      \field{usera}{EB}
+      \field{userd}{chinese}
+      \field{userf}{chinese}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://www.mee.gov.cn/ywdt/zbft/202601/t20260105_1139911.shtml
+      \endverb
+      \verb{url}
+      \verb https://www.mee.gov.cn/ywdt/zbft/202601/t20260105_1139911.shtml
+      \endverb
+      \keyw{q2bref02}
+    \endentry
+    \entry{apxrefL01}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=a716d695b16431cad6664e80f351ebf4}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={G.\bibnamedelimi C.},
+           giveni={G\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=4c659dc50c46332430ef5d3153a56612}{%
+           family={Torn},
+           familyi={T\bibinitperiod},
+           given={M.\bibnamedelimi S.},
+           giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=782e547eccbe3cf1fa8face27b05e5e6}{%
+           family={Williams},
+           familyi={W\bibinitperiod},
+           given={J.\bibnamedelimi H.},
+           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \name{namea}{3}{}{%
+        {{hash=a716d695b16431cad6664e80f351ebf4}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={G.\bibnamedelimi C.},
+           giveni={G\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=4c659dc50c46332430ef5d3153a56612}{%
+           family={Torn},
+           familyi={T\bibinitperiod},
+           given={M.\bibnamedelimi S.},
+           giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=782e547eccbe3cf1fa8face27b05e5e6}{%
+           family={Williams},
+           familyi={W\bibinitperiod},
+           given={J.\bibnamedelimi H.},
+           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{4ff28d6ebc96851997bdf77a2cb3f484}
+      \strng{fullhash}{666d544ad25b93ad52ea04d0d73ce291}
+      \strng{fullhashraw}{666d544ad25b93ad52ea04d0d73ce291}
+      \strng{bibnamehash}{666d544ad25b93ad52ea04d0d73ce291}
+      \strng{authorbibnamehash}{666d544ad25b93ad52ea04d0d73ce291}
+      \strng{authornamehash}{4ff28d6ebc96851997bdf77a2cb3f484}
+      \strng{authorfullhash}{666d544ad25b93ad52ea04d0d73ce291}
+      \strng{authorfullhashraw}{666d544ad25b93ad52ea04d0d73ce291}
+      \strng{nameabibnamehash}{666d544ad25b93ad52ea04d0d73ce291}
+      \strng{nameanamehash}{4ff28d6ebc96851997bdf77a2cb3f484}
+      \strng{nameafullhash}{666d544ad25b93ad52ea04d0d73ce291}
+      \strng{nameafullhashraw}{666d544ad25b93ad52ea04d0d73ce291}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Environmental Science \& Technology}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{number}{4}
+      \field{title}{Incorporating land-use requirements and environmental constraints in low-carbon electricity planning for California}
+      \field{usera}{J}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{volume}{49}
+      \field{year}{2015}
+      \field{dateera}{ce}
+      \field{pages}{2013\bibrangedash 2021}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1021/es502979v
+      \endverb
+      \keyw{apxrefL01}
+    \endentry
+    \entry{apxrefL02}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=40900c9ce29eee318cb66a1cedac293a}{%
+           family={{Epoch AI}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=40900c9ce29eee318cb66a1cedac293a}{%
+           family={{Epoch AI}},
+           familyi={E\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{fullhash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{fullhashraw}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{bibnamehash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{authorbibnamehash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{authornamehash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{authorfullhash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{authorfullhashraw}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{nameabibnamehash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{nameanamehash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{nameafullhash}{40900c9ce29eee318cb66a1cedac293a}
+      \strng{nameafullhashraw}{40900c9ce29eee318cb66a1cedac293a}
+      \field{extraname}{2}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{note}{[dataset] 数据库与来源说明：\url{https://epoch.ai/data/ai-data-centers}}
+      \field{title}{AI Data Centers}
+      \field{usera}{EB}
+      \field{userd}{english}
+      \field{userf}{english}
+      \verb{urlraw}
+      \verb https://epoch.ai/data/ai-data-centers
+      \endverb
+      \verb{url}
+      \verb https://epoch.ai/data/ai-data-centers
+      \endverb
+      \keyw{apxrefL02}
+    \endentry
+    \entry{apxrefL03}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=b5573e1907a6f7425d8de64a0719ba94}{%
+           family={Lovering},
+           familyi={L\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=45d7421d757274bacd8cb6910ce61f48}{%
+           family={Swain},
+           familyi={S\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=4f853d8b6dc3bc8f976ab7b5611d5c6a}{%
+           family={Blomqvist},
+           familyi={B\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=f6032de0d48bf9d83c376f273b3f5858}{%
+           family={Hernandez},
+           familyi={H\bibinitperiod},
+           given={R.\bibnamedelimi R.},
+           giveni={R\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \name{namea}{4}{}{%
+        {{hash=b5573e1907a6f7425d8de64a0719ba94}{%
+           family={Lovering},
+           familyi={L\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=45d7421d757274bacd8cb6910ce61f48}{%
+           family={Swain},
+           familyi={S\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=4f853d8b6dc3bc8f976ab7b5611d5c6a}{%
+           family={Blomqvist},
+           familyi={B\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=f6032de0d48bf9d83c376f273b3f5858}{%
+           family={Hernandez},
+           familyi={H\bibinitperiod},
+           given={R.\bibnamedelimi R.},
+           giveni={R\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{7fdc74df9444b96649d7b0a5d6c1eea2}
+      \strng{fullhash}{e8aa480c67ddb2a55bc2d2c0f0ae6eeb}
+      \strng{fullhashraw}{e8aa480c67ddb2a55bc2d2c0f0ae6eeb}
+      \strng{bibnamehash}{3ff3e95ed3a7bda531db2448b7580cba}
+      \strng{authorbibnamehash}{3ff3e95ed3a7bda531db2448b7580cba}
+      \strng{authornamehash}{7fdc74df9444b96649d7b0a5d6c1eea2}
+      \strng{authorfullhash}{e8aa480c67ddb2a55bc2d2c0f0ae6eeb}
+      \strng{authorfullhashraw}{e8aa480c67ddb2a55bc2d2c0f0ae6eeb}
+      \strng{nameabibnamehash}{3ff3e95ed3a7bda531db2448b7580cba}
+      \strng{nameanamehash}{7fdc74df9444b96649d7b0a5d6c1eea2}
+      \strng{nameafullhash}{e8aa480c67ddb2a55bc2d2c0f0ae6eeb}
+      \strng{nameafullhashraw}{e8aa480c67ddb2a55bc2d2c0f0ae6eeb}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{PLOS ONE}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{number}{7}
+      \field{title}{Land-use intensity of electricity production and tomorrow's energy landscape}
+      \field{usera}{J}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{volume}{17}
+      \field{year}{2022}
+      \field{dateera}{ce}
+      \field{pages}{e0270155}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1371/journal.pone.0270155
+      \endverb
+      \keyw{apxrefL03}
+    \endentry
+    \entry{apxrefL04}{report}{}{}
+      \name{author}{5}{}{%
+        {{hash=ae9cc96ddc88c2e630f2d354fb38a54b}{%
+           family={Ong},
+           familyi={O\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=acbfa8f5b82f8c172159fe678686c503}{%
+           family={Campbell},
+           familyi={C\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=79c0e8cfe7da85021f22069544a056f8}{%
+           family={Denholm},
+           familyi={D\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=a70b962b4c0e0dc072b2bde4c9294a49}{%
+           family={Margolis},
+           familyi={M\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=fbd33babf884a9128125d647d1864814}{%
+           family={Heath},
+           familyi={H\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+      }
+      \name{namea}{5}{}{%
+        {{hash=ae9cc96ddc88c2e630f2d354fb38a54b}{%
+           family={Ong},
+           familyi={O\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=acbfa8f5b82f8c172159fe678686c503}{%
+           family={Campbell},
+           familyi={C\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=79c0e8cfe7da85021f22069544a056f8}{%
+           family={Denholm},
+           familyi={D\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=a70b962b4c0e0dc072b2bde4c9294a49}{%
+           family={Margolis},
+           familyi={M\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=fbd33babf884a9128125d647d1864814}{%
+           family={Heath},
+           familyi={H\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {National Renewable Energy Laboratory}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {National Renewable Energy Laboratory}%
+      }
+      \strng{namehash}{c1445c0e9193fdcbfeb806325a2fa004}
+      \strng{fullhash}{a1ee759b72c276ea096eed410277c886}
+      \strng{fullhashraw}{a1ee759b72c276ea096eed410277c886}
+      \strng{bibnamehash}{5ed916cc1a98f92db050b7df79631648}
+      \strng{authorbibnamehash}{5ed916cc1a98f92db050b7df79631648}
+      \strng{authornamehash}{c1445c0e9193fdcbfeb806325a2fa004}
+      \strng{authorfullhash}{a1ee759b72c276ea096eed410277c886}
+      \strng{authorfullhashraw}{a1ee759b72c276ea096eed410277c886}
+      \strng{nameabibnamehash}{5ed916cc1a98f92db050b7df79631648}
+      \strng{nameanamehash}{c1445c0e9193fdcbfeb806325a2fa004}
+      \strng{nameafullhash}{a1ee759b72c276ea096eed410277c886}
+      \strng{nameafullhashraw}{a1ee759b72c276ea096eed410277c886}
+      \field{extraname}{2}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{number}{NREL/TP-6A20-56290}
+      \field{title}{Land-Use Requirements for Solar Power Plants in the United States}
+      \field{usera}{R}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2013}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.2172/1086349
+      \endverb
+      \keyw{apxrefL04}
+    \endentry
+    \entry{apxrefL05}{report}{}{}
+      \name{author}{4}{}{%
+        {{hash=79c0e8cfe7da85021f22069544a056f8}{%
+           family={Denholm},
+           familyi={D\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=c48f531807d0772fe6f454bb6cfca281}{%
+           family={Hand},
+           familyi={H\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=918e9ac75c3eec8e61828e6cfd061203}{%
+           family={Jackson},
+           familyi={J\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ae9cc96ddc88c2e630f2d354fb38a54b}{%
+           family={Ong},
+           familyi={O\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \name{namea}{4}{}{%
+        {{hash=79c0e8cfe7da85021f22069544a056f8}{%
+           family={Denholm},
+           familyi={D\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=c48f531807d0772fe6f454bb6cfca281}{%
+           family={Hand},
+           familyi={H\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=918e9ac75c3eec8e61828e6cfd061203}{%
+           family={Jackson},
+           familyi={J\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=ae9cc96ddc88c2e630f2d354fb38a54b}{%
+           family={Ong},
+           familyi={O\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {National Renewable Energy Laboratory}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \list{publisher}{1}{%
+        {National Renewable Energy Laboratory}%
+      }
+      \strng{namehash}{f4fe2761e3eaf68d9fad7cdb164ff516}
+      \strng{fullhash}{c7f86ff7d5e9e044b443d52178c31117}
+      \strng{fullhashraw}{c7f86ff7d5e9e044b443d52178c31117}
+      \strng{bibnamehash}{887ea8926c925b2d37d51209c5026e2c}
+      \strng{authorbibnamehash}{887ea8926c925b2d37d51209c5026e2c}
+      \strng{authornamehash}{f4fe2761e3eaf68d9fad7cdb164ff516}
+      \strng{authorfullhash}{c7f86ff7d5e9e044b443d52178c31117}
+      \strng{authorfullhashraw}{c7f86ff7d5e9e044b443d52178c31117}
+      \strng{nameabibnamehash}{887ea8926c925b2d37d51209c5026e2c}
+      \strng{nameanamehash}{f4fe2761e3eaf68d9fad7cdb164ff516}
+      \strng{nameafullhash}{c7f86ff7d5e9e044b443d52178c31117}
+      \strng{nameafullhashraw}{c7f86ff7d5e9e044b443d52178c31117}
+      \field{extraname}{2}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{number}{NREL/TP-6A2-45834}
+      \field{title}{Land-Use Requirements of Modern Wind Power Plants in the United States}
+      \field{usera}{R}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{year}{2009}
+      \field{dateera}{ce}
+      \verb{doi}
+      \verb 10.2172/964608
+      \endverb
+      \keyw{apxrefL05}
+    \endentry
+    \entry{q1bref06}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=d2eb9b43bcd0e1ec1d65fe51f8d26588}{%
+           family={Wurbs},
+           familyi={W\bibinitperiod},
+           given={R.\bibnamedelimi A.},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \name{namea}{1}{}{%
+        {{hash=d2eb9b43bcd0e1ec1d65fe51f8d26588}{%
+           family={Wurbs},
+           familyi={W\bibinitperiod},
+           given={R.\bibnamedelimi A.},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {english}%
+      }
+      \strng{namehash}{d2eb9b43bcd0e1ec1d65fe51f8d26588}
+      \strng{fullhash}{d2eb9b43bcd0e1ec1d65fe51f8d26588}
+      \strng{fullhashraw}{d2eb9b43bcd0e1ec1d65fe51f8d26588}
+      \strng{bibnamehash}{d2eb9b43bcd0e1ec1d65fe51f8d26588}
+      \strng{authorbibnamehash}{d2eb9b43bcd0e1ec1d65fe51f8d26588}
+      \strng{authornamehash}{d2eb9b43bcd0e1ec1d65fe51f8d26588}
+      \strng{authorfullhash}{d2eb9b43bcd0e1ec1d65fe51f8d26588}
+      \strng{authorfullhashraw}{d2eb9b43bcd0e1ec1d65fe51f8d26588}
+      \strng{nameabibnamehash}{d2eb9b43bcd0e1ec1d65fe51f8d26588}
+      \strng{nameanamehash}{d2eb9b43bcd0e1ec1d65fe51f8d26588}
+      \strng{nameafullhash}{d2eb9b43bcd0e1ec1d65fe51f8d26588}
+      \strng{nameafullhashraw}{d2eb9b43bcd0e1ec1d65fe51f8d26588}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Water Resources Planning and Management}
+      \field{langid}{english}
+      \field{languageid}{english}
+      \field{lansortorder}{4}
+      \field{number}{4}
+      \field{title}{Texas Water Availability Modeling System}
+      \field{usera}{J}
+      \field{userd}{english}
+      \field{userf}{english}
+      \field{volume}{131}
+      \field{year}{2005}
+      \field{dateera}{ce}
+      \field{pages}{270\bibrangedash 279}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1061/%28ASCE%290733-9496%282005%29131%3A4%28270%29
+      \endverb
+      \keyw{q1bref06}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
